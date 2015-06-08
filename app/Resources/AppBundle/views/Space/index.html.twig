@@ -1,0 +1,10 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    {% for space in spaces %}
+
+        <a href="{{ path('space_show', {"id":space.id} ) }}">{{ space.name }}</a> <br/>
+    {% endfor %}
+
+{% endblock body %}

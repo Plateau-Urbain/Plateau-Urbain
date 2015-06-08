@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+
+
+
+
+            {% stylesheets filter='cssrewrite,?yui_css' output='assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
+            'bundles/avocodeformextensions/bootstrap-collection/css/bootstrap-collection.css'
+            'bundles/avocodeformextensions/collection-upload/css/collection-upload.css'
+
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+            {% endstylesheets %}
+
+            {% if form is defined %}
+                {{ afe_form_stylesheet(form) }}
+            {% endif %}
+
+
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    </head>
+    <body>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="flash-notice">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+
+
+
+            {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/blueimp.jquery-file-upload.min.js'
+            'bundles/avocodeformextensions/blueimp-javascript-templates/js/tmpl.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-ios.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-orientation.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-meta.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-exif.js'
+            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-exif-map.js'
+            'bundles/avocodeformextensions/blueimp-canvas-to-blob/js/canvas-to-blob.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.iframe-transport.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-process.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-image.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-validate.js'
+            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-ui.js'
+            %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+
+            {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/form-extensions.min.js'
+            'bundles/avocodeformextensions/bootstrap-collection/js/bootstrap-collection.js'
+            'bundles/avocodeformextensions/collection-upload/js/collection-upload.js'
+            'bundles/avocodeformextensions/single-upload/js/single-upload.js'
+            'bundles/avocodeformextensions/elastic/js/jquery.elastic.js'
+            %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% if form is defined %}
+                {{ afe_form_javascript(form) }}
+            {% endif %}
+
+        {% endblock %}
+    </body>
+</html>

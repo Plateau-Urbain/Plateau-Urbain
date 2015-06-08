@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    {{ space.name }}
+    {{ space.description }}
+    {{ space.locationDescription }}
+    {{ space.usageRestriction }}
+    {{ space.surface }}
+    {{ space.size }}
+    {{ space.availability }}
+    {{ space.limitAvailability |date('Y-m-d') }}
+
+    {% for pic in space.pics  %}
+        {{ pic }}
+    {% endfor %}
+
+    {% for spaceAttribute in  space.spaceAttributes %}
+        {{ spaceAttribute }}
+    {% endfor %}
+
+{% endblock body %}

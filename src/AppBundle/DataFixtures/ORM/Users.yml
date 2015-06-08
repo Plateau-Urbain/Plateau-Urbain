@@ -1,0 +1,8 @@
+AppBundle\Entity\User:
+    author1:
+        username: admin2@aol.com
+        email: admin2@aol.com
+        salt: 1u34yki9uu00cs4wggkcok0oww4kk4o
+        password: 98o3unBsSY/QzrME9jlD35pxviUbP5QOl0mS12IdsfuaFaZKy/B3JN+7OMrYYAK63IpHQtiOJ25hmiUf8ca7oA== #admin2
+        roles: [ROLE_SUPER_ADMIN, ROLE_SONATA_ADMIN]
+        enabled: 1

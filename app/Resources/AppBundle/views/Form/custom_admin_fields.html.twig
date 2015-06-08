@@ -1,0 +1,14 @@
+
+{% block image_admin_type_widget %}
+
+    {% spaceless %}
+        {% set subject =  form.parent.vars.data %}
+        {% if subject.id and attribute(subject, name) %}
+            <a href="{{ asset(vich_uploader_asset(subject, name)) }}" target="_blank">
+                <img src="{{ asset(vich_uploader_asset(subject, name)) }}" width="200" />
+            </a><br/>
+        {% endif %}
+        {% set type = type|default('file') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock %}

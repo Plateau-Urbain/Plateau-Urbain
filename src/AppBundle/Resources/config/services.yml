@@ -1,0 +1,55 @@
+services:
+    app.admin.users.admin.owners:
+        class: AppBundle\Admin\OwnerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Propriétaires }
+        arguments:
+            - ~
+            - AppBundle\Entity\User
+            -
+    app.admin.spaces:
+        class: AppBundle\Admin\SpaceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Propriétés }
+        arguments:
+            - ~
+            - AppBundle\Entity\Space
+            -
+
+    app.admin.spaces.spacesattributes:
+        class: AppBundle\Admin\SpaceAttributeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: AttributPropriétés, show_in_dashboard: false  } #, show_in_dashboard: false
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceAttribute
+            -
+
+    app.admin.spaces.attributes:
+        class: AppBundle\Admin\AttributeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Attributs de propriété }
+        arguments:
+            - ~
+            - AppBundle\Entity\Attribute
+            -
+
+    app.admin.spaces.images:
+        class: AppBundle\Admin\SpaceImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: images de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceImage
+            -
+
+
+    app.form.type.space:
+        class: AppBundle\Form\SpaceType
+        tags:
+            - { name: form.type, alias: appbundle_space }
+
+    app.admin.image_admin_type:
+         class: AppBundle\Form\ImageAdminType
+         tags:
+             - { name: form.type, alias: image_admin_type }
