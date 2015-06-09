@@ -39,7 +39,7 @@ security:
                 use_referer:    true
                 check_path:     fos_user_security_check
                 #failure_path:   null
-                default_target_path: fos_user_profile_show
+                default_target_path: homepage
             logout:
                 path: fos_user_security_logout
                 target: homepage

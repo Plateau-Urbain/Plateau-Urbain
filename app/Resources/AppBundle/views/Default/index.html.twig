@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    Homepage.<br/>
+
+    <a href="{{ path('space_list') }}">Voir tous les espaces</a> <br/>
+    <a href="{{ path('fos_user_security_login') }}">Authentification</a> <br/>
+    <a href="{{ path('space_manager_add') }}">Ajouter un espace</a> <br/>
+    <a href="{{ path('space_manager_list') }}">Voir mes espaces (mode connecté)</a> <br/>
+{% endblock %}

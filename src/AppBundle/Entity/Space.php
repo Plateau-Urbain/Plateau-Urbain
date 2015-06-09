@@ -29,6 +29,20 @@ class Space
     private $name;
 
     /**
+     * @var \Datetime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var \Datetime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
@@ -90,11 +104,6 @@ class Space
     protected $pics;
 
     /**
-     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist", "merge", "remove"} )
-     */
-    protected $spaceAttributes;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User" )
      */
     protected $owner;
@@ -106,10 +115,55 @@ class Space
      */
     private $enabled;
 
+    /**
+     * @ORM\oneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
+     */
+    private $parcels;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Attribute", cascade={"persist"})
+     */
+    private $tags;
+
+    /**
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addTag($tag)
+    {
+        $this->setUpdated(new \DateTime());
+        $this->tags[] = $tag;
+    }
+
+    /**
+     * @param mixed $tags
+     */
+    public function removeTag($tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
     public function __construct()
     {
-        $this->spaceAttributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->pics = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parcels = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreated(new \DateTime());
     }
     /**
      * Get id.
@@ -350,6 +404,7 @@ class Space
      */
     public function setPics($pics)
     {
+        $this->setUpdated(new \DateTime());
         $this->pics = $pics;
 
         $this->pics->setGalerie($this);
@@ -364,6 +419,7 @@ class Space
      */
     public function addPic(\AppBundle\Entity\SpaceImage $pics)
     {
+        $this->setUpdated(new \DateTime());
         $this->pics[] = $pics;
 
         return $this;
@@ -376,54 +432,8 @@ class Space
      */
     public function removePic(\AppBundle\Entity\SpaceImage $pics)
     {
+        $this->setUpdated(new \DateTime());
         $this->pics->removeElement($pics);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSpaceAttributes()
-    {
-        return $this->spaceAttributes;
-    }
-
-    /**
-     * @param mixed $spaceAttributes
-     */
-    public function setSpaceAttributes($spaceAttributes)
-    {
-        $this->spaceAttributes = $spaceAttributes;
-
-        foreach ($spaceAttributes as  $spaceAttribute) {
-            $spaceAttribute->setSpace($this);
-        }
-    }
-    /**
-     * Add spaceAttribute.
-     *
-     * @param \AppBundle\Entity\SpaceAttribute $spaceAttribute
-     *
-     * @return Space
-     */
-    public function addSpaceAttribute(\AppBundle\Entity\SpaceAttribute $spaceAttribute)
-    {
-        $this->spaceAttributes[] = $spaceAttribute;
-
-        if ($spaceAttribute->getSpace() !== $this) {
-            $spaceAttribute->setSpace($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove spaceAttribute.
-     *
-     * @param \AppBundle\Entity\SpaceAttribute $spaceAttribute
-     */
-    public function removeSpaceAttribute(\AppBundle\Entity\SpaceAttribute $spaceAttribute)
-    {
-        $this->spaceAttributes->removeElement($spaceAttribute);
     }
 
     /**
@@ -456,5 +466,74 @@ class Space
     public function setOwner($owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param \Datetime $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+
+    /**
+     * @param \Datetime $updated
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParcels()
+    {
+        return $this->parcels;
+    }
+
+    /**
+     * @param mixed $parcels
+     */
+    public function setParcels($parcels)
+    {
+        $this->parcels = $parcels;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addParcel(Parcel $parcel)
+    {
+        $this->setUpdated(new \DateTime());
+        $this->parcels[] = $parcel;
+
+        $parcel->setSpace($this);
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $parcels
+     */
+    public function removeParcel($parcel)
+    {
+        $this->parcels->removeElement($parcel);
     }
 }

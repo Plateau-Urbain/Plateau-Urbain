@@ -8,10 +8,10 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use AppBundle\Entity\User;
 
-class OwnerAdmin extends Admin
+class projectHolderAdmin extends Admin
 {
-    protected $baseRouteName = 'owner';
-    protected $baseRoutePattern = 'owner';
+    protected $baseRouteName = 'project-holder';
+    protected $baseRoutePattern = 'project-holder';
 
     public function createQuery($context = 'list')
     {
@@ -19,7 +19,7 @@ class OwnerAdmin extends Admin
         $query->andWhere(
             $query->expr()->eq($query->getRootAliases()[0].'.typeUser', ':typeUser')
         );
-        $query->setParameter('typeUser', User::PROPRIO);
+        $query->setParameter('typeUser', User::PORTEUR);
 
         return $query;
     }
@@ -44,7 +44,6 @@ class OwnerAdmin extends Admin
             ->with('Profile')
             ->add('firstname', null, array('required' => false, 'label' => 'Prénom'))
             ->add('lastname', null, array('required' => false, 'label' => 'Nom'))
-            ->add('biography', 'text', array('required' => false, 'label' => 'Fonction'))
             ->add('phone', null, array('required' => false, 'label' => 'Téléphone'))
             ->add('company', null, array('required' => false, 'label' => 'Structure'))
             ->add('address', null, array('required' => false, 'label' => 'Adresse Structure'))
@@ -81,7 +80,7 @@ class OwnerAdmin extends Admin
     public function getNewInstance()
     {
         $instance = parent::getNewInstance();
-        $instance->setTypeUser(User::PROPRIO);
+        $instance->setTypeUser(User::PORTEUR);
 
         return $instance;
     }

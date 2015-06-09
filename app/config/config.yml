@@ -77,8 +77,8 @@ fos_user:
     group:
         group_class: AppBundle\Entity\Group
     from_email:
-        address: pa@foulquier.info
-        sender_name: paf
+        address: noreply@plateau-urbain.fr
+        sender_name: Plateau Urbain
 
 # SONATA User Bundle
 sonata_user:
@@ -140,7 +140,7 @@ avocode_form_extensions:
     upload_manager: vich_uploader
     collection_upload:
         async_listener_enabled: true
-        async_route_name: homepage
+        async_route_name: upload_action
         file_storage: avocode.form.file_storage.local
 
 
