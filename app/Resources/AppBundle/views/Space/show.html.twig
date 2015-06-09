@@ -1,22 +1,25 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
+<ul>
+    <li>{{ space.name }}</li>
+    <li>{{ space.description }}</li>
+    <li>{{ space.locationDescription }}</li>
+    <li>{{ space.usageRestriction }}</li>
+    <li>{{ space.surface }}</li>
+    <li>{{ space.size }}</li>
+    <li>{{ space.availability }}</li>
+    <li>{{ space.limitAvailability |date('Y-m-d') }}</li>
 
-    {{ space.name }}
-    {{ space.description }}
-    {{ space.locationDescription }}
-    {{ space.usageRestriction }}
-    {{ space.surface }}
-    {{ space.size }}
-    {{ space.availability }}
-    {{ space.limitAvailability |date('Y-m-d') }}
-
-    {% for pic in space.pics  %}
-        {{ pic }}
-    {% endfor %}
+    {#{% for pic in space.pics  %}#}
+    {#{{ pic }}#}
+    {#{% endfor %}#}
 
     {% for spaceAttribute in  space.spaceAttributes %}
-        {{ spaceAttribute }}
+        {{ spaceAttribute.getAttribute() }} ,
     {% endfor %}
+
+
+</ul>
 
 {% endblock body %}

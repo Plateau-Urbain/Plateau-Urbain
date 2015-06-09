@@ -16,30 +16,31 @@ class SpaceType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('locationDescription')
-            ->add('usageRestriction')
-            ->add('surface')
-            ->add('size')
-            ->add('availability')
-            ->add('limitAvailability')
-            ->add('price')
+            ->add('description', null, array('label' => "Description de l'espace"))
+            ->add('locationDescription', null, array('label' => 'Description de la situation du lieu'))
+            ->add('usageRestriction', 'text', array('label' => "Condition d'utilisation du lieu"))
+            ->add('surface', null, array('label' => 'Nombre total de m2'))
+            ->add('size', null, array('label' => 'Taille des lots possibles'))
+            ->add('availability', null, array('label' => 'Période de disponibilité'))
+            ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
+            ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel'))
             ->add('owner')
             ->add('spaceAttributes', 'entity', array(
                 'attr'      => array('class' => 'after-checkbox-label-block'),
                 'class'     => 'AppBundle:Attribute',
                 'expanded'  => true,
-                'label'     => 'Objet de la demande',
+                'label'     => 'Attributs de l\'espace',
                 'multiple'  => true,
                 'property'  => 'name',
             ))
             ->add('pics', 'afe_collection_upload', array(
                 'type' => new ImageType(),
                 'nameable' => false,
+                'label' => 'Photos',
                 'allow_add' => true,
                 'allow_delete'  => true,
                 'maxNumberOfFiles' => 5,
-                'uploadRouteName' => 'homepage',
+                'uploadRouteName' => 'upload_action',
                 'prependFiles' => true,
                 'autoUpload' => true,
                 'options' => array(

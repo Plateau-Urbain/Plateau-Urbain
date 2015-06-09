@@ -7,6 +7,16 @@ services:
             - ~
             - AppBundle\Entity\User
             -
+
+    app.admin.users.admin.project_holder:
+        class: AppBundle\Admin\ProjectHolderAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: Les porteurs de projet}
+        arguments:
+            - ~
+            - AppBundle\Entity\User
+            -
+
     app.admin.spaces:
         class: AppBundle\Admin\SpaceAdmin
         tags:
@@ -14,15 +24,6 @@ services:
         arguments:
             - ~
             - AppBundle\Entity\Space
-            -
-
-    app.admin.spaces.spacesattributes:
-        class: AppBundle\Admin\SpaceAttributeAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: AttributPropriétés, show_in_dashboard: false  } #, show_in_dashboard: false
-        arguments:
-            - ~
-            - AppBundle\Entity\SpaceAttribute
             -
 
     app.admin.spaces.attributes:
@@ -43,6 +44,14 @@ services:
             - AppBundle\Entity\SpaceImage
             -
 
+    app.admin.spaces.parcel:
+        class: AppBundle\Admin\ParcelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: lot de propriété , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\Parcel
+            -
 
     app.form.type.space:
         class: AppBundle\Form\SpaceType

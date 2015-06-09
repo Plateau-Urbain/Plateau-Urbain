@@ -10,11 +10,15 @@ use AppBundle\Entity\User;
 
 class SpaceAdmin extends Admin
 {
+    public function syncSpace($space, $children)
+    {
+        foreach ($children as $child) {
+            $child->setSpace($space);
+        }
+    }
     public function prePersist($space)
     {
-        foreach ($space->getSpaceAttributes() as $spaceAttribute) {
-            $spaceAttribute->setSpace($space);
-        }
+        $this->syncSpace($space, $space->getPics());
     }
 
     /**
@@ -22,10 +26,9 @@ class SpaceAdmin extends Admin
      */
     public function preUpdate($space)
     {
-        foreach ($space->getSpaceAttributes() as $spaceAttribute) {
-            $spaceAttribute->setSpace($space);
-        }
+        $this->syncSpace($space, $space->getPics());
     }
+
     protected $baseRouteName = 'property';
     protected $baseRoutePattern = 'property';
 
@@ -41,6 +44,7 @@ class SpaceAdmin extends Admin
         $formMapper
             ->with('General')
             ->add('name', null, array('label' => "Nom de l'espace"))
+            ->add('enabled', null, array('label' => 'En ligne', 'required' => false))
             ->add('owner', null, array(
                 'label' => "Propriétaire de l'espace",
                 'query_builder' => function (\AppBundle\Repository\UserRepository $repository) {
@@ -55,21 +59,32 @@ class SpaceAdmin extends Admin
             ->add('availability', null, array('label' => 'Période de disponibilité'))
             ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
             ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel'))
-            ->add('spaceAttributes', 'sonata_type_collection', array(
-                'label' => "Attributs de l'espace",
-                'required' => false,
-            ), array(
-                'edit'              => 'inline',
-                'inline'            => 'table',
-                'sortable'          => 'position',
-            ))
+//            ->add('spaceAttributes', 'sonata_type_collection', array(
+//                'label' => "Attributs de l'espace",
+//                'required' => false,
+//            ), array(
+//                'edit'              => 'inline',
+//                'inline'            => 'table',
+//                'sortable'          => 'position',
+//            ))
             ->add('pics', 'sonata_type_collection',
                 array('by_reference' => false,
+
+                    'label' => 'Photos',
                 ),
                 array(
                     'edit' => 'inline',
                     'inline' => 'table',
                 ))
+
+            ->add('parcels', 'sonata_type_collection', array(
+                'by_reference' => false,
+                'label' => 'Lots',
+            ), array(
+                'edit' => 'inline',
+                'inline' => 'table',
+            ))
+            ->add('tags', 'sonata_type_model', array('required' => false, 'expanded' => true, 'multiple' => true))
             ->end()
 
         ;
@@ -79,8 +94,8 @@ class SpaceAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('owner')
-            ->add('enabled')
+            ->add('owner', null, array('label' => 'Propriétaire'))
+            ->add('enabled', null, array('label' => 'En ligne'))
         ;
     }
 
@@ -95,6 +110,7 @@ class SpaceAdmin extends Admin
     public function getNewInstance()
     {
         $instance = parent::getNewInstance();
+        $instance->setEnabled(true);
 
         return $instance;
     }

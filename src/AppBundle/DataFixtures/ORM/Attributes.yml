@@ -1,0 +1,9 @@
+AppBundle\Entity\Attribute:
+    attribute1:
+        name: Espace Vert
+    attribute2:
+        name: Fibre Optique
+    attribute3:
+        name: Ménage Compris
+    attribute4:
+        name: Avec fenêtre

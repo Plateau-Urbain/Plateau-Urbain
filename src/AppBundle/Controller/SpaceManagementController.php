@@ -30,7 +30,7 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/add", name="space_add")
+     * @Route("/add", name="space_manager_add")
      * @Template()
      */
     public function addAction(Request $request)
@@ -67,7 +67,7 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="space_edit")
+     * @Route("/edit/{id}", name="space_manager_edit")
      * @Template()
      */
     public function editAction(Space $space)

@@ -13,6 +13,8 @@ class AppFixtures extends DataFixtureLoader
     {
         return array(
             __DIR__.'/Users.yml',
+            __DIR__.'/Attributes.yml',
+            __DIR__.'/Spaces.yml',
         );
     }
 }
