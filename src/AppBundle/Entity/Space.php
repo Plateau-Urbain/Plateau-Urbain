@@ -536,4 +536,11 @@ class Space
     {
         $this->parcels->removeElement($parcel);
     }
+
+        public  function __toString()
+        {
+            return $this->getName().' - '.$this->getOwner()->getLastName();
+        }
+
 }
+
