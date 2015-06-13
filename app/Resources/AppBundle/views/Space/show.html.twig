@@ -1,25 +1,220 @@
 {% extends "::base.html.twig" %}
 
+{%  block headerSize %}header-hidden{% endblock headerSize %}
+
 {% block body %}
-<ul>
-    <li>{{ space.name }}</li>
-    <li>{{ space.description }}</li>
-    <li>{{ space.locationDescription }}</li>
-    <li>{{ space.usageRestriction }}</li>
-    <li>{{ space.surface }}</li>
-    <li>{{ space.size }}</li>
-    <li>{{ space.availability }}</li>
-    <li>{{ space.limitAvailability |date('Y-m-d') }}</li>
 
-    {#{% for pic in space.pics  %}#}
-    {#{{ pic }}#}
-    {#{% endfor %}#}
+    <!-- =========================
+       DESCRIPTIF SECTION
+    ============================== -->
 
-    {% for spaceAttribute in  space.spaceAttributes %}
-        {{ spaceAttribute.getAttribute() }} ,
-    {% endfor %}
+    <section class="about-us" id="aboutus">
+        <div class="container">
+
+            <!-- SECTION HEADER -->
+            <div class="section-header">
+
+                <!-- SECTION TITLE -->
+                <h2 class="white-text">{{ space.name }}</h2>
+
+                <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
+                <h6 class="white-text">
+                    Résorber la vacance, Servir la création
+                </h6>
+            </div>
+            <!-- / END SECTION HEADER -->
+
+            <!-- 3 COLUMNS OF ABOUT US-->
+            <div class="row">
+
+                <!-- COLUMN 1 - BIG MESSAGE ABOUT THE COMPANY-->
+                <div class="col-lg-4 col-md-4 column">
+                    <div class="big-intro wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                        {{ space.name }}
+                    </div>
+                </div>
+
+                <!-- COLUMN 2 - BRIEF ABOUT THE COMPANY-->
+                <div class="col-lg-4 col-md-4 column">
+                    <p class="wow fadeInUp animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                        Description : {{ space.description }} <br/><br/>
+                        Description de l'emplacement : {{ space.locationDescription }} <br/><br/>
+                        Restriction d'usage : {{ space.usageRestriction }} <br/><br/>
+                        surface totale : {{ space.surface }} <br/><br/>
+                        Disponibilité : {{ space.availability }} <br/><br/>
+                        Date limite de candidature : {{ space.limitAvailability | date('d-m-Y') }} <br/><br/>
+                        Description de l'emplacement : {{ space.locationDescription }} <br/><br/>
+                    </p>
+                </div>
+
+                <!-- COLUMN 1 - SKILSS-->
+                <div class="col-lg-4 col-md-4 column">
+                    <ul class="skills wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+
+                        {% for tag in  space.tags %}
+                        <li class="skill">
+                            {{ tag }}
+
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div> <!-- / END SKILLS COLUMN-->
+            </div> <!-- / END 3 COLUMNS OF ABOUT US-->
+
+        </div> <!-- / END CONTAINER -->
+
+    </section> <!-- END PRODUCT SECTION -->
+
+    <!-- =========================
+       WORKS SECTION
+    ============================== -->
+
+    <section class="works" id="works">
+    <div class="container">
+
+    <!-- SECTION HEADER -->
+    <div class="section-header">
+
+        <!-- SECTION TITLE -->
+        <h2 class="dark-text">Photos du plateau</h2>
+
+        <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
+        <h6>
+            {{ space.name }}
+        </h6>
+    </div>
+    <!-- / END SECTION HEADER -->
+    <div class="row projects">
+    <div id="loader">
+        <div class="loader-icon"></div>
+    </div>
+    <div class="col-md-12" id="portfolio-list">
+        <!-- PORTFOLIO ITEMS-->
+        <ul class="cbp-rfgrid">
+            {% for pic in  space.pics %}
+                <!-- PROJECT fadeInLeft fadeInDown fadeInUp fadeInRight -->
+                <li class="wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                    <a href="{{ path('space_pic_show', {'img_id' : pic.id  }) }}" class="more"><img src="{{ vich_uploader_asset(pic, 'file') | imagine_filter('product') }}"  alt="project"/>
+
+                    </a>
+                </li>
+                <!-- / PROJECT -->
+            {% endfor %}
 
 
-</ul>
+        </ul>
+    </div>
+    <!-- END OF PORTFOLIO ITEMS-->
+    </div>
+
+    <!-- PROJECT DETAILS WILL BE LOADED HERE -->
+    <div id="loaded-content"></div>
+
+    <a id="back-button" class="red-btn" href="#"><i class="icon-fontawesome-webfont-27"></i> Retour aux photos</a>
+
+    </div> <!-- / END CONTAINER -->
+    </section> <!-- / END WORKS SECTION -->
+
+
+
+    <!-- =========================
+       CONTACT US
+    ============================== -->
+
+    <section class="contact-us" id="contact">
+        <div class="container">
+
+            <!-- SECTION HEADER -->
+            <div class="section-header">
+
+                <!-- SECTION TITLE -->
+                <h2 class="white-text">Ce plateau vous intéresse ?</h2>
+
+                <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
+                <h6 class="white-text">
+                    Postez votre candidature pour ce plateau !
+                </h6>
+            </div>
+            <!-- / END SECTION HEADER -->
+
+            <!-- CONTACT FORM-->
+            <div class="row">
+                {{ form_start(form) }}
+                {#<form role="form" class=" form-horizontal contact-form" id="contact-form">#}
+
+
+
+                    <div class="wow fadeInLeft animated col-lg-6" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                        <div class="row">
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.name) }}</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.name) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.startOccupation) }}</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.startOccupation) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.endOccupation) }}</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.endOccupation) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.category) }}</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.category) }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="col-md-6 wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+
+                            {{ form_widget(form.description) }}
+                          </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary custom-button red-btn wow fadeInLeft animated" id="submit" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s" type="submit">Send Message</button>
+                    {{ form_end(form)}}
+            </div>
+            <!-- / END CONTACT FORM-->
+        </div> <!-- / END CONTAINER -->
+    </section> <!-- / END CONTACT US SECTION-->
+
 
 {% endblock body %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    {{ parent() }}
+
+    {% if form is defined %}
+        {{ afe_form_javascript(form) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {#<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">#}
+
+    <!--AVODE FORM UPLAOD -->
+    {% stylesheets filter='cssrewrite,?yui_css'
+    output= 'assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
+    'bundles/avocodeformextensions/bootstrap-collection/css/bootstrap-collection.css'
+    'bundles/avocodeformextensions/collection-upload/css/collection-upload.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+    {% endstylesheets %}
+
+    {% if form is defined %}
+        {{ afe_form_stylesheet(form) }}
+    {% endif %}
+{% endblock %}

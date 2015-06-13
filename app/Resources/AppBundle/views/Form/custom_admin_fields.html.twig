@@ -2,6 +2,7 @@
 {% block image_admin_type_widget %}
 
     {% spaceless %}
+
         {% set subject =  form.parent.vars.data %}
         {% if subject.id and attribute(subject, name) %}
             <a href="{{ asset(vich_uploader_asset(subject, name)) }}" target="_blank">

@@ -30,7 +30,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:       [ AvocodeFormExtensionsBundle ]
+    bundles:       [ AvocodeFormExtensionsBundle, AppBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -79,6 +79,10 @@ fos_user:
     from_email:
         address: noreply@plateau-urbain.fr
         sender_name: Plateau Urbain
+    registration:
+       form:
+           type: project_holder_user_registration
+
 
 # SONATA User Bundle
 sonata_user:
@@ -113,15 +117,27 @@ knp_gaufrette:
         space_file_adapter :
             local:
                 directory: %kernel.root_dir%/../web/uploads/space
+#        file_application_adapter :
+#            local:
+#                directory: %kernel.root_dir%/../web/uploads/application_file
     filesystems:
         space_cover_fs:
             adapter:    space_file_adapter
+#        file_application_fs:
+#            adapter:    file_application_adapter
 
 
 vich_uploader:
     db_driver: orm
     storage: gaufrette
     mappings:
+#        fileApplication:
+#            uri_prefix: /uploads/application_file
+#            upload_destination: file_application_fs
+#            delete_on_remove:   true
+#            delete_on_update:   true
+#            namer: vich_uploader.namer_uniqid
+#            inject_on_load: true
         file:
             uri_prefix: /uploads/space
             upload_destination: space_cover_fs
@@ -147,3 +163,37 @@ avocode_form_extensions:
 cspoo_swiftmailer_mailgun:
     key: "%mailgun_key%"
     domain: "%mailgun_domain%"
+
+
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+#    driver: imagick
+    filter_sets:
+        cache: ~
+        thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [150, 150], mode: outbound, allow_upscale: true }
+        square:
+            quality: 75
+            filters:
+                thumbnail: { size: [300, 300], mode: outbound, allow_upscale: true }
+        product_thumb:
+            quality: 75
+            filters:
+                upscale: { min: [400, 300] }
+        product:
+            quality: 75
+            filters:
+                upscale: { min: [400, 300] }
+        post:
+            quality: 75
+            filters:
+                thumbnail: { size: [1000, 480], mode: outbound, allow_upscale: true }
+        pqj:
+            quality: 75
+            filters:
+                thumbnail: { size: [600, 370], mode: outbound, allow_upscale: true }

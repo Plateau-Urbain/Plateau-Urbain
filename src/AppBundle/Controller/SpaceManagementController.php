@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Space controller.
  *
- * @Route("/space-manager")
+ * @Route("/espace-manager")
  **/
 class SpaceManagementController extends Controller
 {
@@ -30,7 +30,7 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/add", name="space_manager_add")
+     * @Route("/ajouter", name="space_manager_add")
      * @Template()
      */
     public function addAction(Request $request)
@@ -67,7 +67,7 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="space_manager_edit")
+     * @Route("/editer/{id}", name="space_manager_edit")
      * @Template()
      */
     public function editAction(Space $space)

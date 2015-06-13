@@ -66,6 +66,68 @@ class User extends BaseUser
     const PROPRIO = 1;
     const ADMIN = 2;
 
+
+    /**PROJECT HOLDER FIELD  **/
+
+    /**
+     * @var \Date
+     *
+     * @ORM\Column(name="birthday", type="date")
+     */
+    private $birthday;
+
+
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $facebookUrl;
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $instagramUrl;
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $twitterUrl;
+
+    /**
+     * @ORM\Column( type="text", nullable=true)
+     */
+    protected $description;
+
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $siret;
+
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $wishedSize;
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $usageType;
+
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $usageDate;
+
+    /**
+     * @ORM\Column(length=255, type="string", nullable=true)
+     */
+    protected $usageDuration;
+
+
+
     /**
      * @return mixed
      */
@@ -133,13 +195,13 @@ class User extends BaseUser
     public function setEmail($email)
     {
         $this->email = $email;
-        $this->username = $email;
+        $this->setUsername($email);
     }
 
     public function setEmailCanonical($emailCanonical)
     {
         $this->emailCanonical = $emailCanonical;
-        $this->usernameCanonical = $emailCanonical;
+        $this->setUsernameCanonical($emailCanonical);
     }
 
     /**
@@ -165,4 +227,168 @@ class User extends BaseUser
     {
         return $this->typeUser;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getInstagramUrl()
+    {
+        return $this->instagramUrl;
+    }
+
+    /**
+     * @param mixed $instagramUrl
+     */
+    public function setInstagramUrl($instagramUrl)
+    {
+        $this->instagramUrl = $instagramUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSiret()
+    {
+        return $this->siret;
+    }
+
+    /**
+     * @param mixed $siret
+     */
+    public function setSiret($siret)
+    {
+        $this->siret = $siret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsageDate()
+    {
+        return $this->usageDate;
+    }
+
+    /**
+     * @param mixed $usageDate
+     */
+    public function setUsageDate($usageDate)
+    {
+        $this->usageDate = $usageDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsageDuration()
+    {
+        return $this->usageDuration;
+    }
+
+    /**
+     * @param mixed $usageDuration
+     */
+    public function setUsageDuration($usageDuration)
+    {
+        $this->usageDuration = $usageDuration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsageType()
+    {
+        return $this->usageType;
+    }
+
+    /**
+     * @param mixed $usageType
+     */
+    public function setUsageType($usageType)
+    {
+        $this->usageType = $usageType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWishedSize()
+    {
+        return $this->wishedSize;
+    }
+
+    /**
+     * @param mixed $wishedSize
+     */
+    public function setWishedSize($wishedSize)
+    {
+        $this->wishedSize = $wishedSize;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebookUrl()
+    {
+        return $this->facebookUrl;
+    }
+
+    /**
+     * @param mixed $facebookUrl
+     */
+    public function setFacebookUrl($facebookUrl)
+    {
+        $this->facebookUrl = $facebookUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterUrl()
+    {
+        return $this->twitterUrl;
+    }
+
+    /**
+     * @param mixed $twitterUrl
+     */
+    public function setTwitterUrl($twitterUrl)
+    {
+        $this->twitterUrl = $twitterUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+
+    /**
+     * @return \Date
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * @param \Date $birthday
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
+
+
 }

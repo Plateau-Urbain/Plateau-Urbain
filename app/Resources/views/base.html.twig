@@ -1,52 +1,124 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Location de bureau" />
+    <meta name="keywords" content="plateau urbain"/>
+    <meta name="author" content="Geoffrey Monté - Numerogeek" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome!{% endblock %} - Plateau urbain</title>
+
+    <!-- =========================
+    FAV AND TOUCH ICONS
+    ============================== -->
+
+    <link rel="apple-touch-icon" href="{{ asset('public/images/icons/apple-touch-icon.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('public/images/icons/apple-touch-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('public/images/icons/apple-touch-icon-114x114.png') }}">
+
+
+
         {% block stylesheets %}
 
 
+            <!-- =========================
+                 STYLESHEETS
+            ============================== -->
+
+             {% stylesheets  '../app/Resources/public/css/bootstrap.min.css'
+                                '../app/Resources/public/css/owl.theme.css'
+                                '../app/Resources/public/css/owl.carousel.css'
+                                '../app/Resources/public/css/jquery.vegas.min.css'
+                                '../app/Resources/public/css/animate.min.css'
+                                '../app/Resources/public/css/styles.css'
+             '../app/Resources/public/css/responsive.css'
+
+             filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets  %}
+            <link rel="stylesheet" href="{{ asset('public/assets/icon-fonts/styles.css') }}" />
+            <link rel="stylesheet" href="{{ asset('public/assets/pd-icons/pixeden-icons.css') }}" />
 
 
-            {% stylesheets filter='cssrewrite,?yui_css' output='assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
-            'bundles/avocodeformextensions/bootstrap-collection/css/bootstrap-collection.css'
-            'bundles/avocodeformextensions/collection-upload/css/collection-upload.css'
 
-            %}
-            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-            {% endstylesheets %}
+            <!--WEBFONT -->
 
-            {% if form is defined %}
-                {{ afe_form_stylesheet(form) }}
-            {% endif %}
+            <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
+
+
+            <!--[if lt IE 9]>
+                <script src="js/html5shiv.js"></script>
+                <script src="js/respond.min.js"></script>
+            <![endif]-->
+
+            <!-- JQUERY -->
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
 
 
         {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+        {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+        {#<!-- Latest compiled and minified CSS -->#}
+        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">#}
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        {#<!-- Optional theme -->#}
+        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">#}
 
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
+        {#<!-- Latest compiled and minified JavaScript -->#}
+        {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>#}
+
+
 
     </head>
-    <body>
+
+<body>
+    <!-- =========================
+       PRE LOADER
+    ============================== -->
+    <div class="preloader">
+        <div class="status">&nbsp;</div>
+    </div>
+    <!-- =========================
+       HOME SECTION
+    ============================== -->
+    <header id="home" class="header {%  block headerSize %}header-mini{% endblock headerSize %}">
+        <!-- TOP BAR -->
+        {% include "Partials/topbar.html.twig" %}
+        <!-- END TOP BAR -->
+
+        {%  block header %}
+        {% endblock header %}
+    </header>
+
+
     {% for flashMessage in app.session.flashbag.get('success') %}
         <div class="flash-notice">
             {{ flashMessage }}
         </div>
     {% endfor %}
 
-        {% block body %}{% endblock %}
-        {% block javascripts %}
+    {% block body %}{% endblock %}
 
+    {% include "Partials/footer.html.twig" %}
+
+    {% block javascripts %}
+
+
+
+            {% javascripts  '../app/Resources/public/js/bootstrap.min.js'
+            '../app/Resources/public/js/wow.min.js'
+            '../app/Resources/public/js/jquery.nav.js'
+            '../app/Resources/public/js/jquery.knob.js'
+            '../app/Resources/public/js/owl.carousel.min.js'
+            '../app/Resources/public/js/smoothscroll.js'
+            '../app/Resources/public/js/jquery.vegas.min.js'
+            '../app/Resources/public/js/zerif.js'
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts  %}
 
 
             {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/blueimp.jquery-file-upload.min.js'
@@ -76,9 +148,6 @@
             %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
-            {% if form is defined %}
-                {{ afe_form_javascript(form) }}
-            {% endif %}
 
         {% endblock %}
     </body>
