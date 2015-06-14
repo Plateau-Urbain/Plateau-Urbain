@@ -5,3 +5,32 @@
     {% include "AppBundle:SpaceManagement/Partials:edit_spaces.html.twig" with {'form': form} %}
 
 {% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    {{ parent() }}
+
+    {% if form is defined %}
+        {{ afe_form_javascript(form) }}
+    {% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {#<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">#}
+
+    <!--AVODE FORM UPLAOD -->
+    {% stylesheets filter='cssrewrite,?yui_css'
+    output= 'assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
+    'bundles/avocodeformextensions/bootstrap-collection/css/bootstrap-collection.css'
+    'bundles/avocodeformextensions/collection-upload/css/collection-upload.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+    {% endstylesheets %}
+
+    {% if form is defined %}
+        {{ afe_form_stylesheet(form) }}
+    {% endif %}
+{% endblock %}

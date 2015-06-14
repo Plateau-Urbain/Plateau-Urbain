@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User.
@@ -22,6 +23,22 @@ class User extends BaseUser
      */
     protected $id;
 
+
+    /**
+     * @var string
+     * @Assert\NotBlank(groups={"projectHolder"})
+     *
+     */
+    protected $firstname;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(groups={"projectHolder"})
+     */
+    protected $lastname;
+
+
+
     /**
      * @var
      *
@@ -32,21 +49,26 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     *
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $address;
 
     /**
      * @ORM\Column(length=10, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $zipcode;
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $city;
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $company;
 
@@ -73,6 +95,7 @@ class User extends BaseUser
      * @var \Date
      *
      * @ORM\Column(name="birthday", type="date")
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     private $birthday;
 
@@ -95,34 +118,40 @@ class User extends BaseUser
 
     /**
      * @ORM\Column( type="text", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $description;
 
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $siret;
 
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $wishedSize;
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $usageType;
 
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $usageDate;
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $usageDuration;
 
