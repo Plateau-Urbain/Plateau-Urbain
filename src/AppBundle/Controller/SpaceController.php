@@ -8,6 +8,7 @@ use AppBundle\Form\ApplicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -33,6 +34,7 @@ class SpaceController extends Controller
      * @Route("/voir/{id}", name="space_show")
      * @Template()
      */
+
     public function showAction(Space $space, Request $request)
     {
         $application = new Application();
@@ -46,6 +48,8 @@ class SpaceController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($application);
             $em->flush();
+
+            return new RedirectResponse('space_confirmation') ;
 
         }
 
@@ -63,5 +67,10 @@ class SpaceController extends Controller
 
         $pic = $this->getDoctrine()->getManager()->getRepository("AppBundle:SpaceImage")->find($img_id);
         return $this->render( 'AppBundle:Space/Partials:picShow.html.twig',compact('pic'));
+    }
+
+    public function  confirmationAction()
+    {
+        return array();
     }
 }
