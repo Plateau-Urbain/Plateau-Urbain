@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+    public function getApplicationPerOwner(User $owner)
+    {
+
+        $qb = $this->createQueryBuilder('a')
+            ->addSelect('space')
+            ->addSelect('user')
+            ->innerJoin('a.space','space')
+            ->innerJoin('space.owner','user')
+            ->where('space.owner = :user_id')
+            ->setParameters(array(
+                'user_id' => $owner->getId()
+            ));
+
+        return $qb->getQuery()->getResult();
+    }
 }

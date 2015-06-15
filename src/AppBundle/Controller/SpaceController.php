@@ -69,6 +69,10 @@ class SpaceController extends Controller
         return $this->render( 'AppBundle:Space/Partials:picShow.html.twig',compact('pic'));
     }
 
+    /**
+     * @Route("/confirmation", name="space_confirmation")
+     * @Template()
+     */
     public function  confirmationAction()
     {
         return array();
