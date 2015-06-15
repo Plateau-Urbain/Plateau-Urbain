@@ -28,6 +28,7 @@
                     <!-- CALL TO ACTION BUTTONS -->
                     <div class="buttons inpage-scroll">
                         <a href="{{ path('space_manager_add') }}" class="btn btn-primary custom-button green-btn">Ajouter un nouvel espace</a>
+                        <a href="{{ path('application_list') }}" class="btn btn-primary custom-button red-btn">Voir mes candidatures</a>
                     </div>
 
                 </div>
@@ -38,7 +39,12 @@
                     {% for space in spaces %}
                     <!-- SINGLE PRODUCT -->
                     <div class="col-md-3">:
-                        <div class="item" style="background-image: url({{ vich_uploader_asset(space.pics[0], 'file') | imagine_filter('product_thumb') }})">
+                        <div class="item" style="background-image: url(
+                                {% if space.pics[0] is defined %}
+                                    {{ vich_uploader_asset(space.pics[0], 'file') | imagine_filter('product_thumb') }}
+                                {% endif %}
+
+                                )">
                             <div class="item-overlay">
                             </div>
                             <div class="item-content">

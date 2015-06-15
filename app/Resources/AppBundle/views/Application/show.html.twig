@@ -1,0 +1,66 @@
+{% extends "::base.html.twig" %}
+
+{%  block headerSize %}header-hidden{% endblock headerSize %}
+{#{% block header %}#}
+    {#{% endblock %}#}
+
+{% block body %}
+
+    <!-- =========================
+   PRODUCTS SECTION
+============================== -->
+
+    <section class="products" data-type="background" data-speed="1" id="products">
+        <div class="color-overlay">
+            <div class="container">
+
+                <!-- SECTION HEADER -->
+                <div class="section-header">
+
+                    <!-- SECTION TITLE -->
+                    <h2 class="white-text">La candidature</h2>
+
+                    <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
+                    <h6 class="white-text">
+                        de {{ application.projectHolder.firstName }} {{ application.projectHolder.lastName }}
+                    </h6>
+                </div>
+                <!-- / END SECTION HEADER -->
+
+                <!-- PRODUCTS -->
+                <div class="row wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                    <table class="table table-bordered">
+                        <tr class="white-text">
+                            <th>Nom du porteur</th>
+                            <th>Prénom du porteur</th>
+                            <th>Nom du projet</th>
+                            <th>Description du projet</th>
+                            <th>Début d'occupation</th>
+                            <th>Fin d'occupation</th>
+                            <th>Espace concerné</th>
+                            <th>Categorie</th>
+                            <th>Fichiers joints</th>
+                        </tr>
+                            <tr class="white-text">
+                                <td>{{ application.projectHolder.lastName }}</td>
+                                <td>{{ application.projectHolder.firstName }}</td>
+                                <td>{{ application.name }}</td>
+                                <td>{{ application.description }}</td>
+                                <td>{{ application.startOccupation | date('d-m-Y') }}</td>
+                                <td>{{ application.endOccupation  | date('d-m-Y')}}</td>
+                                <td>{{ application.space.name }}</td>
+                                <td>{{ application.category }}</td>
+                                <td>
+                                    files...
+                                </td>
+                            </tr>
+                    </table>
+                </div> <!-- END ROW -->
+
+            </div> <!-- / END CONTAINER -->
+        </div> <!-- / END COLOR OVERLAY -->
+    </section> <!-- / END PRODUCTS SECTION -->
+
+
+
+{% endblock body %}
