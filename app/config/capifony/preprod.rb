@@ -1,6 +1,5 @@
-set :domain,      "preprod.#{application}.fr"
-#set :domain,      '188.166.72.35'
-set :deploy_to,   "/var/www/illicab.fr/preprod"
+set :domain,      "plateau-urbain.widop.com"
+set :deploy_to,   "/var/www/plateau-urbain"
 set :branch, "develop"
 role :web, domain
 role :app, domain, :primary => true

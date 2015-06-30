@@ -2,7 +2,7 @@ set :stages,        %w(prod preprod)
 set :default_stage, "preprod"
 set :stage_dir,     app_config_path + "/capifony"
 
-set :application, "illicab"
+set :application, "plateau-urbain"
 
 
 set :app_path,    "app"
@@ -10,9 +10,10 @@ set :use_sudo,    false
 set :user,        "admin"
 
 ssh_options[:port] = "22"
+ssh_options[:forward_agent] = true
 
 
-set :repository,  "git@github.com:widop/illicab.git"
+set :repository,  "git@github.com:widop/plateau-urbain.git"
 set :scm,         :git
 set :scm_verbose, true
 set :deploy_via,  :remote_cache

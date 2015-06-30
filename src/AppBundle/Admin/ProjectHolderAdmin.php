@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use AppBundle\Entity\User;
 
-class projectHolderAdmin extends Admin
+class ProjectHolderAdmin extends Admin
 {
     protected $baseRouteName = 'project-holder';
     protected $baseRoutePattern = 'project-holder';
