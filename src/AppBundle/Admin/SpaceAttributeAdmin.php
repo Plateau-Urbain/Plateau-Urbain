@@ -19,11 +19,8 @@ class SpaceAttributeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('attribute', 'sonata_type_model_list', array(
-                'label' => 'Attribut lié',
-                'btn_add' => true,
-            ), array(
-            ))
+            ->add('attribute')
+            ->add('availability', null, array('required' => false))
             ->end();
     }
 

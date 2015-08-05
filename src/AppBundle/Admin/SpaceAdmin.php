@@ -52,21 +52,13 @@ class SpaceAdmin extends Admin
                 },
             ))
             ->add('description', null, array('label' => "Description de l'espace"))
-            ->add('locationDescription', null, array('label' => 'Description de la situation du lieu'))
-            ->add('usageRestriction', 'text', array('label' => "Condition d'utilisation du lieu"))
+            ->add('activityDescription', null, array('label' => "Description de l'espace"))
+            ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
             ->add('surface', null, array('label' => 'Nombre total de m2'))
             ->add('size', null, array('label' => 'Taille des lots possibles'))
             ->add('availability', null, array('label' => 'Période de disponibilité'))
             ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
             ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel'))
-//            ->add('spaceAttributes', 'sonata_type_collection', array(
-//                'label' => "Attributs de l'espace",
-//                'required' => false,
-//            ), array(
-//                'edit'              => 'inline',
-//                'inline'            => 'table',
-//                'sortable'          => 'position',
-//            ))
             ->add('pics', 'sonata_type_collection',
                 array('by_reference' => false,
 
@@ -84,7 +76,15 @@ class SpaceAdmin extends Admin
                 'edit' => 'inline',
                 'inline' => 'table',
             ))
-            ->add('tags', 'sonata_type_model', array('required' => false, 'expanded' => true, 'multiple' => true))
+            ->add('tags', 'sonata_type_collection', 
+                array('by_reference' => false,
+
+                    'label' => 'Attributs',
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ))            
             ->end()
 
         ;

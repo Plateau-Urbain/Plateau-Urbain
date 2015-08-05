@@ -29,10 +29,19 @@ services:
     app.admin.spaces.attributes:
         class: AppBundle\Admin\AttributeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Attributs de propriété }
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Attributs de propriété }
         arguments:
             - ~
             - AppBundle\Entity\Attribute
+            -
+
+    app.admin.spaces.spaceattribute:
+        class: AppBundle\Admin\SpaceAttributeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Attributs de propriété , show_in_dashboard: false }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceAttribute
             -
 
     app.admin.spaces.images:
@@ -56,10 +65,28 @@ services:
     app.admin.spaces.parcel:
         class: AppBundle\Admin\ParcelAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: lot de propriété , show_in_dashboard: true  }
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: lot de propriété , show_in_dashboard: false  }
         arguments:
             - ~
             - AppBundle\Entity\Parcel
+            -
+
+    app.admin.spaces.floor:
+        class: AppBundle\Admin\FloorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Etages , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\Floor
+            -
+
+    app.admin.spaces.localtype:
+        class: AppBundle\Admin\LocalTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type de locaux , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\LocalType
             -
 
     app.admin.spaces.category:

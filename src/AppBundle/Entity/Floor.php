@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SpaceAttribute.
+ * LocalType.
  *
  * @ORM\Table()
  * @ORM\Entity()
  */
-class Attribute
+class Floor
 {
     /**
      * @var int
@@ -27,11 +27,6 @@ class Attribute
      * @ORM\Column(name="name", type="string", length=255)
      */
     protected $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="attribute", cascade={"persist"})
-     */
-    private $tags;
 
     /**
      * Get id.
@@ -65,30 +60,6 @@ class Attribute
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return SpaceAttribute
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     public function __toString()

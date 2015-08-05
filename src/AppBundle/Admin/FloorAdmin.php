@@ -6,21 +6,25 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use AppBundle\Entity\Parcel;
 
-class ParcelAdmin extends Admin
+class FloorAdmin extends Admin
 {
-    protected $baseRouteName = 'parcel';
-    protected $baseRoutePattern = 'parcel';
+    protected $baseRouteName = 'floor';
+    protected $baseRoutePattern = 'floor';
+
+    // setup the default sort column and order
+    protected $datagridValues = array(
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'name',
+    );
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('floor')
-            ->add('type')
-            ->add('surface')
-            ->add('disponibility')
+            ->with('General')
+            ->add('name')
+
             ->end()
 
         ;
@@ -30,7 +34,7 @@ class ParcelAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('surface')
+            ->add('name')
         ;
     }
 
@@ -38,7 +42,7 @@ class ParcelAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('surface')
+            ->addIdentifier('name')
         ;
     }
 

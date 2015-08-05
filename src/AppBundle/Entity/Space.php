@@ -45,14 +45,21 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="locationDescription", type="text")
+     * @ORM\Column(name="activity_description", type="text")
+     */
+    private $activityDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="locationDescription", type="text", nullable=true)
      */
     private $locationDescription;
 
@@ -121,7 +128,7 @@ class Space
     private $parcels;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Attribute", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist"})
      */
     private $tags;
 
@@ -148,6 +155,7 @@ class Space
     {
         $this->setUpdated(new \DateTime());
         $this->tags[] = $tag;
+        $tag->setSpace($this);
     }
 
     /**
@@ -222,6 +230,31 @@ class Space
     {
         return $this->description;
     }
+
+    /**
+     * Set activityDescription.
+     *
+     * @param string $activityDescription
+     *
+     * @return Space
+     */
+    public function setActivityDescription($activityDescription)
+    {
+        $this->activityDescription = $activityDescription;
+
+        return $this;
+    }
+
+    /**
+     * Get activityDescription.
+     *
+     * @return string
+     */
+    public function getActivityDescription()
+    {
+        return $this->activityDescription;
+    }
+
 
     /**
      * Set locationDescription.
@@ -537,10 +570,10 @@ class Space
         $this->parcels->removeElement($parcel);
     }
 
-        public  function __toString()
-        {
-            return $this->getName().' - '.$this->getOwner()->getLastName();
-        }
+    public  function __toString()
+    {
+        return $this->getName().' - '.($this->getOwner() != null ? $this->getOwner()->getLastName() : '');
+    }
 
 }
 

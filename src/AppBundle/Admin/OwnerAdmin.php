@@ -51,7 +51,7 @@ class OwnerAdmin extends Admin
             ->add('zipcode', null, array('required' => false, 'label' => 'Code Postal Structure'))
             ->add('city', null, array('required' => false, 'label' => 'Ville Structure'))
 
-            ->add('enabled', null, array('label' => 'Activé'))
+            ->add('enabled', null, array('label' => 'Activé', 'required' => false))
             ->add('locked', null, array('label' => 'Verouillé', 'required' => false))
             ->end()
 

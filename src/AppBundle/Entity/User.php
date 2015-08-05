@@ -94,7 +94,7 @@ class User extends BaseUser
     /**
      * @var \Date
      *
-     * @ORM\Column(name="birthday", type="date")
+     * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder"})
      */
     private $birthday;

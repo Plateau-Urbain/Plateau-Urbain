@@ -29,6 +29,25 @@ class Parcel
     private $surface;
 
     /**
+     * @var int
+     * 
+     * @ORM\Column(name="disponibility", type="date", nullable=true)
+     */
+    private $disponibility;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="LocalType", inversedBy="parcels")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Floor", inversedBy="parcels")
+     * @ORM\JoinColumn(name="floor_id", referencedColumnName="id")
+     */
+    private $floor;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Space", inversedBy="parcels")
      * @ORM\JoinColumn(name="space_id", referencedColumnName="id")
      */
@@ -66,6 +85,68 @@ class Parcel
     public function getSurface()
     {
         return $this->surface;
+    }
+
+    /**
+     * @param Floor $floor
+     *
+     * @return Parcel
+     */
+    public function setFloor($floor)
+    {
+        $this->floor = $floor;
+
+        return $this;
+    }
+
+    /**
+     * Get surface.
+     *
+     * @return Floor
+     */
+    public function getFloor()
+    {
+        return $this->floor;
+    }
+
+    /**
+     * @param date $disponibility
+     *
+     * @return Parcel
+     */
+    public function setDisponibility($disponibility)
+    {
+        $this->disponibility = $disponibility;
+
+        return $this;
+    }
+
+    /**
+     * @return Date
+     */
+    public function getDisponibility()
+    {
+        return $this->disponibility;
+    }
+   
+    /**
+     * @param Type
+     *
+     * @return Parcel
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Date
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function __toString()
