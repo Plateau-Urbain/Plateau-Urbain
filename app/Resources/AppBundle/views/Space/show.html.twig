@@ -1,220 +1,190 @@
 {% extends "::base.html.twig" %}
 
-{%  block headerSize %}header-hidden{% endblock headerSize %}
+{% block breadcrumb %}{% endblock %}
 
 {% block body %}
 
-    <!-- =========================
-       DESCRIPTIF SECTION
-    ============================== -->
+<div class="row">
 
-    <section class="about-us" id="aboutus">
-        <div class="container">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class="col-sm-12">
+                <h1 class="property-title">{{ space.name }} à partir de {{ space.size }}m<sup>2</sup><small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small></h1>            
+        </div>
+        
+        <div class="main col-sm-8">
 
-            <!-- SECTION HEADER -->
-            <div class="section-header">
+                <!-- BEGIN PROPERTY DETAIL SLIDERS WRAPPER -->
+                <div id="property-detail-wrapper" class="style1">
 
-                <!-- SECTION TITLE -->
-                <h2 class="white-text">{{ space.name }}</h2>
-
-                <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
-                <h6 class="white-text">
-                    Résorber la vacance, Servir la création
-                </h6>
-            </div>
-            <!-- / END SECTION HEADER -->
-
-            <!-- 3 COLUMNS OF ABOUT US-->
-            <div class="row">
-
-                <!-- COLUMN 1 - BIG MESSAGE ABOUT THE COMPANY-->
-                <div class="col-lg-4 col-md-4 column">
-                    <div class="big-intro wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                        {{ space.name }}
-                    </div>
-                </div>
-
-                <!-- COLUMN 2 - BRIEF ABOUT THE COMPANY-->
-                <div class="col-lg-4 col-md-4 column">
-                    <p class="wow fadeInUp animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                        Description : {{ space.description }} <br/><br/>
-                        Description de l'emplacement : {{ space.locationDescription }} <br/><br/>
-                        Restriction d'usage : {{ space.usageRestriction }} <br/><br/>
-                        surface totale : {{ space.surface }} <br/><br/>
-                        Disponibilité : {{ space.availability }} <br/><br/>
-                        Date limite de candidature : {{ space.limitAvailability | date('d-m-Y') }} <br/><br/>
-                        Description de l'emplacement : {{ space.locationDescription }} <br/><br/>
-                    </p>
-                </div>
-
-                <!-- COLUMN 1 - SKILSS-->
-                <div class="col-lg-4 col-md-4 column">
-                    <ul class="skills wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-
-                        {% for tag in  space.tags %}
-                        <li class="skill">
-                            {{ tag }}
-
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div> <!-- / END SKILLS COLUMN-->
-            </div> <!-- / END 3 COLUMNS OF ABOUT US-->
-
-        </div> <!-- / END CONTAINER -->
-
-    </section> <!-- END PRODUCT SECTION -->
-
-    <!-- =========================
-       WORKS SECTION
-    ============================== -->
-
-    <section class="works" id="works">
-    <div class="container">
-
-    <!-- SECTION HEADER -->
-    <div class="section-header">
-
-        <!-- SECTION TITLE -->
-        <h2 class="dark-text">Photos du plateau</h2>
-
-        <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
-        <h6>
-            {{ space.name }}
-        </h6>
-    </div>
-    <!-- / END SECTION HEADER -->
-    <div class="row projects">
-    <div id="loader">
-        <div class="loader-icon"></div>
-    </div>
-    <div class="col-md-12" id="portfolio-list">
-        <!-- PORTFOLIO ITEMS-->
-        <ul class="cbp-rfgrid">
-            {% for pic in  space.pics %}
-                <!-- PROJECT fadeInLeft fadeInDown fadeInUp fadeInRight -->
-                <li class="wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    <a href="{{ path('space_pic_show', {'img_id' : pic.id  }) }}" class="more"><img src="{{ vich_uploader_asset(pic, 'file') | imagine_filter('product') }}"  alt="project"/>
-
-                    </a>
-                </li>
-                <!-- / PROJECT -->
-            {% endfor %}
-
-
-        </ul>
-    </div>
-    <!-- END OF PORTFOLIO ITEMS-->
-    </div>
-
-    <!-- PROJECT DETAILS WILL BE LOADED HERE -->
-    <div id="loaded-content"></div>
-
-    <a id="back-button" class="red-btn" href="#"><i class="icon-fontawesome-webfont-27"></i> Retour aux photos</a>
-
-    </div> <!-- / END CONTAINER -->
-    </section> <!-- / END WORKS SECTION -->
-
-
-
-    <!-- =========================
-       CONTACT US
-    ============================== -->
-
-    <section class="contact-us" id="contact">
-        <div class="container">
-
-            <!-- SECTION HEADER -->
-            <div class="section-header">
-
-                <!-- SECTION TITLE -->
-                <h2 class="white-text">Ce plateau vous intéresse ?</h2>
-
-                <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
-                <h6 class="white-text">
-                    Postez votre candidature pour ce plateau !
-                </h6>
-            </div>
-            <!-- / END SECTION HEADER -->
-
-            <!-- CONTACT FORM-->
-            <div class="row">
-                {{ form_start(form) }}
-                {#<form role="form" class=" form-horizontal contact-form" id="contact-form">#}
-
-
-
-                    <div class="wow fadeInLeft animated col-lg-6" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                        <div class="row">
-                            <div class="form-group">
-                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.name) }}</label>
-                                <div class="col-sm-8">
-                                    {{ form_widget(form.name) }}
+                        <!-- BEGIN PROPERTY DETAIL LARGE IMAGE SLIDER -->
+                        <div id="property-detail-large" class="owl-carousel">
+                            {% for p in space.pics %}
+                                <div class="item">
+                                    <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.startOccupation) }}</label>
-                                <div class="col-sm-8">
-                                    {{ form_widget(form.startOccupation) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.endOccupation) }}</label>
-                                <div class="col-sm-8">
-                                    {{ form_widget(form.endOccupation) }}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label  class="col-sm-3 control-label white-text"> {{ form_label(form.category) }}</label>
-                                <div class="col-sm-8">
-                                    {{ form_widget(form.category) }}
-                                </div>
-                            </div>
-
+                            {% endfor %}
                         </div>
+                        <!-- END PROPERTY DETAIL LARGE IMAGE SLIDER -->
 
-                    </div>
+                        <!-- BEGIN PROPERTY DETAIL THUMBNAILS SLIDER -->
+                        <div id="property-detail-thumbs" class="owl-carousel">
+                            {% for p in space.pics %}
+                                <div class="item">
+                                    <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- END PROPERTY DETAIL THUMBNAILS SLIDER -->
 
-                    <div class="clearfix">
-                        <div class="col-md-6 wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
+                </div>
+                <!-- END AGENT INFORMATION -->
+        </div>	
+        <!-- END MAIN CONTENT -->
 
-                            {{ form_widget(form.description) }}
-                          </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary custom-button red-btn wow fadeInLeft animated" id="submit" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s" type="submit">Send Message</button>
-                    {{ form_end(form)}}
+
+        <!-- BEGIN SIDEBAR -->
+        <div class="sidebar gray col-sm-4">
+            <!-- BEGIN ADVANCED SEARCH -->
+            <p class="pu-label">TYPE DE LOCAUX</p>
+            <p class="pu-value">{{ space.type | upper }}</p>
+
+            <p class="pu-label">BAILLEUR</p>
+            <p class="pu-value">{{ space.owner.company }}</p>
+
+            <div class="pu-price-zone">
+                <ul class="top-info">
+                    <li><i class="fa fa-info-circle"></i> Prix au m<sup>2</sup></li>
+                    <li>À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an H.C. - H.T.<sup>1</sup></li>
+                    <li>Soit {{ space.price }} € / m<sup>2</sup> / mois H.C. - H.T.<sup>1</sup></li>
+                </ul>
+                <ul class="top-info">
+                    <li><i class="fa fa-square-o"></i> {{ space.parcels | length }} espaces</li>
+                    <li>De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup></li>
+                    <li><a href="#parcels">Voir la répartition des espaces</a></li>
+                </ul>
+                <ul class="top-info">
+                    <li><i class="fa fa-calendar"></i> Disponibilité</li>
+                    <li>{{ space.availability}}</li>
+                </ul>
             </div>
-            <!-- / END CONTACT FORM-->
-        </div> <!-- / END CONTAINER -->
-    </section> <!-- / END CONTACT US SECTION-->
 
+            <div>
+                <p>Date limite de candidature</p>
+                <p>{{ space.limitAvailability | date('d F Y à H') }}h</p>
+                <a href="#candidate" class="btn btn-fullcolor">{{ 'Candidater !' | upper }}</a>
+            </div>
+        </div>
+        <!-- END SIDEBAR -->
+
+</div>
+            
+<div class="row">
+
+    <div class="col-sm-6">
+        <h3><i class="fa fa-map-marker"></i> {{ 'Description' | upper }}</h3>
+        <div class="pu-col-container">
+            <p>{{ space.description | nl2br }}</p>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h3><i class="fa fa-search"></i> {{ 'Activités recherchées' | upper }}</h3>
+        <div class="pu-col-container">
+            <p>{{ space.activityDescription | nl2br }}</p>
+        </div>
+    </div>
+
+    <p>&nbsp;</p>
+
+    <!-- BEGIN PROPERTY AMENITIES LIST -->
+    <div class="col-sm-6">
+        <h3><i class="fa fa-cog"></i> {{ 'Prestations et services' | upper }}</h3>
+        <div class="pu-col-container">
+            <ul class="property-amenities-list">
+                {% for t in space.tags %}
+                    {% if t.availability == true %}
+                        <li class="enabled">{{ t.attribute }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- BEGIN PROPERTY AMENITIES LIST -->
+    <div class="col-sm-6">
+        <h3><i class="fa fa-wrench"></i> {{ 'à prévoir' | upper }}</h3>
+        <div class="pu-col-container">
+            <ul class="property-amenities-list">
+                {% for t in space.tags %}
+                    {% if t.availability == false %}
+                        <li class="disabled">{{ t.attribute }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+        
+    <p  id="parcels">&nbsp;</p>
+
+    {% if space.parcels | length > 0 %}
+    <div class="col-sm-12">
+        <h3><i class="fa fa-square-o"></i> {{ 'Répartition des espaces' | upper }}</h3>
+        <div class="pu-col-container">
+            <table class="pu-parcels-table">
+                <thead>
+                    <th>{{'étage' | upper}}</th>
+                    <th>{{'Type de locaux' | upper}}</th>
+                    <th>{{'Surface' | upper}}</th>
+                    <th>{{'Disponibilité' | upper}}</th>
+                </thead>
+                <tbody>
+                    {% for p in space.parcels %}
+                        <tr {% if loop.index % 2 == 0 %}class="even"{% endif %}>
+                            <td>{{ p.floor }}</td>
+                            <td>{{ p.type }}</td>
+                            <td>{{ p.surface }}m<sup>2</sup></td>
+                            <td>{% if p.disponibility is not null %}{{ p.disponibility | date('d/m/Y') }}{% else %}Immédiat{% endif%}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <p id="candidate">&nbsp;</p>
+
+    <div class="col-sm-12">
+        <h3><i class="fa fa-edit"></i> {{ 'Vous êtes candidat' | upper }}</h3>
+
+        <div class="pu-col-container">
+            <p>Phrase qui explique qu'il faut avoir complété son profil pour pouvoir candidater, et qui invite à le faire par un lien : <a href=''>Compléter mon profil</a></p>
+            <form class="form-style col-md-12">
+                    <div class="col-sm-12">
+                            <input type="text" name="Name" placeholder="Name" class="form-control required fromName" />
+                    </div>
+
+                    <div class="col-sm-12">
+                            <input type="email" name="Email" placeholder="Email" class="form-control required fromEmail"  />
+                    </div>
+
+                    <div class="col-sm-12">
+                            <input type="text" name="Subject" placeholder="Subject" class="form-control required subject"  />
+                            <textarea name="Message" placeholder="Message" class="form-control required"></textarea> 
+                    </div>
+
+                    <div class="center">
+                            <button type="submit" class="btn btn-default-color submit_form"><i class="fa fa-envelope"></i> Send Message</button>
+                    </div>
+            </form>
+            <p>&nbsp;</p>
+            <hr />
+            <p><sup>1</sup> : HT (hors taxes), TTC (taxes comprises), HC (hors charges), CC (charges comprises)</p>
+            <p>{{ space.usageRestriction | nl2br }}</p>
+        </div>
+    
+    </div>
+
+    <p>&nbsp;</p>
+</div>
 
 {% endblock body %}
-
-{% block javascripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    {{ parent() }}
-
-    {% if form is defined %}
-        {{ afe_form_javascript(form) }}
-    {% endif %}
-{% endblock %}
-
-
-{% block stylesheets %}
-    {{ parent() }}
-    {#<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">#}
-
-    <!--AVODE FORM UPLAOD -->
-    {% stylesheets filter='cssrewrite,?yui_css'
-    output= 'assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
-    'bundles/avocodeformextensions/bootstrap-collection/css/bootstrap-collection.css'
-    'bundles/avocodeformextensions/collection-upload/css/collection-upload.css'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-    {% endstylesheets %}
-
-    {% if form is defined %}
-        {{ afe_form_stylesheet(form) }}
-    {% endif %}
-{% endblock %}

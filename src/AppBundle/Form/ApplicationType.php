@@ -17,6 +17,7 @@ class ApplicationType extends AbstractType
         $builder
             ->add('name', null, array('label'=>"Nom du projet", 'attr' => array('placeholder'=>"Nom du projet", 'class'=>'form-control input-box')) )
             ->add('description', null, array('label'=>"Description du projet", 'attr' => array('placeholder'=>"Description du projet", 'class'=>'form-control textarea-box')))
+            ->add('contribution', null, array('label'=>"Quelle serait votre contribution au projet global du propriétaire ?", 'attr' => array('placeholder'=>"Description du projet", 'class'=>'form-control textarea-box')))
             ->add('startOccupation', 'date', array(
                     'label'=>"Date d'entrée souhaitée",
                     'input'  => 'datetime',
@@ -25,19 +26,12 @@ class ApplicationType extends AbstractType
                     'class'=>'form-control input-box')
                 )
             )
-            ->add('endOccupation', 'date', array(
-                    'input'  => 'datetime',
-                    'label'=>"Date de sortie souhaitée",
-                    'widget'=>'single_text',
-                    'attr' => array(
-                        'placeholder'=>"Nom du projet",
-                        'class'=>'form-control input-box')
+            ->add('lengthOccupation', 'choice', array(
+                    'label'=>"Durée d'occupation",
                 )
             )
-            //->add('space')
+            ->add('lengthTypeOccupation', 'choice')
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true, 'attr'=> array('placeholder'=>"Categorie du projet", 'class'=>'form-control input-box')))
-            //->add('projectHolder')
-
             ->add('files', 'afe_collection_upload', array(
                 'type' => new ImageType(),
                 'nameable' => false,

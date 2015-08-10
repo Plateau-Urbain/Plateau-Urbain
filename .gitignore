@@ -10,3 +10,7 @@
 /vendor/
 /web/bundles/
 /web/uploads/
+/web/js/
+/web/css/
+/components/
+/web/assetic/

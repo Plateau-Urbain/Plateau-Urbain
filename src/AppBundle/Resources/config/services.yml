@@ -89,10 +89,19 @@ services:
             - AppBundle\Entity\LocalType
             -
 
+    app.admin.spaces.spacetype:
+        class: AppBundle\Admin\SpaceTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'espace , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceType
+            -
+
     app.admin.spaces.category:
         class: AppBundle\Admin\CategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Catégorie de projet , show_in_dashboard: true  }
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Catégorie de projet , show_in_dashboard: true  }
         arguments:
             - ~
             - AppBundle\Entity\Category

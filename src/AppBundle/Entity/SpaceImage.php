@@ -45,6 +45,13 @@ class SpaceImage implements UploadCollectionFileInterface
     protected $space;
 
     /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
+    
+    /**
      * @return int
      */
     public function getId()
@@ -73,10 +80,11 @@ class SpaceImage implements UploadCollectionFileInterface
      */
     public function setFile(\Symfony\Component\HttpFoundation\File\File $file = null)
     {
-        if ($file === null) {
-            return;
-        }
         $this->file = $file;
+
+        if ($file) {
+            $this->updatedAt = new \DateTime('now');
+        }
     }
 
     /**

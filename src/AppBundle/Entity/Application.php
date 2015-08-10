@@ -36,23 +36,34 @@ class Application
      */
     private $description;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contribution", type="text")
+     */
+    private $contribution;
 
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="startOccupation", type="date")
+     * @ORM\Column(name="start_occupation", type="date")
      */
     private $startOccupation;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="endOccupation", type="date")
+     * @ORM\Column(name="length_occupation", type="integer")
      */
-    private $endOccupation;
+    private $lengthOccupation;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="length_type_occupation", type="string", length=5)
+     */
+    private $lengthTypeOccupation;
 
     /**
      * @ORM\ManyToOne(
@@ -156,6 +167,28 @@ class Application
     }
 
     /**
+     * Set description
+     *
+     * @param string $contribution
+     * @return Application
+     */
+    public function setContribution($contribution)
+    {
+        $this->contribution = $contribution;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getContribution()
+    {
+        return $this->contribution;
+    }
+    /**
      * Set startOccupation
      *
      * @param \DateTime $startOccupation
@@ -257,6 +290,38 @@ class Application
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLengthOccupation()
+    {
+        return $this->lengthOccupation;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setLengthOccupation($lengthOccupation)
+    {
+        $this->lengthOccupation = $lengthOccupation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLengthTypeOccupation()
+    {
+        return $this->lengthTypeOccupation;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setLengthTypeOccupation($lengthTypeOccupation)
+    {
+        $this->lengthTypeOccupation = $lengthTypeOccupation;
     }
 
     /**

@@ -80,6 +80,27 @@ class Space
     /**
      * @var string
      *
+     * @ORM\Column(name="address", type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="zip_code", type="string", length=255)
+     */
+    private $zipCode;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=255)
+     */
+    private $city;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="size", type="string", length=255)
      */
     private $size;
@@ -87,14 +108,14 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="availability", type="text")
+     * @ORM\Column(name="availability", type="string", length=255)
      */
     private $availability;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="limitAvailability", type="date")
+     * @ORM\Column(name="limitAvailability", type="datetime")
      */
     private $limitAvailability;
 
@@ -132,6 +153,12 @@ class Space
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="SpaceType", inversedBy="spaces")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     */
+    private $type;
+        
     /**
      * @return mixed
      */
@@ -552,6 +579,54 @@ class Space
     /**
      * @return mixed
      */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $parcels
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZipCode()
+    {
+        return $this->zipCode;
+    }
+
+    /**
+     * @param mixed $zipCode
+     */
+    public function setZipCode($zipCode)
+    {
+        $this->zipCode = $zipCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
     public function addParcel(Parcel $parcel)
     {
         $this->setUpdated(new \DateTime());
@@ -570,10 +645,49 @@ class Space
         $this->parcels->removeElement($parcel);
     }
 
+    /**
+     * @param Type
+     *
+     * @return Parcel
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Date
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
     public  function __toString()
     {
         return $this->getName().' - '.($this->getOwner() != null ? $this->getOwner()->getLastName() : '');
     }
+    
+    public function getMinSize() {
+        $min = -1;
+        foreach ($this->getParcels() as $parcel) {
+            if ($min == -1 || $min > $parcel->getSurface()) {
+                $min = $parcel->getSurface();
+            }
+        }
+        return $min;
+    }
 
+    public function getMaxSize() {
+        $max = 0;
+        foreach ($this->getParcels() as $parcel) {
+            if ($max < $parcel->getSurface()) {
+                $max = $parcel->getSurface();
+            }
+        }
+        return $max;
+    }
 }
 

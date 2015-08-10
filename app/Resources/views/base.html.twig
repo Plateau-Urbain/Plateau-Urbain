@@ -1,154 +1,226 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Location de bureau" />
-    <meta name="keywords" content="plateau urbain"/>
-    <meta name="author" content="Geoffrey Monté - Numerogeek" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Welcome!{% endblock %} - Plateau urbain</title>
+	<meta charset="utf-8" />
+	
+	<!-- Page Title -->
+	<title>{% block title %}Plateau Urbain{% endblock %}</title>
+	
+	<meta name="keywords" content="real estate, responsive, retina ready, modern html5 template, bootstrap, css3" />
+	<meta name="description" content="Cozy - Responsive Real Estate HTML5 Template" />
+	<meta name="author" content="Wisely Themes - www.wiselythemes.com" />
+	
+	<!-- Mobile Meta Tag -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-    <!-- =========================
-    FAV AND TOUCH ICONS
-    ============================== -->
+	<!-- Fav and touch icons -->
+	<link rel="shortcut icon" type="image/x-icon" href="images/fav_touch_icons/favicon.ico" />
+	<link rel="apple-touch-icon" href="images/fav_touch_icons/apple-touch-icon.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="images/fav_touch_icons/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="images/fav_touch_icons/apple-touch-icon-114x114.png" />
+	
+	<!-- IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> 
+	<![endif]-->
+	
+	<!-- Google Web Font -->
+	<link href="http://fonts.googleapis.com/css?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" rel="stylesheet" type="text/css" />
+	
+	<!-- Template CSS -->
+        {% stylesheets  'bundles/app/css/bootstrap.min.css'
+                        'bundles/app/css/font-awesome.min.css'
+                        'bundles/app/css/cozy-real-estate-font.css'
+                        'bundles/app/css/owl.transitions.css'
+                        'bundles/app/css/style.css'
 
-    <link rel="apple-touch-icon" href="{{ asset('public/images/icons/apple-touch-icon.png') }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('public/images/icons/apple-touch-icon-72x72.png') }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('public/images/icons/apple-touch-icon-114x114.png') }}">
+        filter='cssrewrite' %}
+           <link rel="stylesheet" href="{{ asset_url }}" />
+       {% endstylesheets  %}	
 
-
-
-        {% block stylesheets %}
-
-
-            <!-- =========================
-                 STYLESHEETS
-            ============================== -->
-
-             {% stylesheets  '../app/Resources/public/css/bootstrap.min.css'
-                                '../app/Resources/public/css/owl.theme.css'
-                                '../app/Resources/public/css/owl.carousel.css'
-                                '../app/Resources/public/css/jquery.vegas.min.css'
-                                '../app/Resources/public/css/animate.min.css'
-                                '../app/Resources/public/css/styles.css'
-             '../app/Resources/public/css/responsive.css'
-
-             filter='cssrewrite' %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets  %}
-            <link rel="stylesheet" href="{{ asset('public/assets/icon-fonts/styles.css') }}" />
-            <link rel="stylesheet" href="{{ asset('public/assets/pd-icons/pixeden-icons.css') }}" />
-
-
-
-            <!--WEBFONT -->
-
-            <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic|Montserrat:700,400|Homemade+Apple' rel='stylesheet' type='text/css'>
-
-
-            <!--[if lt IE 9]>
-                <script src="js/html5shiv.js"></script>
-                <script src="js/respond.min.js"></script>
-            <![endif]-->
-
-            <!-- JQUERY -->
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-
-
-
-        {% endblock %}
-
-        {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
-        {#<!-- Latest compiled and minified CSS -->#}
-        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">#}
-
-        {#<!-- Optional theme -->#}
-        {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">#}
-
-        {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
-        {#<!-- Latest compiled and minified JavaScript -->#}
-        {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>#}
-
-
-
+        <!-- Modernizr -->
+        {% javascripts  'bundles/app/js/modernizr-2.8.1.min.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts  %}
     </head>
+    <body>
+	<!-- BEGIN WRAPPER -->
+	<div id="wrapper">
+	
+		<!-- BEGIN HEADER -->
+		<header id="header">			
+			<div id="nav-section">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+							<a href="index.html" class="nav-logo"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
+							
+							<!-- BEGIN MAIN MENU -->
+							<nav class="navbar">
+								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
+								
+								<ul class="nav navbar-nav">
+									<li>
+                                                                            <a href="{{ path('homepage')}}">Accueil</a>
+									</li>
+									
+									<li>
+                                                                            <a href="#">Rechercher</a>
+									</li>
+									
+									<li>
+                                                                            <a href="#">Publier</a>
+									</li>
+									
+                                                                        {% if app.user %}
+									<li class="dropdown">
+                                                                            <a href="#" data-toggle="dropdown" data-hover="dropdown">Mon compte<b class="caret"></b></a>
+                                                                            <ul class="dropdown-menu">
+                                                                                    <li><a href="#">Mon profil</a></li>
+                                                                                    <li><a href="{{ path('fos_user_security_logout')}}">Déconnexion</a></li>
+                                                                            </ul>
+									</li>
+                                                                        {% else %}
+									<li>
+                                                                            <a href="{{ path('fos_user_security_login') }}">Se connecter</a>
+                                                                        </li>
+                                                                        {% endif %}
+                                                                </ul>
+								
+							</nav>
+							<!-- END MAIN MENU -->
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- END HEADER -->
+		
+		<!-- BEGIN PAGE TITLE/BREADCRUMB -->
+		{% block breadcrumb %}
+		<div class="parallax colored-bg pattern-bg" data-stellar-background-ratio="0.5">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-12">
+						<h1 class="page-title">Property Detail</h1>
+						
+						<ul class="breadcrumb">
+							<li><a href="index.html">Home </a></li>
+							<li><a href="#">Properties</a></li>
+							<li><a href="properties-detail.html">Property Detail</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+                {% endblock %}
+                <!-- END PAGE TITLE/BREADCRUMB -->
+                
+		<div class="content">
+                    <div class="container">
+        		{% block body %}{% endblock %}
+                    </div>
+                </div>
+		
+		<!-- BEGIN FOOTER -->
+		<footer id="footer">
+			<div id="footer-top" class="container">
+				<div class="row">
+					<div class="block col-sm-3">
+						<a href="index.html"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
+						<br><br>
+						<p>Cozy is a simple clean and modern HTML template designed for Real Estate business. This template has a lot of useful features and it's highly customizable so you can turn it into your own awesome website.</p>
+					</div>
+					<div class="block col-sm-3">
+						<h3>Contact Info</h3>
+						<ul class="footer-contacts">
+							<li><i class="fa fa-map-marker"></i> 24th Street, New York, USA</li>
+							<li><i class="fa fa-phone"></i> 00351 123 456 789</li>
+							<li><i class="fa fa-envelope"></i> <a href="mailto:email@yourbusiness.com">email@yourbusiness.com</a></li>
+						</ul>
+					</div>
+					<div class="block col-sm-3">
+						<h3>Helpful Links</h3>
+						<ul class="footer-links">
+							<li><a href="properties-list.html">All Properties Available</a></li>
+							<li><a href="agent-listing.html">Look for an Agent</a></li>
+							<li><a href="agency-listing.html">Look for an Agency</a></li>
+							<li><a href="pricing-tables.html">See our Pricing Tables</a></li>
+						</ul>
+					</div>
+					<div class="block col-sm-3">
+						<h3>Latest Listings</h3>
+						<ul class="footer-listings">
+							<li>
+								<div class="image">
+									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
+								</div>
+								<p><a href="properties-detail.html">Luxury Apartment with great views<span>+</span></a></p>
+							</li>
+							<li>
+								<div class="image">
+									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
+								</div>
+								<p><a href="properties-detail.html">Stunning Villa with 5 bedrooms<span>+</span></a></p>
+							</li>
+							<li>
+								<div class="image">
+									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
+								</div>
+								<p><a href="properties-detail.html">Recent construction with 3 bedrooms.<span>+</span></a></p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- BEGIN COPYRIGHT -->
+			<div id="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12">
+							&copy; 2014 Cozy - Real Estate template. All rights reserved. Developed by <a href="http://www.wiselythemes.com" target="_blank">WiselyThemes</a>
+							
+							<!-- BEGIN SOCIAL NETWORKS -->
+							<ul class="social-networks">
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-google"></i></a></li>
+								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+								<li><a href="#"><i class="fa fa-youtube"></i></a></li>
+								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+							</ul>
+							<!-- END SOCIAL NETWORKS -->
+						
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END COPYRIGHT -->
+			
+		</footer>
+		<!-- END FOOTER -->
+	
+	</div>
+	<!-- END WRAPPER -->
 
-<body>
-    <!-- =========================
-       PRE LOADER
-    ============================== -->
-    <div class="preloader">
-        <div class="status">&nbsp;</div>
-    </div>
-    <!-- =========================
-       HOME SECTION
-    ============================== -->
-    <header id="home" class="header {%  block headerSize %}header-mini{% endblock headerSize %}">
-        <!-- TOP BAR -->
-        {% include "Partials/topbar.html.twig" %}
-        <!-- END TOP BAR -->
-
-        {%  block header %}
-        {% endblock header %}
-    </header>
-
-
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="flash-notice">
-            {{ flashMessage }}
-        </div>
-    {% endfor %}
-
-    {% block body %}{% endblock %}
-
-    {% include "Partials/footer.html.twig" %}
-
-    {% block javascripts %}
-
-
-
-            {% javascripts  '../app/Resources/public/js/bootstrap.min.js'
-            '../app/Resources/public/js/wow.min.js'
-            '../app/Resources/public/js/jquery.nav.js'
-            '../app/Resources/public/js/jquery.knob.js'
-            '../app/Resources/public/js/owl.carousel.min.js'
-            '../app/Resources/public/js/smoothscroll.js'
-            '../app/Resources/public/js/jquery.vegas.min.js'
-            '../app/Resources/public/js/zerif.js'
-            %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts  %}
-
-
-            {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/blueimp.jquery-file-upload.min.js'
-            'bundles/avocodeformextensions/blueimp-javascript-templates/js/tmpl.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-ios.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-orientation.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-meta.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-exif.js'
-            'bundles/avocodeformextensions/blueimp-load-image/js/load-image-exif-map.js'
-            'bundles/avocodeformextensions/blueimp-canvas-to-blob/js/canvas-to-blob.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.iframe-transport.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-process.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-image.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-validate.js'
-            'bundles/avocodeformextensions/blueimp-file-upload/js/jquery.fileupload-ui.js'
-            %}
+	
+	<!-- Libs -->
+        {% javascripts  'bundles/app/js/common.js'
+        'bundles/app/js/jquery.prettyPhoto.js'
+        'bundles/app/js/owl.carousel.min.js'
+        'bundles/app/js/chosen.jquery.min.js'
+        'bundles/app/js/infobox.min.js'
+        'bundles/app/js/variables.js'
+        'bundles/app/js/scripts.js'
+        'bundles/app/js/agencies.js'
+        %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-
-            {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/form-extensions.min.js'
-            'bundles/avocodeformextensions/bootstrap-collection/js/bootstrap-collection.js'
-            'bundles/avocodeformextensions/collection-upload/js/collection-upload.js'
-            'bundles/avocodeformextensions/single-upload/js/single-upload.js'
-            'bundles/avocodeformextensions/elastic/js/jquery.elastic.js'
-            %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-
-        {% endblock %}
+        {% endjavascripts  %}
     </body>
 </html>

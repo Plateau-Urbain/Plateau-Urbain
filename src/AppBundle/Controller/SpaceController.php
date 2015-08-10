@@ -31,7 +31,7 @@ class SpaceController extends Controller
     }
 
     /**
-     * @Route("/voir/{id}", name="space_show")
+     * @Route("/fiche/{id}", name="space_show")
      * @Template()
      */
 
@@ -40,9 +40,8 @@ class SpaceController extends Controller
         $application = new Application();
         $form = $this->createForm('appbundle_application', $application);
 
-        if($form->handleRequest($request)->isValid())
-        {
-            $application->setProjectHolder($this->getUser());//
+        if ($form->handleRequest($request)->isValid()) {
+            $application->setProjectHolder($this->getUser());
             $application->setSpace($space);
 
             $em = $this->getDoctrine()->getManager();
@@ -54,8 +53,8 @@ class SpaceController extends Controller
         }
 
         return array(
-            'space'=>$space,
-            'form'=>$form->createView(),
+            'space'     => $space,
+            'form'      => $form->createView(),
         );
     }
 

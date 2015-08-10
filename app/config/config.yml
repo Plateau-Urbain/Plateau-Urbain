@@ -117,27 +117,15 @@ knp_gaufrette:
         space_file_adapter :
             local:
                 directory: %kernel.root_dir%/../web/uploads/space
-#        file_application_adapter :
-#            local:
-#                directory: %kernel.root_dir%/../web/uploads/application_file
     filesystems:
         space_cover_fs:
             adapter:    space_file_adapter
-#        file_application_fs:
-#            adapter:    file_application_adapter
 
 
 vich_uploader:
     db_driver: orm
     storage: gaufrette
     mappings:
-#        fileApplication:
-#            uri_prefix: /uploads/application_file
-#            upload_destination: file_application_fs
-#            delete_on_remove:   true
-#            delete_on_update:   true
-#            namer: vich_uploader.namer_uniqid
-#            inject_on_load: true
         file:
             uri_prefix: /uploads/space
             upload_destination: space_cover_fs
