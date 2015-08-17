@@ -1,0 +1,90 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block prebody %}
+
+    {% include "AppBundle:Search:_search_form.html.twig" with {'form' : form } %}
+
+{% endblock %}
+
+
+{% block body %}
+
+    <div id="listing-header" class="clearfix">
+        <div class="form-control-small">
+            <select id="sort_by" name="sort_by" data-placeholder="Trier par">
+                <option value=""> </option>
+                <option value="created">Trier par date</option>
+                <option value="city">Trier par ville</option>
+            </select>
+        </div>
+
+        <div class="sort">
+            <ul>
+                <li id="desc" {% if form.vars.value.sort =='desc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
+                <li id="asc" {% if form.vars.value.sort =='asc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- BEGIN PROPERTY LISTING -->
+    <div id="property-listing" class="list-style clearfix">
+        <div class="row">
+        {% for space in pagination %}
+            <div class="item col-md-4"><!-- Set width to 4 columns for grid view mode only -->
+                <div class="image">
+                    <a href="{{ path('space_show', {'id': space.id}) }}">
+                        <span class="btn btn-default"><i class="fa fa-file-o"></i> Details</span>
+                    </a>
+                    <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}" alt="" />
+                </div>
+                <div class="price">
+                    <i class="fa fa-home"></i>{{ space.type.name }}
+                    <span>{{ space.price }}€ /m²/mois</span>
+                </div>
+                <div class="info">
+                    <h3>
+                        <a href="{{ path('space_show', {'id': space.id}) }}">{{ space.name }}</a>
+                        <small>{{ space.zipCode }} {{ space.city }}</small>
+                    </h3>
+                    <p>
+                        Description : {{ space.description }} <br/><br/>
+                        ActivtyDescription : {{ space.activityDescription }}<br/><br/>
+                        Size : {{ space.size }} <br/>
+                        NbLot : {{ space.parcels | length }}
+
+                    </p>
+
+                    <ul class="amenities">
+                        <li><i class="icon-area"></i> Dispo: {{ space.availability }}</li>
+                        <li><i class="icon-bedrooms"></i> Limite Candidature : {{ space.limitAvailability | date("d/m/Y") }}</li>
+                        <li><i class="icon-bathrooms"></i> 3</li>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <!-- END PROPERTY LISTING -->
+
+
+    {{ knp_pagination_render(pagination) }}
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $('#sort_by').change(function(){
+        $('#appbundle_search_space_orderBy').val($('#sort_by').val());
+        $('#searchForm').submit();
+    });
+    $('#asc').click(function(){
+        $('#appbundle_search_space_sort').val('asc');
+        $('#searchForm').submit();
+    });
+    $('#desc').click(function(){
+        $('#appbundle_search_space_sort').val('desc');
+        $('#searchForm').submit();
+    });
+</script>
+{% endblock %}

@@ -109,8 +109,10 @@
 				</div>
 			</div>
 		</div>
-                {% endblock %}
+        {% endblock %}
                 <!-- END PAGE TITLE/BREADCRUMB -->
+
+        {% block prebody %} {% endblock %}
                 
 		<div class="content">
                     <div class="container">
@@ -225,5 +227,9 @@
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+
+        {% block javascript %}
+
+        {% endblock %}
     </body>
 </html>

@@ -43,6 +43,8 @@ class AppKernel extends Kernel
             new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
 
             new cspoo\Swiftmailer\MailgunBundle\cspooSwiftmailerMailgunBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
