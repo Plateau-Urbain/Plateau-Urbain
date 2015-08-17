@@ -35,6 +35,7 @@ class User extends BaseUser
      * @var string
      * 
      * @ORM\Column(name="civility", length=3, type="string", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $civility;
 
@@ -94,23 +95,20 @@ class User extends BaseUser
     /**
      * @ORM\Column(name="address_suite", length=255, type="string", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $addressSuite;
 
     /**
      * @ORM\Column(name="company_phone", length=255, type="string", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
-    protected $company_phone;
+    protected $companyPhone;
 
     /**
      * @ORM\Column(name="company_mobile", length=255, type="string", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
-    protected $company_mobile;
+    protected $companyMobile;
 
     /**
      * @ORM\Column(name="company_site", length=255, type="string", nullable=true)
@@ -141,21 +139,18 @@ class User extends BaseUser
     /**
      * @ORM\Column(name="company_description", type="text", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $companyDescription;
 
     /**
      * @ORM\Column(name="company_effective", type="integer", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $companyEffective;
 
     /**
      * @ORM\Column(name="company_structures", length=255, type="string", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $companyStructures;
 
@@ -215,21 +210,20 @@ class User extends BaseUser
 
     /**
      * @ORM\Column( type="text", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $description;
 
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $siret;
 
 
     /**
-     * @ORM\Column(length=255, type="string", nullable=true)
+     * @ORM\Column(length=255, type="integer", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
      */
     protected $wishedSize;
 
@@ -253,10 +247,9 @@ class User extends BaseUser
     protected $usageDuration;
 
     /**
-     * @ORM\Column(name="usage_description", type="text", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @ORM\Column(name="project_description", type="text", nullable=true)
      */
-    protected $usageDescription;
+    protected $projectDescription;
 
     /**
      * @ORM\ManyToOne(targetEntity="Category" )
@@ -668,49 +661,49 @@ class User extends BaseUser
     }
 
     /**
-     * Set company_phone
+     * Set companyPhone
      *
      * @param string $companyPhone
      * @return User
      */
     public function setCompanyPhone($companyPhone)
     {
-        $this->company_phone = $companyPhone;
+        $this->companyPhone = $companyPhone;
 
         return $this;
     }
 
     /**
-     * Get company_phone
+     * Get companyPhone
      *
      * @return string 
      */
     public function getCompanyPhone()
     {
-        return $this->company_phone;
+        return $this->companyPhone;
     }
 
     /**
-     * Set company_mobile
+     * Set companyMobile
      *
      * @param string $companyMobile
      * @return User
      */
     public function setCompanyMobile($companyMobile)
     {
-        $this->company_mobile = $companyMobile;
+        $this->companyMobile = $companyMobile;
 
         return $this;
     }
 
     /**
-     * Get company_mobile
+     * Get companyMobile
      *
      * @return string 
      */
     public function getCompanyMobile()
     {
-        return $this->company_mobile;
+        return $this->companyMobile;
     }
 
     /**
@@ -885,26 +878,26 @@ class User extends BaseUser
     }
 
     /**
-     * Set usageDescription
+     * Set projectDescription
      *
-     * @param string $usageDescription
+     * @param string $projectDescription
      * @return User
      */
-    public function setUsageDescription($usageDescription)
+    public function setProjectDescription($projectDescription)
     {
-        $this->usageDescription = $usageDescription;
+        $this->projectDescription = $projectDescription;
 
         return $this;
     }
 
     /**
-     * Get usageDescription
+     * Get projectDescription
      *
      * @return string 
      */
-    public function getUsageDescription()
+    public function getProjectDescription()
     {
-        return $this->usageDescription;
+        return $this->projectDescription;
     }
 
     /**
