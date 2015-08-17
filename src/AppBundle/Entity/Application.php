@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Application
 {
+    const WEEK_TYPE  = "semaines";
+    const MONTH_TYPE = "mois";
+    const YEAR_TYPE  = "ans";
+    
+    
     /**
      * @var integer
      *
@@ -381,5 +386,13 @@ class Application
     {
         $this->setUpdated(new \DateTime());
         $this->files = $files;
+    }
+    
+    public static function getAllLengthType() {
+        return array(
+            self::YEAR_TYPE  => self::YEAR_TYPE,
+            self::MONTH_TYPE => self::MONTH_TYPE,
+            self::WEEK_TYPE  => self::WEEK_TYPE
+        );
     }
 }

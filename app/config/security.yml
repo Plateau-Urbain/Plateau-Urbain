@@ -36,7 +36,7 @@ security:
             pattern:            ^/
             form_login:
                 provider:       fos_userbundle
-                login_path:     fos_user_security_login
+                login_path:     security_login_error
                 use_forward:    true
                 use_referer:    true
                 check_path:     fos_user_security_check
@@ -57,7 +57,6 @@ security:
         - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/mot-de-passe-oublie, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/profile, role: IS_AUTHENTICATED_FULLY }
+        - { path: ^/profil, role: IS_AUTHENTICATED_FULLY }
         - { path: ^/deconnexion$, role: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }

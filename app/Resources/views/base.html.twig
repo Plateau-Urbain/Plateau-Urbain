@@ -17,10 +17,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 	<!-- Fav and touch icons -->
-	<link rel="shortcut icon" type="image/x-icon" href="images/fav_touch_icons/favicon.ico" />
-	<link rel="apple-touch-icon" href="images/fav_touch_icons/apple-touch-icon.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="images/fav_touch_icons/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="images/fav_touch_icons/apple-touch-icon-114x114.png" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('/bundles/app/images/fav_touch_icons/favicon.ico') }}" />
 	
 	<!-- IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
@@ -35,6 +32,7 @@
                         'bundles/app/css/font-awesome.min.css'
                         'bundles/app/css/cozy-real-estate-font.css'
                         'bundles/app/css/owl.transitions.css'
+                        'bundles/app/css/colorbox.css'
                         'bundles/app/css/style.css'
 
         filter='cssrewrite' %}
@@ -79,13 +77,13 @@
 									<li class="dropdown">
                                                                             <a href="#" data-toggle="dropdown" data-hover="dropdown">Mon compte<b class="caret"></b></a>
                                                                             <ul class="dropdown-menu">
-                                                                                    <li><a href="#">Mon profil</a></li>
+                                                                                    <li><a href="{{ path('security_profil')}}">Mon profil</a></li>
                                                                                     <li><a href="{{ path('fos_user_security_logout')}}">Déconnexion</a></li>
                                                                             </ul>
 									</li>
                                                                         {% else %}
 									<li>
-                                                                            <a href="{{ path('fos_user_security_login') }}">Se connecter</a>
+                                                                            <a class="inline cboxElement" href="#inline_content">Se connecter</a>
                                                                         </li>
                                                                         {% endif %}
                                                                 </ul>
@@ -106,13 +104,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
-						<h1 class="page-title">Property Detail</h1>
-						
-						<ul class="breadcrumb">
-							<li><a href="index.html">Home </a></li>
-							<li><a href="#">Properties</a></li>
-							<li><a href="properties-detail.html">Property Detail</a></li>
-						</ul>
+						<h1 class="page-title">{% block breadcrumb_title %}{% endblock %}</h1>						
 					</div>
 				</div>
 			</div>
@@ -208,7 +200,15 @@
 	
 	</div>
 	<!-- END WRAPPER -->
-
+        
+        <div style='display:none'>
+            <div id="inline_content">
+                {% render(controller("AppBundle:Security:loginForm")) %}
+            </div>
+            <div id="inline_register_content">
+                {% render(controller("FOSUserBundle:Registration:register")) %}
+            </div>
+        </div>
 	
 	<!-- Libs -->
         {% javascripts  'bundles/app/js/common.js'
@@ -216,9 +216,12 @@
         'bundles/app/js/owl.carousel.min.js'
         'bundles/app/js/chosen.jquery.min.js'
         'bundles/app/js/infobox.min.js'
+        'bundles/app/js/jquery.colorbox.js'
+        'bundles/app/js/bootstrap-checkbox.js'
         'bundles/app/js/variables.js'
         'bundles/app/js/scripts.js'
         'bundles/app/js/agencies.js'
+        'bundles/app/js/pu.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}

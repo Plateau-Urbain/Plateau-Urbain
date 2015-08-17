@@ -1,0 +1,40 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_title %}Connectez-vous{% endblock %}
+
+{% block body %}
+    
+<div class="row">
+
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="main col-sm-6">
+
+        <div class="e404 clearfix">
+            <div>
+                <strong>Accès</strong>
+                INTERDIT 
+            </div>
+            <i class="fa fa-file-text-o"></i>
+        </div>
+
+    </div>	
+    <!-- END MAIN CONTENT -->
+
+    <!-- BEGIN SIDEBAR -->
+    <div class="sidebar col-sm-5 col-md-offset-1">
+
+        <div id="e404-side">
+            <h3>Connectez-vous!</h3>
+
+            <p><br/><br/>Désolé vous devez être connecté pour accéder à cette partie du site.</p>
+
+            <p>Veuillez vous connecter avant de réessayer.</p>
+
+            <p class="center"><br/><a class="inline cboxElement btn btn-default-color" href="#inline_content">Se connecter</a></p>
+        </div>
+    </div>
+    <!-- END SIDEBAR -->
+
+</div>
+    
+{% endblock %}
