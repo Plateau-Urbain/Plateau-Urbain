@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use AppBundle\Entity\Application;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ProjectOwnerType;
@@ -59,5 +61,31 @@ class SecurityController extends Controller
         return array(
             'form' => $form->createView()
         );
+    }
+
+    /**
+     * @Route("/mes-candidatures", name="my_applications_list")
+     * @Template()
+     */
+
+    public function myApplicationsAction()
+    {
+        $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->findBy(array(
+            'projectHolder' => $this->getUser()
+        ));
+
+        return compact('applications');
+
+    }
+
+    /**
+     * @Route("/mes-candidatures/{id}", name="my_application_show")
+     * @ParamConverter("application", class="AppBundle:Application")
+     * @Template()
+     */
+    public function showMyApplicationAction(Application $application)
+    {
+
+        return compact('application');
     }
 }

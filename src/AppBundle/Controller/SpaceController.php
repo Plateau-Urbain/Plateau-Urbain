@@ -37,24 +37,49 @@ class SpaceController extends Controller
 
     public function showAction(Space $space, Request $request)
     {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
         $application = new Application();
-        $form = $this->createForm('appbundle_application', $application);
+
+        //set some defaults
+        $application->setDescription($user->getprojectDescription());
+        $application->setLengthOccupation($user->getUsageDuration());
+        $application->setLengthTypeOccupation($user->getLengthTypeOccupation());
+
+        $form = $this->createForm('appbundle_application', $application, array('action'=>$this->generateUrl('space_show', array('id' => $space->getId()))));
+
+        $user = $this->getUser();
+        $invalidProfile = true;
+
 
         if ($form->handleRequest($request)->isValid()) {
             $application->setProjectHolder($this->getUser());
             $application->setSpace($space);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($application);
             $em->flush();
 
-            return new RedirectResponse('space_confirmation') ;
-
+            return new RedirectResponse($this->generateUrl('space_show', array('id'=>$space->getID()))."#espace_confirmation") ;
         }
 
+        $applicated = false;
+        if ($user) {
+            //Check if the profile is completed
+            $errors = $this->container->get('validator')->validate($user);
+            $invalidProfile = (count($errors) > 0) ? true : false;
+
+            //Check if this user have an active application for this space.
+            $applicated = $em->getRepository('AppBundle:Application')->findOneBy(
+                array('projectHolder' => $user,
+                      'space' => $space ) );
+        }
+
+
         return array(
-            'space'     => $space,
-            'form'      => $form->createView(),
+            'space'          => $space,
+            'form'           => $form->createView(),
+            'invalidProfile' => $invalidProfile,
+            'applicated'     => $applicated
         );
     }
 

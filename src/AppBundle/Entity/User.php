@@ -1007,4 +1007,5 @@ class User extends BaseUser
             'SNC'    => 'SNC'
             );
     }
+
 }

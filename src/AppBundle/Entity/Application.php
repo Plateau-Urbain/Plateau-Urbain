@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Application
@@ -113,12 +114,27 @@ class Application
      */
     private $updated;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
+     */
+    protected $wishedSize;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     */
+    protected $openToGlobalProject;
+
+
 
 
     public function __construct()
     {
         $this->files = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setCreated(new \DateTime());
+        $this->setOpenToGlobalProject(false);
     }
 
     /**
@@ -395,4 +411,38 @@ class Application
             self::WEEK_TYPE  => self::WEEK_TYPE
         );
     }
+
+    /**
+     * @return mixed
+     */
+    public function getWishedSize()
+    {
+        return $this->wishedSize;
+    }
+
+    /**
+     * @param mixed $wishedSize
+     */
+    public function setWishedSize($wishedSize)
+    {
+        $this->wishedSize = $wishedSize;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOpenToGlobalProject()
+    {
+        return $this->openToGlobalProject;
+    }
+
+    /**
+     * @param mixed $openToGlobalProject
+     */
+    public function setOpenToGlobalProject($openToGlobalProject)
+    {
+        $this->openToGlobalProject = $openToGlobalProject;
+    }
+
 }

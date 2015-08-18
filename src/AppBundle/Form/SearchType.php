@@ -41,7 +41,7 @@ class SearchType extends AbstractType
                 'attr'      => array(
                     'data-placeholder'=>"Surface max")
             ))
-            ->add('orderBy', 'text', array('data' => 'date'))
+            ->add('orderBy', 'text', array('data' => 'created'))
             ->add('sort', 'text', array('data' => 'desc'))
 
         ;
