@@ -66,7 +66,7 @@
 									</li>
 									
 									<li>
-                                                                            <a href="#">Rechercher</a>
+                                                                            <a href="{{ path('search_index') }}">Rechercher</a>
 									</li>
 									
 									<li>
@@ -78,6 +78,7 @@
                                                                             <a href="#" data-toggle="dropdown" data-hover="dropdown">Mon compte<b class="caret"></b></a>
                                                                             <ul class="dropdown-menu">
                                                                                     <li><a href="{{ path('security_profil')}}">Mon profil</a></li>
+                                                                                    <li><a href="{{ path('my_applications_list')}}">Mes candidatures</a></li>
                                                                                     <li><a href="{{ path('fos_user_security_logout')}}">Déconnexion</a></li>
                                                                             </ul>
 									</li>

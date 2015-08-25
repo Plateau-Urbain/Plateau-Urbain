@@ -1,0 +1,25 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block body %}
+
+<div class="row">
+
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="main col-sm-8 col-sm-offset-2">
+        <h1 class="section-title">Ma candidature à {{ application.space.name }}</h1>
+    </div>
+
+</div>
+
+    Nom du projet: {{ application.name }} <br/>
+    Description du projet : {{ application.description }} <br/>
+    Contribution : {{ application.contribution }} <br/>
+    Début d'occupation : {{ application.startOccupation | date('d-m-Y') }}
+    Durée d'occupation : {{ application.lengthOccupation }} {{ application.lengthTypeOccupation }} <br/>
+    Categorie :{{ application.category }}
+    Creation :{{ application.created | date('d-m-Y')  }}
+    Ouvert à d'autre projet ? {{ application.openToGlobalProject }}
+
+{% endblock %}

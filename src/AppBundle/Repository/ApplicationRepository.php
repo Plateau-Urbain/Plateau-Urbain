@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
@@ -28,4 +29,5 @@ class ApplicationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
 }

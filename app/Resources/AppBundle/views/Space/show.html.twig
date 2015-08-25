@@ -151,31 +151,86 @@
     </div>
     {% endif %}
 
+
     <p id="candidate">&nbsp;</p>
 
     <div class="col-sm-12">
         <h3><i class="fa fa-edit"></i> {{ 'Vous êtes candidat' | upper }}</h3>
 
         <div class="pu-col-container">
-            <p>Phrase qui explique qu'il faut avoir complété son profil pour pouvoir candidater, et qui invite à le faire par un lien : <a href=''>Compléter mon profil</a></p>
-            <form class="form-style col-md-12">
-                    <div class="col-sm-12">
-                            <input type="text" name="Name" placeholder="Name" class="form-control required fromName" />
+
+            {% if not(applicated) %}
+                {% if not (invalidProfile) %}
+                    {{ form_start(form, {'attr' : {'class' : 'form-style col-md-12'} } ) }}
+                    <div class="col-md-6">
+                        <div class="col-sm-12">
+                            {#<input type="text" name="Name" placeholder="Name" class="" />#}
+                            {{ form_label(form.name) }}
+                            {{ form_widget(form.name) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {#<input type="text" name="Name" placeholder="Name" class="" />#}
+                            {{ form_label(form.category) }}
+                            {{ form_widget(form.category) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {#<input type="text" name="Name" placeholder="Name" class="" />#}
+                            {{ form_label(form.wishedSize) }}
+                            {{ form_widget(form.wishedSize) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.lengthOccupation) }}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.lengthOccupation) }}
+                                </div>
+
+                                <div class="col-sm-12">
+                                    {{ form_widget(form.lengthTypeOccupation) }}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.startOccupation) }}
+                            {{ form_widget(form.startOccupation) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.openToGlobalProject) }}
+                            {{ form_widget(form.openToGlobalProject) }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ form_label(form.contribution) }}
+                            {{ form_widget(form.contribution) }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+
+
+                        <div class="col-sm-12">
+                                Fichier...
+                        </div>
+
+                        <div class="col-sm-12">
+                                Fichier 2...
+                        </div>
                     </div>
 
-                    <div class="col-sm-12">
-                            <input type="email" name="Email" placeholder="Email" class="form-control required fromEmail"  />
-                    </div>
-
-                    <div class="col-sm-12">
-                            <input type="text" name="Subject" placeholder="Subject" class="form-control required subject"  />
-                            <textarea name="Message" placeholder="Message" class="form-control required"></textarea> 
-                    </div>
-
-                    <div class="center">
-                            <button type="submit" class="btn btn-default-color submit_form"><i class="fa fa-envelope"></i> Send Message</button>
-                    </div>
-            </form>
+                        <div class="center">
+                                <button type="submit" class="btn btn-default-color submit_form"><i class="fa fa-envelope"></i> Send Message</button>
+                        </div>
+                    {{ form_end(form) }}
+                {% else %}
+                     <p>Phrase qui explique qu'il faut avoir complété son profil pour pouvoir candidater, et qui invite à le faire par un lien : <a href='{{ path('security_profil') }}'>Compléter mon profil</a></p>
+                {% endif %}
+            {% else %}
+                <p>Vous avez deja candidaté pour ce projet.</p>
+            {% endif %}
             <p>&nbsp;</p>
             <hr />
             <p><sup>1</sup> : HT (hors taxes), TTC (taxes comprises), HC (hors charges), CC (charges comprises)</p>
@@ -184,7 +239,47 @@
     
     </div>
 
+
     <p>&nbsp;</p>
 </div>
 
+
 {% endblock body %}
+
+{% block javascript %}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="application_sent" tabindex="-1" role="dialog" aria-labelledby="myModalLabelms" aria-hidden="true">
+        <div class="modal-dialog"  role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabelms">Félicitations !</h4>
+                </div>
+                <div class="modal-body">
+                    Votre candidature est désormais clôturée est sera transmise au bailleur. Ce dossier de candidature est disponible dans votre compte, vous pourrez donc revenir le consulter et l'imprimer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var hash = window.location.hash.substring(1);
+        $(function() {
+
+            if(hash == "space_confirmation")
+            {
+
+                $('#application_sent').modal({ keyboard: false });
+                $('#application_sent').modal('show');
+
+            }
+
+        });
+    </script>
+
+{% endblock %}
