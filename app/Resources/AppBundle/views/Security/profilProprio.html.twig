@@ -1,0 +1,161 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block body %}
+    
+<div class="row">
+
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="main col-sm-8 col-sm-offset-2">
+        <h1 class="section-title">Mon profil</h1>
+        <center>
+            <p>
+                Nulla a risus sed magna lobortis interdum. Praesent diam eros, iaculis gravida sollicitudin nec, convallis ac elit. Vivamus id enim malesuada, condimentum tellus eu, facilisis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Quisque turpis purus, commodo ac mi nec, molestie euismod nulla. Nunc at placerat ante. Aliquam rhoncus et neque sed faucibus. Aenean auctor imperdiet dui.
+            </p>
+        </center>
+    </div>
+
+</div>
+
+{{ form_start(form) }}    
+{{ form_errors(form) }}
+<div class="row">
+    <div class="main col-sm-8 col-sm-offset-2">
+        <h1 class="section-title">Mes informations</h1>
+
+        <div class="row">
+            
+            <div class="col-sm-6">
+                {{ form_label(form.civility, null, {'label_attr': {'style': 'float: left;'}})}}
+                {{ form_widget(form.civility) }}
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.firstname)}}
+                {{ form_widget(form.firstname) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.lastname)}}
+                {{ form_widget(form.lastname) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.email)}}
+                {{ form_widget(form.email) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.companyFunction)}}
+                {{ form_widget(form.companyFunction) }}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-6">
+                {{ form_label(form.companyPhone)}}
+                {{ form_widget(form.companyPhone) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.companyMobile)}}
+                {{ form_widget(form.companyMobile) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            </div>
+        </div>
+            
+        <h1 class="section-title">Ma structure</h1>
+    
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.company)}}
+                {{ form_widget(form.company) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.companyStatus)}}
+                {{ form_widget(form.companyStatus) }}
+            </div>
+        </div>
+
+            
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.address)}}
+                {{ form_widget(form.address) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.addressSuite)}}
+                {{ form_widget(form.addressSuite) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_label(form.zipcode)}}
+                {{ form_widget(form.zipcode) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_label(form.city)}}
+                {{ form_widget(form.city) }}
+            </div>
+        </div>
+
+        <div class="row form-group" >
+            <div class="col-sm-6">
+                {{ form_label(form.companySite)}}
+                {{ form_widget(form.companySite) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            </div>
+        </div>
+
+        <h1 class="section-title">Modifier mon mot de passe</h1>
+
+        <div class="row" >
+            <div class="col-sm-6">
+                {{ form_label(form.oldPassword)}}
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(form.oldPassword) }}
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-sm-6">
+                {{ form_label(form.password.first)}}
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(form.password.first) }}
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-sm-6">
+                {{ form_label(form.password.second)}}
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(form.password.second) }}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            </div>
+        </div>
+
+    </div>
+</div>    
+{{ form_end(form) }}
+    
+{% endblock %}

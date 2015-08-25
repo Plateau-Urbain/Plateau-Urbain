@@ -9,6 +9,7 @@ use AppBundle\Entity\Application;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ProjectOwnerType;
+use AppBundle\Form\SpaceOwnerType;
 
 /**
  * Security controller.
@@ -46,21 +47,52 @@ class SecurityController extends Controller
     
     /**
      * @Route("/profil", name="security_profil")
-     * @Template()
      */
     public function profilAction(Request $request)
     {
-        $form = $this->createForm(new ProjectOwnerType(), $this->getUser());
+        $user = $this->getUser();
+
+        if ($this->getUser()->isProprio()) {
+            $form = $this->createForm(new SpaceOwnerType(), $user);
+            $template = 'AppBundle:Security:profilProprio.html.twig';
+        } else {
+            $form = $this->createForm(new ProjectOwnerType(), $user);           
+            $template = 'AppBundle:Security:profil.html.twig';
+        }
+        $session = $this->get('session');
+        $current_ppassword = $user->getPassword();
         
         if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($this->getUser());
-            $em->flush();
+
+            
+            $old_pwd = $this->getUser()->isProprio() ? $form->get('oldPassword')->getData() : '';
+            $new_pwd = $this->getUser()->isProprio() ? $form->get('password')->getData() : '';
+            
+            if (!empty($old_pwd) || !empty($new_pwd)) {
+
+                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+                $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
+        
+                if($current_ppassword != $old_pwd_encoded) {
+                    $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
+                } else {
+                    $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
+                    $user->setPassword($new_pwd_encoded);
+                    $manager = $this->getDoctrine()->getManager();
+                    $manager->persist($user);
+
+                    $manager->flush();
+                }
+            } else {            
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($this->getUser());
+                $em->flush();
+            }
         }
         
-        return array(
+        return $this->render($template, array(
             'form' => $form->createView()
-        );
+        ));
     }
 
     /**

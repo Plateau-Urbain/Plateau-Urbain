@@ -78,7 +78,10 @@
                                                                             <a href="#" data-toggle="dropdown" data-hover="dropdown">Mon compte<b class="caret"></b></a>
                                                                             <ul class="dropdown-menu">
                                                                                     <li><a href="{{ path('security_profil')}}">Mon profil</a></li>
-                                                                                    <li><a href="{{ path('my_applications_list')}}">Mes candidatures</a></li>
+                                                                                    {% if app.user.isProprio %}
+                                                                                    {% elseif app.user.isPorteur  %}
+                                                                                        <li><a href="{{ path('my_applications_list')}}">Mes candidatures</a></li>                                                                                 
+                                                                                    {% endif %}
                                                                                     <li><a href="{{ path('fos_user_security_logout')}}">Déconnexion</a></li>
                                                                             </ul>
 									</li>

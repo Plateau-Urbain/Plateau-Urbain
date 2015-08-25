@@ -29,8 +29,7 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-
+    
     /**
      * @var string
      * 
@@ -136,6 +135,12 @@ class User extends BaseUser
      */
     protected $city;
 
+    /**
+     * @ORM\Column(name="company_function", length=255, type="string", nullable=true)
+     *
+     */
+    protected $companyFunction;
+   
     /**
      * @ORM\Column(name="company_description", type="text", nullable=true)
      *
@@ -356,6 +361,25 @@ class User extends BaseUser
         return $this->typeUser;
     }
 
+    /**
+     * Is proprio.
+     *
+     * @return int
+     */
+    public function isProprio()
+    {
+        return $this->typeUser == self::PROPRIO;
+    }
+
+    /**
+     * is porteur.
+     *
+     * @return int
+     */
+    public function isPorteur()
+    {
+        return $this->typeUser == self::PORTEUR;
+    }
 
     /**
      * @return mixed
@@ -578,6 +602,7 @@ class User extends BaseUser
      */
     public function __construct()
     {
+        parent::__construct();
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -924,6 +949,29 @@ class User extends BaseUser
     }
 
     /**
+     * Set companyDescription
+     *
+     * @param string $companyFunction
+     * @return User
+     */
+    public function setCompanyFunction($companyFunction)
+    {
+        $this->companyFunction = $companyFunction;
+
+        return $this;
+    }
+
+    /**
+     * Get companyDescription
+     *
+     * @return string 
+     */
+    public function getCompanyFunction()
+    {
+        return $this->companyFunction;
+    }
+    
+    /**
      * Set companyEffective
      *
      * @param integer $companyEffective
@@ -976,35 +1024,13 @@ class User extends BaseUser
      */
     public static function getAllCompanyStatut() {
         return array(
-            'EARL'   =>  'EARL',
-            'EI'     => 'EI',
-            'EIRL'   => 'EIRL',
-            'EURL'   => 'EURL',
-            'GAEC'   => 'GAEC',
-            'GEIE'   => 'GEIE',
-            'GIE'    => 'GIE',
-            'SARL'   => 'SARL',
-            'SA'     => 'SA',
-            'SAS'    => 'SAS',
-            'SASU'   => 'SASU',
-            'SC'     => 'SC',
-            'SCA'    => 'SCA',
-            'SCI'    => 'SCI',
-            'SCIC'   => 'SCIC',
-            'SCM'    => 'SCM',
-            'SCOP'   => 'SCOP',
-            'SCP'    => 'SCP',
-            'SCS'    => 'SCS',
-            'SEL'    => 'SEL',
-            'SELAFA' => 'SELAFA',
-            'SELARL' => 'SELARL',
-            'SELAS'  => 'SELAS',
-            'SELCA'  => 'SELCA',
-            'SEM'    => 'SEM',
-            'SEML'   => 'SEML',
-            'SEP'    => 'SEP',
-            'SICA'   => 'SICA',
-            'SNC'    => 'SNC'
+            "Association"                           => "Association",
+            "Artiste"                               => "Artiste",
+            "ESS"                                   => "ESS",
+            "Autoentrepreneur"                      => "Autoentrepreneur",
+            "Profession libérale"                   => "Profession libérale",
+            "En création"                           => "En création",
+            "En phase de lancement de moins 2 ans"  => "En phase de lancement de moins 2 ans"
             );
     }
 
