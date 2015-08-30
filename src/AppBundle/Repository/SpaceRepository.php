@@ -24,6 +24,18 @@ class SpaceRepository extends EntityRepository
             ->select('s')
             ->leftjoin('s.parcels', 'p');
 
+        if (!empty($params['user'])) {
+            $qb->andWhere('s.owner = :owner')->setParameter('owner', $params['user']);
+        }
+
+        if (!empty($params['enabled'])) {
+            $qb->andWhere('s.enabled = :enabled')->setParameter('enabled', $params['enabled']);
+        }
+        
+        if (!empty($params['closed'])) {
+            $qb->andWhere('s.closed = :closed')->setParameter('closed', $params['closed']);
+        }
+        
         if (!empty($params['localType'])) {
             $qb->andWhere('p.type = :key')->setParameter('key',$params['localType'] );
         }
@@ -44,7 +56,9 @@ class SpaceRepository extends EntityRepository
             $qb->andWhere('p.surface < :maximumSurface')->setParameter('maximumSurface',$params['maximumSurface'] );
         }
 
-        $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
+        if (!empty($params['orderBy'])) {
+            $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
+        }
 
         return $qb->getQuery()->getResult();
     }

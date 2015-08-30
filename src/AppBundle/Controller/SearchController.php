@@ -40,7 +40,7 @@ class SearchController extends Controller
             'action' => $this->generateUrl('search_action')));
         $search->handleRequest($request);
 
-        if($search->isValid())
+        if ($search->isValid())
         {
             $params = array(
                 'localType'      => $search->get('localType')->getData(),
@@ -48,8 +48,10 @@ class SearchController extends Controller
                 'maximumPrice'   => $search->get('maximumPrice')->getData(),
                 'minimumSurface' => $search->get('minimumSurface')->getData(),
                 'maximumSurface' => $search->get('maximumSurface')->getData(),
-                'orderBy'       =>  $search->get('orderBy')->getData(),
+                'orderBy'        => $search->get('orderBy')->getData(),
                 'sort'           => $search->get('sort')->getData(),
+                'enabled'        => true,
+                'closed'         =>  false,
             );
 
             $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);

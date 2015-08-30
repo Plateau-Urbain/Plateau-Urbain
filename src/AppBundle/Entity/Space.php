@@ -66,21 +66,21 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="usageRestriction", type="text")
+     * @ORM\Column(name="usageRestriction", type="text", nullable=true)
      */
     private $usageRestriction;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="surface", type="string", length=255)
+     * @ORM\Column(name="surface", type="string", length=255, nullable=true)
      */
     private $surface;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address", type="string", length=255)
+     * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
 
@@ -101,7 +101,7 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="size", type="string", length=255)
+     * @ORM\Column(name="size", type="string", length=255, nullable=true)
      */
     private $size;
 
@@ -115,7 +115,7 @@ class Space
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="limitAvailability", type="datetime")
+     * @ORM\Column(name="limitAvailability", type="date")
      */
     private $limitAvailability;
 
@@ -143,6 +143,13 @@ class Space
      */
     private $enabled;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="closed", type="boolean")
+     */
+    private $closed;    
+    
     /**
      * @ORM\oneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
      */
@@ -512,6 +519,22 @@ class Space
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return bool
+     */
+    public function isClosed()
+    {
+        return $this->closed;
+    }
+
+    /**
+     * @param bool $closed
+     */
+    public function setClosed($closed)
+    {
+        $this->closed = $closed;
+    }    
+    
     /**
      * @return mixed
      */

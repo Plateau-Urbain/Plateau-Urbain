@@ -38,6 +38,11 @@ class SpaceAttribute
      */
     private $attribute;
 
+    
+    public function __toString() {
+        return $this->attribute->getName();
+    }
+    
     /**
      * Get id.
      *

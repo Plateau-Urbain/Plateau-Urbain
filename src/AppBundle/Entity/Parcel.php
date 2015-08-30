@@ -29,7 +29,7 @@ class Parcel
     private $surface;
 
     /**
-     * @var int
+     * @var date
      * 
      * @ORM\Column(name="disponibility", type="date", nullable=true)
      */

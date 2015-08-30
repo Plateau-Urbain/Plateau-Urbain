@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ImageType extends AbstractType
+class ParcelType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,10 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'file')
+            ->add('floor', null, array('label' => 'Etage' , 'attr' => array('class' => 'form-control')))
+            ->add('type', null, array('label' => 'Type de locaux' , 'attr' => array('class' => 'form-control')))
+            ->add('surface', null, array('label' => 'Surface' , 'attr' => array('class' => 'form-control')))
+            ->add('disponibility', null, array('label' => 'Disponibilité' , 'attr' => array('class' => 'inline-date')))
         ;
     }
 
@@ -25,7 +28,7 @@ class ImageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\SpaceImage',
+            'data_class' => 'AppBundle\Entity\Parcel'
         ));
     }
 
@@ -34,6 +37,6 @@ class ImageType extends AbstractType
      */
     public function getName()
     {
-        return 'space_image';
+        return 'appbundle_parcel';
     }
 }

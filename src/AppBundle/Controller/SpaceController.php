@@ -38,6 +38,12 @@ class SpaceController extends Controller
     public function showAction(Space $space, Request $request)
     {
         $user = $this->getUser();
+        
+        if (!$space->isEnabled() && $space->getOwner()->getId() != $user->getId() || 
+            $space->isClosed() && $space->getOwner()->getId() != $user->getId()) {
+            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException;
+        }
+        
         $em = $this->getDoctrine()->getManager();
         $application = new Application();
 
@@ -48,9 +54,7 @@ class SpaceController extends Controller
 
         $form = $this->createForm('appbundle_application', $application, array('action'=>$this->generateUrl('space_show', array('id' => $space->getId()))));
 
-        $user = $this->getUser();
         $invalidProfile = true;
-
 
         if ($form->handleRequest($request)->isValid()) {
             $application->setProjectHolder($this->getUser());
@@ -59,7 +63,7 @@ class SpaceController extends Controller
             $em->persist($application);
             $em->flush();
 
-            return new RedirectResponse($this->generateUrl('space_show', array('id'=>$space->getID()))."#espace_confirmation") ;
+            return new RedirectResponse($this->generateUrl('space_show', array('id'=>$space->getId()))."#espace_confirmation") ;
         }
 
         $applicated = false;

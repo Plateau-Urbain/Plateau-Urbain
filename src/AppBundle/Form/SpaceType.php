@@ -15,37 +15,35 @@ class SpaceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, array('label' => 'Nom du projet' , 'attr' => array('class' => 'form-control')))
-            ->add('description', null, array('label' => "Description de l'espace", 'attr' => array('class' => 'form-control')))
-            ->add('locationDescription', null, array('label' => 'Description de la situation du lieu' , 'attr' => array('class' => 'form-control')))
-            ->add('usageRestriction', 'text', array('label' => "Condition d'utilisation du lieu", 'attr' => array('class' => 'form-control')))
-            ->add('surface', null, array('label' => 'Nombre total de m2', 'attr' => array('class' => 'form-control')))
-            ->add('size', null, array('label' => 'Taille des lots possibles', 'attr' => array('class' => 'form-control')))
+            ->add('name', null, array('label' => 'Nom de l\'espace' , 'attr' => array('class' => 'form-control')))
+            ->add('zipCode', null, array('label' => 'Code postal' , 'attr' => array('class' => 'form-control')))
+            ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control')))
+            ->add('limitAvailability', null, array('label' => 'Date limite de candidature', 'attr' => array('class' => 'inline-date')))
+            ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
+            ->add('price', null, array('label' => 'Prix au m²', 'attr' => array('class' => 'form-control')))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
-            ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible', 'attr' => array('class' => 'form-control')))
-            ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel', 'attr' => array('class' => 'form-control')))
-//            ->add('owner')
-            ->add('tags', 'entity', array(
-                'attr'      => array('class' => 'after-checkbox-label-block'),
-                'class'     => 'AppBundle:Attribute',
-                'expanded'  => true,
-                'label'     => 'Attributs de l\'espace',
-                'multiple'  => true,
-                'property'  => 'name',
+            ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
+            ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
+            ->add('tags', 'collection', array(
+                'type'      => new SpaceAttributeType(),
+                'label'     => 'Prestations',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false
             ))
-            ->add('pics', 'afe_collection_upload', array(
+            ->add('pics', 'collection', array(
                 'type' => new ImageType(),
-                'nameable' => false,
                 'label' => 'Photos',
                 'allow_add' => true,
                 'allow_delete'  => true,
-                'maxNumberOfFiles' => 5,
-                'uploadRouteName' => 'upload_action',
-                'prependFiles' => true,
-                'autoUpload' => true,
-                'options' => array(
-                    'data_class' => "AppBundle\Entity\SpaceImage",
-                ),
+                'by_reference' => false
+            ))
+            ->add('parcels', 'collection', array(
+                'type'      => new ParcelType(),
+                'label'     => 'Lots',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false
             ))
         ;
     }

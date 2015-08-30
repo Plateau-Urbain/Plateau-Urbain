@@ -1,104 +1,81 @@
 {% extends "::base.html.twig" %}
 
-{%  block headerSize %}header-hidden{% endblock headerSize %}
-{#{% block header %}#}
-    {#{% endblock %}#}
+{% block breadcrumb %}{% endblock %}
 
 {% block body %}
 
-    <!-- =========================
-   PRODUCTS SECTION
-============================== -->
+<div class="row">
 
-    <section class="products" data-type="background" data-speed="1" id="products">
-        <div class="color-overlay">
-            <div class="container">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class="col-sm-12">
+                <h1 class="property-title">Liste de mes espaces</h1>            
+        </div>
+        
+</div>    
 
-                <!-- SECTION HEADER -->
-                <div class="section-header">
+<div id="listing-header" class="clearfix">
+    <div class="form-control-small">
+        <select id="sort_by" name="sort_by" data-placeholder="Trier par">
+            <option value=""> </option>
+            <option value="created">Trier par date</option>
+            <option value="city">Trier par ville</option>
+        </select>
+    </div>
 
-                    <!-- SECTION TITLE -->
-                    <h2 class="white-text">Mes espaces disponibles</h2>
+    <div class="sort">
+        <ul>
+            <li id="desc"><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
+            <li id="asc"><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
+        </ul>
+    </div>
 
-                    <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
-                    <h6 class="white-text">
-                        sur plateau-urbain
-                    </h6>
+</div>    
+    
+<!-- BEGIN PROPERTY LISTING -->
+<div id="property-listing" class="list-style clearfix">
+    <div class="row">
+    {% for space in pagination %}
+        <div class="item col-md-4"><!-- Set width to 4 columns for grid view mode only -->
+            <div class="image">
+                <a href="{{ path('space_show', {'id': space.id}) }}">
+                    <span class="btn btn-default"><i class="fa fa-file-o"></i> Details</span>
+                </a>
+                <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}{% endif %}" alt="" />
+            </div>
+            <div class="price">
+                <i class="fa fa-home"></i>{% if space.type %}{{ space.type.name }}{% endif %}
+                <span>{{ space.price }}€ /m²/mois</span>
+            </div>
+            <div class="info">
+                <h3>
+                    <a href="{{ path('space_show', {'id': space.id}) }}">{{ space.name }}</a>
+                    <small>{{ space.zipCode }} {{ space.city }}</small>
+                </h3>
+                <p>
+                    Description : {{ space.description }} <br/><br/>
+                    ActivtyDescription : {{ space.activityDescription }}<br/><br/>
+                    Size : {{ space.size }} <br/>
+                    NbLot : {{ space.parcels | length }}
 
-                    <!-- CALL TO ACTION BUTTONS -->
-                    <div class="buttons inpage-scroll">
-                        <a href="{{ path('space_manager_add') }}" class="btn btn-primary custom-button green-btn">Ajouter un nouvel espace</a>
-                        <a href="{{ path('application_list') }}" class="btn btn-primary custom-button red-btn">Voir mes candidatures</a>
-                    </div>
+                </p>
 
+                <ul class="amenities">
+                    <li><i class="icon-area"></i> Dispo: {{ space.availability }}</li>
+                    <li><i class="icon-bedrooms"></i> Limite Candidature : {{ space.limitAvailability | date("d/m/Y") }}</li>
+                </ul>
+                
+                <div>
+                    <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="btn btn-fullcolor">Voir les candidats</a>
+                    {% if space.closed == false %}<a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clotûrer</a>{% endif %}
                 </div>
-                <!-- / END SECTION HEADER -->
-
-                <!-- PRODUCTS -->
-                <div class="row wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    {% for space in spaces %}
-                    <!-- SINGLE PRODUCT -->
-                    <div class="col-md-3">:
-                        <div class="item" style="background-image: url(
-                                {% if space.pics[0] is defined %}
-                                    {{ vich_uploader_asset(space.pics[0], 'file') | imagine_filter('product_thumb') }}
-                                {% endif %}
-
-                                )">
-                            <div class="item-overlay">
-                            </div>
-                            <div class="item-content">
-                                <div class="item-top-content">
-                                    <div class="item-top-content-inner">
-                                        <div class="item-product">
-                                            <div class="item-top-title">
-                                                <h5>{{ space.name }}</h5>  <!-- PRODUCT TITLE-->
-                                                <p class="subdescription">
-                                                    {{ space.locationDescription }}
-                                                </p> <!-- PRODUCT DESCRIPTION-->
-                                            </div>
-                                        </div>
-                                        <div class="item-product-price">
-                                            <!-- PRICE -->
-                                            <span class="price-num green-text">{{ space.price  }} €</span>
-                                            {#<!-- OLD PRICE START -->#}
-                                            {#<p class="subdescription">#}
-                                            {#$36#}
-                                            {#</p>#}
-                                            {#<div class="old-price">#}
-                                            {#</div> <!-- END OLD PRICE -->#}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ITEM HOVER CONTENT-->
-                                <div class="item-add-content">
-                                    <div class="item-add-content-inner">
-                                        <div class="section">
-                                            <p>
-                                                {{ space.name }}
-                                            </p>
-                                        </div>
-                                        <div class="section">
-                                            {#<a href="#" class="btn btn-primary custom-button red-btn">Demo</a><br/>#}
-                                            <a href="{{ path('space_show', {"id":space.id} ) }}" class="btn btn-primary custom-button green-btn">Voir</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <!-- / END FIRST ITEM -->
-                    {% if loop.index is divisibleby(4) %}
-                </div> <!-- END ROW -->
-                <div class="row wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    {% endif %}
-                    {% endfor %}
-                </div> <!-- END ROW -->
-
-            </div> <!-- / END CONTAINER -->
-        </div> <!-- / END COLOR OVERLAY -->
-    </section> <!-- / END PRODUCTS SECTION -->
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<!-- END PROPERTY LISTING -->
 
 
+{{ knp_pagination_render(pagination) }}
 
 {% endblock body %}

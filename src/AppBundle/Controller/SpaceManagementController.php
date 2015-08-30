@@ -19,14 +19,26 @@ class SpaceManagementController extends Controller
      * @Route("/", name="space_manager_list")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $user = $this->get('security.context')->getToken()->getUser();
+     
+        $params = array(
+            'user'      => $user,
+            'orderBy'   => $request->get('orderBy', 'zipCode'),
+            'sort'      => $request->get('sort', 'ASC'),
+        );
 
-        $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space');
-        $spaces = $em->findBy(array('owner' => $user->getId()));
+        $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
-        return compact('spaces');
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1)/*page number*/
+        );
+
+        
+        return array("pagination" => $pagination);
     }
 
     /**
@@ -34,14 +46,22 @@ class SpaceManagementController extends Controller
      * @Template()
      */
     public function addAction(Request $request)
-    {
+    { 
         $space = new Space();
         $form = $this->createForm('appbundle_space', $space);
 
         if ($form->handleRequest($request)->isValid()) {
-            $space->setEnabled(false);
-            $space->setOwner($this->get('security.context')->getToken()->getUser());
             $em = $this->getDoctrine()->getManager();
+            
+            $space->setEnabled(false);
+            $space->setClosed(false);
+            $space->setOwner($this->get('security.context')->getToken()->getUser());
+            
+            foreach ($space->getPics() as $pic) {
+                $pic->setSpace($space);
+                $em->persist($pic);
+            }
+                        
             $em->persist($space);
             $em->flush();
 //
@@ -58,22 +78,42 @@ class SpaceManagementController extends Controller
 //            ;
 //
 //            $this->get('mailgun.swift_transport.transport')->send($message);
-            $this->get('session')->getFlashBag()->set('success', 'La propriété a été crée');
+            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 
             return $this->redirect($this->generateUrl('space_manager_list'));
         }
 
         return array('form' => $form->createView());
     }
-
+    
     /**
-     * @Route("/editer/{id}", name="space_manager_edit")
+     * @Route("/close/{id}", name="space_manager_close")
      * @Template()
      */
-    public function editAction(Space $space)
+    public function closeAction(Space $space)
     {
-        $form = $this->createForm('appbundle_space', $space);
-
-        return array('form' => $form->createView());
+        $space->setClosed(true);
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->persist($space);
+        $em->flush();
+        
+        $this->get('session')->getFlashBag()->set('success', 'Espace fermé');
+        
+        return $this->redirect($this->generateUrl('space_manager_list'));
     }
+
+    /**
+     * @Route("/candidats/{id}", name="space_manager_candidates")
+     * @Template()
+     */
+    public function candidatesAction(Space $space)
+    {
+        return array(
+            'space' => $space
+        );
+    }    
+    
+    
 }

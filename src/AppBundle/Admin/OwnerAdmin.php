@@ -13,6 +13,8 @@ class OwnerAdmin extends Admin
     protected $baseRouteName = 'owner';
     protected $baseRoutePattern = 'owner';
 
+    private   $userManager;
+    
     public function createQuery($context = 'list')
     {
         $query = parent::createQuery($context);
@@ -84,5 +86,25 @@ class OwnerAdmin extends Admin
         $instance->setTypeUser(User::PROPRIO);
 
         return $instance;
+    }
+    
+    public function preUpdate($user)
+    {
+        $this->getUserManager()->updateCanonicalFields($user);
+        $this->getUserManager()->updatePassword($user);
+    }
+
+    public function prePersist($user) {
+        $user->addRole('ROLE_OWNER');
+    }
+    
+    public function setUserManager(\FOS\UserBundle\Model\UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    public function getUserManager()
+    {
+        return $this->userManager;
     }
 }

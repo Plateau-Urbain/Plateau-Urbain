@@ -37,10 +37,10 @@
                     <a href="{{ path('space_show', {'id': space.id}) }}">
                         <span class="btn btn-default"><i class="fa fa-file-o"></i> Details</span>
                     </a>
-                    <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}" alt="" />
+                    <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}{% endif %}" alt="" />
                 </div>
                 <div class="price">
-                    <i class="fa fa-home"></i>{{ space.type.name }}
+                    <i class="fa fa-home"></i>{% if space.type %}{{ space.type.name }}{% endif %}
                     <span>{{ space.price }}€ /m²/mois</span>
                 </div>
                 <div class="info">
@@ -59,7 +59,6 @@
                     <ul class="amenities">
                         <li><i class="icon-area"></i> Dispo: {{ space.availability }}</li>
                         <li><i class="icon-bedrooms"></i> Limite Candidature : {{ space.limitAvailability | date("d/m/Y") }}</li>
-                        <li><i class="icon-bathrooms"></i> 3</li>
                     </ul>
                 </div>
             </div>

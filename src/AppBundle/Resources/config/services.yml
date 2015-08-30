@@ -7,7 +7,9 @@ services:
             - ~
             - AppBundle\Entity\User
             -
-
+        calls:
+            - [setUserManager, [@fos_user.user_manager]]
+      
     app.admin.users.admin.project_holder:
         class: AppBundle\Admin\ProjectHolderAdmin
         tags:

@@ -115,6 +115,7 @@ class SpaceAdmin extends Admin
     {
         $instance = parent::getNewInstance();
         $instance->setEnabled(true);
+        $instance->setClosed(false);
 
         return $instance;
     }

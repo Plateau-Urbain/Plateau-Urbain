@@ -8,7 +8,7 @@
 
         <!-- BEGIN MAIN CONTENT -->
         <div class="col-sm-12">
-                <h1 class="property-title">{{ space.name }} à partir de {{ space.size }}m<sup>2</sup><small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small></h1>            
+                <h1 class="property-title">{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}<small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small></h1>            
         </div>
         
         <div class="main col-sm-8">
@@ -70,7 +70,7 @@
 
             <div>
                 <p>Date limite de candidature</p>
-                <p>{{ space.limitAvailability | date('d F Y à H') }}h</p>
+                <p>{{ space.limitAvailability | date('d F Y') }}h</p>
                 <a href="#candidate" class="btn btn-fullcolor">{{ 'Candidater !' | upper }}</a>
             </div>
         </div>
@@ -92,9 +92,11 @@
             <p>{{ space.activityDescription | nl2br }}</p>
         </div>
     </div>
-
+</div>
+        
     <p>&nbsp;</p>
-
+    
+<div class="row">
     <!-- BEGIN PROPERTY AMENITIES LIST -->
     <div class="col-sm-6">
         <h3><i class="fa fa-cog"></i> {{ 'Prestations et services' | upper }}</h3>
@@ -122,9 +124,11 @@
             </ul>
         </div>
     </div>
-        
+</div>   
+            
     <p  id="parcels">&nbsp;</p>
 
+<div class="row">
     {% if space.parcels | length > 0 %}
     <div class="col-sm-12">
         <h3><i class="fa fa-square-o"></i> {{ 'Répartition des espaces' | upper }}</h3>
@@ -150,10 +154,11 @@
         </div>
     </div>
     {% endif %}
-
+</div>
 
     <p id="candidate">&nbsp;</p>
 
+<div class="row">
     <div class="col-sm-12">
         <h3><i class="fa fa-edit"></i> {{ 'Vous êtes candidat' | upper }}</h3>
 

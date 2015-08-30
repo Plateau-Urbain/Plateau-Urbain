@@ -79,6 +79,8 @@
                                                                             <ul class="dropdown-menu">
                                                                                     <li><a href="{{ path('security_profil')}}">Mon profil</a></li>
                                                                                     {% if app.user.isProprio %}
+                                                                                        <li><a href="{{ path('space_manager_list')}}">Mes espaces</a></li>
+                                                                                        <li><a href="{{ path('space_manager_add')}}">Ajouter un espace</a></li>
                                                                                     {% elseif app.user.isPorteur  %}
                                                                                         <li><a href="{{ path('my_applications_list')}}">Mes candidatures</a></li>                                                                                 
                                                                                     {% endif %}
