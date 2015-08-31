@@ -48,7 +48,7 @@ class ProjectOwnerType extends AbstractType {
                 ->add('twitterUrl', null, array('label' => "Twitter", 'attr' => array('class' => 'form-control')))
                 ->add('googleUrl', null, array('label' => "Google+", 'attr' => array('class' => 'form-control')))
                 ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
-                ->add('otherUrl', null, array('label' => "Autre", 'attr' => array('class' => 'form-control')))
+                ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
         ;
 
 
