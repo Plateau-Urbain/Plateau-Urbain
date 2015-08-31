@@ -13,10 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Application
 {
+    const DAY_TYPE   = "jours";
     const WEEK_TYPE  = "semaines";
     const MONTH_TYPE = "mois";
     const YEAR_TYPE  = "ans";
     
+    const WAIT_STATUS   = "en attente";
+    const ACCEPT_STATUS = "accepté";
+    const REJECT_STATUS = "rejeté";
     
     /**
      * @var integer
@@ -26,6 +30,13 @@ class Application
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string")
+     */
+    private $status;
 
     /**
      * @var string
@@ -296,7 +307,22 @@ class Application
         $this->endOccupation = $endOccupation;
     }
 
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }    
+    
     /**
      * @return string
      */
@@ -408,7 +434,8 @@ class Application
         return array(
             self::YEAR_TYPE  => self::YEAR_TYPE,
             self::MONTH_TYPE => self::MONTH_TYPE,
-            self::WEEK_TYPE  => self::WEEK_TYPE
+            self::WEEK_TYPE  => self::WEEK_TYPE,
+            self::DAY_TYPE   => self::DAY_TYPE
         );
     }
 

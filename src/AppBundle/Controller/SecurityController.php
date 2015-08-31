@@ -47,6 +47,7 @@ class SecurityController extends Controller
     
     /**
      * @Route("/profil", name="security_profil")
+     * @Route("/inscription/confirmation", name="fos_user_registration_confirmed")
      */
     public function profilAction(Request $request)
     {

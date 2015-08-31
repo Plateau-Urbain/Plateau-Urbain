@@ -6,7 +6,7 @@
 
 
 $(document).ready(function() {
-    $(".inline").colorbox({inline:true, width:"50%"});
+    $(".inline").colorbox({inline:true, width:"400px"});
 
-    $(".inline_register").colorbox({inline:true, width:"50%"});
+    $(".inline_register").colorbox({inline:true, width:"400px"});
 });

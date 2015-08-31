@@ -37,7 +37,7 @@
                     <a href="{{ path('space_show', {'id': space.id}) }}">
                         <span class="btn btn-default"><i class="fa fa-file-o"></i> Details</span>
                     </a>
-                    <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}{% endif %}" alt="" />
+                    <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
                 </div>
                 <div class="price">
                     <i class="fa fa-home"></i>{% if space.type %}{{ space.type.name }}{% endif %}

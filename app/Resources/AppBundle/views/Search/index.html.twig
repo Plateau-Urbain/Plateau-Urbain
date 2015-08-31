@@ -23,7 +23,7 @@
                     <h3>{{ space.name }}</h3>
                     <span class="location">Upper East Side, New York</span>
                 </a>
-                <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('thumb')  }}" alt="" />
+                <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="" />
             </div>
             <div class="price">
                 <i class="fa fa-home"></i>For Sale

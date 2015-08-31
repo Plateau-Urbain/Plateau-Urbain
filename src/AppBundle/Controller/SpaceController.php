@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
-use AppBundle\Form\ApplicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -59,6 +58,8 @@ class SpaceController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $application->setProjectHolder($this->getUser());
             $application->setSpace($space);
+            
+            $application->setStatus(Application::WAIT_STATUS);
 
             $em->persist($application);
             $em->flush();

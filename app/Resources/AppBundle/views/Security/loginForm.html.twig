@@ -1,21 +1,33 @@
-{% if error is defined %}
-    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
-{% endif %}
-
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-
-    <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-
-    <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-    <input type="password" id="password" name="_password" required="required" />
-
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
-
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+<div class="colorBox-content">
+    <h4>Connexion</h4>    
+    <br />
     
-    <p>Vous n'avez pas de compte Plateau Urbain?</p>
-    <a class="inline_register cboxElement" href="#inline_register_content">Inscription</a>
-</form>
+    {% if error is defined %}
+        <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+        <div class="col-sm-12">
+            <label for="username">Adresse email</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" class="form-control"/>
+        </div>
+
+        <div class="col-sm-12">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="_password" required="required" class="form-control"/>
+        </div>
+
+        <div class="col-sm-12">
+            <input type="submit" id="_submit" name="_submit" value="ME CONNECTER" class="btn btn-fullcolor"/>
+        </div>
+
+    </form>
+
+    <div class="col-sm-12">
+        <hr />
+        <p>Vous n'avez pas de compte Plateau Urbain?</p>
+        <p><a class="inline_register cboxElement" href="#inline_register_content">Inscription</a></p>
+    </div>
+</div>

@@ -1033,5 +1033,9 @@ class User extends BaseUser
             "En phase de lancement de moins 2 ans"  => "En phase de lancement de moins 2 ans"
             );
     }
+    
+    public function getFullname() {
+        return sprintf("%s %s %s", $this->getCivility(), $this->getFirstname(), $this->getLastname());
+    }
 
 }

@@ -77,7 +77,7 @@ class SpaceManagementController extends Controller
 //                )
 //            ;
 //
-//            $this->get('mailgun.swift_transport.transport')->send($message);
+//            $this->get('mailer')->send($message);
             $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 
             return $this->redirect($this->generateUrl('space_manager_list'));
@@ -108,10 +108,70 @@ class SpaceManagementController extends Controller
      * @Route("/candidats/{id}", name="space_manager_candidates")
      * @Template()
      */
-    public function candidatesAction(Space $space)
+    public function candidatesAction(Request $request, Space $space)
     {
+        if ($request->getMethod() == 'POST') {
+            $em         = $this->getDoctrine()->getManager();
+                    
+            $ids        = $request->get('applications');
+            $message    = $request->get('message');
+            $action     = $request->get('action');
+                    
+            $ids = explode('-', $ids);        
+            foreach ($ids as $id) {
+                
+                $application = $em->getRepository('AppBundle:Application')->find($id);
+                        
+                if ($action == 'accept') {
+                    $application->setStatus(\AppBundle\Entity\Application::ACCEPT_STATUS);
+                } elseif ($action == 'refuse') {
+                    $application->setStatus(\AppBundle\Entity\Application::REJECT_STATUS);                    
+                }
+                
+                //TODO : send mail
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($action == 'accept' ? 'Candidature Acceptée' : 'Candidature rejetée')
+                    ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                    ->setTo($application->getProjectHolder()->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'AppBundle:Email:candidate.html.twig', 
+                                array('space' => $space, 'message' => $message, 'user' => $application->getProjectHolder())
+                        ), 'text/html'
+                    )
+                ;
+
+                $this->get('mailer')->send($message);
+                
+                
+                $em->persist($application);
+            }
+            
+            
+            $em->flush();
+            
+        }
+
+            
+        $params = array(
+            'space'     => $space,
+            'orderBy'   => $request->get('orderBy', 'lengthOccupation'),
+            'sort'      => $request->get('sort', 'ASC'),
+        );
+
+        $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1)/*page number*/
+        );
+        
+        
+        
         return array(
-            'space' => $space
+            'space'         => $space,
+            'pagination'    => $pagination
         );
     }    
     

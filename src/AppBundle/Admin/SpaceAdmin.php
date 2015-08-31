@@ -46,6 +46,7 @@ class SpaceAdmin extends Admin
             ->add('name', null, array('label' => "Nom de l'espace"))
             ->add('type', null, array('label' => "Type d'espace", 'required' => true))
             ->add('enabled', null, array('label' => 'En ligne', 'required' => false))
+            ->add('closed', null, array('label' => 'Clotûré', 'required' => false))
             ->add('owner', null, array(
                 'label' => "Propriétaire de l'espace",
                 'query_builder' => function (\AppBundle\Repository\UserRepository $repository) {

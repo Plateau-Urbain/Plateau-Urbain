@@ -30,4 +30,20 @@ class ApplicationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function filter($params)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a');
+
+        if (!empty($params['space'])) {
+            $qb->andWhere('a.space = :space')->setParameter('space',$params['space'] );
+        }
+
+        if (!empty($params['orderBy'])) {
+            $qb->orderBy('a.'.$params['orderBy'], $params['sort']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }    
+    
 }
