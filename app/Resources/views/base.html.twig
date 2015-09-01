@@ -33,6 +33,7 @@
                         'bundles/app/css/cozy-real-estate-font.css'
                         'bundles/app/css/owl.transitions.css'
                         'bundles/app/css/colorbox.css'
+                        'bundles/app/rs-plugin/css/settings.css'
                         'bundles/app/css/style.css'
 
         filter='cssrewrite' %}
@@ -54,7 +55,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="index.html" class="nav-logo"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
+							<a href="{{ path('homepage')}}" class="nav-logo"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
 							
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
@@ -194,9 +195,8 @@
 								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 								<li><a href="#"><i class="fa fa-google"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-								<li><a href="#"><i class="fa fa-youtube"></i></a></li>
-								<li><a href="#"><i class="fa fa-rss"></i></a></li>
+								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+				
 							</ul>
 							<!-- END SOCIAL NETWORKS -->
 						
@@ -227,7 +227,9 @@
         'bundles/app/js/owl.carousel.min.js'
         'bundles/app/js/chosen.jquery.min.js'
         'bundles/app/js/infobox.min.js'
-        'bundles/app/js/jquery.colorbox.js'
+        'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'  
+        'bundles/app/rs-plugin/js/jquery.themepunch.revolution.min.js'
+	'bundles/app/js/jquery.colorbox.js'
         'bundles/app/js/bootstrap-checkbox.js'
         'bundles/app/js/variables.js'
         'bundles/app/js/scripts.js'

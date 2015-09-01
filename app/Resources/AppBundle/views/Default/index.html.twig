@@ -1,131 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{%  block headerSize %}header-max{% endblock headerSize %}
+{% block breadcrumb %}{% endblock %}
 
-{%  block header %}
-<div class="container">
-    <!-- HEADING -->
-    <h1 class="intro">
-        Résorber la vacance,
-        Servir la création</h1>
-
-    <!-- CALL TO ACTION BUTTONS -->
-    <div class="buttons inpage-scroll">
-        <a href="{{ path('space_manager_list') }}" class="btn btn-primary custom-button red-btn">Je suis proprietaire</a>
-        <a href="{{ path('space_list') }}" class="btn btn-primary custom-button green-btn">Voir tous les plateaux</a>
-    </div>
-
-    <!-- 3 SHORT MESSAGE ABOUT COMPANY -->
-    <div class="row bottom-message-section">
-        <div class="col-lg-4 col-sm-4">
-            <div class="short-text">
-                <i class="icon icon-fontawesome-webfont-358"></i> Fixed price for packages
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-4">
-            <div class="short-text">
-                <i class="icon-fontawesome-webfont-286"></i> Quality product in time
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-4">
-            <div class="short-text">
-                <i class="icon-fontawesome-webfont-347"></i> Satisfaction guranteed
-            </div>
-        </div>
+{% block prebody %}
+<!-- BEGIN HOME SLIDER SECTION -->
+<div class="revslider-container">
+    <div class="revslider" >
+        <ul>
+            <li data-transition="fade" data-slotamount="7">
+                <img src="{{ asset('/bundles/app/images/carte.png') }}" alt="carte" />
+                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="120" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Trouvez votre espace' | upper }}</div>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="245" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine"><span>81</span> espaces et <span>574</span> porteurs de projets inscrits sur Plateau Urbain</div>
+                <a href="#inline_register_content" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="340" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">M'INSCRIRE</a>
+            </li>
+        </ul>
     </div>
 </div>
-
+<!-- END HOME SLIDER SECTION -->
 {% endblock %}
 
 {% block body %}
 
+<div class='row pu-home-content'>
 
-    <!-- =========================
-       FOCUS SECTION
-    ============================== -->
-
-    <section class="focus" id="focus">
-        <div class="container">
-
-            <!-- SECTION HEADER -->
-            <div class="section-header">
-
-                <!-- SECTION TITLE -->
-                <h2 class="dark-text">Our Focus</h2>
-
-                <!-- SHORT DESCRIPTION ABOUT THE SECTION -->
-                <h6>
-                    We design &amp; develop qaulity products to help small &amp; medium level business.
-                </h6>
-            </div>
-            <!-- / END SECTION HEADER -->
-
-            <!-- 4 FOCUS BOXES -->
-            <div class="row">
-
-                <!-- FIRST FOCUS BOXES -->
-                <div class="col-lg-3 col-sm-3 focus-box red wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    <div class="service-icon">
-                        <i class="pixeden pd-icon-monitor"></i> <!-- FOCUS ICON-->
-                    </div>
-                    <h5 class="red-border-bottom">Web Design</h5> <!-- FOCUS HEADING -->
-                    <p> <!-- FOCUS DESCRIPTION -->
-                        Created cattle form fruit. Saying from given together face without waters, whose. Second first. Face it saw give creature was thing. Over upon is brought. Him you'll above kind set
-                    </p>
+    <div class='col-sm-6'>
+        <div class='col-sm-6'>
+            <h2>Résorber la vacance, servir la création</h2>
+        </div>
+        <div class='col-sm-6'>
+            <p>Plateau urbain est une association proposant de jouer le rôle d'agent immobilier dans une optique non lucrative afin de redonner une activité à des immeubles vacants en renégociant des baux précaires à des tarifs réduits.</p>
+            <br />
+            <a href='#' class='btn btn-default-color'>En savoir plus</a>
+        </div>
+    </div>
+    <div class='col-sm-6'>
+        <div class='col-sm-6'>
+            <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' />
+        </div>
+        <div class='col-sm-6'>
+            <img src='{{ asset('/bundles/app/images/logo-idf.png') }}' alt='Ile de France' />
+            <p class="ml65 mt15"><strong>4 000 000 m²</strong> de bureaux vacants</p>
+            <p class="ml65 mt15"><strong>1097</strong> communes gérantes d'espaces</p>
+        </div>
+        
+    </div>
+</div>    
+   
+            
+<div class="row">
+    <h1 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Nos partenaires</h1>
+    
+    <div id="featured-properties-slider" class="owl-carousel fullwidthsingle" data-animation-direction="from-bottom" data-animation-delay="250">
+            <div class="item">
+                <div class="col-sm-3">
+                    <img src="{{ asset('/public/images/cergy_logo.png') }}" alt="Cergy" />
                 </div>
-                <!-- / END FIRST FOCUS BOX. Other boxes has same format -->
-
-                <div class="col-lg-3 col-sm-3 focus-box green wow fadeInLeft animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    <div class="service-icon">
-                        <span class="pixeden pd-icon-camera"></span>
-                    </div>
-                    <h5 class="green-border-bottom">Photography</h5>
-                    <p>
-                        Created cattle form fruit. Saying from given together face without waters, whose. Second first. Face it saw give creature was thing. Over upon is brought. Him you'll above kind set
-                    </p>
+                <div class="col-sm-3">
+                    <img src="{{ asset('/public/images/logo-est-ensemble.png') }}" alt="Est Ensemble" />
                 </div>
-
-                <div class="col-lg-3 col-sm-3 focus-box blue wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    <div class="service-icon">
-                        <i class="pixeden pd-icon-email-marketing"></i>
-                    </div>
-                    <h5 class="blue-border-bottom">Email Marketing</h5>
-                    <p>
-                        Created cattle form fruit. Saying from given together face without waters, whose. Second first. Face it saw give creature was thing. Over upon is brought. Him you'll above kind set
-                    </p>
+                <div class="col-sm-3">
+                    <img src="{{ asset('/public/images/logo-bezons.png') }}" alt="Bezons" />
                 </div>
-
-                <div class="col-lg-3 col-sm-3 focus-box yellow wow fadeInRight animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                    <div class="service-icon">
-                        <i class="pixeden pd-icon-check"></i>
-                    </div>
-                    <h5 class="yellow-border-bottom">SEO &amp; SMM</h5>
-                    <p>
-                        Created cattle form fruit. Saying from given together face without waters, whose. Second first. Face it saw give creature was thing. Over upon is brought. Him you'll above kind set
-                    </p>
+                <div class="col-sm-3">
+                    <img src="{{ asset('/public/images/Plaine_Commune.jpg') }}" alt="Plaine Commune" />
                 </div>
             </div>
-            <!-- / END 4 FOCUS BOXES -->
-
-            <!-- OTHER FOCUSES -->
-            <div class="other-focuses">
-                <h5><span class="section-footer-title">ALSO WE FOCUS ON</span></h5>
-            </div>
-
-            <!-- OTHER FOCUS LIST -->
-            <div class="other-focus-list wow fadeInUp animated" data-wow-offset="30" data-wow-duration="1.5s" data-wow-delay="0.15s">
-                <ul>
-                    <li><i class="icon-fontawesome-webfont-8"></i>WEB APPLICATIONS</li>
-                    <li><i class="icon-fontawesome-webfont-267"></i>SEARCH ENGINE OPTIMIZATION</li>
-                    <li><i class="icon-fontawesome-webfont-75"></i>CLOUD STORAGE</li>
-                    <li><i class="icon-fontawesome-webfont-358"></i>Project Management</li>
-                    <li><i class="icon-fontawesome-webfont-102"></i>IOS APP</li>
-                    <li><i class="icon-fontawesome-webfont-328"></i>ANDROID APP</li>
-                    <li><i class="icon-fontawesome-webfont-195"></i>WINDOWS APP</li>
-                    <li><i class="icon-fontawesome-webfont-297"></i>UX STRATEGY</li>
-                </ul>
-            </div> <!-- / END OTHER FOCUS LIST -->
-        </div> <!-- / END CONTAINER -->
-    </section>  <!-- / END FOCUS SECTION -->
-
+    </div>
+    
+</div>            
+    
 {% endblock %}

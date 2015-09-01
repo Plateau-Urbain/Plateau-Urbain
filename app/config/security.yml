@@ -53,6 +53,7 @@ security:
         - { path: ^/admin/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/espace-manager/, roles: ROLE_OWNER }
         - { path: ^/espaces/, roles: ROLE_USER }
+        - { path: ^/recherche/, roles: ROLE_USER }
         - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
