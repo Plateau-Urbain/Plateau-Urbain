@@ -292,22 +292,6 @@ class Application
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getEndOccupation()
-    {
-        return $this->endOccupation;
-    }
-
-    /**
-     * @param \DateTime $endOccupation
-     */
-    public function setEndOccupation($endOccupation)
-    {
-        $this->endOccupation = $endOccupation;
-    }
-
-    /**
      * @return string
      */
     public function getStatus()

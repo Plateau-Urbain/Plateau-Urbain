@@ -58,7 +58,7 @@ services:
     app.admin.application.files:
         class: AppBundle\Admin\FileAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: true  }
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: false  }
         arguments:
             - ~
             - AppBundle\Entity\File

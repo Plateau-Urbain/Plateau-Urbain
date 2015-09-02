@@ -30,11 +30,6 @@ class ApplicationAdmin extends Admin
                     'label'=>"Date d'entrée souhaitée",
 
             ))
-            ->add('endOccupation', 'date', array(
-
-                    'label'=>"Date de sortie souhaitée",
-
-            ))
             ->add('space')
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true))
             ->add('projectHolder')
