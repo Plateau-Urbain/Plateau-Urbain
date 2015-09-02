@@ -604,6 +604,7 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->typeUser = self::PORTEUR;
     }
 
     /**
