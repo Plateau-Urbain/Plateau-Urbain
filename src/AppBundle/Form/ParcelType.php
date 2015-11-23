@@ -15,10 +15,18 @@ class ParcelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('floor', null, array('label' => 'Etage' , 'attr' => array('class' => 'form-control')))
-            ->add('type', null, array('label' => 'Type de locaux' , 'attr' => array('class' => 'form-control')))
-            ->add('surface', null, array('label' => 'Surface' , 'attr' => array('class' => 'form-control')))
-            ->add('disponibility', null, array('label' => 'Disponibilité' , 'attr' => array('class' => 'inline-date')))
+            ->add('floor', null, array('label' => 'Étage', 'empty_value' => 'Étage' ,'attr' => array('class' => 'form-control')))
+            ->add('type', null, array('label' => 'Type de locaux', 'empty_value' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
+            ->add('surface', null, array('label' => 'Surface', 'attr' => array('class' => 'form-control')))
+            ->add('disponibility', 'date', array(
+                'label' => 'Disponibilité',
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
+                'attr' => array(
+                    'class' => 'form-control',
+                    'data-provide' => 'datepicker'
+                )
+            ))
         ;
     }
 

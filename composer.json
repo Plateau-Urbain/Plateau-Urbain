@@ -36,7 +36,8 @@
         "avocode/form-extensions-bundle": "dev-master",
         "cspoo/swiftmailer-mailgun-bundle": "dev-master",
         "knplabs/knp-paginator-bundle": "^2.4@dev",
-        "knplabs/knp-menu-bundle": "~2"
+        "knplabs/knp-menu-bundle": "~2",
+        "stof/doctrine-extensions-bundle": "^1.2"
     },
     "scripts": {
         "post-install-cmd": [

@@ -27,8 +27,8 @@
         <div class="row">
             
             <div class="col-sm-6">
-                {{ form_label(form.civility, null, {'label_attr': {'style': 'float: left;'}})}}
-                {{ form_widget(form.civility) }}
+                {{ form_label(form.civility) }}
+                {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
             </div>
             <div class="col-sm-6">
             </div>

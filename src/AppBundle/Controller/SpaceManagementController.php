@@ -3,10 +3,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Space;
+use AppBundle\Entity\SpaceImage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Space controller.
@@ -38,57 +44,89 @@ class SpaceManagementController extends Controller
         );
 
         
-        return array("pagination" => $pagination);
+        return array(
+            "pagination" => $pagination
+        );
     }
 
     /**
-     * @Route("/ajouter", name="space_manager_add")
+     * @Route("/ajouter", name="space_manager_add", methods={"get", "post"})
      * @Template()
      */
     public function addAction(Request $request)
     { 
         $space = new Space();
-        $form = $this->createForm('appbundle_space', $space);
+
+        $form = $this->createSpaceForm($space, array(
+            'action' => $this->generateUrl('space_manager_add'),
+            'method' => 'post'
+        ));
+
+        $space->setOwner($this->getUser());
 
         if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            
-            $space->setEnabled(false);
-            $space->setClosed(false);
-            $space->setOwner($this->get('security.context')->getToken()->getUser());
-            
-            foreach ($space->getPics() as $pic) {
-                $pic->setSpace($space);
-                $em->persist($pic);
-            }
-                        
-            $em->persist($space);
-            $em->flush();
-//
-//            $message = \Swift_Message::newInstance()
-//                ->setSubject('Nouvelle propriété ! ')
-//                ->setFrom($this->container->getParameter('mail_confirmation_from'))
-//                ->setTo($this->container->getParameter('mail_confirmation_to'))
-//                ->setBody(
-//                    $this->renderView(
-//                        'AppBundle:Email:new_property.html.twig',
-//                        compact('space')
-//                    ), 'text/html'
-//                )
-//            ;
-//
-//            $this->get('mailer')->send($message);
-            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
+            $em = $this->get('doctrine.orm.entity_manager');
 
-            return $this->redirect($this->generateUrl('space_manager_list'));
+            $em->persist($space);
+
+            if ($form->get('publish')->isClicked()) {
+                return $this->submitSpace($space);
+            }
+
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été enregistré.');
+
+            // Default is edition
+            return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
         }
+
+        $errors = $this->get('validator')->validate($space);
 
         return array('form' => $form->createView());
     }
-    
+
+    /**
+     * @param Space $space
+     *
+     * @return Response
+     *
+     * @Route("/editer/{id}", name="space_manager_edit", methods={"get", "put"})
+     * @Template()
+     */
+    public function editAction(Request $request, Space $space)
+    {
+        // Check ownership
+        if (!$space->isOwner($this->getUser()) || $space->isSubmitted()) {
+            throw new AccessDeniedException();
+        }
+
+        $form = $this->createSpaceForm($space, array(
+            'action' => $this->generateUrl('space_manager_edit', array('id' => $space->getId())),
+            'method' => 'put'
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('publish')->isClicked()) {
+                return $this->submitSpace($space);
+            }
+
+            $this->get('doctrine.orm.entity_manager')->flush();
+            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été enregistré.');
+
+            // Default is edition
+            return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
+        }
+
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
     /**
      * @Route("/close/{id}", name="space_manager_close")
-     * @Template()
      */
     public function closeAction(Space $space)
     {
@@ -167,13 +205,123 @@ class SpaceManagementController extends Controller
             $request->query->getInt('page', 1)/*page number*/
         );
         
-        
-        
         return array(
             'space'         => $space,
             'pagination'    => $pagination
         );
-    }    
-    
-    
+    }
+
+    /**
+     * @Route("/photo/{id}/delete", name="space_manager_removepicture", methods={"delete"})
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removePictureAction(Request $request, SpaceImage $image)
+    {
+        if (!$image->getSpace()->isOwner($this->getUser())) {
+            throw new AccessDeniedException();
+        }
+
+        // Check csrfToken
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove_image', $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid token');
+        }
+
+        $spaceId = $image->getSpace()->getId();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($image);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'La photo a été supprimée.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
+     * @Route("/photo/{id}/move/{position}", name="space_manager_movepicture", methods={"post"})
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function movePictureAction(Request $request, SpaceImage $image)
+    {
+        if (!$image->getSpace()->isOwner($this->getUser())) {
+            throw new AccessDeniedException();
+        }
+
+        // Check csrfToken
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('move_image', $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid token');
+        }
+
+        $spaceId = $image->getSpace()->getId();
+
+        $position = (int) $request->get('position');
+        $em = $this->get('doctrine.orm.entity_manager');
+        $image->setPosition($position);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'La photo a été déplacée.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
+     * @param Space $data
+     * @param array $options
+     *
+     * @return Form
+     */
+    protected function createSpaceForm($data, array $options = array())
+    {
+        $options['attr']['novalidate'] = true;
+
+        $form = $this->createForm('appbundle_space', $data, $options);
+
+        $form->add('publish', 'submit', array(
+            'label' => 'Publier'
+        ));
+
+        $form->add('save', 'submit', array(
+            'label' => 'Enregistrer'
+        ));
+
+        return $form;
+    }
+
+    /**
+     * Submits space
+     *
+     * @param Space $space
+     *
+     * @return RedirectResponse
+     */
+    protected function submitSpace($space)
+    {
+        $space->setSubmitted(true);
+
+        $this->get('doctrine.orm.entity_manager')->flush();
+
+//            $message = \Swift_Message::newInstance()
+//                ->setSubject('Nouvelle propriété ! ')
+//                ->setFrom($this->container->getParameter('mail_confirmation_from'))
+//                ->setTo($this->container->getParameter('mail_confirmation_to'))
+//                ->setBody(
+//                    $this->renderView(
+//                        'AppBundle:Email:new_property.html.twig',
+//                        compact('space')
+//                    ), 'text/html'
+//                )
+//            ;
+//
+//            $this->get('mailer')->send($message);
+
+        $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
+
+        return $this->redirect($this->generateUrl('space_manager_list'));
+    }
 }

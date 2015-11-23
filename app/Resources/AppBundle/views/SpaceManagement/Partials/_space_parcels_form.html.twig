@@ -1,0 +1,46 @@
+<h4>Lots</h4>
+
+<table class="lots table">
+    <thead>
+    <tr>
+        <th class="col-sm-3">Étage</th>
+        <th class="col-sm-3">Type de locaux</th>
+        <th class="col-sm-3">Surface</th>
+        <th class="col-sm-3">Disponibilité</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for parcel in parcels %}
+        <tr>
+            <td>{{ parcel.floor }}</td>
+            <td>{{ parcel.type }}</td>
+            <td>{{ parcel.surface }}</td>
+            <td>{{ parcel.disponibility|date('d/M/Y') }}</td>
+        </tr
+    {% else %}
+        <tr>
+            <td colspan="4" class="center">Pas de lots</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<label class="form-label">
+    <i class="fa fa-plus-circle"></i>
+    {{ form.vars.label }}
+</label>
+
+{{ form_errors(form) }}
+
+<div class="row">
+    <div class="col-sm-3">{{ form_row(form.floor) }}</div>
+    <div class="col-sm-3">{{ form_row(form.type) }}</div>
+    <div class="col-sm-3">{{ form_row(form.surface) }}</div>
+    <div class="col-sm-3">{{ form_row(form.disponibility) }}</div>
+</div>
+
+<div class="col-sm-4 col-sm-offset-4">
+    <button type="submit" class="btn  btn-fullcolor form-control">
+        Enregistrer
+    </button>
+</div>

@@ -120,6 +120,8 @@ services:
 
     app.form.type.space:
         class: AppBundle\Form\SpaceType
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: appbundle_space }
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\SpaceAttribute;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,12 +16,16 @@ class SpaceAttributeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('attribute', null, array('label' => 'Prestation' , 'attr' => array('class' => 'form-control')))
-            ->add('availability', 'choice', array('label' => 'Disponibilité' , 
-                'choices' => array(0 => 'A prevoir', 1 => 'Inclus'), 
-                'expanded' => true,
-                'multiple' => false,
-                'attr' => array('class' => '')))
+            ->add('availability', 'choice', array(
+                    'label' => 'Disponibilité' ,
+                    'choices' => array(
+                        SpaceAttribute::STATUS_INCLUDED => 'Inclus',
+                        SpaceAttribute::STATUS_EXPECTED => 'A prevoir',
+                        SpaceAttribute::STATUS_NO => 'non'
+                    ),
+                    'expanded' => true,
+                )
+            )
         ;
     }
 

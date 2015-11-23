@@ -16,7 +16,7 @@
         </h3>
         <p>
             Description : {{ space.description }} <br/><br/>
-            ActivtyDescription : {{ space.activityDescription }}<br/><br/>
+            ActivityDescription : {{ space.activityDescription }}<br/><br/>
             Size : {{ space.size }} <br/>
             NbLot : {{ space.parcels | length }}
 
@@ -29,9 +29,16 @@
 
         <div>
             {% if context == 'manage_list' %}
+                {% if space.published %}
                    <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="btn btn-fullcolor">Voir les candidats</a>
-             {% endif %}
-            {% if space.closed == false %}<a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clotûrer</a>{% endif %}
+                    {% if space.closed == false %}
+                        <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clotûrer</a>
+                    {% endif %}
+                {% endif %}
+                {% if not space.submitted %}
+                    <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-fullcolor">Publier</a>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>

@@ -36,10 +36,11 @@
                         'bundles/app/css/colorbox.css'
                         'bundles/app/rs-plugin/css/settings.css'
                         'bundles/app/css/style.css'
-
         filter='cssrewrite' %}
            <link rel="stylesheet" href="{{ asset_url }}" />
-       {% endstylesheets  %}	
+        {% endstylesheets  %}
+
+        {% block stylesheets %}{% endblock %}
 
         <!-- Modernizr -->
         {% javascripts  'bundles/app/js/modernizr-2.8.1.min.js' %}
@@ -198,7 +199,7 @@
         'bundles/app/js/infobox.min.js'
         'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'  
         'bundles/app/rs-plugin/js/jquery.themepunch.revolution.min.js'
-	'bundles/app/js/jquery.colorbox.js'
+        'bundles/app/js/jquery.colorbox.js'
         'bundles/app/js/bootstrap-checkbox.js'
         'bundles/app/js/variables.js'
         'bundles/app/js/scripts.js'
@@ -209,7 +210,6 @@
         {% endjavascripts  %}
 
         {% block javascript %}
-
         {% endblock %}
     </body>
 </html>
