@@ -35,7 +35,8 @@
         "knplabs/knp-gaufrette-bundle": "0.2.*@dev",
         "avocode/form-extensions-bundle": "dev-master",
         "cspoo/swiftmailer-mailgun-bundle": "dev-master",
-        "knplabs/knp-paginator-bundle": "^2.4@dev"
+        "knplabs/knp-paginator-bundle": "^2.4@dev",
+        "knplabs/knp-menu-bundle": "~2"
     },
     "scripts": {
         "post-install-cmd": [

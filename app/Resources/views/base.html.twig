@@ -26,7 +26,8 @@
 	
 	<!-- Google Web Font -->
 	<link href="http://fonts.googleapis.com/css?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" rel="stylesheet" type="text/css" />
-	
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css' />
+
 	<!-- Template CSS -->
         {% stylesheets  'bundles/app/css/bootstrap.min.css'
                         'bundles/app/css/font-awesome.min.css'
@@ -55,46 +56,12 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="{{ path('homepage')}}" class="nav-logo"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
+							<a href="{{ path('homepage')}}" class="nav-logo"><img src="{{ asset('/public/images/logo.png') }}" alt="Plateau Urbain" /></a>
 							
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
 								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
-								
-								<ul class="nav navbar-nav">
-									<li>
-                                                                            <a href="{{ path('homepage')}}">Accueil</a>
-									</li>
-									
-									<li>
-                                                                            <a href="{{ path('search_index') }}">Rechercher</a>
-									</li>
-									
-									<li>
-                                                                            <a href="#">Publier</a>
-									</li>
-									
-                                                                        {% if app.user %}
-									<li class="dropdown">
-                                                                            <a href="#" data-toggle="dropdown" data-hover="dropdown">Mon compte<b class="caret"></b></a>
-                                                                            <ul class="dropdown-menu">
-                                                                                    <li><a href="{{ path('security_profil')}}">Mon profil</a></li>
-                                                                                    {% if app.user.isProprio %}
-                                                                                        <li><a href="{{ path('space_manager_list')}}">Mes espaces</a></li>
-                                                                                        <li><a href="{{ path('space_manager_add')}}">Ajouter un espace</a></li>
-                                                                                    {% elseif app.user.isPorteur  %}
-                                                                                        <li><a href="{{ path('my_applications_list')}}">Mes candidatures</a></li>                                                                                 
-                                                                                    {% endif %}
-                                                                                    <li><a href="{{ path('fos_user_security_logout')}}">Déconnexion</a></li>
-                                                                            </ul>
-									</li>
-                                                                        {% else %}
-									<li>
-                                                                            <a class="inline cboxElement" href="#inline_content">Se connecter</a>
-                                                                        </li>
-                                                                        {% endif %}
-                                                                </ul>
-								
+								{{ knp_menu_render('AppBundle:Builder:mainMenu') }}
 							</nav>
 							<!-- END MAIN MENU -->
 							
@@ -122,15 +89,17 @@
         {% block prebody %} {% endblock %}
                 
 		<div class="content">
-                    <div class="container">
+			<div class="container">
         		{% block body %}{% endblock %}
-                    </div>
-                </div>
+			</div>
+		</div>
 		
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
 
-                <!-- BEGIN FOOTER -->
+		<!-- BEGIN FOOTER -->
 		<footer id="footer">
 			<div id="footer-top" class="container">
 				<div class="row">
