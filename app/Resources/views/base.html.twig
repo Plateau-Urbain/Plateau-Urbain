@@ -74,18 +74,22 @@
 		<!-- END HEADER -->
 		
 		<!-- BEGIN PAGE TITLE/BREADCRUMB -->
-		{% block breadcrumb %}
-		<div class="parallax colored-bg pattern-bg" data-stellar-background-ratio="0.5">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-12">
-						<h1 class="page-title">{% block breadcrumb_title %}{% endblock %}</h1>						
-					</div>
-				</div>
-			</div>
-		</div>
+        {% block breadcrumb %}
+            <div class="breadcrumb-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="breadcrumb">
+                                <li><a href="{{ path('homepage') }}">Accueil</a></li>
+                                {% block breadcrumb_items %}{% endblock %}
+                            </ul>
+                            <p class="clearfix"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endblock %}
-                <!-- END PAGE TITLE/BREADCRUMB -->
+        <!-- END PAGE TITLE/BREADCRUMB -->
 
         {% block prebody %} {% endblock %}
                 

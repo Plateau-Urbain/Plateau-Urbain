@@ -131,4 +131,28 @@ class SpaceAttribute
         $this->attribute = $attribute;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isExpected()
+    {
+        return $this->availability === self::STATUS_EXPECTED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIncluded()
+    {
+        return $this->availability === self::STATUS_INCLUDED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExcluded()
+    {
+        return $this->availability === self::STATUS_NO;
+    }
 }

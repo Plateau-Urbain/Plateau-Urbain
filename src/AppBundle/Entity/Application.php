@@ -4,12 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Application
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRepository")
+ * @Assert\Callback({"validateContribution"})
  */
 class Application
 {
@@ -17,10 +21,11 @@ class Application
     const WEEK_TYPE  = "semaines";
     const MONTH_TYPE = "mois";
     const YEAR_TYPE  = "ans";
-    
-    const WAIT_STATUS   = "en attente";
-    const ACCEPT_STATUS = "accepté";
-    const REJECT_STATUS = "rejeté";
+
+    const DRAFT_STATUS  = 'draft';
+    const WAIT_STATUS   = "awaiting";
+    const ACCEPT_STATUS = "accepted";
+    const REJECT_STATUS = "rejected";
     
     /**
      * @var integer
@@ -36,27 +41,28 @@ class Application
      *
      * @ORM\Column(name="status", type="string")
      */
-    private $status;
+    private $status = self::DRAFT_STATUS;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string")
+     * @Assert\NotBlank()
      */
     private $name;
-
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contribution", type="text")
+     * @ORM\Column(name="contribution", type="text", nullable=true)
      */
     private $contribution;
 
@@ -65,6 +71,7 @@ class Application
      * @var \DateTime
      *
      * @ORM\Column(name="start_occupation", type="date")
+     * @Assert\NotBlank()
      */
     private $startOccupation;
 
@@ -72,6 +79,8 @@ class Application
      * @var integer
      *
      * @ORM\Column(name="length_occupation", type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
      */
     private $lengthOccupation;
 
@@ -79,42 +88,46 @@ class Application
      * @var string
      *
      * @ORM\Column(name="length_type_occupation", type="string", length=5)
+     * @Assert\NotBlank()
      */
     private $lengthTypeOccupation;
 
     /**
      * @ORM\ManyToOne(
-     *      targetEntity="Space"
+     *     targetEntity="Space"
      * )
      */
     private $space;
 
-
     /**
      * @ORM\ManyToOne(
-     *      targetEntity="Category"
+     *     targetEntity="Category"
      * )
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(
-     *      targetEntity="User"
+     *     targetEntity="User"
      * )
      */
     private $projectHolder;
 
-
     /**
-     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\File", mappedBy="application", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\ApplicationFile",
+     *     mappedBy="application",
+     *     orphanRemoval=true,
+     *     cascade={"persist", "remove"}
+     * )
      */
     protected $files;
-
 
     /**
      * @var \Datetime
      *
      * @ORM\Column(name="created", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $created;
 
@@ -122,6 +135,7 @@ class Application
      * @var \Datetime
      *
      * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
 
@@ -134,18 +148,15 @@ class Application
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     *
      */
-    protected $openToGlobalProject;
+    protected $openToGlobalProject = false;
 
-
-
-
+    /**
+     * Application constructor.
+     */
     public function __construct()
     {
-        $this->files = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->setCreated(new \DateTime());
-        $this->setOpenToGlobalProject(false);
+        $this->files = new ArrayCollection();
     }
 
     /**
@@ -163,7 +174,6 @@ class Application
     {
         $this->updated = $updated;
     }
-
 
     /**
      * Get id
@@ -332,7 +342,7 @@ class Application
     }
 
     /**
-     * @param string $name
+     * @param string $lengthOccupation
      */
     public function setLengthOccupation($lengthOccupation)
     {
@@ -348,7 +358,7 @@ class Application
     }
 
     /**
-     * @param string $name
+     * @param string $lengthTypeOccupation
      */
     public function setLengthTypeOccupation($lengthTypeOccupation)
     {
@@ -356,28 +366,27 @@ class Application
     }
 
     /**
-     * Add pics.
-     *
-     * @param \AppBundle\Entity\SpaceImage $pics
-     *
-     * @return Space
+     * @return ArrayCollection|ApplicationFile[]
      */
-    public function addFile(File $file = null)
+    public function getFiles()
     {
-        $this->setUpdated(new \DateTime());
-        $this->files[] = $file;
-
-        return $this;
+        return $this->files;
     }
 
     /**
-     * Remove pics.
-     *
-     * @param \AppBundle\Entity\SpaceImage $pics
+     * @param ApplicationFile $file
      */
-    public function removePic(File $file)
+    public function addFile(ApplicationFile $file)
     {
-        $this->setUpdated(new \DateTime());
+        $file->setApplication($this);
+        $this->files->add($file);
+    }
+
+    /**
+     * @param ApplicationFile $file
+     */
+    public function removeFile(ApplicationFile $file)
+    {
         $this->files->removeElement($file);
     }
 
@@ -398,22 +407,8 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    /**
-     * @param mixed $files
-     */
-    public function setFiles($files)
-    {
-        $this->setUpdated(new \DateTime());
-        $this->files = $files;
-    }
-    
     public static function getAllLengthType() {
         return array(
             self::YEAR_TYPE  => self::YEAR_TYPE,
@@ -456,4 +451,51 @@ class Application
         $this->openToGlobalProject = $openToGlobalProject;
     }
 
+    /**
+     * @return bool
+     */
+    public function isAwaiting()
+    {
+        return $this->status === self::WAIT_STATUS;
+    }
+
+    /**
+     * @return string
+     */
+    public function isDraft()
+    {
+        return $this->status === self::DRAFT_STATUS;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return Application
+     */
+    public static function createFromUser(User $user)
+    {
+        $application = new Application();
+
+        $application->setDescription($user->getProjectDescription());
+        $application->setLengthOccupation($user->getUsageDuration());
+        $application->setLengthTypeOccupation($user->getLengthTypeOccupation());
+        $application->setWishedSize($user->getWishedSize());
+        $application->setProjectHolder($user);
+        $application->setCategory($user->getCategory());
+
+        return $application;
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validateContribution(ExecutionContextInterface $context)
+    {
+        $contribution = $this->contribution;
+        if ($this->openToGlobalProject && empty($contribution)) {
+            $context
+                ->addViolationAt('contribution', 'Cette valeur ne doit pas être vide.')
+            ;
+        }
+    }
 }

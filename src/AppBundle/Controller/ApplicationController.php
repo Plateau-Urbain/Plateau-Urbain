@@ -25,12 +25,10 @@ class ApplicationController extends Controller
      */
     public function indexAction()
     {
-
         $user = $this->get('security.context')->getToken()->getUser();
         $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getApplicationPerOwner($user);
 
         return compact('applications');
-
     }
 
     /**
@@ -42,6 +40,4 @@ class ApplicationController extends Controller
     {
         return compact('application');
     }
-
-
 }

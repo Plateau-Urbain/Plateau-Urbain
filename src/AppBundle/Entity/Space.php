@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use AppBundle\Entity\User;
 
 /**
  * Space.
@@ -173,6 +174,7 @@ class Space
     
     /**
      * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
+     * @ORM\OrderBy({"type": "ASC"})
      */
     private $parcels;
 

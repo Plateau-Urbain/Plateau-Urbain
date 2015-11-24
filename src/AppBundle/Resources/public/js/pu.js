@@ -47,3 +47,54 @@ $(function () {
         $form.submit();
     });
 });
+
+$(function () {
+    $('[data-checkbox-toggle]').each(function () {
+        var $element = $(this);
+        var selector = $element.data('checkbox-toggle');
+        var $target = $(selector);
+
+        if ($element.is(':checked')) {
+            $target.show();
+        } else {
+            $target.hide();
+        }
+
+        $element.on('change', function () {
+            if ($(this).is(':checked')) {
+                $target.show();
+            } else {
+                $target.hide();
+            }
+        });
+    });
+});
+
+$(function () {
+    var recalculate_size_price = function ($container, basePrice) {
+        var $input = $container.find('input');
+        var $monthPrice = $container.find('[data-model="monthPrice"]');
+        var $yearPrice = $container.find('[data-model="yearPrice"]');
+        var value = parseInt($input.val());
+
+        if (value > 0) {
+            $monthPrice.text(value * basePrice);
+            $yearPrice.text(value * basePrice * 12);
+        } else {
+            $monthPrice.text('-');
+            $yearPrice.text('-');
+        }
+    };
+
+    $('[data-size-calculator]').each(function () {
+        var $element = $(this);
+        var basePrice = $element.data('size-calculator');
+
+        recalculate_size_price($element, basePrice);
+
+        $element.on('click', '[data-recalculate]', function (e) {
+           e.preventDefault();
+           recalculate_size_price($element, basePrice);
+        });
+    });
+});

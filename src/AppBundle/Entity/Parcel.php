@@ -173,4 +173,16 @@ class Parcel
     {
         $this->space = $space;
     }
+
+    /**
+     * @return string
+     */
+    public function getDisponibilityToString()
+    {
+        if ($this->disponibility instanceof \DateTime) {
+            return $this->disponibility->format('d/m/Y');
+        }
+
+        return 'Immédiate';
+    }
 }
