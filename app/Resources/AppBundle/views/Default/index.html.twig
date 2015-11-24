@@ -7,11 +7,23 @@
 <div class="revslider-container">
     <div class="revslider" >
         <ul>
-            <li data-transition="fade" data-slotamount="7">
-                <img src="{{ asset('/bundles/app/images/carte.png') }}" alt="carte" />
-                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="120" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Trouvez votre espace' | upper }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="245" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine"><span>81</span> espaces et <span>574</span> porteurs de projets inscrits sur Plateau Urbain</div>
-                <a href="#inline_register_content" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="340" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">M'INSCRIRE</a>
+            <li data-transition="fade" data-slotamount="7" class="slide1">
+                <img src="{{ asset('/bundles/app/images/slide1.png') }}" alt="Porteurs de projet" />
+                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="320" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Porteurs de projet' | upper }}</div>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="390" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">Vous êtes à la recherche d'espaces à prix abordable pour<br /> héberger votre projet ? La plate-forme Plateau Urbain<br /> vous aide à trouver l'endroit rêvé. Inscrivez-vous pour <br />découvrir les espaces.</div>
+                <a href="{% if app.user %}{{ path('security_profil') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">S'INSCRIRE</a>
+            </li>
+            <li data-transition="fade" data-slotamount="7" class="slide2">
+                <img src="{{ asset('/bundles/app/images/slide2.png') }}" alt="Rechercher un espace" />
+                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="120" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Rechercher <br />un espace' | upper | raw }}</div>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="255" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">LA VACANCE... 4 000 000 m2 de<br />bureaux inocupés en Ile de France.<br />Une charge financière pour les<br /> propriétaires et la ville en général.<br /> Mais aussi une opportunité pour <br />ceux qui cherchent à bénéficier des <br /> ressources urbaines à moindres <br />coûts, pour se loger et travailler. <br /><b>Rejoignez-nous dès maintenant!</b></div>
+                <a href="{% if app.user %}{{ path('search_index') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="550" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">SOUTENIR PLATEAU URBAIN</a>
+            </li>
+            <li data-transition="fade" data-slotamount="7" class="slide3">
+                <img src="{{ asset('/bundles/app/images/slide3b.png') }}" alt="Propriétaires et gérants" />
+                <div class="caption sfr slider-title pu-main-title" data-x="120" data-y="220" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Propriétaires <br />et gérants' | upper | raw }}</div>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="120" data-y="360" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme Plateau Urbain vous offre la <br />possibilité de valoriser votre patrimoine <br />inutilisé, en permettant à des projets venus<br /> de tout le Grand Paris de naître ou de se<br /> développer.</div>
+                <a href="{% if app.user %}{{ path('space_manager_add') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="120" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">PROPOSER UN ESPACE</a>
             </li>
         </ul>
     </div>
@@ -25,44 +37,42 @@
 
     <div class='col-sm-6'>
         <div class='col-sm-6'>
-            <h2>Résorber la vacance, servir la création</h2>
+            <h2>Résorber la <br /> vacance, servir<br /> la création</h2>
         </div>
         <div class='col-sm-6'>
-            <p>Plateau urbain est une association proposant de jouer le rôle d'agent immobilier dans une optique non lucrative afin de redonner une activité à des immeubles vacants en renégociant des baux précaires à des tarifs réduits.</p>
+            <p>Plateau urbain est une association<br /> engagée pour mettre en relation et<br /> accompagner les propriétaires de<br /> locaux vacants et les porteurs de<br /> projets citoyens, économiques ou<br /> culturels en Ile-de-France.</p>
             <br />
-            <a href='#' class='btn btn-default-color'>En savoir plus</a>
+            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-fullcolor'>EN SAVOIR PLUS</a>
         </div>
     </div>
     <div class='col-sm-6'>
         <div class='col-sm-6'>
-            <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' />
+            <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' class="mt35"/>
         </div>
         <div class='col-sm-6'>
-            <img src='{{ asset('/bundles/app/images/logo-idf.png') }}' alt='Ile de France' />
-            <p class="ml65 mt15"><strong>4 000 000 m²</strong> de bureaux vacants</p>
-            <p class="ml65 mt15"><strong>1097</strong> communes gérantes d'espaces</p>
+            <p class="ml65 mt15 pu-size"><strong>4 000 000 m²</strong><br /> de bureaux vacants</p>
         </div>
         
     </div>
 </div>    
    
             
-<div class="row">
+<div class="row pu-partners mt35">
     <h1 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Nos partenaires</h1>
     
     <div id="featured-properties-slider" class="owl-carousel fullwidthsingle" data-animation-direction="from-bottom" data-animation-delay="250">
             <div class="item">
                 <div class="col-sm-3">
-                    <img src="{{ asset('/public/images/cergy_logo.png') }}" alt="Cergy" />
+                    <a href="http://www.cergypontoise.fr/jcms/en_23126/fr/navigation-principale" target="_blank"><img src="{{ asset('/public/images/cergy_logo.png') }}" alt="Cergy" /></a>
                 </div>
                 <div class="col-sm-3">
-                    <img src="{{ asset('/public/images/logo-est-ensemble.png') }}" alt="Est Ensemble" />
+                    <a href="http://www.est-ensemble.fr/" target="_blank"><img src="{{ asset('/public/images/logo-est-ensemble.png') }}" alt="Est Ensemble" /></a>
                 </div>
                 <div class="col-sm-3">
-                    <img src="{{ asset('/public/images/logo-bezons.png') }}" alt="Bezons" />
+                    <a href="http://www.agglo-argenteuil-bezons.fr/" target="_blank"><img src="{{ asset('/public/images/logo-bezons.png') }}" alt="Bezons" /></a>
                 </div>
                 <div class="col-sm-3">
-                    <img src="{{ asset('/public/images/Plaine_Commune.jpg') }}" alt="Plaine Commune" />
+                    <a href="http://www.plainecommune.fr/" target="_blank"><img src="{{ asset('/public/images/Plaine_Commune.jpg') }}" alt="Plaine Commune" /></a>
                 </div>
             </div>
     </div>

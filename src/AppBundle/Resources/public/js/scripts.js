@@ -453,11 +453,11 @@ var Cozy;
                 if ($('.revslider').length) {
                     $('.revslider').revolution({
                         delay: 9000,
-                        startwidth: 1170,
-                        startheight: 500,
+                        startwidth: 1500,
+                        startheight: 800,
                         hideThumbs: 10,
                         navigationType: "none",
-                        fullWidth: "on"
+                        fullWidth: "on",
                     });
                 }
             },
