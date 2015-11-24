@@ -33,7 +33,6 @@ class SpaceController extends Controller
      * @Route("/fiche/{id}", name="space_show")
      * @Template()
      */
-
     public function showAction(Space $space, Request $request)
     {
         $user = $this->getUser();

@@ -6,12 +6,13 @@ use Avocode\FormExtensionsBundle\Form\Model\UploadCollectionFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * SpaceImage.
  *
  * @ORM\Table(name="space_image")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
  * @Vich\Uploadable
  */
 class SpaceImage implements UploadCollectionFileInterface
@@ -26,7 +27,7 @@ class SpaceImage implements UploadCollectionFileInterface
     private $id;
 
     /**
-     * @Assert\File(
+     * @Assert\Image(
      *     maxSize="20M"
      * )
      * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
@@ -41,11 +42,21 @@ class SpaceImage implements UploadCollectionFileInterface
     /**
      * @ORM\ManyToOne(targetEntity="Space", inversedBy="pics")
      * @ORM\JoinColumn(name="space_id", referencedColumnName="id")
+     * @Gedmo\SortableGroup
      */
     protected $space;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="position", type="smallint")
+     * @Gedmo\SortablePosition
+     */
+    protected $position;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
      *
      * @var \DateTime
      */
@@ -132,5 +143,37 @@ class SpaceImage implements UploadCollectionFileInterface
     public function getPreview()
     {
         return (preg_match('/image\/.*/i', $this->file->getMimeType()));
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param int $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

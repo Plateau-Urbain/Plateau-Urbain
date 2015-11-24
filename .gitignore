@@ -14,3 +14,5 @@
 /web/css/
 /components/
 /web/assetic/
+/web/media
+!web/media/.gitkeep

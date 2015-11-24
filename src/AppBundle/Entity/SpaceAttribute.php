@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SpaceAttribute
 {
+    const STATUS_NO       = 0; // Non inclus
+    const STATUS_INCLUDED = 1; // Inclus
+    const STATUS_EXPECTED = 2; // A prévoir
+
     /**
      * @var int
      *
@@ -24,23 +28,27 @@ class SpaceAttribute
     /**
      * @var bool
      *
-     * @ORM\Column(name="availability", type="boolean")
+     * @ORM\Column(name="availability", type="smallint")
      */
-    private $availability;
+    private $availability = self::STATUS_NO;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Space", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Space", inversedBy="tags", cascade={"persist"})
      */
     private $space;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Attribute", cascade={"persist"})
+     * @return Attribute
+     *
+     * @ORM\ManyToOne(targetEntity="Attribute", inversedBy="tags", cascade={"persist"})
      */
     private $attribute;
 
-    
+    /**
+     * @return string
+     */
     public function __toString() {
-        return $this->attribute->getName();
+        return (string) $this->attribute->getName();
     }
     
     /**
@@ -54,9 +62,9 @@ class SpaceAttribute
     }
 
     /**
-     * Set $space.
+     * Set availability.
      *
-     * @param Space $availability
+     * @param int $availability
      *
      * @return SpaceAttribute
      */
@@ -70,7 +78,7 @@ class SpaceAttribute
     /**
      * Get availability.
      *
-     * @return string
+     * @return int
      */
     public function getAvailability()
     {
@@ -94,7 +102,7 @@ class SpaceAttribute
     /**
      * Get space.
      *
-     * @return string
+     * @return Space
      */
     public function getSpace()
     {
@@ -104,7 +112,7 @@ class SpaceAttribute
     /**
      * Get space.
      *
-     * @return string
+     * @return Attribute
      */
     public function getAttribute()
     {
@@ -114,7 +122,9 @@ class SpaceAttribute
     /**
      * Get space.
      *
-     * @return string
+     * @param Attribute $attribute
+     *
+     * @return $this
      */
     public function setAttribute($attribute)
     {

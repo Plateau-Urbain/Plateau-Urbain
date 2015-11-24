@@ -2,12 +2,29 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Parcel;
+use AppBundle\Entity\Space;
+use AppBundle\Entity\SpaceAttribute;
+use AppBundle\Entity\SpaceImage;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SpaceType extends AbstractType
 {
+    /**
+     * SpaceType constructor.
+     *
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -18,34 +35,76 @@ class SpaceType extends AbstractType
             ->add('name', null, array('label' => 'Nom de l\'espace' , 'attr' => array('class' => 'form-control')))
             ->add('zipCode', null, array('label' => 'Code postal' , 'attr' => array('class' => 'form-control')))
             ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control')))
-            ->add('limitAvailability', null, array('label' => 'Date limite de candidature', 'attr' => array('class' => 'inline-date')))
+            ->add(
+                'limitAvailability',
+                'date',
+                array(
+                    'label' => 'Date limite de candidature',
+                    'widget' => 'single_text',
+                    'format' => 'dd/MM/yyyy',
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'data-provide' => 'datepicker'
+                    )
+                )
+            )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
             ->add('price', null, array('label' => 'Prix au m²', 'attr' => array('class' => 'form-control')))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('tags', 'collection', array(
-                'type'      => new SpaceAttributeType(),
-                'label'     => 'Prestations',
-                'allow_add' => true,
-                'allow_delete' => true,
+                'type' => new SpaceAttributeType(),
+                'label' => false,
+                'allow_add' => false,
+                'allow_delete' => false,
                 'by_reference' => false
             ))
-            ->add('pics', 'collection', array(
-                'type' => new ImageType(),
-                'label' => 'Photos',
-                'allow_add' => true,
-                'allow_delete'  => true,
-                'by_reference' => false
+            ->add('newImage', new ImageType(), array(
+                'label' => 'Ajouter une photo',
+                'mapped' => false,
+                'required' => false
             ))
-            ->add('parcels', 'collection', array(
-                'type'      => new ParcelType(),
-                'label'     => 'Lots',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false
+            ->add('newParcel', new ParcelType(), array(
+                'label'     => 'Ajouter un lot',
+                'mapped' => false,
+                'required' => false
             ))
         ;
+
+        $attributes = $this->getAttributes();
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($attributes) {
+            /**
+             * @var Space $data
+             */
+            $data = $event->getData();
+
+            $currentAttributes = $data->getTags()->map(function ($spaceAttribute) {
+                return $spaceAttribute->getAttribute();
+            });
+
+            foreach ($attributes as $attribute) {
+                if (!$currentAttributes->contains($attribute)) {
+                    $spaceAttribute = new SpaceAttribute();
+                    $spaceAttribute->setAttribute($attribute);
+                    $data->addTag($spaceAttribute);
+                }
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            // Handles new parcel
+            $newParcel = $event->getForm()->get('newParcel')->getData();
+            if ($newParcel instanceof Parcel && $event->getForm()->isValid()) {
+                $event->getData()->addParcel($newParcel);
+            }
+
+            // Handles new image
+            $newImage = $event->getForm()->get('newImage')->getData();
+            if ($newImage instanceof SpaceImage && $event->getForm()->isValid()) {
+                $event->getData()->addPic($newImage);
+            }
+        });
     }
 
     /**
@@ -54,7 +113,8 @@ class SpaceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Space'
+            'data_class' => 'AppBundle\Entity\Space',
+            'cascade_validation' => true
         ));
     }
 
@@ -64,5 +124,13 @@ class SpaceType extends AbstractType
     public function getName()
     {
         return 'appbundle_space';
+    }
+
+    /**
+     * @return \AppBundle\Entity\Attribute[]|array
+     */
+    protected function getAttributes()
+    {
+        return $this->em->getRepository('AppBundle:Attribute')->findAll();
     }
 }

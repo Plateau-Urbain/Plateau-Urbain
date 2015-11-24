@@ -1,5 +1,4 @@
 <div class="row">
-
     <!-- BEGIN MAIN CONTENT -->
     <div class="main col-sm-8 col-sm-offset-2">
         <h1 class="section-title">Ajouter un espace</h1>
@@ -14,121 +13,95 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">Votre espace</h2>
+        <h2 class="section-title">Votre espace</h2>
+
+        {{ form_errors(form) }}
 
         <div class="row">            
             <div class="col-sm-12">
-                {{ form_label(form.name) }}
-                {{ form_widget(form.name) }}
+                {{ form_row(form.name) }}
             </div>
         </div>
             
         <div class="row">            
             <div class="col-sm-6">
-                {{ form_label(form.zipCode) }}
-                {{ form_widget(form.zipCode) }}
+                {{ form_row(form.zipCode) }}
             </div>
             <div class="col-sm-6">
-                {{ form_label(form.city) }}
-                {{ form_widget(form.city) }}
+                {{ form_row(form.city) }}
             </div>
         </div>            
             
         <div class="row">            
             <div class="col-sm-6">
-                {{ form_label(form.limitAvailability) }}
-                {{ form_widget(form.limitAvailability) }}
+                {{ form_row(form.limitAvailability) }}
             </div>
             <div class="col-sm-6">
-                {{ form_label(form.availability) }}
-                {{ form_widget(form.availability) }}
+                {{ form_row(form.availability) }}
             </div>
         </div>       
             
         <div class="row">            
             <div class="col-sm-6">
-                {{ form_label(form.type) }}
-                {{ form_widget(form.type) }}
+                {{ form_row(form.type) }}
             </div>
             <div class="col-sm-6">
-                {{ form_label(form.price) }}
-                {{ form_widget(form.price) }}
+                {{ form_row(form.price) }}
             </div>
         </div>               
 
         <div class="row">
             <div class="col-sm-12">
-                {{ form_label(form.description)}}
-                {{ form_widget(form.description) }}
+                {{ form_row(form.description) }}
             </div>
         </div>            
             
         <div class="row form-group">
             <div class="col-sm-12">
-                {{ form_label(form.activityDescription)}}
-                {{ form_widget(form.activityDescription) }}
+                {{ form_row(form.activityDescription) }}
             </div>
         </div>
             
-        <h1 class="section-title">Prestations et services</h1>
+        <h2 class="section-title">Prestations et services</h2>
                
         <div class="row">
             <div class="col-sm-12">
-                <table class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e }}">
-                    {# itère sur chaque tag existant et affiche son unique champ : name #}
-                    {% for tag in form.tags %}
-                        <li>{{ form_row(tag.name) }}</li>
-                    {% endfor %}
-                </table>
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="button" value="Ajouter un attribut" class="btn btn-fullcolor form-control" id="addAttribute">
-                </div>
+                {% include '@App/SpaceManagement/Partials/_space_attributes_form.html.twig' with { 'form': form.tags } %}
             </div>
         </div>              
             
-        <h1 class="section-title">Répartition des surfaces</h1>    
+        <h2 class="section-title">Répartition des surfaces</h2>
         
         <div class="row">
             <div class="col-sm-12">
-                <table class="lots" data-prototype="{{ form_widget(form.parcels.vars.prototype)|e }}">
-                    {# itère sur chaque tag existant et affiche son unique champ : name #}
-                    {% for parcel in form.parcels %}
-                        <li>{{ form_row(parcel.name) }}</li>
-                    {% endfor %}
-                </table>
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="button" value="Ajouter un lot" class="btn btn-fullcolor form-control" id="addLot">
-                </div>
+                {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
             </div>
         </div>   
                 
-        <h1 class="section-title">Photos</h1>                  
+        <h2 class="section-title">Photos</h2>
 
         <div class="row">
             <div class="col-sm-12">
-                <table class="photos" data-prototype="{{ form_widget(form.pics.vars.prototype)|e }}">
-                    {# itère sur chaque tag existant et affiche son unique champ : name #}
-                    {% for pic in form.pics %}
-                        <li>{{ form_row(parcel.pic) }}</li>
-                    {% endfor %}
-                </table>
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="button" value="Ajouter une photo" class="btn btn-fullcolor form-control" id="addPhoto">
-                </div>
+                {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
             </div>
         </div>   
 
-        <h1 class="section-title">Publication</h1>  
-        
-        <center>
-            <p>
-                Attention une fois publiée, vous ne pourrez pas modifier l'annonce sans intervention d'un administrateur.
-            </p>
-        </center>
+        <h2 class="section-title">Publication</h2>
+
+        <p class="center">
+            Attention une fois publiée, vous ne pourrez pas modifier l'annonce sans intervention d'un administrateur.
+        </p>
         
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4">
-                <input type="submit" value="Publier" class="btn btn-fullcolor form-control" onclick="return confirm('Êtes-vous sûr de vouloir continuer?')">
+                {{ form_widget(
+                    form.publish, {
+                        'attr': {
+                            'class': 'btn btn-fullcolor form-control',
+                            'onclick': "return confirm('Êtes-vous sûr de vouloir continuer?')"
+                        }
+                    })
+                }}
             </div>
         </div>                
                 

@@ -3,15 +3,22 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Space.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
+ * @Assert\Callback({"validatePicturesCount"})
  */
 class Space
 {
+    const MAX_PICTURES_UPLOAD = 20;
+
     /**
      * @var int
      *
@@ -25,6 +32,8 @@ class Space
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $name;
 
@@ -32,6 +41,7 @@ class Space
      * @var \Datetime
      *
      * @ORM\Column(name="created", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $created;
 
@@ -39,6 +49,7 @@ class Space
      * @var \Datetime
      *
      * @ORM\Column(name="updated", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
 
@@ -46,6 +57,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -53,6 +65,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="activity_description", type="text")
+     * @Assert\NotBlank()
      */
     private $activityDescription;
 
@@ -88,6 +101,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="zip_code", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $zipCode;
     
@@ -95,6 +109,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $city;
     
@@ -109,6 +124,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="availability", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $availability;
 
@@ -116,6 +132,7 @@ class Space
      * @var \DateTime
      *
      * @ORM\Column(name="limitAvailability", type="date")
+     * @Assert\NotBlank()
      */
     private $limitAvailability;
 
@@ -123,16 +140,20 @@ class Space
      * @var string
      *
      * @ORM\Column(name="price", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $price;
 
     /**
      * @ORM\OneToMany(targetEntity="SpaceImage", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OrderBy({"position"="ASC"})
      */
     protected $pics;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User" )
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
      */
     protected $owner;
 
@@ -141,17 +162,17 @@ class Space
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    private $enabled = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="closed", type="boolean")
      */
-    private $closed;    
+    private $closed = false;
     
     /**
-     * @ORM\oneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
      */
     private $parcels;
 
@@ -161,13 +182,27 @@ class Space
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SpaceType", inversedBy="spaces")
+     * @ORM\ManyToOne(targetEntity="SpaceType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      */
     private $type;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", name="is_submitted")
+     */
+    private $submitted = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="submitted_at", nullable=true)
+     */
+    private $submittedAt;
         
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getTags()
     {
@@ -175,37 +210,33 @@ class Space
     }
 
     /**
-     * @param mixed $tags
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-    }
-
-    /**
-     * @return mixed
+     * @param SpaceAttribute $tag
+     *
+     * @return $this
      */
     public function addTag($tag)
     {
         $this->setUpdated(new \DateTime());
-        $this->tags[] = $tag;
         $tag->setSpace($this);
+        $this->tags[] = $tag;
     }
 
     /**
-     * @param mixed $tags
+     * @param SpaceAttribute $tag
      */
     public function removeTag($tag)
     {
         $this->tags->removeElement($tag);
     }
 
+    /**
+     * Space constructor.
+     */
     public function __construct()
     {
-        $this->pics = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->parcels = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->setCreated(new \DateTime());
+        $this->pics = new ArrayCollection();
+        $this->parcels = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
     /**
      * Get id.
@@ -459,7 +490,7 @@ class Space
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection|SpaceImage[]
      */
     public function getPics()
     {
@@ -467,27 +498,18 @@ class Space
     }
 
     /**
-     * @param mixed $pics
-     */
-    public function setPics($pics)
-    {
-        $this->setUpdated(new \DateTime());
-        $this->pics = $pics;
-
-        $this->pics->setGalerie($this);
-    }
-
-    /**
      * Add pics.
      *
-     * @param \AppBundle\Entity\SpaceImage $pics
+     * @param SpaceImage $pic
      *
      * @return Space
      */
-    public function addPic(\AppBundle\Entity\SpaceImage $pics)
+    public function addPic(SpaceImage $pic)
     {
+        $pic->setSpace($this);
+        $this->pics->add($pic);
+
         $this->setUpdated(new \DateTime());
-        $this->pics[] = $pics;
 
         return $this;
     }
@@ -497,10 +519,10 @@ class Space
      *
      * @param \AppBundle\Entity\SpaceImage $pics
      */
-    public function removePic(\AppBundle\Entity\SpaceImage $pics)
+    public function removePic(SpaceImage $pics)
     {
-        $this->setUpdated(new \DateTime());
         $this->pics->removeElement($pics);
+        $this->setUpdated(new \DateTime());
     }
 
     /**
@@ -536,7 +558,7 @@ class Space
     }    
     
     /**
-     * @return mixed
+     * @return User
      */
     public function getOwner()
     {
@@ -544,7 +566,7 @@ class Space
     }
 
     /**
-     * @param mixed $owner
+     * @param User $owner
      */
     public function setOwner($owner)
     {
@@ -669,7 +691,7 @@ class Space
     }
 
     /**
-     * @param Type
+     * @param SpaceType
      *
      * @return Parcel
      */
@@ -681,18 +703,24 @@ class Space
     }
 
     /**
-     * @return Date
+     * @return SpaceType
      */
     public function getType()
     {
         return $this->type;
     }
-    
+
+    /**
+     * @return string
+     */
     public  function __toString()
     {
         return $this->getName().' - '.($this->getOwner() != null ? $this->getOwner()->getLastName() : '');
     }
-    
+
+    /**
+     * @return int
+     */
     public function getMinSize() {
         $min = -1;
         foreach ($this->getParcels() as $parcel) {
@@ -703,6 +731,9 @@ class Space
         return $min;
     }
 
+    /**
+     * @return int
+     */
     public function getMaxSize() {
         $max = 0;
         foreach ($this->getParcels() as $parcel) {
@@ -711,6 +742,61 @@ class Space
             }
         }
         return $max;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSubmitted()
+    {
+        return $this->submitted;
+    }
+
+    /**
+     * @param boolean $submitted
+     */
+    public function setSubmitted($submitted)
+    {
+        $this->submittedAt = new \DateTime();
+        $this->submitted = $submitted;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getSubmittedAt()
+    {
+        return $this->submittedAt;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isOwner(User $user)
+    {
+        return $this->owner->getId() === $user->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished()
+    {
+        return $this->enabled && $this->submitted;
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validatePicturesCount(ExecutionContextInterface $context)
+    {
+        if ($this->pics->count() > self::MAX_PICTURES_UPLOAD) {
+            $context
+                ->addViolationAt("newImage", sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD))
+            ;
+        }
     }
 }
 

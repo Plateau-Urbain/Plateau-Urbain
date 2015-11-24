@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Parcel.
@@ -25,25 +26,28 @@ class Parcel
      * @var int
      *
      * @ORM\Column(name="surface", type="integer")
+     * @Assert\NotBlank()
      */
     private $surface;
 
     /**
-     * @var date
+     * @var \DateTime
      * 
      * @ORM\Column(name="disponibility", type="date", nullable=true)
      */
     private $disponibility;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LocalType", inversedBy="parcels")
+     * @ORM\ManyToOne(targetEntity="LocalType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Floor", inversedBy="parcels")
+     * @ORM\ManyToOne(targetEntity="Floor")
      * @ORM\JoinColumn(name="floor_id", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $floor;
 
@@ -110,7 +114,7 @@ class Parcel
     }
 
     /**
-     * @param date $disponibility
+     * @param \DateTime $disponibility
      *
      * @return Parcel
      */
@@ -122,7 +126,7 @@ class Parcel
     }
 
     /**
-     * @return Date
+     * @return \DateTime
      */
     public function getDisponibility()
     {
