@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -81,8 +82,6 @@ class SpaceManagementController extends Controller
             return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
         }
 
-        $errors = $this->get('validator')->validate($space);
-
         return array('form' => $form->createView());
     }
 
@@ -143,54 +142,64 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/candidats/{id}", name="space_manager_candidates")
+     * @Route("/candidats/{id}", name="space_manager_candidates", methods={"get", "post"})
      * @Template()
      */
     public function candidatesAction(Request $request, Space $space)
     {
-        if ($request->getMethod() == 'POST') {
-            $em         = $this->getDoctrine()->getManager();
-                    
-            $ids        = $request->get('applications');
-            $message    = $request->get('message');
-            $action     = $request->get('action');
-                    
-            $ids = explode('-', $ids);        
+        if ($request->isMethod('post')) {
+            $em = $this->getDoctrine()->getManager();
+
+            $ids = $request->get('applications');
+            $message = $request->get('message');
+            $action = $request->get('action');
+
+            $ids = explode('-', $ids);
             foreach ($ids as $id) {
-                
-                $application = $em->getRepository('AppBundle:Application')->find($id);
-                        
-                if ($action == 'accept') {
-                    $application->setStatus(\AppBundle\Entity\Application::ACCEPT_STATUS);
-                } elseif ($action == 'refuse') {
-                    $application->setStatus(\AppBundle\Entity\Application::REJECT_STATUS);                    
+
+                $application = $em->getRepository('AppBundle:Application')->findOneBy(array(
+                    'id' => $id,
+                    'space' => $space->getId()
+                ));
+
+                if (!$application || !$application->isAwaiting()) {
+                    // Already processed
+                    continue;
                 }
-                
-                //TODO : send mail
+
+                if ($action == 'accept') {
+                    $application->setStatus(Application::ACCEPT_STATUS);
+                } elseif ($action == 'refuse') {
+                    $application->setStatus(Application::REJECT_STATUS);
+                }
+
                 $message = \Swift_Message::newInstance()
                     ->setSubject($action == 'accept' ? 'Candidature Acceptée' : 'Candidature rejetée')
                     ->setFrom($this->container->getParameter('mail_confirmation_from'))
                     ->setTo($application->getProjectHolder()->getEmail())
                     ->setBody(
                         $this->renderView(
-                            'AppBundle:Email:candidate.html.twig', 
-                                array('space' => $space, 'message' => $message, 'user' => $application->getProjectHolder())
-                        ), 'text/html'
-                    )
-                ;
+                            'AppBundle:Email:candidate.html.twig',
+                            array(
+                                'space'      => $space,
+                                'message'    => $message,
+                                'user'       => $application->getProjectHolder(),
+                                'isAccepted' => $application->isAccepted()
+                            )
+                        ),
+                        'text/html'
+                    );
 
                 $this->get('mailer')->send($message);
-                
-                
-                $em->persist($application);
             }
-            
-            
+
             $em->flush();
-            
+
+            return $this->redirect(
+                $this->generateUrl('space_manager_candidates', array('id' => $space->getId()))
+            );
         }
 
-            
         $params = array(
             'space'     => $space,
             'orderBy'   => $request->get('orderBy', 'lengthOccupation'),
@@ -202,7 +211,7 @@ class SpaceManagementController extends Controller
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1)/*page number*/
+            $request->query->getInt('page', 1)
         );
         
         return array(
