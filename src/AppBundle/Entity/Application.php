@@ -26,7 +26,20 @@ class Application
     const WAIT_STATUS   = "awaiting";
     const ACCEPT_STATUS = "accepted";
     const REJECT_STATUS = "rejected";
-    
+
+    /**
+     * @return array
+     */
+    public static function getStatusLabels()
+    {
+        return array(
+            self::DRAFT_STATUS => 'Brouillon',
+            self::WAIT_STATUS => 'En attente',
+            self::ACCEPT_STATUS => 'Accepté',
+            self::REJECT_STATUS => 'Refusé',
+        );
+    }
+
     /**
      * @var integer
      *
@@ -465,6 +478,36 @@ class Application
     public function isDraft()
     {
         return $this->status === self::DRAFT_STATUS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccepted()
+    {
+        return $this->status === self::ACCEPT_STATUS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRejected()
+    {
+        return $this->status === self::REJECT_STATUS;
+    }
+
+    /**
+     * @return null
+     */
+    public function getStatusLabel()
+    {
+        $statusList = self::getStatusLabels();
+
+        if (array_key_exists($this->status, $statusList)) {
+            return $statusList[$this->status];
+        }
+
+        return null;
     }
 
     /**

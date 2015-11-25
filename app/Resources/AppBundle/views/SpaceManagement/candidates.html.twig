@@ -1,26 +1,126 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumb_items %}
+    <li>
+        <a href="{{ path('space_manager_list') }}">Liste de mes espaces</a>
+    </li>
+    <li>
+        <a href="{{ path('space_show', { 'id': space.id }) }}">{{ space.name }}</a>
+    </li>
+    <li>
+        <span>Liste des candidats</span>
+    </li>
+{% endblock %}
 
 {% block body %}
-
-<div class="row">
-
-        <!-- BEGIN MAIN CONTENT -->
-        <div class="col-sm-12">
-                <h1 class="property-title">Liste des candidats ({{ pagination.getTotalItemCount }})</h1>            
-        </div>
-        
-</div>    
-
-<hr />        
-        
-<!-- BEGIN PROPERTY LISTING -->
-<div id="property-listing" class="list-style clearfix">
+<div class="page-header">
     <div class="row">
-        {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_candidates' } %}
+        <!-- BEGIN MAIN CONTENT -->
+        <div class="col-sm-6">
+            <h1 class="page-title">Liste des candidats ({{ pagination.getTotalItemCount }})</h1>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="btn-toolbar pull-right">
+                <a href="" class="btn btn-secondary">
+                    <i class="fa fa-download"></i>
+                    Exporter la liste
+                </a>
+                <a href="javascript:print();" class="btn btn-secondary">
+                    <i class="fa fa-print"></i>
+                    Imprimer
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+        
+<!-- BEGIN PROPERTY LISTING -->
+<div id="space-card" class="space-card clearfix">
+    <div class="row">
+        <div class="col-sm-4">
+            {% if space.pics.first %}
+                <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
+            {% endif %}
+        </div>
+        <div class="col-sm-8">
+            <div class="col-sm-6">
+                <h2 class="space-title">
+                    {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
+                    <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+                </h2>
+            </div>
+            <div class="col-sm-4 col-sm-offset-2">
+                <div class="space-price">
+                    À partir de
+                    <strong>{{ space.price }}€/m²/mois</strong>
+                    H.C. H.T.<sup>1</sup>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="space-description">
+                    <p>
+                        {{ space.description }} ...
+                        <a href="">Voir l'annonce</a>
+                    </p>
+                </div>
+                <div class="space-date-limit">
+                    Date limite de candidature
+                    <strong>
+                        {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                    </strong>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                {% if space.isEnabled and not space.isClosed %}
+                    <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-fullcolor">Clôturer</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="center">
+    <a href="#space-stats" data-toggle="collapse">
+        <i class="fa fa-lg fa-eye-slash" title="Masquer/Afficher les statistiques" data-toggle="tooltip"></i>
+    </a>
+</div>
+
+<div class="space-stats collapse in" id="space-stats">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="stats-title">
+                Statistiques des candidatures sur cet espace
+            </h3>
+
+            <p class="stats-summary">
+                Cet espace compte <strong>{{ pagination.totalItemCount }} candidatures</strong><br>
+                représentant une demande totale de <strong>- m<sup>2</sup></strong>
+            </p>
+        </div>
+
+        <div class="col-sm-6">
+            <h4 class="stats-title secondary">Par type de candidature</h4>
+        </div>
+        <div class="col-sm-6">
+            <h4 class="stats-title secondary">Par type de projet</h4>
+        </div>
+
+        <div class="col-sm-12 center">
+            <a href="" class="btn btn-secondary">
+                <i class="fa fa-print"></i>
+                Imprimer
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr>
 
 {% if pagination.getTotalItemCount > 0 %}
 <div id="listing-header" class="clearfix">
@@ -61,7 +161,6 @@
             </div>
         </div>
     </div>
-
 </div>    
         
 <div class="row">
@@ -69,10 +168,12 @@
         <div class="item col-sm-12 contact-us">
             <div class="row">
                 <div class="col-sm-1">
-                    <input type="checkbox" class="groupCheck" value="{{ application.id }}"/>
+                    {% if application.isAwaiting %}
+                    <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
+                    {% endif %}
                 </div>
                 <div class="col-sm-6">
-                    <p>STATUT : {{ application.status | upper }}</p>
+                    <p>STATUT : {{ application.statusLabel | upper }}</p>
                     <p>{{ application.name | upper }}</p>
                     <p>PAR {{ application.projectHolder.company | upper }}</p>
                     <br />
@@ -92,9 +193,7 @@
     {% endfor %}
 </div>
 {% else %}
-    <center>
-        <p>Il n'y a aucune candidature sur cette espace</p>
-    </center>
+    <p class="center">Il n'y a aucune candidature sur cette espace</p>
 {% endif %}
 
 
