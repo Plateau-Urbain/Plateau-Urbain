@@ -118,7 +118,6 @@ class SecurityController extends Controller
      */
     public function showMyApplicationAction(Application $application)
     {
-
         return compact('application');
     }
 }

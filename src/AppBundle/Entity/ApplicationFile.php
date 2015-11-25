@@ -1,19 +1,19 @@
 <?php
 namespace AppBundle\Entity;
 
-use Avocode\FormExtensionsBundle\Form\Model\UploadCollectionFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * File.
+ * Applicaiton file.
  *
- * @ORM\Table(name="file")
+ * @ORM\Table(name="application_file")
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class File implements UploadCollectionFileInterface
+class ApplicationFile
 {
     /**
      * @var int
@@ -31,7 +31,6 @@ class File implements UploadCollectionFileInterface
      * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
      */
     protected $file;
-
 
     /**
      * @ORM\Column(name="file_name", type="string", nullable=true)
@@ -69,18 +68,22 @@ class File implements UploadCollectionFileInterface
     }
 
     /**
-     * @param mixed $file
+     * @param File $file
+     *
+     * @return $this;
      */
-    public function setFile(\Symfony\Component\HttpFoundation\File\File $file = null)
+    public function setFile(File $file = null)
     {
         if ($file === null) {
             return;
         }
+
         $this->file = $file;
         return $this;
     }
+
     /**
-     * @return mixed
+     * @return string
      */
     public function getFileName()
     {
@@ -88,7 +91,7 @@ class File implements UploadCollectionFileInterface
     }
 
     /**
-     * @param mixed $fileName
+     * @param string $fileName
      */
     public function setFileName($fileName)
     {
@@ -96,7 +99,7 @@ class File implements UploadCollectionFileInterface
     }
 
     /**
-     * @return mixed
+     * @return Application
      */
     public function getApplication()
     {
@@ -104,27 +107,10 @@ class File implements UploadCollectionFileInterface
     }
 
     /**
-     * @param mixed $application
+     * @param Application $application
      */
     public function setApplication($application)
     {
         $this->application = $application;
     }
-
-    public function getSize()
-    {
-        return $this->file->getFileInfo()->getSize();
-    }
-
-    public function setParent($parent)
-    {
-        $this->setApplication($parent);
-    }
-
-    public function getPreview()
-    {
-        return (preg_match('/image\/.*/i', $this->file->getMimeType()));
-    }
-
-
 }

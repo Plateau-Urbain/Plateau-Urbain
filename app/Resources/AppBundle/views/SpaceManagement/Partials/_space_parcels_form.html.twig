@@ -15,8 +15,10 @@
             <td>{{ parcel.floor }}</td>
             <td>{{ parcel.type }}</td>
             <td>{{ parcel.surface }}</td>
-            <td>{{ parcel.disponibility|date('d/M/Y') }}</td>
-        </tr
+            <td>
+                {{ parcel.disponibilityToString }}
+            </td>
+        </tr>
     {% else %}
         <tr>
             <td colspan="4" class="center">Pas de lots</td>

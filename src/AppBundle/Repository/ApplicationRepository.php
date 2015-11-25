@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -14,9 +15,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class ApplicationRepository extends EntityRepository
 {
+    /**
+     * @param User $owner
+     *
+     * @return array
+     */
     public function getApplicationPerOwner(User $owner)
     {
-
         $qb = $this->createQueryBuilder('a')
             ->addSelect('space')
             ->addSelect('user')

@@ -4,8 +4,24 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * Class SpaceRepository
+ *
+ * @package AppBundle\Repository
+ */
 class SpaceRepository extends EntityRepository
 {
+    public function findAllEnabled()
+    {
+        $qb = $this->createQueryBuilder('_s');
+        return $qb
+            ->andWhere('_s.enabled = true')
+            ->andWhere('_s.closed = false')
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
     public function getEnabled()
     {
         return $this->createQueryBuilder('u')
@@ -15,7 +31,6 @@ class SpaceRepository extends EntityRepository
                 'enabled' => true,
             ));
     }
-
 
 
     public function filter($params)

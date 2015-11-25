@@ -140,3 +140,9 @@ services:
          arguments: [%fos_user.model.user.class%]
          tags:
              - { name: form.type, alias: project_holder_user_registration }
+
+    # Twig extensions
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }

@@ -7,6 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class ApplicationType
+ *
+ * @package AppBundle\Form
+ */
 class ApplicationType extends AbstractType
 {
     /**
@@ -17,44 +22,50 @@ class ApplicationType extends AbstractType
     {
         $builder
             ->add('name', null, array('label'=>"Nom du projet", 'attr' => array('placeholder'=>"Nom du projet", 'class'=>'form-control input-box')) )
-            ->add('description', null, array('label'=>"Description du projet", 'attr' => array('placeholder'=>"Description du projet", 'class'=>'form-control textarea-box')))
-            ->add('contribution', null, array('label'=>"Quelle serait votre contribution au projet global du propriétaire ?", 'attr' => array('class'=>'form-control textarea-box')))
+            ->add('description', null, array(
+                'label'=>"Description du projet",
+                'attr' => array(
+                    'placeholder'=>"Description du projet",
+                    'class'=>'textarea-box'
+                )
+            ))
+            ->add('contribution', null, array(
+                'required' => false,
+                'label'=>"Quelle serait votre contribution au projet global du propriétaire ?",
+                'attr' => array('class' => 'textarea-box'),
+                'help' => 'Some help text'
+            ))
             ->add('startOccupation', 'date', array(
                     'label'=>"Date d'entrée souhaitée",
                     'input'  => 'datetime',
-                'widget'=>'single_text',
-                'attr' => array(
-                    'class'=>'form-control input-box')
+                    'widget'=>'single_text',
+                    'format' => 'd/M/y',
+                    'attr' => array(
+                        'data-provide' => 'datepicker'
+                    )
                 )
             )
             ->add('lengthOccupation', null, array(
                     'label'=>"Durée d'occupation",
-                    'attr' => array('class' => 'form-control')
+                    'attr' => array()
                 )
             )
             ->add('openToGlobalProject', null, array('label' => "Je suis ouvert(e) à faire partie d'un projet collectif " ))
-            ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
-
+            ->add(
+                'lengthTypeOccupation',
+                'choice',
+                array(
+                    'choices' => Application::getAllLengthType(),
+                    'label' => "Durée d'occupation"
+                )
+            )
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true, 'attr'=> array('placeholder'=>"Categorie du projet", 'class'=>'form-control input-box')))
-            ->add('wishedSize', null, array('label'=>"Surface souhaitée en m²", 'attr' => array('class' => 'form-control input-box')));
-
-//  Don't delete... Just in case :) .
-//            ->add('files', 'afe_collection_upload', array(
-//                'type' => new ImageType(),
-//                'nameable' => false,
-//                'label' => 'Fichiers',
-//                'allow_add' => true,
-//                'allow_delete'  => true,
-//                'maxNumberOfFiles' => 10,
-//                'uploadRouteName' => 'upload_action',
-//                'prependFiles' => true,
-//                'autoUpload' => true,
-//                'options' => array(
-//                    'data_class' => "AppBundle\Entity\File",
-//                ),
-//            ))
-
-
+            ->add('wishedSize', null, array(
+                'label'=>"Surface souhaitée en m²",
+                'attr' => array('class' => 'input-box'),
+                'block_name' => 'size_calculator'
+            ))
+        ;
     }
     
     /**

@@ -4,11 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
+use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Space controller.
@@ -23,67 +25,82 @@ class SpaceController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space');
-        $spaces = $em->findAll();
+        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Space');
+        $spaces = $repository->findAllEnabled();
 
-        return compact('spaces');
+        return array(
+            'spaces' => $spaces
+        );
     }
 
     /**
-     * @Route("/fiche/{id}", name="space_show")
+     * @Route("/fiche/{id}", name="space_show", methods={"get", "post"})
      * @Template()
      */
     public function showAction(Space $space, Request $request)
     {
+        /**
+         * @var User $user
+         */
         $user = $this->getUser();
-        
-        if (!$space->isEnabled() && $space->getOwner()->getId() != $user->getId() || 
-            $space->isClosed() && $space->getOwner()->getId() != $user->getId()) {
-            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+        if (!$space->isEnabled() && !$space->isOwner($user)
+            || $space->isClosed() && !$space->isOwner($user)
+        ) {
+            throw new AccessDeniedException();
         }
-        
-        $em = $this->getDoctrine()->getManager();
-        $application = new Application();
 
-        //set some defaults
-        $application->setDescription($user->getprojectDescription());
-        $application->setLengthOccupation($user->getUsageDuration());
-        $application->setLengthTypeOccupation($user->getLengthTypeOccupation());
+        $em = $this->get('doctrine.orm.entity_manager');
+        $application = $em->getRepository('AppBundle:Application')->findOneBy(
+            array(
+                'projectHolder' => $user->getId(),
+                'space' => $space->getId()
+            )
+        );
 
-        $form = $this->createForm('appbundle_application', $application, array('action'=>$this->generateUrl('space_show', array('id' => $space->getId()))));
+        if (!$application instanceof Application) {
+            $application = Application::createFromUser($user);
+            $application->setSpace($space);
+        }
+
+        $form = $this->createForm('appbundle_application', $application, array(
+            'action' => $this->generateUrl(
+                'space_show',
+                array(
+                    'id' => $space->getId()
+                )
+            ),
+            'attr' => array(
+                'novalidate' => true
+            )
+        ));
 
         $invalidProfile = true;
-
         if ($form->handleRequest($request)->isValid()) {
-            $application->setProjectHolder($this->getUser());
-            $application->setSpace($space);
-            
             $application->setStatus(Application::WAIT_STATUS);
 
             $em->persist($application);
             $em->flush();
 
-            return new RedirectResponse($this->generateUrl('space_show', array('id'=>$space->getId()))."#espace_confirmation") ;
+            return new RedirectResponse(
+                $this->generateUrl(
+                    'space_show',
+                    array(
+                        'id' => $space->getId()
+                    )
+                ) . "#espace_confirmation"
+            );
         }
 
-        $applicated = false;
-        if ($user) {
-            //Check if the profile is completed
-            $errors = $this->container->get('validator')->validate($user);
-            $invalidProfile = (count($errors) > 0) ? true : false;
-
-            //Check if this user have an active application for this space.
-            $applicated = $em->getRepository('AppBundle:Application')->findOneBy(
-                array('projectHolder' => $user,
-                      'space' => $space ) );
-        }
-
+        // Check if the profile is completed
+        $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));
+        $invalidProfile = (count($errors) > 0) ? true : false;
 
         return array(
             'space'          => $space,
             'form'           => $form->createView(),
             'invalidProfile' => $invalidProfile,
-            'applicated'     => $applicated
+            'application'    => $application
         );
     }
 
@@ -92,7 +109,6 @@ class SpaceController extends Controller
      */
     public function picShowAction($img_id)
     {
-
         $pic = $this->getDoctrine()->getManager()->getRepository("AppBundle:SpaceImage")->find($img_id);
         return $this->render( 'AppBundle:Space/Partials:picShow.html.twig',compact('pic'));
     }
