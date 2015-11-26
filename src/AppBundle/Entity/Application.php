@@ -79,7 +79,6 @@ class Application
      */
     private $contribution;
 
-
     /**
      * @var \DateTime
      *
@@ -508,6 +507,18 @@ class Application
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullLengthOccupation()
+    {
+        return sprintf(
+            '%s %s',
+            $this->lengthOccupation,
+            $this->lengthTypeOccupation
+        );
     }
 
     /**
