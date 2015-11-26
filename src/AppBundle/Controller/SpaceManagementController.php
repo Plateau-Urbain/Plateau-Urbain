@@ -5,6 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
+use Exporter\Handler;
+use Exporter\Source\DoctrineORMQuerySourceIterator;
+use Exporter\Writer\CsvWriter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,6 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -142,7 +146,7 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * @Route("/candidats/{id}", name="space_manager_candidates", methods={"get", "post"})
+     * @Route("/candidats/{id}", name="space_manager_candidates", methods={"get", "post"}, requirements={"id": "\d+"})
      * @Template()
      */
     public function candidatesAction(Request $request, Space $space)
@@ -200,10 +204,20 @@ class SpaceManagementController extends Controller
             );
         }
 
+        // Handle the filter form
+        $filterForm = $this->handleFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
+        ));
+
+        $filters = $filterForm->getData();
+
         $params = array(
             'space'     => $space,
-            'orderBy'   => $request->get('orderBy', 'lengthOccupation'),
-            'sort'      => $request->get('sort', 'ASC'),
+            'orderBy'   => $filters['sort_field'],
+            'status'    => $filters['status_filter'],
+            'sort'      => $filters['sort_order']
         );
 
         $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
@@ -211,13 +225,73 @@ class SpaceManagementController extends Controller
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1)
+            $request->query->getInt('page', 1),
+            10
         );
         
         return array(
             'space'         => $space,
-            'pagination'    => $pagination
+            'pagination'    => $pagination,
+            'filterForm' => $filterForm->createView()
         );
+    }
+
+    /**
+     * @param Request $request
+     * @param Space   $space
+     *
+     * @return Response
+     *
+     * @Route("/candidats/{id}/export", name="space_manager_candidatesexport", methods={"get"}, requirements={"id": "\d+"})
+     */
+    public function candidatesExportAction(Request $request, Space $space)
+    {
+        // Handle the filter form
+        $filterForm = $this->handleFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
+        ));
+
+        $filters = $filterForm->getData();
+
+        $params = array(
+            'space'     => $space,
+            'orderBy'   => $filters['sort_field'],
+            'status'    => $filters['status_filter'],
+            'sort'      => $filters['sort_order']
+        );
+
+        $qb = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
+
+        $sourceIterator = new DoctrineORMQuerySourceIterator(
+            $qb->getQuery(),
+            array(
+                'Statut' => 'statusLabel',
+                'Nom' => 'name',
+                'Structure' => 'projectHolder.company',
+                'Nom du porteur' => 'projectHolder.fullName',
+                'Description' => 'description',
+                'Date de dépôt de la candidature' => 'created',
+                'Type de projet' => 'category',
+                'Surface recherchée' => 'wishedSize',
+                'Durée d\'occupation souhaitée' => 'fullLengthOccupation',
+                'Date d\'entrée souhaitée' => 'startOccupation'
+            ),
+            'd/m/Y'
+        );
+
+        $writer = new CsvWriter('php://output');
+        $filename = 'export_candidatures.csv';
+
+        $callback = function () use ($sourceIterator, $writer) {
+            Handler::create($sourceIterator, $writer)->export();
+        };
+
+        return new StreamedResponse($callback, 200, array(
+            'Content-Type' => 'application/csv',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $filename)
+        ));
     }
 
     /**
@@ -332,5 +406,59 @@ class SpaceManagementController extends Controller
         $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 
         return $this->redirect($this->generateUrl('space_manager_list'));
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $data
+     *
+     * @return Form
+     */
+    protected function handleFilterForm(Request $request, $data)
+    {
+        $builder = $this->get('form.factory')->createNamedBuilder('filter', 'form', $data, array(
+            'action' => $this->generateUrl('space_manager_candidates', array('id' => $request->get('space')->getId())),
+            'method' => 'get',
+            'csrf_protection' => false
+        ));
+
+        $builder->add('sort_field', 'choice', array(
+            'required' => false,
+            'choices' => array(
+                'wishedSize' => 'Surface recherchée',
+                'startOccupation' => 'Date d\'entrée souhaitée',
+                'lengthOccupation' => 'Durée d\'occupation',
+                'created' => 'Date de candidature'
+            ),
+            'empty_value' => 'Trier par',
+            'empty_data' => 'created'
+        ));
+
+        $builder->add('status_filter', 'choice', array(
+            'required' => false,
+            'choices' => array(
+                Application::WAIT_STATUS => 'En attente',
+                Application::ACCEPT_STATUS => 'Accepté',
+                Application::REJECT_STATUS => 'Refusé',
+            ),
+            'empty_value' => 'Filtrer par',
+            'empty_data' => ''
+        ));
+
+        $builder->add('sort_order', 'choice', array(
+            'required' => false,
+            'expanded' => true,
+            'empty_value' => false,
+            'choices' => array(
+                'asc' => 'Trier par ordre croissant',
+                'desc' => 'Trier par ordre décroissant'
+            ),
+            'empty_data' => 'desc'
+        ));
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        return $form;
     }
 }

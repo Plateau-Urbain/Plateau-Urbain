@@ -22,7 +22,7 @@
 
         <div class="col-sm-6">
             <div class="btn-toolbar pull-right">
-                <a href="" class="btn btn-secondary">
+                <a href="{{ path('space_manager_candidatesexport', { 'id': space.id }) }}" class="btn btn-secondary">
                     <i class="fa fa-download"></i>
                     Exporter la liste
                 </a>
@@ -35,7 +35,6 @@
     </div>
 </div>
 
-        
 <!-- BEGIN PROPERTY LISTING -->
 <div id="space-card" class="space-card clearfix">
     <div class="row">
@@ -122,7 +121,6 @@
 
 <hr>
 
-{% if pagination.getTotalItemCount > 0 %}
 <div id="listing-header" class="clearfix">
     <div class="row">
         <div class="col-sm-12">
@@ -133,7 +131,7 @@
     <p>&nbsp;</p>
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-5">
             <div class="form-control-small">
                 <select id="groupActionSelect" data-placeholder="Actions groupées">
                     <option value=""> </option>
@@ -144,57 +142,82 @@
             <a href="#accept_content" class="btn btn-fullcolor" id="groupActionBtn">Appliquer</a>
         </div>
         
-        <div class="col-sm-4">
-            <div class="form-control-small">
-                <select id="sort_by" name="sort_by" data-placeholder="Trier par">
-                    <option value=""> </option>
-                    <option value="created">Trier par date</option>
-                    <option value="city">Trier par ville</option>
-                </select>
+        <div class="col-sm-7">
+            {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.status_filter) }}
             </div>
 
-            <div class="sort">
-                <ul>
-                    <li id="desc"><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
-                    <li id="asc"><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
-                </ul>
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.sort_field) }}
             </div>
+
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.sort_order) }}
+            </div>
+
+            {{ form_end(filterForm) }}
         </div>
     </div>
 </div>    
         
-<div class="row">
+<div class="application-list">
     {% for application in pagination %}
-        <div class="item col-sm-12 contact-us">
+        <div class="item">
             <div class="row">
                 <div class="col-sm-1">
                     {% if application.isAwaiting %}
-                    <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
+                        <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
                     {% endif %}
                 </div>
                 <div class="col-sm-6">
-                    <p>STATUT : {{ application.statusLabel | upper }}</p>
-                    <p>{{ application.name | upper }}</p>
-                    <p>PAR {{ application.projectHolder.company | upper }}</p>
-                    <br />
+                    <div class="application-status">
+                        Statut: <strong>{{ application.statusLabel | upper }}</strong>
+                    </div>
+                    <div class="application-title">
+                        <h4>{{ application.name }}</h4>
+                        PAR <strong>{{ application.projectHolder.company }}</strong>
+                    </div>
+
                     <p><i class="fa fa-user"></i>&nbsp; {{ application.projectHolder.fullName }}</p>
 
-                    <p><i class="fa fa-file-text-o"></i>&nbsp; {{ application.description|length > 250 ? application.description|slice(0, 250) ~ '...' : application.description  }}</p>
+                    <p><i class="fa fa-file-text-o"></i>&nbsp; {{ application.description|truncate(250) }}</p>
                 </div>
-                <div class="col-sm-5">
-                    <p>Candidature déposée le : {{ application.created | date('d/m/Y') }}</p>
-                    <p>Type de projet : {{ application.category }}</p>
-                    <p>Surface recherchée : {{ application.wishedSize }}m²</p>
-                    <p>Durée d'occupation : {{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</p>
-                    <p>Date d'entrée souhaitée : {{ application.startOccupation | date ('d F Y') }}</p>
+                <div class="col-sm-4">
+                    <ul>
+                        <li>
+                            Candidature déposée le <strong>{{ application.created | date('d/m/Y') }}</strong>
+                        </li>
+                        <li>
+                            Type de projet : <strong>{{ application.category }}</strong>
+                        </li>
+                        <li>
+                            Surface recherchée : <strong>{{ application.wishedSize }}m²</strong>
+                        </li>
+                        <li>
+                            Durée d'occupation : <strong>{{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</strong>
+                        </li>
+                        <li>
+                            Date d'entrée souhaitée : <strong>{{ application.startOccupation|localizeddate('long', 'none') }}</strong>
+                        </li>
+                    </ul>
+                    <a href="{{ path('application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-block">Voir la candidature</a>
                 </div>
             </div>
         </div>
+    {% else %}
+        <p class="center">Il n'y a aucune candidature sur cette espace</p>
     {% endfor %}
 </div>
-{% else %}
-    <p class="center">Il n'y a aucune candidature sur cette espace</p>
-{% endif %}
+
+<div>
+    <div class="row">
+        <div class="col-sm-12">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+</div>
 
 
 <div style="display: none;">
@@ -251,6 +274,24 @@
                 }
                 
             });
+        });
+
+        // Manage sort field
+        $(function () {
+            $('.sort').on('click', 'label', function () {
+                var $input = $(this).find('input');
+
+                $('.sort').find('label').removeClass('checked');
+
+                if ($input.is(':checked')) {
+                    $(this).addClass('checked');
+                }
+            });
+        });
+
+        // Submit form
+        $('form[data-submit]').on('change', function () {
+            $(this).trigger('submit');
         });
     </script>
 {% endblock %}

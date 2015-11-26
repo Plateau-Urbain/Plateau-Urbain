@@ -6,6 +6,8 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ApplicationRepository
@@ -35,20 +37,32 @@ class ApplicationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param array $params
+     *
+     * @return QueryBuilder
+     */
     public function filter($params)
     {
         $qb = $this->createQueryBuilder('a')
             ->select('a');
 
         if (!empty($params['space'])) {
-            $qb->andWhere('a.space = :space')->setParameter('space',$params['space'] );
+            $qb->andWhere('a.space = :space')->setParameter('space', $params['space']);
         }
 
         if (!empty($params['orderBy'])) {
             $qb->orderBy('a.'.$params['orderBy'], $params['sort']);
+            if ($params['orderBy'] === 'lengthOccupation') {
+                $qb->addOrderBy('a.lengthTypeOccupation', $params['sort']);
+            }
         }
 
-        return $qb->getQuery()->getResult();
-    }    
-    
+        if (!empty($params['status'])) {
+            $qb->andWhere('a.status = :status');
+            $qb->setParameter('status', $params['status']);
+        }
+
+        return $qb;
+    }
 }
