@@ -28,16 +28,19 @@ class ApplicationController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
         $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getApplicationPerOwner($user);
 
-        return compact('applications');
+        return array(
+            'applications' => $applications
+        );
     }
 
     /**
      * @Route("/voir/{id}", name="application_show")
      * @Template()
      */
-
     public function showAction(Application $application)
     {
-        return compact('application');
+        return array(
+            'application' => $application
+        );
     }
 }

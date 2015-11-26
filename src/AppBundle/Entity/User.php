@@ -181,8 +181,6 @@ class User extends BaseUser
      */
     private $birthday;
 
-
-
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
      */
