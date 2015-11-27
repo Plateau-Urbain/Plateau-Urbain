@@ -54,29 +54,8 @@
         </div>
         
     </div>
-</div>    
-   
-            
-<div class="row pu-partners mt35">
-    <h1 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Nos partenaires</h1>
-    
-    <div id="featured-properties-slider" class="owl-carousel fullwidthsingle" data-animation-direction="from-bottom" data-animation-delay="250">
-            <div class="item">
-                <div class="col-sm-3">
-                    <a href="http://www.cergypontoise.fr/jcms/en_23126/fr/navigation-principale" target="_blank"><img src="{{ asset('/public/images/cergy_logo.png') }}" alt="Cergy" /></a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="http://www.est-ensemble.fr/" target="_blank"><img src="{{ asset('/public/images/logo-est-ensemble.png') }}" alt="Est Ensemble" /></a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="http://www.agglo-argenteuil-bezons.fr/" target="_blank"><img src="{{ asset('/public/images/logo-bezons.png') }}" alt="Bezons" /></a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="http://www.plainecommune.fr/" target="_blank"><img src="{{ asset('/public/images/Plaine_Commune.jpg') }}" alt="Plaine Commune" /></a>
-                </div>
-            </div>
-    </div>
-    
-</div>            
-    
+</div>
+
+{% include '@App/Default/_partners.html.twig' %}
+
 {% endblock %}
