@@ -87,7 +87,7 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="surface", type="string", length=255, nullable=true)
+     * @ORM\Column(name="surface", type="float", nullable=true)
      */
     private $surface;
 
@@ -140,7 +140,7 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="string", length=255)
+     * @ORM\Column(name="price", type="float")
      * @Assert\NotBlank()
      */
     private $price;
@@ -470,7 +470,7 @@ class Space
     /**
      * Set price.
      *
-     * @param string $price
+     * @param float $price
      *
      * @return Space
      */
@@ -484,7 +484,7 @@ class Space
     /**
      * Get price.
      *
-     * @return string
+     * @return float
      */
     public function getPrice()
     {
@@ -787,6 +787,13 @@ class Space
     public function isPublished()
     {
         return $this->enabled && $this->submitted;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDepCode() {
+        return substr($this->zipCode, 0, 2);
     }
 
     /**

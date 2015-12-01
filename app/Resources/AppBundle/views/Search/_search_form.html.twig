@@ -14,7 +14,6 @@
 
                         <div class="form-control-large">
                             {{ form_widget(form.localType) }}
-
                         </div>
 
                         <div class="form-control-large">
@@ -33,7 +32,9 @@
                             {{ form_widget(form.maximumSurface) }}
                         </div>
 
-                        <button type="submit" class="btn btn-fullcolor">Rechercher</button>
+                        <div class="form-control-large">
+                            <button id="searchSubmit" type="submit" class="btn btn-fullcolor search-btn">Rechercher</button>
+                        </div>
                     </div>
                     <div class="hidden">
                         {{ form_rest(form) }}

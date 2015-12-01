@@ -104,15 +104,6 @@ class SpaceController extends Controller
         );
     }
 
-     /**
-     * @Route("/pic_show/{img_id}", name="space_pic_show")
-     */
-    public function picShowAction($img_id)
-    {
-        $pic = $this->getDoctrine()->getManager()->getRepository("AppBundle:SpaceImage")->find($img_id);
-        return $this->render( 'AppBundle:Space/Partials:picShow.html.twig',compact('pic'));
-    }
-
     /**
      * @Route("/confirmation", name="space_confirmation")
      * @Template()
