@@ -50,29 +50,39 @@ class SpaceRepository extends EntityRepository
         if (!empty($params['closed'])) {
             $qb->andWhere('s.closed = :closed')->setParameter('closed', $params['closed']);
         }
-        
+
+        if (!empty($params['limitAvailability'])) {
+            $qb->andWhere('s.limitAvailability >= :limitAvailability')->setParameter('limitAvailability', $params['limitAvailability']);
+        }
+
+        if (!empty($params['zipCode'])) {
+            $qb->andWhere('s.zipCode LIKE :key')->setParameter('key', $params['zipCode'] . '%' );
+        }
+
         if (!empty($params['localType'])) {
-            $qb->andWhere('p.type = :key')->setParameter('key',$params['localType'] );
+            $qb->andWhere('p.type = :key')->setParameter('key', $params['localType'] );
         }
 
         if (!empty($params['minimumPrice'])) {
-            $qb->andWhere('s.price > :minimumPrice')->setParameter('minimumPrice', $params['minimumPrice'] );
+            $qb->andWhere('s.price >= :minimumPrice')->setParameter('minimumPrice', $params['minimumPrice'] );
         }
 
         if (!empty($params['maximumPrice'])) {
-            $qb->andWhere('s.price < :maximumPrice')->setParameter('maximumPrice', $params['maximumPrice'] );
+            $qb->andWhere('s.price <= :maximumPrice')->setParameter('maximumPrice', $params['maximumPrice'] );
         }
 
         if (!empty($params['minimumSurface'])) {
-            $qb->andWhere('p.surface > :minimumSurface')->setParameter('minimumSurface',$params['minimumSurface'] );
+            $qb->andWhere('p.surface >= :minimumSurface')->setParameter('minimumSurface',$params['minimumSurface'] );
         }
 
         if (!empty($params['maximumSurface'])) {
-            $qb->andWhere('p.surface < :maximumSurface')->setParameter('maximumSurface',$params['maximumSurface'] );
+            $qb->andWhere('p.surface <= :maximumSurface')->setParameter('maximumSurface',$params['maximumSurface'] );
         }
 
         if (!empty($params['orderBy'])) {
             $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
+        } else {
+            $qb->orderBy('s.name', 'ASC');
         }
 
         return $qb->getQuery()->getResult();

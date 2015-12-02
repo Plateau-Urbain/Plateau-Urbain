@@ -4,6 +4,13 @@
 
 {% block prebody %}
 
+<div class="container js-map">
+    <div class="map"></div>
+    <div id="pu_tool_tip">
+
+    </div>
+</div>
+
 {% include "AppBundle:Search:_search_form.html.twig" with {'form' : form } %}
 
 {% endblock %}
@@ -13,35 +20,232 @@
 
 <!-- BEGIN PROPERTY LISTING -->
 <br />
-<div id="property-listing" class="grid-style1 clearfix">
-    <div class="row">
+    <div class="row last-space" id="js-results">
+        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les derniers espaces disponibles</h2>
 
         {% for space in latest %}
-        <div class="item col-sm-4"><!-- Set width to 4 columns for grid view mode only -->
-            <div class="image">
+            <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
                 <a href="{{ path('space_show', {'id' : space.id}) }}">
-                    <h3>{{ space.name }}</h3>
-                    <span class="location">Upper East Side, New York</span>
+                    <div class="image">
+                        <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="" />
+                    </div>
+                    <div class="price_contener">
+                        <span class="top">à partir de</span><br />
+                        <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span><span class="legend"> H.C. - H.T.<sup>1</sup></span>
+                    </div>
+                    <div class="foot">
+                        <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
+                        <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
+                    </div>
                 </a>
-                <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="" />
             </div>
-            <div class="price">
-                <i class="fa fa-home"></i>For Sale
-                <span>{{ space.price }} €</span>
-            </div>
-            <ul class="amenities">
-                <li><i class="icon-area"></i> 2150 Sq Ft</li>
-                <li><i class="icon-bedrooms"></i> 4</li>
-                <li><i class="icon-bathrooms"></i> 3</li>
-            </ul>
-        </div>
-            {% if loop.index is divisibleby(3) %}
-                </div>
-                <div class="row">
-            {% endif %}
         {% endfor %}
 
     </div>
-</div>
+
+{% endblock %}
+
+{% block partners %}
+    <div class="js-partners">
+        <div class="container pb100">
+            {% include '@App/Default/_partners.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    {% javascripts
+        'bundles/app/js/raphael.js'
+        'bundles/app/js/jquery.mapael.js'
+        'bundles/app/js/map.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+        var coords = {
+            '95': {'x': 220, 'y': 100, 'name': 'Val d\'Oise'},
+            '78': {'x': 140, 'y': 190, 'name': 'Yvelines'},
+            '92': {'x': 235, 'y': 205, 'name': 'Hauts-de-Seine'},
+            '93': {'x': 300, 'y': 165, 'name': 'Seine-Saint-Denis'},
+            '75': {'x': 260, 'y': 185, 'name': 'Paris'},
+            '94': {'x': 290, 'y': 220, 'name': 'Val de Marne'},
+            '77': {'x': 420, 'y': 240, 'name': 'Seine-et-Marne'},
+            '91': {'x': 240, 'y': 270, 'name': 'Essonne'},
+        };
+
+        function loadSearch(code) {
+            $('#appbundle_search_space_zipCode').val(code);
+            search();
+            return false;
+        }
+
+        function search(target) {
+            $.ajax({
+                type: "POST",
+                url: target ? target : '{{ path('search_action') }}',
+                data: $( "#searchForm" ).serialize(),
+                success: function(result) {
+                    $('#js-results').html(result);
+                    $('.js-partners').hide();
+
+                    $('html, body').animate({
+                        scrollTop: $("#js-results").offset().top
+                    }, 1000);
+                },
+            });
+
+
+            return false;
+        }
+
+        function hideTooltip() {
+            $('#pu_tool_tip').hide();
+            return ;
+        }
+
+        $(document).ready(function() {
+            $("#searchSubmit").click(function() {
+                return search();
+            });
+
+
+            $(".js-map").mapael({
+                map : {
+                    name : "idf"
+
+                    , zoom : {
+                        enabled : true,
+                        maxLevel : 10
+                    },
+                    afterInit : function($self, paper, areas, plots, options) {
+
+                        // Show te link between the two plots on mouseover event on the red one
+                        {% for code, qt in departements %}
+                            $(areas['d{{ code }}'].mapElem.node)
+                            .on('mouseenter', function() {
+
+                                var offset = $(plots['d{{ code }}'].mapElem.node).offset();
+                                var width  = $(plots['d{{ code }}'].mapElem.node).get(0).getBoundingClientRect().width;
+                                var toolTip = $('#pu_tool_tip');
+
+                                /* SHOW TOOLTIP */
+                                console.log(width);
+
+                                toolTip.show();
+                                toolTip.css('top', (offset.top - 185) + 'px').css('left', (offset.left - 162 + (width / 2)) + 'px');
+                                toolTip.html("<span class='zone_title'>"+ coords['{{ code }}'].name +"</span><br />{{ qt }} espace{% if qt > 1 %}s{% endif %} disponible{% if qt > 1 %}s{% endif %}<br /><a href='#' onclick=\"loadSearch('{{ code }}')\" class='btn btn-fullcolor'>Voir les espaces</a><img src='{{ asset('/bundles/app/images/close.png') }}' class='close' onclick='hideTooltip();' />");
+
+                                /* CLICK IN TOOLTIP */
+                                $(toolTip).find('a').click(function() {
+                                    var newData = {
+                                        'areas': {},
+                                        'plots' : {}
+                                    };
+
+                                    {% for code2, qt2 in departements %}
+                                        newData.areas['d{{ code2 }}'] = {
+                                            attrs: {
+                                                fill: "#C18D3F"
+                                            }
+                                        };
+
+                                        newData.plots['d{{ code2 }}'] = {
+                                            attrs: {
+                                                fill: "#B6761A"
+                                            }
+                                        };
+                                    {% endfor %}
+
+                                    newData.areas['d{{ code }}'] = {
+                                        attrs: {
+                                            fill: "#BC1B38"
+                                        }
+                                    };
+
+                                    newData.plots['d{{ code }}'] = {
+                                        attrs: {
+                                            fill: "#BC1B38"
+                                        }
+                                    };
+
+                                    $(".js-map").trigger('update', [newData]);
+                                });
+
+                            });
+                        {% endfor %}
+                    }
+
+                    // Set default plots and areas style
+                    , defaultPlot : {
+                        attrs : {
+                            fill: "transparent"
+                            , opacity : 0.6
+                        }
+                        , attrsHover : {
+                            opacity : 1,
+                            fill: "#BC1B38"
+                        }
+                        , text : {
+                            position : "inner",
+                            attrs : {
+                                "font-size" : 11
+                                , fill : "#fff"
+                            },
+                            attrsHover : {
+                                "font-size" : 11
+                                , fill : "#fff"
+                            }
+                        }
+                    }
+                    , defaultArea: {
+                        attrs : {
+                            fill : "#f2eee9"
+                            , stroke: "#fdfdfd"
+                        }
+                        , attrsHover : {
+                            fill: "#cea262"
+                        }
+                    }
+                },
+
+                // Customize some areas of the map
+                areas: {
+                    {% for code, qt in departements %}
+                    "d{{ code }}" : {
+                        attrs : {
+                            fill : "#cea262"
+                        }
+                        , attrsHover : {
+                            fill: "#BC1B38"
+                        }
+                    },
+                    {% endfor %}
+                },
+
+                // Add some plots on the map
+                plots : {
+                    {% for code, qt in departements %}
+                    'd{{ code }}' : {
+                        type: "circle",
+                        size: 20,
+                        x: coords['{{ code }}'].x,
+                        y: coords['{{ code }}'].y,
+                        attrs : {
+                            opacity : 0.6,
+                            'stroke-width': 3,
+                        },
+                        text : {
+                            content : "{{ qt }}",
+                        }
+                    },
+                    {% endfor %}
+                }
+            });
+        });
+    </script>
+
 
 {% endblock %}

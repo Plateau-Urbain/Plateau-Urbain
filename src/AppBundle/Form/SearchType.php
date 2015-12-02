@@ -20,29 +20,30 @@ class SearchType extends AbstractType
                 'attr'      => array(
                 'data-placeholder'=>"Type de local")) ) //liste déroulante)
             ->add('minimumPrice', 'choice', array(
-                    'choices'   => range(10,300,10),
+                    'choices'   => array_combine(range(10,1000,10), range(10,1000,10)),
                     'required'  => false,
                     'attr'      => array(
                         'data-placeholder'=>"Prix min/m2/mois")) )
             ->add('maximumPrice', 'choice', array(
-                'choices'   => range(100,300,10),
+                'choices'   => array_combine(range(100,1000,10), range(100,1000,10)),
                 'required'  => false,
                 'attr'      => array(
                     'data-placeholder'=>"Prix max/m2/mois")) )
             ->add('minimumSurface', 'choice', array(
-                'choices'   => range(5,100,5),
+                'choices'   => array_combine(range(5,1000,5), range(5,1000,5)),
                 'required'  => false,
                 'attr'      => array(
                     'data-placeholder'=>"Surface min")
             ))
             ->add('maximumSurface', 'choice', array(
-                'choices'   => range(5,100,5),
+                'choices'   => array_combine(range(5,1000,5), range(5,1000,5)),
                 'required'  => false,
                 'attr'      => array(
                     'data-placeholder'=>"Surface max")
             ))
-            ->add('orderBy', 'text', array('data' => 'created'))
-            ->add('sort', 'text', array('data' => 'desc'))
+            ->add('zipCode', 'hidden')
+            ->add('orderBy', 'text', array('data' => 'name'))
+            ->add('sort', 'text', array('data' => 'ASC'))
 
         ;
     }

@@ -111,15 +111,11 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="company_site", length=255, type="string", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $company_site;
 
     /**
      * @ORM\Column(name="company_blog", length=255, type="string", nullable=true)
-     *
-     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $company_blog;
 
