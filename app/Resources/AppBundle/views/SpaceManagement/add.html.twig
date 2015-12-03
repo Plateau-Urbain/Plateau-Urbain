@@ -1,6 +1,11 @@
 {% extends "base.html.twig" %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumb_items %}
+    <li><a href="{{ path('search_index') }}">Mon compte</a></li>
+    <li><span>Ajouter un espace</span></li>
+{% endblock %}
+
+
 
 {% block body %}
 

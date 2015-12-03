@@ -75,7 +75,6 @@ class SpaceController extends Controller
             )
         ));
 
-        $invalidProfile = true;
         if ($form->handleRequest($request)->isValid()) {
             $application->setStatus(Application::WAIT_STATUS);
 

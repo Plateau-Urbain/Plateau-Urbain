@@ -1,6 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block breadcrumb_items %}
+    <li><a href="{{ path('search_index') }}">Mon compte</a></li>
     <li>
         <span>Liste de mes espaces</span>
     </li>
@@ -8,12 +9,12 @@
 
 {% block body %}
 
-<div class="row">
-    <!-- BEGIN MAIN CONTENT -->
-    <div class="col-sm-12">
-        <h1 class="property-title">Liste de mes espaces</h1>
+    <div class="row">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class="main col-sm-8 col-sm-offset-2">
+            <h1 class="section-title">Liste de mes espaces</h1>
+        </div>
     </div>
-</div>    
 
 {% if pagination | length == 0 %}
     <div class="center">
@@ -22,21 +23,28 @@
     </div>
 {% else %}
 <div id="listing-header" class="clearfix">
-    <div class="form-control-small">
-        <select id="sort_by" name="sort_by" data-placeholder="Trier par">
-            <option value=""> </option>
-            <option value="created">Trier par date</option>
-            <option value="city">Trier par ville</option>
-        </select>
-    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
+        </div>
+        <div class="col-sm-4">
+            <div class="form-control-small">
+                <select id="sort_by" name="sort_by" data-placeholder="Trier par">
+                    <option value=""> </option>
+                    <option value="created">Trier par date</option>
+                    <option value="city">Trier par ville</option>
+                </select>
+            </div>
 
-    <div class="sort">
-        <ul>
-            <li id="desc"><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
-            <li id="asc"><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
-        </ul>
+            <div class="sort">
+                <ul>
+                    <li id="desc"><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
+                    <li id="asc"><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>    
+</div>
     
 <!-- BEGIN PROPERTY LISTING -->
 <div id="property-listing" class="list-style clearfix">

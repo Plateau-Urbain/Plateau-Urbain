@@ -15,74 +15,90 @@
 
         {{ form_errors(form) }}
 
-        <div class="row">            
-            <div class="col-sm-12">
-                {{ form_row(form.name) }}
+        <div class="form-contener">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.name) }}
+                </div>
             </div>
-        </div>
-            
-        <div class="row">            
-            <div class="col-sm-6">
-                {{ form_row(form.zipCode) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_row(form.city) }}
-            </div>
-        </div>            
-            
-        <div class="row">            
-            <div class="col-sm-6">
-                {{ form_row(form.limitAvailability) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_row(form.availability) }}
-            </div>
-        </div>       
-            
-        <div class="row">            
-            <div class="col-sm-6">
-                {{ form_row(form.type) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_row(form.price) }}
-            </div>
-        </div>               
 
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_row(form.description) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_row(form.zipCode) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_row(form.city) }}
+                </div>
             </div>
-        </div>            
-            
-        <div class="row form-group">
-            <div class="col-sm-12">
-                {{ form_row(form.activityDescription) }}
+
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_row(form.limitAvailability) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_row(form.availability) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_row(form.type) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_row(form.price) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-sm-12">
+                    {{ form_row(form.activityDescription) }}
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-sm-offset-4">
+                <button type="submit" class="btn  btn-fullcolor form-control">
+                    Enregistrer
+                </button>
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+
+        <h2 class="section-title">Prestations et services</h2>
+
+        <div class="form-contener">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include '@App/SpaceManagement/Partials/_space_attributes_form.html.twig' with { 'form': form.tags } %}
+                </div>
             </div>
         </div>
-            
-        <h2 class="section-title">Prestations et services</h2>
-               
-        <div class="row">
-            <div class="col-sm-12">
-                {% include '@App/SpaceManagement/Partials/_space_attributes_form.html.twig' with { 'form': form.tags } %}
-            </div>
-        </div>              
             
         <h2 class="section-title">Répartition des surfaces</h2>
-        
-        <div class="row">
-            <div class="col-sm-12">
-                {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
+
+        <div class="form-contener">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
+                </div>
             </div>
-        </div>   
+        </div>
                 
         <h2 class="section-title">Photos</h2>
 
-        <div class="row">
-            <div class="col-sm-12">
-                {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
+        <div class="form-contener">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
+                </div>
             </div>
-        </div>   
+        </div>
 
         <h2 class="section-title">Publication</h2>
 

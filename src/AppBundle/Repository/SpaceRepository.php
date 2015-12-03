@@ -47,7 +47,7 @@ class SpaceRepository extends EntityRepository
             $qb->andWhere('s.enabled = :enabled')->setParameter('enabled', $params['enabled']);
         }
         
-        if (!empty($params['closed'])) {
+        if (isset($params['closed'])) {
             $qb->andWhere('s.closed = :closed')->setParameter('closed', $params['closed']);
         }
 

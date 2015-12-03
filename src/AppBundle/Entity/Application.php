@@ -106,7 +106,7 @@ class Application
 
     /**
      * @ORM\ManyToOne(
-     *     targetEntity="Space"
+     *     targetEntity="Space", inversedBy="applications"
      * )
      */
     private $space;

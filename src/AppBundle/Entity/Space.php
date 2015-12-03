@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Faker\Provider\DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -202,7 +203,14 @@ class Space
      * @ORM\Column(type="datetime", name="submitted_at", nullable=true)
      */
     private $submittedAt;
-        
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="Application", mappedBy="space"
+     * )
+     */
+    private $application;
+
     /**
      * @return ArrayCollection
      */
@@ -548,7 +556,11 @@ class Space
      */
     public function isClosed()
     {
-        return $this->closed;
+        if ($this->closed || $this->getLimitAvailability() <= new \DateTime('now')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -778,7 +790,11 @@ class Space
      */
     public function isOwner(User $user)
     {
-        return $this->owner->getId() === $user->getId();
+        if ($this->owner) {
+            return $this->owner->getId() === $user->getId();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -794,6 +810,51 @@ class Space
      */
     public function getDepCode() {
         return substr($this->zipCode, 0, 2);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
+    /**
+     * @param mixed $application
+     */
+    public function setApplication($application)
+    {
+        $this->application = $application;
+    }
+
+    /**
+     * @param $type
+     * @return bool
+     */
+    public function hasTagType($type) {
+        foreach ($this->tags as $tag) {
+            if ($tag->getAvailability() == $type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $type
+     * @return int
+     */
+    public function nbApplication($type) {
+        $ret = 0;
+
+        foreach ($this->application as $app) {
+            if ($app->getStatus() == $type) {
+                $ret++;
+            }
+        }
+
+        return $ret;
     }
 
     /**

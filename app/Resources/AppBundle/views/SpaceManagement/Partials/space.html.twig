@@ -1,44 +1,80 @@
-<div class="item col-md-4"><!-- Set width to 4 columns for grid view mode only -->
-    <div class="image">
-        <a href="{{ path('space_show', {'id': space.id}) }}">
-            <span class="btn btn-default"><i class="fa fa-file-o"></i> Details</span>
-        </a>
-        <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
-    </div>
-    <div class="price">
-        <i class="fa fa-home"></i>{% if space.type %}{{ space.type.name }}{% endif %}
-        <span>{{ space.price }}€ /m²/mois</span>
-    </div>
-    <div class="info">
-        <h3>
-            <a href="{{ path('space_show', {'id': space.id}) }}">{{ space.name }}</a>
-            <small>{{ space.zipCode }} {{ space.city }}</small>
-        </h3>
-        <p>
-            Description : {{ space.description }} <br/><br/>
-            ActivityDescription : {{ space.activityDescription }}<br/><br/>
-            Size : {{ space.size }} <br/>
-            NbLot : {{ space.parcels | length }}
-
-        </p>
-
-        <ul class="amenities">
-            <li><i class="icon-area"></i> Dispo: {{ space.availability }}</li>
-            <li><i class="icon-bedrooms"></i> Limite Candidature : {{ space.limitAvailability | date("d/m/Y") }}</li>
-        </ul>
-
-        <div>
-            {% if context == 'manage_list' %}
-                {% if space.published %}
-                   <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="btn btn-fullcolor">Voir les candidats</a>
-                    {% if space.closed == false %}
+<div class="application-space space-card">
+    <div class="row">
+        <div class="col-sm-4">
+            {% if space.pics.first %}
+                <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
+            {% endif %}
+        </div>
+        <div class="col-sm-8">
+            <div class="row first-row">
+                <div class="col-sm-6">
+                    <h2 class="space-title">
+                        <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+                        {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
+                        <a href="{{ path('space_show', {'id' : space.id}) }}">Voir l'annonce</a>
+                    </h2>
+                </div>
+                <div class="col-sm-4 col-sm-offset-2">
+                    <div class="space-price">
+                        <span>À partir de</span>
+                        <strong>{{ space.price }}€/m²/mois</strong>
+                        H.C. H.T.<sup>1</sup>
+                    </div>
+                </div>
+            </div>
+            <div class="row second-row">
+                <div class="col-sm-4">
+                    <div class="detail">
+                        <div class="detail-icon">
+                            <i class="fa fa-square-o"></i>
+                        </div>
+                        <h4 class="detail-title">
+                            <strong>{{ space.application | length }}</strong> candidatures
+                        </h4>
+                        <p class="detail-description">
+                            {{ space.nbApplication(constant('AppBundle\\Entity\\Application::WAIT_STATUS'))  }} en attente
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="detail">
+                        <p class="detail-description">
+                            {{ space.nbApplication(constant('AppBundle\\Entity\\Application::ACCEPT_STATUS'))  }} acceptées
+                        </p>
+                        <p class="detail-description">
+                            {{ space.nbApplication(constant('AppBundle\\Entity\\Application::REJECT_STATUS'))  }} refusées
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="detail last">
+                        <div class="detail-icon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <h4 class="detail-title">
+                            Date limite de candidature
+                        </h4>
+                        <p class="detail-description">
+                            {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="btn btn-fullcolor">Voir les candidats</a>
+                </div>
+                <div class="col-sm-4">
+                    {% if not space.submitted and not space.enabled and not space.closed %}
+                        <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-fullcolor">Publier</a>
+                    {% endif %}
+                </div>
+                <div class="col-sm-4">
+                    {% if space.published and space.closed == false %}
                         <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clotûrer</a>
                     {% endif %}
-                {% endif %}
-                {% if not space.submitted %}
-                    <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-fullcolor">Publier</a>
-                {% endif %}
-            {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>

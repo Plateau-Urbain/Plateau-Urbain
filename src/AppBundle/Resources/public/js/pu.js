@@ -92,7 +92,7 @@ $(function () {
 
         recalculate_size_price($element, basePrice);
 
-        $element.on('click', '[data-recalculate]', function (e) {
+        $element.on('change', 'input', function (e) {
            e.preventDefault();
            recalculate_size_price($element, basePrice);
         });

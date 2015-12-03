@@ -25,9 +25,9 @@ class SearchController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(new SearchType());
-        $latest = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true ), array('created' => 'DESC'), 6 );
+        $latest = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true, 'closed' => false), array('created' => 'DESC'), 6 );
 
-        $all = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true ), array('created' => 'DESC'));
+        $all = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true, 'closed' => false), array('created' => 'DESC'));
 
         foreach ($all as $space) {
             if (!isset($departements[$space->getDepCode()])) {
