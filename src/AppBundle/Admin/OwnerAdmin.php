@@ -42,19 +42,29 @@ class OwnerAdmin extends Admin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
                 'label'     => 'Mot de passe',
             ))
+            ->add('enabled', null, array('label' => 'Activé', 'required' => false))
+
             ->end()
             ->with('Profile')
+
+            ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'required' => false, 'label' => 'Civilité'))
             ->add('firstname', null, array('required' => false, 'label' => 'Prénom'))
             ->add('lastname', null, array('required' => false, 'label' => 'Nom'))
-            ->add('biography', 'text', array('required' => false, 'label' => 'Fonction'))
-            ->add('phone', null, array('required' => false, 'label' => 'Téléphone'))
-            ->add('company', null, array('required' => false, 'label' => 'Structure'))
-            ->add('address', null, array('required' => false, 'label' => 'Adresse Structure'))
-            ->add('zipcode', null, array('required' => false, 'label' => 'Code Postal Structure'))
-            ->add('city', null, array('required' => false, 'label' => 'Ville Structure'))
+            ->add('companyFunction', null, array('required' => false, 'label' => 'Fonction'))
+            ->add('companyPhone', null, array('required' => false, 'label' => 'Téléphone'))
+            ->add('companyMobile', null, array('required' => false, 'label' => 'Téléphone mobile'))
 
-            ->add('enabled', null, array('label' => 'Activé', 'required' => false))
-            ->add('locked', null, array('label' => 'Verouillé', 'required' => false))
+            ->end()
+            ->with('Structure')
+
+            ->add('company', null, array('required' => false, 'label' => 'Structure'))
+            ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'required' => false, 'label' => 'Statut'))
+            ->add('address', null, array('required' => false, 'label' => 'Adresse'))
+            ->add('addressSuite', null, array('required' => false, 'label' => 'Adresse (suite)'))
+            ->add('zipcode', null, array('required' => false, 'label' => 'Code Postal'))
+            ->add('city', null, array('required' => false, 'label' => 'Ville Structure'))
+            ->add('company_site', null, array('required' => false, 'label' => 'Site Web'))
+
             ->end()
 
         ;

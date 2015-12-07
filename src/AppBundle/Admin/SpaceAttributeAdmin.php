@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\SpaceAttribute;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -19,8 +20,8 @@ class SpaceAttributeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('attribute')
-            ->add('availability', null, array('required' => false))
+            ->add('attribute', null, array('label' => 'Nom'))
+            ->add('availability', 'choice', array('choices' => SpaceAttribute::getAllStatus(), 'required' => false, 'label' => 'Disponibilité'))
             ->end();
     }
 

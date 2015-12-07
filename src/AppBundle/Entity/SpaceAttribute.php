@@ -155,4 +155,13 @@ class SpaceAttribute
     {
         return $this->availability === self::STATUS_NO;
     }
+
+    public static function getAllStatus() {
+        return array(
+            self::STATUS_NO => 'Non inclus',
+            self::STATUS_INCLUDED => 'Inclus',
+            self::STATUS_EXPECTED => 'A prévoir',
+        );
+    }
+
 }

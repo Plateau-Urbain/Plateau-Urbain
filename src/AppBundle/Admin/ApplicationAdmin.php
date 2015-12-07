@@ -24,27 +24,30 @@ class ApplicationAdmin extends Admin
     {
         $formMapper
             ->with('General')
+            ->add('space', null, array('label' => 'Espace'))
+            ->add('projectHolder', null, array('label' => 'Porteur de projet'))
             ->add('name', null, array('label'=>"Nom du projet") )
-            ->add('description', null, array('label'=>"Description du projet"))
-            ->add('startOccupation', 'date', array(
-                    'label'=>"Date d'entrée souhaitée",
-
-            ))
-            ->add('space')
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true))
-            ->add('projectHolder')
-
-            ->add('files', 'sonata_type_collection',
-                array('by_reference' => false,
-
-                    'label' => 'Photos',
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ))
+            ->add('wishedSize', null, array('label'=> 'Surface souhaitée (m2)'))
+            ->add('lengthOccupation', null, array('label'=> 'Durée d\'occupation'))
+            ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(), 'label'=> 'Durée d\'occupation'))
+            ->add('startOccupation', 'date', array('label'=>"Date d'entrée souhaitée"))
+            ->add('description', null, array('label'=>"Description du projet"))
+            ->add('openToGlobalProject', null, array('label'=> "Ouvert à faire partie d'un projet collectif"))
+            ->add('contribution', null, array('label'=> "Contribution au projet global du propriétaire"))
 
 
+            ->end()
+            ->with('Documents')
+            /*            ->add('files', 'sonata_type_collection',
+                            array('by_reference' => false,
+
+                                'label' => 'Photos',
+                            ),
+                            array(
+                                'edit' => 'inline',
+                                'inline' => 'table',
+                            ))*/
             ->end()
 
         ;

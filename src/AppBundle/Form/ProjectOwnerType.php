@@ -16,7 +16,16 @@ class ProjectOwnerType extends AbstractType {
                 ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'expanded' => true, 'label' => "Civilité", 'attr' => array('class' => 'pu-radios')))
                 ->add('firstname', null, array('label' => "Prénom", 'attr' => array('class' => 'form-control')))
                 ->add('lastname', null, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
-                ->add('birthday', 'birthday', array('label' => "Date de naissance", 'attr' => array('class' => 'inline-date')))
+                ->add('birthday', 'birthday',
+                    array(
+                        'label' => 'Date de naissance',
+                        'widget' => 'single_text',
+                        'format' => 'dd/MM/yyyy',
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'data-provide' => 'datepicker'
+                        )
+                    ))
                 ->add('phone', null, array('label' => "Téléphone", 'attr' => array('class' => 'form-control')))
                 ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control')))
                 ->add('password', 'password', array('required' => false, 'label' => "Mot de passe", 'attr' => array('class' => 'form-control')))
@@ -24,7 +33,16 @@ class ProjectOwnerType extends AbstractType {
                 ->add('newsletter', null, array('label' => "J'accepte de recevoir la newsletter de Plateau Urbain", 'attr' => array()))
                 ->add('company', null, array('label' => "Nom de ma structure", 'attr' => array('class' => 'form-control')))
                 ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
-                ->add('companyCreationDate', 'birthday', array('label' => "Date de création", 'attr' => array('class' => 'inline-date')))
+                ->add('companyCreationDate', 'birthday',
+                    array(
+                        'label' => 'Date de création',
+                        'widget' => 'single_text',
+                        'format' => 'dd/MM/yyyy',
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'data-provide' => 'datepicker'
+                        )
+                    ))
                 ->add('siret', null, array('label' => "SIRET", 'attr' => array('class' => 'form-control')))
                 ->add('address', null, array('label' => "Adresse de la structure", 'attr' => array('class' => 'form-control')))
                 ->add('addressSuite', null, array('label' => "Adresse (suite)", 'attr' => array('class' => 'form-control')))
@@ -39,7 +57,17 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control')))
                 ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
-                ->add('usageDate', null, array('label' => "Date de disponibilité", 'years' => range(2015, 2020), 'attr' => array('class' => 'inline-date')))
+                ->add('usageDate', null,
+                    array(
+                        'label' => 'Date de disponibilité',
+                        'widget' => 'single_text',
+                        'format' => 'dd/MM/yyyy',
+                        'years' => range(2015, 2020),
+                        'attr' => array(
+                            'class' => 'form-control',
+                            'data-provide' => 'datepicker'
+                        )
+                    ))
                 ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control small-input')))
                 ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))

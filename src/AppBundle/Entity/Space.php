@@ -729,7 +729,7 @@ class Space
      */
     public  function __toString()
     {
-        return $this->getName().' - '.($this->getOwner() != null ? $this->getOwner()->getLastName() : '');
+        return $this->getName().' - '.($this->getOwner() != null ? $this->getOwner()->getCompany() : '');
     }
 
     /**

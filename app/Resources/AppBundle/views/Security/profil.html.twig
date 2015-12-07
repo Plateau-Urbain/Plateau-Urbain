@@ -1,6 +1,8 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumb_items %}
+    <li><span>Mon profil</span></li>
+{% endblock %}
 
 {% block body %}
     
@@ -23,236 +25,264 @@
     <div class="main col-sm-8 col-sm-offset-2">
         <h1 class="section-title">Mes informations</h1>
 
-        <div class="row">
-            
-            <div class="col-sm-6">
-                {{ form_label(form.civility) }}
-                {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+        <div class="form-contener">
+            <div class="row">
+
+                <div class="col-sm-6">
+                    {{ form_label(form.civility) }}
+                    {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                </div>
+                <div class="col-sm-6">
+                </div>
             </div>
-            <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.firstname)}}
+                    {{ form_widget(form.firstname) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.lastname)}}
+                    {{ form_widget(form.lastname) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.firstname)}}
-                {{ form_widget(form.firstname) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.birthday)}}
+                    {{ form_widget(form.birthday) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.phone)}}
+                    {{ form_widget(form.phone) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.lastname)}}
-                {{ form_widget(form.lastname) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.email)}}
+                    {{ form_widget(form.email) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.password)}}
+                    {{ form_widget(form.password) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.birthday)}}
-                {{ form_widget(form.birthday) }}
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_label(form.description)}}
+                    {{ form_widget(form.description) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.phone)}}
-                {{ form_widget(form.phone) }}
+            <div class="row form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    {{ form_widget(form.newsletter) }}
+                    {{ form_label(form.newsletter) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.email)}}
-                {{ form_widget(form.email) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_label(form.password)}}
-                {{ form_widget(form.password) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_label(form.description)}}
-                {{ form_widget(form.description) }}
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-sm-10 col-sm-offset-2">
-                {{ form_widget(form.newsletter) }}
-                {{ form_label(form.newsletter) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                </div>
             </div>
         </div>
             
         <h1 class="section-title">Ma structure</h1>
-    
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.company)}}
-                {{ form_widget(form.company) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_label(form.companyStatus)}}
-                {{ form_widget(form.companyStatus) }}
-            </div>
-        </div>
-            
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.companyCreationDate)}}
-                {{ form_widget(form.companyCreationDate) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_label(form.siret)}}
-                {{ form_widget(form.siret) }}
-            </div>
-        </div>
-            
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.address)}}
-                {{ form_widget(form.address) }}
-            </div>
-            <div class="col-sm-6">
-                {{ form_label(form.addressSuite)}}
-                {{ form_widget(form.addressSuite) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.zipcode)}}
-                {{ form_widget(form.zipcode) }}
+        <div class="form-contener">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.company)}}
+                    {{ form_widget(form.company) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.companyStatus)}}
+                    {{ form_widget(form.companyStatus) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.city)}}
-                {{ form_widget(form.city) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.companyPhone)}}
-                {{ form_widget(form.companyPhone) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.companyCreationDate)}}
+                    {{ form_widget(form.companyCreationDate) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.siret)}}
+                    {{ form_widget(form.siret) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.companyMobile)}}
-                {{ form_widget(form.companyMobile) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_label(form.companyDescription)}}
-                {{ form_widget(form.companyDescription) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.address)}}
+                    {{ form_widget(form.address) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.addressSuite)}}
+                    {{ form_widget(form.addressSuite) }}
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-6">
-                {{ form_label(form.companyEffective)}}
-                {{ form_widget(form.companyEffective) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.zipcode)}}
+                    {{ form_widget(form.zipcode) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.city)}}
+                    {{ form_widget(form.city) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.companyStructures)}}
-                {{ form_widget(form.companyStructures) }}
-            </div>
-        </div>
 
-        <div class="row form-group" >
-            <div class="col-sm-6">
-                {{ form_label(form.companySite)}}
-                {{ form_widget(form.companySite) }}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.companyPhone)}}
+                    {{ form_widget(form.companyPhone) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.companyMobile)}}
+                    {{ form_widget(form.companyMobile) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.companyBlog)}}
-                {{ form_widget(form.companyBlog) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_label(form.companyDescription)}}
+                    {{ form_widget(form.companyDescription) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_label(form.companyEffective)}}
+                    {{ form_widget(form.companyEffective) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.companyStructures)}}
+                    {{ form_widget(form.companyStructures) }}
+                </div>
+            </div>
+
+            <div class="row form-group" >
+                <div class="col-sm-6">
+                    {{ form_label(form.companySite)}}
+                    {{ form_widget(form.companySite) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.companyBlog)}}
+                    {{ form_widget(form.companyBlog) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                </div>
             </div>
         </div>
 
         <h1 class="section-title">Mes souhaits</h1>
 
-        <div class="row" >
-            <div class="col-sm-6">
-                {{ form_label(form.wishedSize)}}
-                {{ form_widget(form.wishedSize) }}
+        <div class="form-contener">
+            <div class="row" >
+                <div class="col-sm-6">
+                    {{ form_label(form.wishedSize)}}
+                    {{ form_widget(form.wishedSize) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.useType)}}
+                    {{ form_widget(form.useType) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.useType)}}
-                {{ form_widget(form.useType) }}
-            </div>
-        </div>
 
-        <div class="row" >
-            <div class="col-sm-6">
-                {{ form_label(form.usageDate)}}
-                {{ form_widget(form.usageDate) }}
+            <div class="row" >
+                <div class="col-sm-6">
+                    {{ form_label(form.usageDate)}}
+                    {{ form_widget(form.usageDate) }}
+                </div>
+                <div class="col-sm-6 pu-length-input">
+                    {{ form_label(form.usageDuration)}}<br />
+                    {{ form_widget(form.usageDuration) }}
+                    {{ form_widget(form.lengthTypeOccupation) }}
+                </div>
             </div>
-            <div class="col-sm-6 pu-length-input">
-                {{ form_label(form.usageDuration)}}<br />
-                {{ form_widget(form.usageDuration) }}
-                {{ form_widget(form.lengthTypeOccupation) }}
-            </div>
-        </div>
 
-        <div class="row form-group">
-            <div class="col-sm-12">
-                {{ form_label(form.projectDescription)}}
-                {{ form_widget(form.projectDescription) }}
+            <div class="row form-group">
+                <div class="col-sm-12">
+                    {{ form_label(form.projectDescription)}}
+                    {{ form_widget(form.projectDescription) }}
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                </div>
             </div>
         </div>
 
         <h1 class="section-title">Réseaux sociaux</h1>
 
-        <div class="row" >
-            <div class="col-sm-6">
-                {{ form_label(form.facebookUrl)}}
-                {{ form_widget(form.facebookUrl) }}
+        <div class="form-contener">
+            <div class="row" >
+                <div class="col-sm-6">
+                    {{ form_label(form.facebookUrl)}}
+                    {{ form_widget(form.facebookUrl) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.googleUrl)}}
+                    {{ form_widget(form.googleUrl) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.googleUrl)}}
-                {{ form_widget(form.googleUrl) }}
-            </div>
-        </div>
 
-        <div class="row" >
-            <div class="col-sm-6">
-                {{ form_label(form.twitterUrl)}}
-                {{ form_widget(form.twitterUrl) }}
+            <div class="row" >
+                <div class="col-sm-6">
+                    {{ form_label(form.twitterUrl)}}
+                    {{ form_widget(form.twitterUrl) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.linkedinUrl)}}
+                    {{ form_widget(form.linkedinUrl) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.linkedinUrl)}}
-                {{ form_widget(form.linkedinUrl) }}
-            </div>
-        </div>
 
-        <div class="row form-group" >
-            <div class="col-sm-6">
-                {{ form_label(form.instagramUrl)}}
-                {{ form_widget(form.instagramUrl) }}
+            <div class="row form-group" >
+                <div class="col-sm-6">
+                    {{ form_label(form.instagramUrl)}}
+                    {{ form_widget(form.instagramUrl) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_label(form.otherUrl)}}
+                    {{ form_widget(form.otherUrl) }}
+                </div>
             </div>
-            <div class="col-sm-6">
-                {{ form_label(form.otherUrl)}}
-                {{ form_widget(form.otherUrl) }}
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>    
 {{ form_end(form) }}
     
+{% endblock %}
+
+{% block javascript %}
+
+    {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/form-extensions.min.js'
+    'bundles/avocodeformextensions/datepicker/js/datepicker.js'
+    'bundles/avocodeformextensions/datepicker/js/locales/bootstrap-datepicker.fr.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets filter='cssrewrite,?yui_css' output='assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
+    'bundles/avocodeformextensions/datepicker/css/datepicker.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+    {% endstylesheets %}
 {% endblock %}

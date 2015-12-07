@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Entity\Application;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -40,18 +41,53 @@ class ProjectHolderAdmin extends Admin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
                 'label'     => 'Mot de passe',
             ))
+            ->add('enabled', null, array('label' => 'Activé'))
             ->end()
             ->with('Profile')
+            ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'required' => false, 'label' => 'Civilité'))
             ->add('firstname', null, array('required' => false, 'label' => 'Prénom'))
             ->add('lastname', null, array('required' => false, 'label' => 'Nom'))
+            ->add('birthday', null, array('required' => false, 'label' => 'Date de naissance'))
             ->add('phone', null, array('required' => false, 'label' => 'Téléphone'))
+            ->add('description', null, array('required' => false, 'label' => 'Description'))
+            ->add('newsletter', null, array('required' => false, 'label' => 'Souhaite recevoir la newsletter'))
+
+            ->end()
+            ->with('Structure')
             ->add('company', null, array('required' => false, 'label' => 'Structure'))
+            ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'required' => false, 'label' => 'Statut'))
+            ->add('companyCreationDate', null, array('required' => false, 'label' => 'Date de création'))
+            ->add('siret', null, array('required' => false, 'label' => 'SIRET'))
             ->add('address', null, array('required' => false, 'label' => 'Adresse Structure'))
+            ->add('addressSuite', null, array('required' => false, 'label' => 'Adresse Structure (suite)'))
             ->add('zipcode', null, array('required' => false, 'label' => 'Code Postal Structure'))
             ->add('city', null, array('required' => false, 'label' => 'Ville Structure'))
+            ->add('companyPhone', null, array('required' => false, 'label' => 'Téléphone fixe'))
+            ->add('companyMobile', null, array('required' => false, 'label' => 'Téléphone mobile'))
+            ->add('companyDescription', null, array('required' => false, 'label' => 'Description'))
+            ->add('companyEffective', null, array('required' => false, 'label' => 'Nombre de personnes dans la structure'))
+            ->add('companyStructures', null, array('required' => false, 'label' => 'Structure(s) d\'accompagnement'))
+            ->add('company_site', null, array('required' => false, 'label' => 'Site web'))
+            ->add('company_blog', null, array('required' => false, 'label' => 'Blog'))
 
-            ->add('enabled', null, array('label' => 'Activé'))
-            ->add('locked', null, array('label' => 'Verouillé', 'required' => false))
+            ->end()
+            ->with('Souhaits')
+            ->add('wishedSize', null, array('required' => false, 'label' => 'Taille souhaitée (m2)'))
+            ->add('useType', null, array('required' => false, 'label' => 'Type d\'usage'))
+            ->add('usageDate', null, array('required' => false, 'label' => 'Date de disponibilité'))
+            ->add('usageDuration', null, array('required' => false, 'label' => 'Durée d\'occupation'))
+            ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(), 'required' => false, 'label' => 'Type de durée'))
+            ->add('projectDescription', null, array('required' => false, 'label' => 'Présentation du projet'))
+
+            ->end()
+            ->with('Réseaux sociaux')
+            ->add('facebookUrl', null, array('required' => false, 'label' => 'Facebook'))
+            ->add('googleUrl', null, array('required' => false, 'label' => 'Google+'))
+            ->add('twitterUrl', null, array('required' => false, 'label' => 'Twitter'))
+            ->add('linkedinUrl', null, array('required' => false, 'label' => 'Linkedin'))
+            ->add('instagramUrl', null, array('required' => false, 'label' => 'Instagram'))
+            ->add('otherUrl', null, array('required' => false, 'label' => 'Viadeo'))
+
             ->end()
 
         ;

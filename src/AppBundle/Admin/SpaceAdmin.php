@@ -44,26 +44,49 @@ class SpaceAdmin extends Admin
         $formMapper
             ->with('General')
             ->add('name', null, array('label' => "Nom de l'espace"))
-            ->add('type', null, array('label' => "Type d'espace", 'required' => true))
-            ->add('enabled', null, array('label' => 'En ligne', 'required' => false))
-            ->add('closed', null, array('label' => 'Clotûré', 'required' => false))
             ->add('owner', null, array(
                 'label' => "Propriétaire de l'espace",
                 'query_builder' => function (\AppBundle\Repository\UserRepository $repository) {
                     return $repository->getByTypeQueryBuilder(User::PROPRIO);
                 },
             ))
-            ->add('address', null, array('label' => "Adresse"))
             ->add('zipCode', null, array('label' => "Code postal"))
             ->add('city', null, array('label' => "Ville"))
+            ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
+            ->add('availability', null, array('label' => 'Période de disponibilité'))
+            ->add('type', null, array('label' => "Type d'espace", 'required' => true))
             ->add('description', null, array('label' => "Description de l'espace"))
             ->add('activityDescription', null, array('label' => "Activités recherchées"))
-            ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
-            ->add('surface', null, array('label' => 'Nombre total de m2'))
-            ->add('size', null, array('label' => 'Taille minimale des lots'))
-            ->add('availability', null, array('label' => 'Période de disponibilité'))
-            ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
             ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel'))
+            ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
+
+            ->end()
+            ->with('Prestations et services')
+
+            ->add('tags', 'sonata_type_collection',
+                array('by_reference' => false,
+
+                    'label' => 'Attributs',
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ))
+
+            ->end()
+            ->with('Lots')
+
+            ->add('parcels', 'sonata_type_collection', array(
+                'by_reference' => false,
+                'label' => 'Lots',
+            ), array(
+                'edit' => 'inline',
+                'inline' => 'table',
+            ))
+
+            ->end()
+            ->with('Photos')
+
             ->add('pics', 'sonata_type_collection',
                 array('by_reference' => false,
 
@@ -74,23 +97,13 @@ class SpaceAdmin extends Admin
                     'inline' => 'table',
                 ))
 
-            ->add('parcels', 'sonata_type_collection', array(
-                'by_reference' => false,
-                'label' => 'Lots',
-            ), array(
-                'edit' => 'inline',
-                'inline' => 'table',
-            ))
-            ->add('tags', 'sonata_type_collection', 
-                array('by_reference' => false,
-
-                    'label' => 'Attributs',
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ))            
             ->end()
+
+            ->with('Publication')
+                ->add('enabled', null, array('label' => 'En ligne', 'required' => false))
+                ->add('closed', null, array('label' => 'Clotûré', 'required' => false))
+            ->end()
+
 
         ;
     }

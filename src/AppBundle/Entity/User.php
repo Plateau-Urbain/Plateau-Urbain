@@ -255,6 +255,11 @@ class User extends BaseUser
      */
     protected $useType;
 
+    public function __toString()
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname() . ' - ' . $this->getCompany();
+    }
+
     /**
      * @return mixed
      */
@@ -583,7 +588,10 @@ class User extends BaseUser
     {
         $this->useType = $useType;
     }
-    
+
+    /**
+     * @return array
+     */
     public static function getAllCivilities() {
         return array(
             self::MISTER => self::MISTER,

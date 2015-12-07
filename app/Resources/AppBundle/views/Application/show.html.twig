@@ -390,9 +390,9 @@
 <div class="pagination-wrapper">
         <ul class="pagination">
 
-            <li class="disabled">
+            <li>
                 {% if prevApplication %}
-                    <a href="{{ path('application_show', { 'id': prevApplication.id }) }}" aria-label="Next">
+                    <a href="{{ path('application_show', { 'id': prevApplication.id }) }}" aria-label="Prev" title="Candidature précédente" data-toggle="tooltip">
                         <span aria-hidden="true">⟨</span>
                     </a>
                 {% else %}
@@ -404,7 +404,7 @@
 
             <li>
                 {% if nextApplication %}
-                <a href="{{ path('application_show', { 'id': nextApplication.id }) }}" aria-label="Next">
+                <a href="{{ path('application_show', { 'id': nextApplication.id }) }}" aria-label="Next"  title="Candidature suivante" data-toggle="tooltip">
                     <span aria-hidden="true">⟩</span>
                 </a>
                 {% else %}

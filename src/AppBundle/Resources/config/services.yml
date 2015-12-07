@@ -109,6 +109,15 @@ services:
             - AppBundle\Entity\Category
             -
 
+    app.admin.spaces.useType:
+        class: AppBundle\Admin\UseTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'usage , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\UseType
+            -
+
     app.admin.spaces.application:
         class: AppBundle\Admin\ApplicationAdmin
         tags:
