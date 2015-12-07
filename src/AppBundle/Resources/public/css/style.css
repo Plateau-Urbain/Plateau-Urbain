@@ -8974,7 +8974,7 @@ div.dark_square #pp_full_res .pp_inline {
   margin-bottom: 10px;
 }
 
-#property-listing .detail.last {
+.detail.last {
   border-right: none;
 }
 

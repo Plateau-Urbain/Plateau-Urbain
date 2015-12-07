@@ -65,4 +65,39 @@ class ApplicationRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * @param Application $application
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getNextApplication(Application $application) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id > :id')
+            ->andWhere('a.space = :space')
+            ->setParameter('space', $application->getSpace())
+            ->setParameter('id', $application->getId())
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Application $application
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getPrevApplication(Application $application) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id < :id')
+            ->andWhere('a.space = :space')
+            ->setParameter('space', $application->getSpace())
+            ->setParameter('id', $application->getId())
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }

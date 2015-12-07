@@ -410,19 +410,19 @@ class SpaceManagementController extends Controller
 
         $this->get('doctrine.orm.entity_manager')->flush();
 
-//            $message = \Swift_Message::newInstance()
-//                ->setSubject('Nouvelle propriété ! ')
-//                ->setFrom($this->container->getParameter('mail_confirmation_from'))
-//                ->setTo($this->container->getParameter('mail_confirmation_to'))
-//                ->setBody(
-//                    $this->renderView(
-//                        'AppBundle:Email:new_property.html.twig',
-//                        compact('space')
-//                    ), 'text/html'
-//                )
-//            ;
-//
-//            $this->get('mailer')->send($message);
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Nouvelle propriété ! ')
+            ->setFrom($this->container->getParameter('mail_confirmation_from'))
+            ->setTo($this->container->getParameter('mail_confirmation_to'))
+            ->setBody(
+                $this->renderView(
+                    'AppBundle:Email:new_property.html.twig',
+                    compact('space')
+                ), 'text/html'
+            )
+        ;
+
+        $this->get('mailer')->send($message);
 
         $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 

@@ -39,8 +39,16 @@ class ApplicationController extends Controller
      */
     public function showAction(Application $application)
     {
+        $prevApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getPrevApplication($application);
+        $nextApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getNextApplication($application);
+
+//        var_dump($prevApplication);
+//        var_dump($nextApplication);
+
         return array(
-            'application' => $application
+            'prevApplication'   => $prevApplication,
+            'nextApplication'   => $nextApplication,
+            'application'       => $application
         );
     }
 }
