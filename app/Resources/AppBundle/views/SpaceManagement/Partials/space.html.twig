@@ -4,6 +4,10 @@
             {% if space.pics.first %}
                 <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
             {% endif %}
+
+            {% if space.isClosed %}
+                <img src="{{ asset('/bundles/app/images/closed.png') }}" alt="closed" class="closed" />
+            {% endif %}
         </div>
         <div class="col-sm-8">
             <div class="row first-row">

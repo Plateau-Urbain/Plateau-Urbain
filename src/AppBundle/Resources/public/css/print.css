@@ -1,0 +1,102 @@
+#footer, #header, .breadcrumb-header, .page-header, #space-card, hr, #listing-header, .center, .btn, .space-stats .first-line {
+    display: none;
+}
+
+
+* {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.row {
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+
+.pie-legend span {
+    height: 15px !important;
+    width: 15px !important;
+    display: inline-block !important;
+    margin-right: 5px !important;
+}
+
+.col-sm-1 {
+    display: none;
+}
+
+.col-sm-6 {
+    width: 50% !important;
+}
+
+.col-sm-4 {
+    width: 41.66666667% !important;
+}
+
+.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    float: left !important;
+    position: relative !important;
+    min-height: 1px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.application-list .item {
+    background-color: #fbf9f6 !important;
+    margin-bottom: 40px !important;
+    padding: 20px !important;
+}
+
+.application-list .bg-alt {
+    background-color: #d5ac64 !important;
+}
+
+.application-list .application-status {
+    text-transform: uppercase !important;
+    color: #d7d7d7 !important;
+    letter-spacing: 1px !important;
+}
+
+.application-list .application-status strong {
+    color: #d5ac64 !important;
+}
+
+.application-list .application-title {
+    color: #d7d7d7 !important;
+    text-transform: uppercase !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+    letter-spacing: 1px !important;
+}
+
+.application-list .application-title h4 {
+    color: #000000 !important;
+    font-weight: bold !important;
+    font-size: 1.5em !important;
+}
+
+.application-list .application-title strong {
+    color: #000000 !important;
+    font-size: 1em !important;
+}
+
+.application-list .item ul {
+    list-style: none !important;
+    margin-bottom: 10px !important;
+    padding-left: 0 !important;
+}
+
+.application-list .item ul li {
+    color: #d7d7d7 !important;
+    font-weight: normal !important;
+    margin-bottom: 10px !important;
+}
+
+.application-list .item ul strong {
+    color: #000000 !important;
+    font-size: 0.9em !important;
+}

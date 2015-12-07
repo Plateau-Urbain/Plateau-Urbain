@@ -858,6 +858,51 @@ class Space
     }
 
     /**
+     * @param $useType
+     * @return int
+     */
+    public function nbApplicationUseType($useType) {
+        $ret = 0;
+
+        foreach ($this->application as $app) {
+            if ($app->getProjectHolder()->getUseType()->getId() == $useType->getId()) {
+                $ret++;
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param $category
+     * @return int
+     */
+    public function nbApplicationCategory($category) {
+        $ret = 0;
+
+        foreach ($this->application as $app) {
+            if ($app->getCategory()->getId() == $category->getId()) {
+                $ret++;
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalWishedSize() {
+        $ret = 0;
+
+        foreach ($this->application as $app) {
+            $ret += $app->getWishedSize();
+        }
+
+        return $ret;
+    }
+
+    /**
      * @param ExecutionContextInterface $context
      */
     public function validatePicturesCount(ExecutionContextInterface $context)

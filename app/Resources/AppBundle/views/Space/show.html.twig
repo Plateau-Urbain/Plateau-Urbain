@@ -240,7 +240,7 @@
                 Votre candidature est désormais clôturée est sera transmise au bailleur.<br /> Ce dossier de candidature est disponible dans votre compte,<br /> vous pourrez donc revenir le consulter et l'imprimer.
             </p>
             <p>
-                {% if application %}
+                {% if application and application.id != '' %}
                     <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor">Voir ma candidature</a>
                 {% endif %}
             </p>

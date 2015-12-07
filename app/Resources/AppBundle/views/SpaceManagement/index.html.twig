@@ -24,30 +24,31 @@
 {% else %}
 <div id="listing-header" class="clearfix">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
         </div>
-        <div class="col-sm-4">
-            <div class="form-control-small">
-                <select id="sort_by" name="sort_by" data-placeholder="Trier par">
-                    <option value=""> </option>
-                    <option value="created">Trier par date</option>
-                    <option value="city">Trier par ville</option>
-                </select>
+        <div class="col-sm-6">
+            {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.status_filter) }}
             </div>
 
-            <div class="sort">
-                <ul>
-                    <li id="desc"><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
-                    <li id="asc"><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
-                </ul>
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.sort_field) }}
             </div>
+
+            <div class="col-sm-4">
+                {{ form_widget(filterForm.sort_order) }}
+            </div>
+
+            {{ form_end(filterForm) }}
         </div>
     </div>
 </div>
     
 <!-- BEGIN PROPERTY LISTING -->
-<div id="property-listing" class="list-style clearfix">
+<div id="property-listing" class="list-style clearfix management-list">
     <div class="row">
     {% for space in pagination %}
         {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}        
@@ -61,3 +62,30 @@
 {% endif %}
 
 {% endblock body %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            // Manage sort field
+            $(function () {
+                $('.sort').on('click', 'label', function () {
+                    var $input = $(this).find('input');
+
+                    $('.sort').find('label').removeClass('checked');
+
+                    if ($input.is(':checked')) {
+                        $(this).addClass('checked');
+                    }
+                });
+            });
+
+            // Submit form
+            $('form[data-submit]').on('change', function () {
+                console.log("here");
+                $(this).trigger('submit');
+            });
+
+        });
+    </script>
+{% endblock %}

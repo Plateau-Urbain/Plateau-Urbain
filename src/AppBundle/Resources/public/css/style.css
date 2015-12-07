@@ -9085,9 +9085,23 @@ form .main .section-title {
   padding-top: 4px;
 }
 
-#property-detail-wrapper img.closed {
+#property-detail-wrapper img.closed, .space-card img.closed {
   position: absolute;
   top: 0;
-  left: 0;
   z-index: 100;
+}
+
+.management-list .btn-fullcolor {
+  width: 100%;
+}
+
+#property-listing.management-list .space-card {
+  height: 246px;
+}
+
+.pie-legend span {
+  height: 15px;
+  width: 15px;
+  display: inline-block;
+  margin-right: 5px;
 }

@@ -38,7 +38,7 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companySite', null, array('label' => "Site web", 'attr' => array('class' => 'form-control')))
                 ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control')))
-                ->add('category', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
+                ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
                 ->add('usageDate', null, array('label' => "Date de disponibilité", 'years' => range(2015, 2020), 'attr' => array('class' => 'inline-date')))
                 ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control small-input')))
                 ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))

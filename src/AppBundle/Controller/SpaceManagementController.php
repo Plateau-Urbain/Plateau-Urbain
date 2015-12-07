@@ -33,12 +33,27 @@ class SpaceManagementController extends Controller
     public function indexAction(Request $request)
     {
         $user = $this->get('security.context')->getToken()->getUser();
-     
+
+        // Handle the filter form
+        $filterForm = $this->handleSpaceFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
+        ));
+
+        $filters = $filterForm->getData();
+
         $params = array(
             'user'      => $user,
-            'orderBy'   => $request->get('orderBy', 'zipCode'),
-            'sort'      => $request->get('sort', 'ASC'),
+            'orderBy'   => $filters['sort_field'],
+            'sort'      => $filters['sort_order']
         );
+
+        if ($filters['status_filter'] == 'closed') {
+            $params['closed'] = true;
+        } else if ($filters['status_filter'] == 'enabled')  {
+            $params['enabled'] = true;
+        }
 
         $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
@@ -50,7 +65,8 @@ class SpaceManagementController extends Controller
 
         
         return array(
-            "pagination" => $pagination
+            "pagination" => $pagination,
+            'filterForm' => $filterForm->createView()
         );
     }
 
@@ -228,11 +244,16 @@ class SpaceManagementController extends Controller
             $request->query->getInt('page', 1),
             10
         );
-        
+
+        $useTypes = $this->getDoctrine()->getManager()->getRepository('AppBundle:UseType')->findBy(array(), array('name' => 'ASC'));
+        $categories = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category')->findBy(array(), array('name' => 'ASC'));
+
         return array(
             'space'         => $space,
             'pagination'    => $pagination,
-            'filterForm' => $filterForm->createView()
+            'useTypes'      => $useTypes,
+            'categories'     => $categories,
+            'filterForm'    => $filterForm->createView()
         );
     }
 
@@ -440,6 +461,59 @@ class SpaceManagementController extends Controller
                 Application::WAIT_STATUS => 'En attente',
                 Application::ACCEPT_STATUS => 'Accepté',
                 Application::REJECT_STATUS => 'Refusé',
+            ),
+            'empty_value' => 'Filtrer par',
+            'empty_data' => ''
+        ));
+
+        $builder->add('sort_order', 'choice', array(
+            'required' => false,
+            'expanded' => true,
+            'empty_value' => false,
+            'choices' => array(
+                'asc' => 'Trier par ordre croissant',
+                'desc' => 'Trier par ordre décroissant'
+            ),
+            'empty_data' => 'desc'
+        ));
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        return $form;
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $data
+     *
+     * @return Form
+     */
+    protected function handleSpaceFilterForm(Request $request, $data)
+    {
+        $builder = $this->get('form.factory')->createNamedBuilder('filter', 'form', $data, array(
+            'action' => $this->generateUrl('space_manager_list'),
+            'method' => 'get',
+            'csrf_protection' => false
+        ));
+
+        $builder->add('sort_field', 'choice', array(
+            'required' => false,
+            'choices' => array(
+                'type' => 'Type de local',
+                'limitAvailability' => 'Date de clôture',
+                'city' => 'Localité',
+                'name' => 'Nom du bâtiment'
+            ),
+            'empty_value' => 'Trier par',
+            'empty_data' => ''
+        ));
+
+        $builder->add('status_filter', 'choice', array(
+            'required' => false,
+            'choices' => array(
+                'enabled' => 'Projets en cours',
+                'closed'  => 'Projets clôturés',
             ),
             'empty_value' => 'Filtrer par',
             'empty_data' => ''

@@ -251,9 +251,9 @@ class User extends BaseUser
     protected $projectDescription;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category" )
+     * @ORM\ManyToOne(targetEntity="UseType" )
      */
-    protected $category;
+    protected $useType;
 
     /**
      * @return mixed
@@ -571,17 +571,17 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getCategory()
+    public function getUseType()
     {
-        return $this->category;
+        return $this->useType;
     }
 
     /**
-     * @param mixed $category
+     * @param mixed $useType
      */
-    public function setCategory($category)
+    public function setUseType($useType)
     {
-        $this->category = $category;
+        $this->useType = $useType;
     }
     
     public static function getAllCivilities() {

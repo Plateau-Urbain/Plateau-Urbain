@@ -535,7 +535,6 @@ class Application
         $application->setLengthTypeOccupation($user->getLengthTypeOccupation());
         $application->setWishedSize($user->getWishedSize());
         $application->setProjectHolder($user);
-        $application->setCategory($user->getCategory());
 
         return $application;
     }
