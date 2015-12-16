@@ -32,9 +32,8 @@ class SpaceImageAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', 'image_admin_type', array(//image_admin_type vich_image
+            ->add('file', 'image_admin_type', array(
                 'required' => false,
-//                "template"=> "DeepinBlogBundle:Form:custom_admin_fields.html.twig"
             ));
 
         return $formMapper;
