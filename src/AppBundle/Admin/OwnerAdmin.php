@@ -58,7 +58,7 @@ class OwnerAdmin extends Admin
             ->with('Structure')
 
             ->add('company', null, array('required' => false, 'label' => 'Structure'))
-            ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'required' => false, 'label' => 'Statut'))
+            ->add('companyStatus', 'choice', array('choices' => User::getAllProCompanyStatut(), 'required' => false, 'label' => 'Statut'))
             ->add('address', null, array('required' => false, 'label' => 'Adresse'))
             ->add('addressSuite', null, array('required' => false, 'label' => 'Adresse (suite)'))
             ->add('zipcode', null, array('required' => false, 'label' => 'Code Postal'))
@@ -116,5 +116,16 @@ class OwnerAdmin extends Admin
     public function getUserManager()
     {
         return $this->userManager;
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $datasourceit = $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $datasourceit->setDateTimeFormat('d/m/Y H:i');
+
+        return $datasourceit;
     }
 }

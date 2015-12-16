@@ -141,4 +141,15 @@ class SpaceAdmin extends Admin
             parent::getFormTheme()
         );
     }
+
+    public function getDataSourceIterator()
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $datasourceit = $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $datasourceit->setDateTimeFormat('d/m/Y H:i');
+
+        return $datasourceit;
+    }
 }

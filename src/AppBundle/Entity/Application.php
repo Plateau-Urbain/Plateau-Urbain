@@ -99,7 +99,7 @@ class Application
     /**
      * @var string
      *
-     * @ORM\Column(name="length_type_occupation", type="string", length=5)
+     * @ORM\Column(name="length_type_occupation", type="string", length=15)
      * @Assert\NotBlank()
      */
     private $lengthTypeOccupation;

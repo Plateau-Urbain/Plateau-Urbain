@@ -47,7 +47,7 @@ class ProjectHolderAdmin extends Admin
             ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'required' => false, 'label' => 'Civilité'))
             ->add('firstname', null, array('required' => false, 'label' => 'Prénom'))
             ->add('lastname', null, array('required' => false, 'label' => 'Nom'))
-            ->add('birthday', null, array('required' => false, 'label' => 'Date de naissance'))
+            ->add('birthday', 'birthday', array('required' => false, 'label' => 'Date de naissance'))
             ->add('phone', null, array('required' => false, 'label' => 'Téléphone'))
             ->add('description', null, array('required' => false, 'label' => 'Description'))
             ->add('newsletter', null, array('required' => false, 'label' => 'Souhaite recevoir la newsletter'))
@@ -56,7 +56,7 @@ class ProjectHolderAdmin extends Admin
             ->with('Structure')
             ->add('company', null, array('required' => false, 'label' => 'Structure'))
             ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'required' => false, 'label' => 'Statut'))
-            ->add('companyCreationDate', null, array('required' => false, 'label' => 'Date de création'))
+            ->add('companyCreationDate', 'birthday', array('required' => false, 'label' => 'Date de création'))
             ->add('siret', null, array('required' => false, 'label' => 'SIRET'))
             ->add('address', null, array('required' => false, 'label' => 'Adresse Structure'))
             ->add('addressSuite', null, array('required' => false, 'label' => 'Adresse Structure (suite)'))
@@ -119,5 +119,32 @@ class ProjectHolderAdmin extends Admin
         $instance->setTypeUser(User::PORTEUR);
 
         return $instance;
+    }
+
+    public function preUpdate($user)
+    {
+        $this->getUserManager()->updateCanonicalFields($user);
+        $this->getUserManager()->updatePassword($user);
+    }
+
+    public function setUserManager(\FOS\UserBundle\Model\UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    public function getUserManager()
+    {
+        return $this->userManager;
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datagrid = $this->getDatagrid();
+        $datagrid->buildPager();
+
+        $datasourceit = $this->getModelManager()->getDataSourceIterator($datagrid, $this->getExportFields());
+        $datasourceit->setDateTimeFormat('d/m/Y H:i');
+
+        return $datasourceit;
     }
 }

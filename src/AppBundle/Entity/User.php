@@ -235,7 +235,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="length_type_occupation", type="string", length=5, nullable=true)
+     * @ORM\Column(name="length_type_occupation", type="string", length=15, nullable=true)
      */
     private $lengthTypeOccupation;
 
@@ -1035,6 +1035,32 @@ class User extends BaseUser
             "En création"                           => "En création",
             "En phase de lancement de moins 2 ans"  => "En phase de lancement de moins 2 ans"
             );
+    }
+
+    /**
+     * Get all company statut for pro
+     *
+     * @return array
+     */
+    public static function getAllProCompanyStatut() {
+        return array(
+            'SA' => 'SA',
+            'SAS' => 'SAS',
+            'SARL' => 'SARL',
+            'Auto entrepreneur' => 'Auto entrepreneur',
+            'SASU' => 'SASU',
+            'EURL' => 'EURL',
+            'SCIC' => 'SCIC',
+            'SCOP' => 'SCOP',
+            'Association loi 1901' => 'Association loi 1901',
+            'Association commerciale' => 'Entreprise individuelle',
+            'Artiste inscrit à la MDA' => 'Artiste inscrit à la MDA',
+            'Intermittent' => 'Intermittent',
+            'SCI' => 'SCI',
+            'SNC' => 'SNC',
+            'SELARL' => 'SELARL',
+            'SCP' => 'SCP'
+        );
     }
 
     /**

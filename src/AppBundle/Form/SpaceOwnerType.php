@@ -21,7 +21,7 @@ class SpaceOwnerType extends AbstractType {
                 ->add('companyPhone', null, array('label' => "Téléphone fixe", 'attr' => array('class' => 'form-control')))
                 ->add('companyMobile', null, array('label' => "Téléphone mobile", 'attr' => array('class' => 'form-control')))
                 ->add('company', null, array('label' => "Nom de ma structure", 'attr' => array('class' => 'form-control')))
-                ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
+                ->add('companyStatus', 'choice', array('choices' => User::getAllProCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
                 ->add('address', null, array('label' => "Adresse de la structure", 'attr' => array('class' => 'form-control')))
                 ->add('addressSuite', null, array('label' => "Adresse (suite)", 'attr' => array('class' => 'form-control')))
                 ->add('zipcode', null, array('label' => "Code postal", 'attr' => array('class' => 'form-control')))

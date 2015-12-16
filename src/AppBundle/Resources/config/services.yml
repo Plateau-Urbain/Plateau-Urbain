@@ -18,6 +18,8 @@ services:
             - ~
             - AppBundle\Entity\User
             -
+        calls:
+            - [setUserManager, [@fos_user.user_manager]]
 
     app.admin.spaces:
         class: AppBundle\Admin\SpaceAdmin
