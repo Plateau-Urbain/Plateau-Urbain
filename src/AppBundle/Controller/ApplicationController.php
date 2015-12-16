@@ -42,9 +42,6 @@ class ApplicationController extends Controller
         $prevApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getPrevApplication($application);
         $nextApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getNextApplication($application);
 
-//        var_dump($prevApplication);
-//        var_dump($nextApplication);
-
         return array(
             'prevApplication'   => $prevApplication,
             'nextApplication'   => $nextApplication,

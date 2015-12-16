@@ -171,7 +171,7 @@ class SpaceManagementController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $ids = $request->get('applications');
-            $message = $request->get('message');
+            $messageText = $request->get('message');
             $action = $request->get('action');
 
             $ids = explode('-', $ids);
@@ -202,7 +202,7 @@ class SpaceManagementController extends Controller
                             'AppBundle:Email:candidate.html.twig',
                             array(
                                 'space'      => $space,
-                                'message'    => $message,
+                                'message'    => $messageText,
                                 'user'       => $application->getProjectHolder(),
                                 'isAccepted' => $application->isAccepted()
                             )
