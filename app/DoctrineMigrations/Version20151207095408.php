@@ -22,8 +22,8 @@ class Version20151207095408 extends AbstractMigration
         $this->addSql('ALTER TABLE fos_user DROP FOREIGN KEY FK_957A647912469DE2');
         $this->addSql('DROP INDEX IDX_957A647912469DE2 ON fos_user');
         $this->addSql('ALTER TABLE fos_user CHANGE category_id useType_id INT DEFAULT NULL');
-        $this->addSql("INSERT INTO use_type VALUES('', 'Artistique')");
-        $this->addSql("INSERT INTO use_type VALUES('', 'Activité')");
+        $this->addSql("INSERT INTO use_type VALUES(1, 'Artistique')");
+        $this->addSql("INSERT INTO use_type VALUES(2, 'Activité')");
         $this->addSql("UPDATE fos_user SET useType_id = '1'");
         $this->addSql('ALTER TABLE fos_user ADD CONSTRAINT FK_957A647935521D14 FOREIGN KEY (useType_id) REFERENCES use_type (id)');
         $this->addSql('CREATE INDEX IDX_957A647935521D14 ON fos_user (useType_id)');
