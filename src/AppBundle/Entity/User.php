@@ -212,12 +212,10 @@ class User extends BaseUser
      */
     protected $description;
 
-
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
      */
     protected $siret;
-
 
     /**
      * @ORM\Column(length=255, type="integer", nullable=true)
@@ -255,11 +253,15 @@ class User extends BaseUser
      */
     protected $useType;
 
-
     /**
      * @ORM\OneToMany(targetEntity="Application", mappedBy="projectHolder", cascade={"remove"})
      */
     protected $applications;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Space", mappedBy="owner", cascade={"remove"})
+     */
+    protected $spaces;
 
     public function __toString()
     {

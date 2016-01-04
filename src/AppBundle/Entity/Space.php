@@ -155,7 +155,7 @@ class Space
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="spaces")
      */
     protected $owner;
 
@@ -174,12 +174,12 @@ class Space
     private $closed = false;
     
     /**
-     * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist", "remove"})
      */
     private $parcels;
 
     /**
-     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist", "remove"})
      */
     private $tags;
 
