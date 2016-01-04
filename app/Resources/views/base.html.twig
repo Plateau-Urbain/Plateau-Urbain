@@ -182,17 +182,8 @@
 	
 	</div>
 	<!-- END WRAPPER -->
-        
-        <div style='display:none'>
-            <div id="inline_content">
-                {% render(controller("AppBundle:Security:loginForm")) %}
-            </div>
-            <div id="inline_register_content">
-                {% render(controller("FOSUserBundle:Registration:register")) %}
-            </div>
-        </div>
-	
-	<!-- Libs -->
+
+		<!-- Libs -->
         {% javascripts  'bundles/app/js/common.js'
         'bundles/app/js/jquery.prettyPhoto.js'
         'bundles/app/js/owl.carousel.min.js'
@@ -210,7 +201,25 @@
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
 
-        {% block javascript %}
+		{% if app.session.flashbag.has('error_sign') %}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$.colorbox({html:$('#inline_register_content').html(), width:"400px"});
+				});
+			</script>
+		{% endif %}
+
+		{% block javascript %}
         {% endblock %}
-    </body>
+
+		<div style='display:none'>
+			<div id="inline_content">
+				{% render(controller("AppBundle:Security:loginForm")) %}
+			</div>
+			<div id="inline_register_content">
+				{% render(controller("FOSUserBundle:Registration:register")) %}
+			</div>
+		</div>
+
+	</body>
 </html>

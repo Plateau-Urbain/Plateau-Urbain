@@ -24,10 +24,16 @@
         {{ form_widget(form.plainPassword.second) }}
 
         {{ form_rest(form) }}
+
+        {% for msg in app.session.flashbag.get('error_sign')  %}
+            <p style="color: red;">{{ msg }}</p>
+        {% endfor %}
+
         <div>
             <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
         </div>
         <br />
-        <p>Vous allez recevoir un e-mail de confirmation.<br />Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.</p>
     </form>
 </div>
+
+
