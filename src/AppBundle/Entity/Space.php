@@ -175,7 +175,6 @@ class Space
     
     /**
      * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist"})
-     * @ORM\OrderBy({"type": "ASC"})
      */
     private $parcels;
 

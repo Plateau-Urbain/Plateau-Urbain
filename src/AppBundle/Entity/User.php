@@ -255,6 +255,12 @@ class User extends BaseUser
      */
     protected $useType;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="Application", mappedBy="projectHolder", cascade={"remove"})
+     */
+    protected $applications;
+
     public function __toString()
     {
         return $this->getFirstname() . ' ' . $this->getLastname() . ' - ' . $this->getCompany();

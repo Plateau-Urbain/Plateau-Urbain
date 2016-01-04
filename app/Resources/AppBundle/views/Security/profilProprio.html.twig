@@ -136,6 +136,9 @@
                 </div>
                 <div class="col-sm-6">
                     {{ form_widget(form.oldPassword) }}
+                    {% for msg in app.session.flashbag.get('error_msg')  %}
+                        {{ msg }}
+                    {% endfor %}
                 </div>
             </div>
 
@@ -145,6 +148,7 @@
                 </div>
                 <div class="col-sm-6">
                     {{ form_widget(form.password.first) }}
+                    {{ form_errors(form.password.first)}}
                 </div>
             </div>
 

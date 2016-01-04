@@ -52,6 +52,7 @@ class SecurityController extends Controller
     public function profilAction(Request $request)
     {
         $user = $this->getUser();
+        $em   = $this->getDoctrine()->getManager();
 
         if ($this->getUser()->isProprio()) {
             $form = $this->createForm(new SpaceOwnerType(), $user);
@@ -62,7 +63,9 @@ class SecurityController extends Controller
         }
         $session = $this->get('session');
         $current_ppassword = $user->getPassword();
-        
+
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+
         if ($form->handleRequest($request)->isValid()) {
 
             
@@ -71,23 +74,32 @@ class SecurityController extends Controller
             
             if (!empty($old_pwd) || !empty($new_pwd)) {
 
-                $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
                 $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
-        
+
                 if($current_ppassword != $old_pwd_encoded) {
                     $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
                 } else {
                     $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
                     $user->setPassword($new_pwd_encoded);
-                    $manager = $this->getDoctrine()->getManager();
-                    $manager->persist($user);
+                    $em->persist($user);
+                    $em->flush();
 
-                    $manager->flush();
+                    return $this->redirect($this->generateUrl('homepage'));
                 }
-            } else {            
+            } else {
+                $new_pwd = $form->get('password')->getData();
+
+                if (!empty($new_pwd)) {
+                    $user->setPassword($encoder->encodePassword($new_pwd, $user->getSalt()));
+                } else {
+                    $user->setPassword($current_ppassword);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->getUser());
                 $em->flush();
+
+                return $this->redirect($this->generateUrl('homepage'));
             }
         }
         

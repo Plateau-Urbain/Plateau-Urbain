@@ -106,7 +106,7 @@ class Application
 
     /**
      * @ORM\ManyToOne(
-     *     targetEntity="Space", inversedBy="applications"
+     *     targetEntity="Space", inversedBy="application"
      * )
      */
     private $space;
@@ -120,7 +120,8 @@ class Application
 
     /**
      * @ORM\ManyToOne(
-     *     targetEntity="User"
+     *     targetEntity="User",
+     *     inversedBy="applications"
      * )
      */
     private $projectHolder;
