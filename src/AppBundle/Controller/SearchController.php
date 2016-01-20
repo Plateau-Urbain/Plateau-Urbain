@@ -22,12 +22,17 @@ class SearchController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(new SearchType());
-        $latest = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true, 'closed' => false), array('created' => 'DESC'), 6 );
 
-        $all = $em->getRepository('AppBundle:Space')->findBy(array('enabled' => true, 'closed' => false), array('created' => 'DESC'));
+        $params = array(
+            'orderBy'           => 'created',
+            'sort'              => 'DESC',
+            'limitAvailability' => new \DateTime('now'),
+            'enabled'           => true,
+            'closed'            => false,
+        );
+
+        $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
         foreach ($all as $space) {
             if (!isset($departements[$space->getDepCode()])) {
@@ -39,7 +44,7 @@ class SearchController extends Controller
 
         return array(
             'form'         => $form->createView(),
-            'latest'       => $latest,
+            'latest'       => array_slice($all, 0, 6),
             'departements' => $departements,
         );
     }

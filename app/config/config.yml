@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          true
     use_controller: false
-    bundles:       [ AvocodeFormExtensionsBundle, AppBundle ]
+    bundles:       [ AvocodeFormExtensionsBundle, AppBundle, FOSUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
