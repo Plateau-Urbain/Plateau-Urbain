@@ -59,6 +59,11 @@ class Application
     private $status = self::DRAFT_STATUS;
 
     /**
+     * @ORM\Column(name="selected", type="boolean")
+     */
+    private $selected;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string")
@@ -553,5 +558,28 @@ class Application
                 ->addViolationAt('contribution', 'Cette valeur ne doit pas être vide.')
             ;
         }
+    }
+
+    /**
+     * Set selected
+     *
+     * @param boolean $selected
+     * @return Application
+     */
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+
+        return $this;
+    }
+
+    /**
+     * Get selected
+     *
+     * @return boolean
+     */
+    public function getSelected()
+    {
+        return $this->selected;
     }
 }

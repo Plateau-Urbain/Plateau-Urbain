@@ -255,6 +255,7 @@ class SpaceManagementController extends Controller
             'space'     => $space,
             'orderBy'   => $filters['sort_field'],
             'status'    => $filters['status_filter'],
+            'selected'  => $filters['status_filter'],
             'sort'      => $filters['sort_order']
         );
 
@@ -335,6 +336,25 @@ class SpaceManagementController extends Controller
             'Content-Type' => 'application/csv',
             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename)
         ));
+    }
+
+    /**
+     * @Route("/application/{id}/toggle_selected", name="space_manager_toggle_selected_application", methods={"get", "post"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function toggleSelectedApplication(Request $request, Application $application)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $application->setSelected(!$application->getSelected());
+
+        $em->persist($application);
+        $em->flush();
+
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
@@ -490,6 +510,7 @@ class SpaceManagementController extends Controller
                 Application::WAIT_STATUS => 'En attente',
                 Application::ACCEPT_STATUS => 'Accepté',
                 Application::REJECT_STATUS => 'Refusé',
+                'selected' => 'Sélectionnés'
             ),
             'empty_value' => 'Filtrer par',
             'empty_data' => ''

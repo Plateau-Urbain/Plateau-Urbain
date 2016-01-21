@@ -58,9 +58,14 @@ class ApplicationRepository extends EntityRepository
             }
         }
 
-        if (!empty($params['status'])) {
+        if (!empty($params['status']) && $params['status'] != 'selected') {
             $qb->andWhere('a.status = :status');
             $qb->setParameter('status', $params['status']);
+        }
+
+        if (!empty($params['status']) && $params['status'] == 'selected') {
+            $qb->andWhere('a.selected = :selected');
+            $qb->setParameter('selected', 1);
         }
 
         return $qb;
