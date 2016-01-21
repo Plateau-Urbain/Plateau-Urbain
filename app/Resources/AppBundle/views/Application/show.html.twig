@@ -30,6 +30,16 @@
 {% block body %}
 
 <div class="application-header center">
+    <div class="pull-right">
+      <a href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
+        {% if application.selected %}
+          <i class="fa fa-star fa-2x"></i>
+        {% else %}
+          <i class="fa fa-star-o fa-2x"></i>
+        {% endif %}
+      </a>
+    </div>
+
     <h1>{{ application.name }}</h1>
     <h2>{{ application.projectHolder.company }}</h2>
 

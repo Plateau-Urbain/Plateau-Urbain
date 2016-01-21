@@ -339,6 +339,25 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * @Route("/application/{id}/toggle_selected", name="space_manager_toggle_selected_application", methods={"get", "post"})
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function toggleSelectedApplication(Request $request, Application $application)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $application->setSelected(!$application->getSelected());
+
+        $em->persist($application);
+        $em->flush();
+
+        return $this->redirect($request->server->get('HTTP_REFERER'));
+    }
+
+    /**
      * @Route("/photo/{id}/delete", name="space_manager_removepicture", methods={"delete"})
      *
      * @param Request $request

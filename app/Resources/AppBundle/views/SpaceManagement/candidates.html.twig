@@ -148,7 +148,7 @@
             {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'candidatures' } %}
         </div>
     </div>
-        
+
     <p>&nbsp;</p>
 
     <div class="row">
@@ -162,7 +162,7 @@
             </div>
             <a href="#accept_content" class="btn btn-fullcolor" id="groupActionBtn">Appliquer</a>
         </div>
-        
+
         <div class="col-sm-7">
             {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
 
@@ -181,8 +181,8 @@
             {{ form_end(filterForm) }}
         </div>
     </div>
-</div>    
-        
+</div>
+
 <div class="application-list">
     {% for application in pagination %}
         <div class="item">
@@ -206,6 +206,16 @@
                     <p><i class="fa fa-file-text-o"></i>&nbsp; {{ application.description|truncate(250) }}</p>
                 </div>
                 <div class="col-sm-4">
+                    <div class="pull-right">
+                      <a href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
+                        {% if application.selected %}
+                          <i class="fa fa-star fa-2x"></i>
+                        {% else %}
+                          <i class="fa fa-star-o fa-2x"></i>
+                        {% endif %}
+                      </a>
+                    </div>
+
                     <ul>
                         <li>
                             Candidature déposée le <strong>{{ application.created | date('d/m/Y') }}</strong>
@@ -300,7 +310,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            
+
             $("#groupActionBtn").click(function() {
                 var nbCandidates = $('.groupCheck:checked').length;
 
@@ -308,13 +318,13 @@
                 $('.groupCheck:checked').each(function() {
                      ids += (ids === '' ? '' : '-') + $(this).val();
                 });
-                
+
                 $('input[name="applications"]').val(ids);
 
-                if (nbCandidates > 0 && $('#groupActionSelect').val() !== '') {            
+                if (nbCandidates > 0 && $('#groupActionSelect').val() !== '') {
                     $("#groupActionBtn").colorbox({width:"500px", html: $('#'+$('#groupActionSelect').val()+'_content').html().replace('$nb_candidates$', nbCandidates)});
                 }
-                
+
             });
 
             // Manage sort field
