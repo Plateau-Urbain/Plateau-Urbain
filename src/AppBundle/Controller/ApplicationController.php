@@ -42,6 +42,13 @@ class ApplicationController extends Controller
         $prevApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getPrevApplication($application);
         $nextApplication = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getNextApplication($application);
 
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        $application->setStatus(Application::WAIT_STATUS);
+
+        $em->persist($application);
+        $em->flush();
+
         return array(
             'prevApplication'   => $prevApplication,
             'nextApplication'   => $nextApplication,

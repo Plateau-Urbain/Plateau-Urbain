@@ -274,7 +274,7 @@ class SpaceManagementController extends Controller
             'space'         => $space,
             'pagination'    => $pagination,
             'useTypes'      => $useTypes,
-            'categories'     => $categories,
+            'categories'    => $categories,
             'filterForm'    => $filterForm->createView()
         );
     }
@@ -486,6 +486,7 @@ class SpaceManagementController extends Controller
         $builder->add('status_filter', 'choice', array(
             'required' => false,
             'choices' => array(
+                Application::UNREAD_STATUS => 'Non lue',
                 Application::WAIT_STATUS => 'En attente',
                 Application::ACCEPT_STATUS => 'Accepté',
                 Application::REJECT_STATUS => 'Refusé',
