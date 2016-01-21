@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-            
+
         <h2 class="section-title">Répartition des surfaces</h2>
 
         <div class="form-contener">
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-                
+
         <h2 class="section-title">Photos</h2>
 
         <div class="form-contener">
@@ -105,8 +105,17 @@
         <p class="center">
             Attention une fois publiée, vous ne pourrez pas modifier l'annonce sans intervention d'un administrateur.
         </p>
-        
+
         <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                {{ form_widget(
+                    form.preview, {
+                        'attr': {
+                            'class': 'btn btn-fullcolor form-control',
+                        }
+                    })
+                }}
+            </div>
             <div class="col-sm-4 col-sm-offset-4">
                 {{ form_widget(
                     form.publish, {
@@ -117,12 +126,11 @@
                     })
                 }}
             </div>
-        </div>                
-                
+        </div>
+
         <p>&nbsp;</p>
-        <p>&nbsp;</p>    
+        <p>&nbsp;</p>
     </div>
 </div>
 <div style="display: none;">{{ form_rest(form) }}</div>
 {{ form_end(form) }}
-         

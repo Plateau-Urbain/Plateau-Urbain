@@ -63,7 +63,7 @@ class SpaceManagementController extends Controller
             $request->query->getInt('page', 1)/*page number*/
         );
 
-        
+
         return array(
             "pagination" => $pagination,
             'filterForm' => $filterForm->createView()
@@ -71,11 +71,24 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * @param Space $space
+     *
+     * @return Response
+     *
+     * @Route("/previsualiser/{id}", name="space_manager_preview", methods={"get"})
+     * @Template()
+     */
+    public function previewAction(Request $request, Space $space)
+    {
+        return $this->forward('AppBundle:Space:show', array('space' => $space));
+    }
+
+    /**
      * @Route("/ajouter", name="space_manager_add", methods={"get", "post"})
      * @Template()
      */
     public function addAction(Request $request)
-    { 
+    {
         $space = new Space();
 
         $form = $this->createSpaceForm($space, array(
@@ -95,6 +108,10 @@ class SpaceManagementController extends Controller
             }
 
             $em->flush();
+
+            if ($form->get('preview')->isClicked()) {
+                return $this->redirect($this->generateUrl('space_manager_preview', array('id' => $space->getId())));
+            }
 
             $this->get('session')->getFlashBag()->set('success', 'L\'espace a été enregistré.');
 
@@ -128,8 +145,13 @@ class SpaceManagementController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             if ($form->get('publish')->isClicked()) {
                 return $this->submitSpace($space);
+            }
+
+            if ($form->get('preview')->isClicked()) {
+                return $this->redirect($this->generateUrl('space_manager_preview', array('id' => $space->getId())));
             }
 
             $this->get('doctrine.orm.entity_manager')->flush();
@@ -150,14 +172,14 @@ class SpaceManagementController extends Controller
     public function closeAction(Space $space)
     {
         $space->setClosed(true);
-        
+
         $em = $this->getDoctrine()->getManager();
-        
+
         $em->persist($space);
         $em->flush();
-        
+
         $this->get('session')->getFlashBag()->set('success', 'Espace fermé');
-        
+
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
 
@@ -390,6 +412,10 @@ class SpaceManagementController extends Controller
             'label' => 'Publier'
         ));
 
+        $form->add('preview', 'submit', array(
+            'label' => 'Prévisualiser'
+        ));
+
         $form->add('save', 'submit', array(
             'label' => 'Enregistrer'
         ));
@@ -428,6 +454,8 @@ class SpaceManagementController extends Controller
 
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
+
+
 
     /**
      * @param Request $request
