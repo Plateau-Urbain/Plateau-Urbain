@@ -255,6 +255,7 @@ class SpaceManagementController extends Controller
             'space'     => $space,
             'orderBy'   => $filters['sort_field'],
             'status'    => $filters['status_filter'],
+            'selected'  => $filters['status_filter'],
             'sort'      => $filters['sort_order']
         );
 
@@ -490,6 +491,7 @@ class SpaceManagementController extends Controller
                 Application::WAIT_STATUS => 'En attente',
                 Application::ACCEPT_STATUS => 'Accepté',
                 Application::REJECT_STATUS => 'Refusé',
+                'selected' => 'Sélectionnés'
             ),
             'empty_value' => 'Filtrer par',
             'empty_data' => ''
