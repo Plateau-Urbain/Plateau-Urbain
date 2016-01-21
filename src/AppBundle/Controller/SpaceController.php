@@ -76,7 +76,7 @@ class SpaceController extends Controller
         ));
 
         if ($form->handleRequest($request)->isValid()) {
-            $application->setStatus(Application::WAIT_STATUS);
+            $application->setStatus(Application::UNREAD_STATUS);
 
             $em->persist($application);
             $em->flush();
