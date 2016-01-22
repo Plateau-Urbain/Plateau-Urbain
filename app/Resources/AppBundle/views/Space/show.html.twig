@@ -66,7 +66,7 @@
 
                 </div>
                 <!-- END AGENT INFORMATION -->
-        </div>	
+        </div>
         <!-- END MAIN CONTENT -->
 
 
@@ -119,7 +119,7 @@
         </div>
         <!-- END SIDEBAR -->
 </div>
-            
+
 <div class="row">
 
     <div class="col-sm-6">
@@ -135,9 +135,9 @@
         </div>
     </div>
 </div>
-        
+
 <p>&nbsp;</p>
-    
+
 <div class="row">
     <!-- BEGIN PROPERTY AMENITIES LIST -->
     {%  if space.hasTagType(constant('AppBundle\\Entity\\SpaceAttribute::STATUS_INCLUDED')) %}
@@ -170,8 +170,8 @@
         </div>
     </div>
     {% endif %}
-</div>   
-            
+</div>
+
 <p id="parcels">&nbsp;</p>
 
 <div class="row">
@@ -247,12 +247,22 @@
         </div>
     </div>
 
+    <div id="saveBox" style="display: none;">
+        <div class="colorBox-content">
+            <br /><br />
+            <p>La candidature a été enregistrée.</p>
+        </div>
+    </div>
+
     <script type="text/javascript">
         var hash = window.location.hash.substring(1);
         $(function() {
 
             if (hash == "espace_confirmation") {
                 $.colorbox({html:$('#confirmBox').html()});
+            }
+            if (hash == "espace_sauvegarde") {
+                $.colorbox({html:$('#saveBox').html()});
             }
         });
     </script>

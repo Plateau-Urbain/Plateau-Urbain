@@ -75,21 +75,47 @@ class SpaceController extends Controller
             )
         ));
 
+        $form->add('save', 'submit', array(
+            'label' => 'Enregister',
+            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+        ));
+
+        $form->add('submit', 'submit', array(
+            'label' => 'Clôturer ma candidature',
+            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+        ));
+
         if ($form->handleRequest($request)->isValid()) {
-            $application->setStatus(Application::UNREAD_STATUS);
+            if ($form->get('submit')->isClicked()) {
+              $application->setStatus(Application::UNREAD_STATUS);
+            }
 
             $em->persist($application);
             $em->flush();
 
-            return new RedirectResponse(
-                $this->generateUrl(
-                    'space_show',
-                    array(
-                        'id' => $space->getId()
-                    )
-                ) . "#espace_confirmation"
-            );
+            if($application->getStatus() == Application::DRAFT_STATUS){
+              return new RedirectResponse(
+                  $this->generateUrl(
+                      'space_show',
+                      array(
+                          'id' => $space->getId()
+                      )
+                  ) . "#espace_sauvegarde"
+              );
+            } else {
+              return new RedirectResponse(
+                  $this->generateUrl(
+                      'space_show',
+                      array(
+                          'id' => $space->getId()
+                      )
+                  ) . "#espace_confirmation"
+              );
+            }
+
         }
+
+
 
         // Check if the profile is completed
         $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));

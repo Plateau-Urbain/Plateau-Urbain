@@ -261,6 +261,9 @@ class SpaceManagementController extends Controller
 
         $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
 
+        $query->andWhere('a.status <> :status');
+        $query->setParameter('status', Application::DRAFT_STATUS);
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $query,
@@ -434,10 +437,6 @@ class SpaceManagementController extends Controller
 
         $form->add('preview', 'submit', array(
             'label' => 'Prévisualiser'
-        ));
-
-        $form->add('save', 'submit', array(
-            'label' => 'Enregistrer'
         ));
 
         return $form;
