@@ -52,10 +52,14 @@
         <div class='col-sm-6'>
             <p class="ml65 mt15 pu-size"><strong>4 000 000 m²</strong><br /> de bureaux vacants</p>
         </div>
-        
+
     </div>
 </div>
 
+{% endblock %}
+
+{% block actualities %}
+  {{ render(controller('AppBundle:Actuality:show')) }}
 {% endblock %}
 
 {% block partners %}
