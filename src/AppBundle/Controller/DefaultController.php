@@ -16,7 +16,16 @@ class DefaultController extends Controller
     {
         return array();
     }
-    
+
+    /**
+     * @Route("/proprietaire", name="proprietaire")
+     * @Template()
+     */
+    public function ownerAction()
+    {
+        return array();
+    }
+
     /**
      * @Route("/upload_action", name="upload_action")
      * @Template()
