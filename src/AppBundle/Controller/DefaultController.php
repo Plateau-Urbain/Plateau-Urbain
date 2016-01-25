@@ -16,7 +16,25 @@ class DefaultController extends Controller
     {
         return array();
     }
-    
+
+    /**
+     * @Route("/mentions-legales", name="mentions_legales")
+     * @Template()
+     */
+    public function legalAction()
+    {
+        return array();
+    }
+
+    /**
+     * @Route("/cgu", name="cgu")
+     * @Template()
+     */
+    public function cguAction()
+    {
+        return array();
+    }
+
     /**
      * @Route("/upload_action", name="upload_action")
      * @Template()
