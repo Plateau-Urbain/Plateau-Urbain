@@ -61,7 +61,7 @@ class Application
     /**
      * @ORM\Column(name="selected", type="boolean")
      */
-    private $selected;
+    private $selected = false;
 
     /**
      * @var string
