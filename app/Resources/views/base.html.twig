@@ -36,6 +36,7 @@
                         'bundles/app/css/colorbox.css'
                         'bundles/app/rs-plugin/css/settings.css'
                         'bundles/app/css/style.css'
+												'bundles/app/css/cycle.css'
         filter='cssrewrite' %}
            <link rel="stylesheet" href="{{ asset_url }}" medial="all" />
         {% endstylesheets  %}
@@ -106,8 +107,9 @@
 			</div>
 		</div>
 
-		{% block partners %}{% endblock %}
+		{% block actualities %}{% endblock %}
 
+		{% block partners %}{% endblock %}
 
 		{% block footer %}
 			{% include '/Partials/footer.html.twig' %}
@@ -133,6 +135,11 @@
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+
+
+		<script src="http://malsup.github.io/min/jquery.cycle2.min.js"></script>
+		<script src="http://malsup.github.io/min/jquery.cycle2.carousel.min.js"></script>
+
 
 		{% if app.session.flashbag.has('error_sign') %}
 			<script type="text/javascript">

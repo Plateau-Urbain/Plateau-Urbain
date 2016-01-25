@@ -48,7 +48,6 @@ class ActualityAdmin extends Admin
             ->add('subtitle', null, array('label' => 'Sous-titre'))
             ->add('date', 'date')
             ->add('link', null, array('label' => 'Lien'))
-            ->add('linkTitle', null, array('label' => 'Titre du lien'))
             ->add('image', 'file', array('label' => 'Image'))
             ->add('published', null, array('label' => 'Publié ?'))
 
