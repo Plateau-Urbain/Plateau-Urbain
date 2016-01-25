@@ -5,25 +5,25 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	
+
 	<!-- Page Title -->
 	<title>{% block title %}Plateau Urbain{% endblock %}</title>
-	
+
 	<meta name="keywords" content="real estate, responsive, retina ready, modern html5 template, bootstrap, css3" />
 	<meta name="description" content="Cozy - Responsive Real Estate HTML5 Template" />
 	<meta name="author" content="Wisely Themes - www.wiselythemes.com" />
-	
+
 	<!-- Mobile Meta Tag -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 	<!-- Fav and touch icons -->
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('/bundles/app/images/fav_touch_icons/favicon.ico') }}" />
-	
+
 	<!-- IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> 
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	
+
 	<!-- Google Web Font -->
 	<link href="http://fonts.googleapis.com/css?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" rel="stylesheet" type="text/css" />
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css' />
@@ -36,6 +36,7 @@
                         'bundles/app/css/colorbox.css'
                         'bundles/app/rs-plugin/css/settings.css'
                         'bundles/app/css/style.css'
+												'bundles/app/css/cycle.css'
         filter='cssrewrite' %}
            <link rel="stylesheet" href="{{ asset_url }}" medial="all" />
         {% endstylesheets  %}
@@ -50,29 +51,29 @@
     <body>
 	<!-- BEGIN WRAPPER -->
 	<div id="wrapper">
-	
+
 		<!-- BEGIN HEADER -->
-		<header id="header">			
+		<header id="header">
 			<div id="nav-section">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
 							<a href="{{ path('homepage')}}" class="nav-logo"><img src="{{ asset('/public/images/logo.png') }}" alt="Plateau Urbain" /></a>
-							
+
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
 								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
 								{{ knp_menu_render('AppBundle:Builder:mainMenu') }}
 							</nav>
 							<!-- END MAIN MENU -->
-							
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</header>
 		<!-- END HEADER -->
-		
+
 		<!-- BEGIN PAGE TITLE/BREADCRUMB -->
         {% block breadcrumb %}
             <div class="breadcrumb-header">
@@ -92,12 +93,14 @@
         <!-- END PAGE TITLE/BREADCRUMB -->
 
         {% block prebody %} {% endblock %}
-                
+
 		<div class="content">
 			<div class="container pb100">
         		{% block body %}{% endblock %}
 			</div>
 		</div>
+
+		{% block actualities %}{% endblock %}
 
 		{% block partners %}{% endblock %}
 
@@ -152,31 +155,31 @@
 					</div>
 				</div>
 			</div>
-			
-			
+
+
 			<!-- BEGIN COPYRIGHT -->
 			<div id="copyright">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
 							&copy; 2014 Cozy
-							
+
 							<!-- BEGIN SOCIAL NETWORKS -->
 							<ul class="social-networks">
 								<li><a href="https://www.facebook.com/plateau.urbain" target="_blank"><i class="fa fa-facebook"></i></a></li>
 								<li><a href="https://twitter.com/plateauurbain" target="_blank"><i class="fa fa-twitter"></i></a></li>
 							</ul>
 							<!-- END SOCIAL NETWORKS -->
-						
+
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- END COPYRIGHT -->
-			
+
 		</footer>
 		<!-- END FOOTER -->
-	
+
 	</div>
 	<!-- END WRAPPER -->
 
@@ -186,7 +189,7 @@
         'bundles/app/js/owl.carousel.min.js'
         'bundles/app/js/chosen.jquery.min.js'
         'bundles/app/js/infobox.min.js'
-        'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'  
+        'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'
         'bundles/app/rs-plugin/js/jquery.themepunch.revolution.min.js'
         'bundles/app/js/jquery.colorbox.js'
         'bundles/app/js/bootstrap-checkbox.js'
@@ -197,6 +200,11 @@
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts  %}
+
+
+		<script src="http://malsup.github.io/min/jquery.cycle2.min.js"></script>
+		<script src="http://malsup.github.io/min/jquery.cycle2.carousel.min.js"></script>
+
 
 		{% if app.session.flashbag.has('error_sign') %}
 			<script type="text/javascript">
