@@ -44,7 +44,7 @@ class SecurityController extends Controller
     {
         return array();
     }
-    
+
     /**
      * @Route("/profil", name="security_profil")
      * @Route("/inscription/confirmation", name="fos_user_registration_confirmed")
@@ -58,7 +58,7 @@ class SecurityController extends Controller
             $form = $this->createForm(new SpaceOwnerType(), $user);
             $template = 'AppBundle:Security:profilProprio.html.twig';
         } else {
-            $form = $this->createForm(new ProjectOwnerType(), $user);           
+            $form = $this->createForm(new ProjectOwnerType(), $user);
             $template = 'AppBundle:Security:profil.html.twig';
         }
         $session = $this->get('session');
@@ -68,10 +68,10 @@ class SecurityController extends Controller
 
         if ($form->handleRequest($request)->isValid()) {
 
-            
+
             $old_pwd = $this->getUser()->isProprio() ? $form->get('oldPassword')->getData() : '';
             $new_pwd = $this->getUser()->isProprio() ? $form->get('password')->getData() : '';
-            
+
             if (!empty($old_pwd) || !empty($new_pwd)) {
 
                 $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
@@ -102,7 +102,7 @@ class SecurityController extends Controller
                 return $this->redirect($this->generateUrl('homepage'));
             }
         }
-        
+
         return $this->render($template, array(
             'form' => $form->createView()
         ));
@@ -113,13 +113,37 @@ class SecurityController extends Controller
      * @Template()
      */
 
-    public function myApplicationsAction()
+    public function myApplicationsAction(Request $request)
     {
-        $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->findBy(array(
-            'projectHolder' => $this->getUser()
+        // Handle the filter form
+        $filterForm = $this->handleApplicationsFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
         ));
 
-        return compact('applications');
+        $filters = $filterForm->getData();
+
+        $params = array(
+            'applicant' => $this->getUser(),
+            'orderBy'   => $filters['sort_field'],
+            'status'    => $filters['status_filter'],
+            'sort'      => $filters['sort_order']
+        );
+
+        $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')
+          ->formFilter($params);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $applications,
+            $request->query->getInt('page', 1)
+        );
+
+        return array(
+            "applications" => $pagination,
+            'filterForm' => $filterForm->createView()
+        );
 
     }
 
@@ -131,5 +155,62 @@ class SecurityController extends Controller
     public function showMyApplicationAction(Application $application)
     {
         return compact('application');
+    }
+
+
+    /**
+     * @param Request $request
+     * @param array   $data
+     *
+     * @return Form
+     */
+    protected function handleApplicationsFilterForm(Request $request, $data)
+    {
+
+      $builder = $this->get('form.factory')->createNamedBuilder('filter', 'form', $data, array(
+          'action' => $this->generateUrl('my_applications_list'),
+          'method' => 'get',
+          'csrf_protection' => false
+      ));
+
+      $builder->add('sort_field', 'choice', array(
+          'required' => false,
+          'choices' => array(
+              'type' => 'Type de local',
+              'limitAvailability' => 'Date de clôture',
+              'city' => 'Localité',
+              'name' => 'Nom du bâtiment'
+          ),
+          'empty_value' => 'Trier par',
+          'empty_data' => ''
+      ));
+
+      $builder->add('status_filter', 'choice', array(
+          'required' => false,
+          'choices' => array(
+              'draft' => 'À compléter',
+              'sent'  => 'Envoyées',
+              'accepted' => 'Acceptées',
+              'rejected'  => 'Refusées',
+          ),
+          'empty_value' => 'Filtrer par',
+          'empty_data' => ''
+      ));
+
+      $builder->add('sort_order', 'choice', array(
+          'required' => false,
+          'expanded' => true,
+          'empty_value' => false,
+          'choices' => array(
+              'asc' => 'Trier par ordre croissant',
+              'desc' => 'Trier par ordre décroissant'
+          ),
+          'empty_data' => 'desc'
+      ));
+
+      $form = $builder->getForm();
+      $form->handleRequest($request);
+
+      return $form;
     }
 }

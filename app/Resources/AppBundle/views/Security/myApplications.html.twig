@@ -1,6 +1,9 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb %}{% endblock %}
+{% block breadcrumb_items %}
+  <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+  <li><span>Mes candidatures</span></li>
+{% endblock %}
 
 {% block body %}
 
@@ -13,7 +16,27 @@
 
     </div>
 
+    <div id="listing-header" class="clearfix">
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
 
+                <div class="col-sm-4">
+                    {{ form_widget(filterForm.status_filter) }}
+                </div>
+
+                <div class="col-sm-4">
+                    {{ form_widget(filterForm.sort_field) }}
+                </div>
+
+                <div class="col-sm-4">
+                    {{ form_widget(filterForm.sort_order) }}
+                </div>
+
+                {{ form_end(filterForm) }}
+            </div>
+        </div>
+    </div>
 
         <!-- BEGIN PROPERTY LISTING -->
         <div id="property-listing" class="list-style clearfix">
@@ -58,5 +81,32 @@
         </div>
         <!-- END PROPERTY LISTING -->
 
+        {{ knp_pagination_render(applications) }}
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+          $(function () {
+              $('.sort').on('click', 'label', function () {
+                  var $input = $(this).find('input');
+
+                  $('.sort').find('label').removeClass('checked');
+
+                  if ($input.is(':checked')) {
+                      $(this).addClass('checked');
+                  }
+              });
+          });
+
+            // Submit form
+            $('form[data-submit]').on('change', function () {
+                console.log("here");
+                $(this).trigger('submit');
+            });
+
+        });
+    </script>
 {% endblock %}

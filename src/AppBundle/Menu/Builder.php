@@ -19,7 +19,10 @@ class Builder extends ContainerAware
         if ($isLogged) {
             $menu->addChild('Rechercher', array('route' => 'search_index'));
 
-            if ($this->container->get('security.context')->isGranted('ROLE_OWNER')) {
+            $context = $this->container->get('security.context');
+            $user = $context->getToken()->getUser();
+
+            if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
                 $menu->addChild('Proposer', array('route' => 'space_manager_add'));
             }
 
@@ -33,10 +36,10 @@ class Builder extends ContainerAware
 
             $loggedMenu->addChild('Mon profil', array('route' => 'security_profil'));
 
-            if ($this->container->get('security.context')->isGranted('ROLE_OWNER')) {
+            if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
                 $loggedMenu->addChild('Mes espaces', array('route' => 'space_manager_list'));
                 $loggedMenu->addChild('Ajouter un espace', array('route' => 'space_manager_add'));
-            } else if ($this->container->get('security.context')->isGranted('ROLE_PROJECT_HOLDER')) {
+            } else if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
                 $loggedMenu->addChild('Mes candidatures', array('route' => 'my_applications_list'));
             }
 
