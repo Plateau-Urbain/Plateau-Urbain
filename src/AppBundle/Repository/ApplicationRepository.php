@@ -115,6 +115,8 @@ class ApplicationRepository extends EntityRepository
         return $qb;
     }
 
+
+
     /**
      * @param Application $application
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -143,6 +145,42 @@ class ApplicationRepository extends EntityRepository
             ->andWhere('a.space = :space')
             ->setParameter('space', $application->getSpace())
             ->setParameter('id', $application->getId())
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Application $application
+     * @param User $applicant
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getApplicantNextApplication(Application $application, User $applicant) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id > :id')
+            ->setParameter('id', $application->getId())
+            ->andWhere('a.projectHolder = :user_id')
+            ->setParameter('user_id', $applicant->getId())
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Application $application
+     * @param User $applicant
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getApplicantPrevApplication(Application $application, User $applicant) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id < :id')
+            ->setParameter('id', $application->getId())
+            ->andWhere('a.projectHolder = :user_id')
+            ->setParameter('user_id', $applicant->getId())
             ->orderBy('a.id', 'DESC')
             ->setMaxResults(1);
 

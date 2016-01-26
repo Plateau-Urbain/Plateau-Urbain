@@ -154,7 +154,18 @@ class SecurityController extends Controller
      */
     public function showMyApplicationAction(Application $application)
     {
-        return compact('application');
+      $user = $this->getUser();
+
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application');
+
+      $prevApplication = $repository->getApplicantPrevApplication($application, $user);
+      $nextApplication = $repository->getApplicantNextApplication($application, $user);
+
+      return array(
+          'prevApplication'   => $prevApplication,
+          'nextApplication'   => $nextApplication,
+          'application'       => $application
+      );
     }
 
 
