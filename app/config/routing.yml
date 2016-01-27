@@ -35,8 +35,24 @@ fos_user_change_password:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
-    
+
+hwi_oauth_security:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    # prefix: /connexion
+    # prefix: /login
+    prefix: /connect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix: /connect
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+hwi_facebook_login:
+    pattern: /connect/check-facebook
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
-    

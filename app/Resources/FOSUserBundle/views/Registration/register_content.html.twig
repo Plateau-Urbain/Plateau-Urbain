@@ -1,7 +1,7 @@
 <div class="colorBox-content">
     <h4>Inscription</h4>
     <br />
-    
+
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
     <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
         {{ form_label(form.wishedSize) }}
@@ -9,6 +9,8 @@
 
         {{ form_label(form.useType) }}
         {{ form_widget(form.useType) }}
+
+        <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" alt="Sign in with Facebook">Sign in with Facebook</a>
 
         <br />
         <br />
@@ -35,5 +37,3 @@
         <br />
     </form>
 </div>
-
-

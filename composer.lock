@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9897c7273f63ac29ef7488c1c6d9303d",
-    "content-hash": "c8b8bffb9524897b0b7dd69dc07bf4e4",
+    "hash": "b131f944c2dae583a5b104c84a23c3fa",
     "packages": [
         {
             "name": "afarkas/html5shiv",
@@ -208,7 +207,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/d71c2a234c61f53f1109a26ba8155902a51f8ca5",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/80a24d296c38032edc149a403eec7fae214df71c",
                 "reference": "731b82199de4597741c27ade8dfaac7381107c86",
                 "shasum": ""
             },
@@ -444,7 +443,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tehplague/swiftmailer-mailgun-bundle/zipball/f229e1257c41983ec3be3e694360b98374e09139",
+                "url": "https://api.github.com/repos/tehplague/swiftmailer-mailgun-bundle/zipball/005045e7478f678ec856b6fa6f333fbaecbfbec5",
                 "reference": "c0e661092f80e601e49cbc5bc22a4ff68bdec45c",
                 "shasum": ""
             },
@@ -1286,7 +1285,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/503ea5cc9c8ae38790a6899d842aaa92d55258bb",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/2ce8d87d4247e4b87cc5905ea5f8446b12bd9b5b",
                 "reference": "abb87d84ed21fd30c27bd3b52252a495a36d32fb",
                 "shasum": ""
             },
@@ -1575,7 +1574,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/008e69f17a1286c29b8a60082119b7d6eee69082",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/de2ed3bbe68254efeff68db60092fc8ed5298055",
                 "reference": "2cfecfe1dbc32cfec713db5c83c78c2ecc66c6dc",
                 "shasum": ""
             },
@@ -1627,7 +1626,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/f40f71fb62230a1de2c92c16acb14e38950b6464",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/be191eab56934f8ca53eda4a62b3344b52ac510f",
                 "reference": "f40f71fb62230a1de2c92c16acb14e38950b6464",
                 "shasum": ""
             },
@@ -1706,7 +1705,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fd6447e50b77739fb9b877fa175e0218922d054f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/cb8d0f2e778af4c9f669684a934a5f910ef37696",
                 "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0",
                 "shasum": ""
             },
@@ -1906,6 +1905,146 @@
                 "orm"
             ],
             "time": "2014-10-29 05:43:59"
+        },
+        {
+            "name": "hwi/oauth-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hwi/HWIOAuthBundle.git",
+                "reference": "6e404aa32537274fecfe39da981ffa50281cb7fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hwi/HWIOAuthBundle/zipball/6e404aa32537274fecfe39da981ffa50281cb7fd",
+                "reference": "6e404aa32537274fecfe39da981ffa50281cb7fd",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": "~0.13",
+                "php": ">=5.3.3",
+                "symfony/form": "~2.3",
+                "symfony/framework-bundle": "~2.3",
+                "symfony/options-resolver": "~2.3",
+                "symfony/security-bundle": "~2.3",
+                "symfony/yaml": "~2.3"
+            },
+            "conflict": {
+                "twig/twig": "<1.12"
+            },
+            "require-dev": {
+                "doctrine/orm": "~2.3",
+                "friendsofsymfony/user-bundle": "~1.3|~2.0",
+                "phpunit/phpunit": "~4.8",
+                "symfony/phpunit-bridge": "~2.7",
+                "symfony/property-access": "~2.3",
+                "symfony/twig-bundle": "~2.3",
+                "symfony/validator": "~2.3"
+            },
+            "suggest": {
+                "doctrine/doctrine-bundle": "to use Doctrine user provider",
+                "friendsofsymfony/user-bundle": "to connect FOSUB with this bundle",
+                "symfony/property-access": "to use FOSUB integration with this bundle",
+                "symfony/twig-bundle": "to use the Twig hwi_oauth_* functions"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HWI\\Bundle\\OAuthBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/hwi/HWIOAuthBundle/contributors"
+                },
+                {
+                    "name": "Joseph Bielawski",
+                    "email": "stloyd@gmail.com"
+                },
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                },
+                {
+                    "name": "Geoffrey Bachelet",
+                    "email": "geoffrey.bachelet@gmail.com"
+                }
+            ],
+            "description": "Support for authenticating users using both OAuth1.0a and OAuth2 in Symfony2.",
+            "homepage": "http://github.com/hwi/HWIOAuthBundle",
+            "keywords": [
+                "37signals",
+                "Authentication",
+                "Deezer",
+                "EVE Online",
+                "amazon",
+                "auth0",
+                "azure",
+                "bitbucket",
+                "bitly",
+                "box",
+                "bufferapp",
+                "dailymotion",
+                "deviantart",
+                "discogs",
+                "disqus",
+                "dropbox",
+                "eventbrite",
+                "facebook",
+                "firewall",
+                "fiware",
+                "flickr",
+                "foursquare",
+                "github",
+                "google",
+                "hubic",
+                "instagram",
+                "jira",
+                "linkedin",
+                "mail.ru",
+                "oauth",
+                "oauth1",
+                "oauth2",
+                "odnoklassniki",
+                "paypal",
+                "qq",
+                "reddit",
+                "runkeeper",
+                "salesforce",
+                "security",
+                "sensio connect",
+                "sina weibo",
+                "slack",
+                "sound cloud",
+                "spotify",
+                "stack exchange",
+                "stereomood",
+                "strava",
+                "toshl",
+                "trakt",
+                "trello",
+                "twitch",
+                "twitter",
+                "vkontakte",
+                "wechat",
+                "windows live",
+                "wordpress",
+                "xing",
+                "yahoo",
+                "yandex",
+                "youtube"
+            ],
+            "time": "2016-01-11 19:07:25"
         },
         {
             "name": "imagine/imagine",
@@ -2579,6 +2718,54 @@
                 "minification"
             ],
             "time": "2014-12-12 05:04:05"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "reference": "d4041666c3ffb379af02a92dabe81c904b35fab8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2015-06-25 17:26:56"
         },
         {
             "name": "liip/imagine-bundle",
@@ -3986,7 +4173,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/12df2454bd3840d94892fe932eadc0138bf36922",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/6672ca37fe19a8e2a8ae52a93a7163e1b00ef7d5",
                 "reference": "12df2454bd3840d94892fe932eadc0138bf36922",
                 "shasum": ""
             },
@@ -4437,7 +4624,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/449e3c8a9ffad7c2479c7864557275a32b037499",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/c1eb17f02f67d2ee9f928689d83b22afda137970",
                 "reference": "a155ec01555ffa3aab3e7e042d55aab549c83b75",
                 "shasum": ""
             },
@@ -4546,7 +4733,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/f951bbc994ba6da39d1f32b3015882c90ee220d6",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/7ea268e78f0bfbbff03e01ee27a6843b97ec3a34",
                 "reference": "b1d4d9be54305f18b36ee3563391a87c0003ffdc",
                 "shasum": ""
             },
@@ -4760,7 +4947,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/eddd25d3343a5fad708d77d0497583dd78bb58aa",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a22dd6b26d0cc201c3df9cbc576a5da0f271b25e",
                 "reference": "72d7343ba0d9a6e3f64d14a5a08164c14e2ef53c",
                 "shasum": ""
             },
@@ -4865,7 +5052,8 @@
         "knplabs/knp-gaufrette-bundle": 20,
         "avocode/form-extensions-bundle": 20,
         "cspoo/swiftmailer-mailgun-bundle": 20,
-        "knplabs/knp-paginator-bundle": 20
+        "knplabs/knp-paginator-bundle": 20,
+        "hwi/oauth-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
