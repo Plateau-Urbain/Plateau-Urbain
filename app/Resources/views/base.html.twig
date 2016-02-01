@@ -40,6 +40,11 @@
            <link rel="stylesheet" href="{{ asset_url }}" medial="all" />
         {% endstylesheets  %}
 
+				{% stylesheets '@AppBundle/Resources/public/less/main.less'
+		    filter='less' %}
+					<link rel="stylesheet" href="{{ asset_url }}" medial="all" />
+				{% endstylesheets %}
+
         {% block stylesheets %}{% endblock %}
 
         <!-- Modernizr -->
@@ -69,6 +74,7 @@
 						</div>
 					</div>
 				</div>
+				<div class="bottom"></div>
 			</div>
 		</header>
 		<!-- END HEADER -->

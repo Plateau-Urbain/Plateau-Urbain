@@ -1,5 +1,7 @@
 <!-- BEGIN FOOTER -->
 <footer id="footer">
+  <div class="top"></div>
+
   <div id="footer-top" class="container">
     <div class="row">
 
@@ -18,13 +20,11 @@
           <div class="block col-sm-12">
             <h3>Plateau Urbain est soutenu par</h3>
             <ul class="list-inline">
-              <li class="col-sm-6">
-                  <a href="http://www.fondation-macif.org/" target="_blank"><img src="http://placehold.it/760x670" alt="" /></a>
+              <li>
+                <a href="http://www.fondation-macif.org/" target="_blank"><img src="{{ asset('/public/images/macif_logo.png') }}" alt="" /></a>
               </li>
-              <li class="col-sm-6">
-                <div class="image">
-                  <a href="http://www.atelier-idf.org/" target="_blank"><img src="http://placehold.it/760x670" alt="" /></a>
-                </div>
+              <li>
+                <a href="http://www.atelier-idf.org/" target="_blank"><img src="{{ asset('/public/images/atelier_logo.png') }}" alt="" /></a>
               </li>
             </ul>
           </div>
@@ -50,7 +50,9 @@
                 <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
               {% endif %}
             </ul>
+            <hr />
           </div>
+
 
           <div class="block col-sm-12">
             <h3>Plateau urbain</h3>
@@ -68,8 +70,8 @@
         <div class="row">
 
           <div class="block col-sm-12">
-            <a href="index.html"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
-            <ul class="list-unstyled">
+            <a href="index.html"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
+            <ul class="list-unstyled infos">
               <li><strong>Siège : </strong> 14-16 rue Planchat 75020 Paris</li>
               <li><strong>Locaux : </strong> 82 avenue Denfert Rochereau 75014 Paris</li>
               <li><i class="fa fa-envelope"></i>contact@plateau-urbain.com</li>
@@ -80,10 +82,10 @@
           <div class="block col-sm-12">
             <h3>Suivez-nous</h3>
             <ul class="list-inline">
-              <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-              <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-              <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="#"><img src="{{ asset('/bundles/app/images/facebook_red.png') }}" /></a></li>
+              <li><a href="#"><img src="{{ asset('/bundles/app/images/twitter_red.png') }}" /></a></li>
+              <li><a href="#"><img src="{{ asset('/bundles/app/images/gplus_red.png') }}" /></a></li>
+              <li><a href="#"><img src="{{ asset('/bundles/app/images/linkedin_red.png') }}" /></a></li>
             </ul>
           </div>
         </div>
@@ -94,6 +96,7 @@
 
   <!-- BEGIN COPYRIGHT -->
   <div id="copyright">
+    <div class="top"></div>
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
@@ -101,8 +104,8 @@
             <li>&copy; {{ "now"| date("Y") }} Plateau Urbain</li>
             <li><a href="#">Conditions générales d'utilisation</a></li>
             <li><a href="#">Mentions légales</a></li>
-            <li><a href="http://www.widop.com/">Développement Wid'op</a></li>
-            <li><a href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
+            <li><a class="normal" href="http://www.widop.com/">Développement Wid'op</a></li>
+            <li><a class="normal" href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
           </ul>
         </div>
       </div>
