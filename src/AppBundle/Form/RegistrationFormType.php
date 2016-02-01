@@ -10,13 +10,13 @@ class RegistrationFormType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 // add your custom field
-                ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control')))
+                ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control', 'placeholder' => 'Adresse email')))
                 ->add('plainPassword', 'repeated', array(
                     'type' => 'password',
-                    'first_options' => array('label' => 'form.password', 'attr' => array('class' => 'form-control')),
-                    'second_options' => array('label' => 'form.password_confirmation', 'attr' => array('class' => 'form-control')),
+                    'first_options' => array('label' => 'form.password', 'attr' => array('class' => 'form-control', 'placeholder' => 'Mot de passe')),
+                    'second_options' => array('label' => 'form.password_confirmation', 'attr' => array('class' => 'form-control', 'placeholder' => 'Confirmation')),
                     'label' => "Mot de passe"))
-                ->add('useType', null, array('label' => "Type d'usage", 'required' => true, 'attr' => array('class' => 'form-control')))
+                ->add('useType', null, array('label' => "Type d'usage", 'required' => true, 'empty_value' => 'Séléctionnez un type d\'usage', 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface en m²", 'attr' => array('class' => 'form-control')))
         ;
 

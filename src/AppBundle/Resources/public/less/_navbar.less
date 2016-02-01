@@ -1,9 +1,42 @@
+// HEADER
+
+.section-title:after, .section-highlight:after{
+  background-repeat: no-repeat;
+}
+
 #header{
+  #nav-section{
+    .bottom{
+      background: url('/bundles/app/images/menu_bottom.png') no-repeat top;
+      background-size: contain;
+      height: 70px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -70px;
+    }
 
-  &::after {
-    content: ' ';
-    background: url('../images/menu_bottom.png') no-repeat;
-    height: 70px;
+    &.stuck:after{
+      background: transparent;
+    }
+
+    .connectMenu{
+      line-height: initial;
+      padding: 10px 20px;
+      margin-top: 30px;
+
+      &:after{
+        content: '\f078';
+        font-family: 'FontAwesome';
+        margin-left: 5px;
+        font-size: 10px;
+        line-height: 15px;
+        vertical-align: bottom;
+      }
+    }
+
+    &.shrink .connectMenu{
+      margin-top: 12px;
+    }
   }
-
 }
