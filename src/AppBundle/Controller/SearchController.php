@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SearchController extends Controller
 {
+    private $availableCodes = array('95', '78', '92', '93', '75', '94', '77', '91');
+
     /**
      * @Route("/", name="search_index")
      * @Template()
@@ -35,11 +37,13 @@ class SearchController extends Controller
         $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
         foreach ($all as $space) {
-            if (!isset($departements[$space->getDepCode()])) {
-                $departements[$space->getDepCode()] = 0;
-            }
+            if (in_array($space->getDepCode(), $this->availableCodes)) {
+                if (!isset($departements[$space->getDepCode()])) {
+                    $departements[$space->getDepCode()] = 0;
+                }
 
-            $departements[$space->getDepCode()] += 1;
+                $departements[$space->getDepCode()] += 1;
+            }
         }
 
         return array(
