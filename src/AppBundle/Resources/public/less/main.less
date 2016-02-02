@@ -1,10 +1,37 @@
 @import '_navbar';
 @import '_slider';
+@import '_forms';
 @import '_footer';
 @import '_color-box';
+@import '_icons';
 
-.input-group-addon{
-  background-color: #fafafa;
-  border-color: #E4E4E3;
-  color: #74777c;
+.section-title, .section-highlight{
+  padding-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 0px;
+
+  .icon{
+    margin: auto;
+  }
+}
+
+form .main .section-title{
+  font-weight: normal;
+
+  border-bottom: solid 1px #CFC1B6;
+
+  &:after{
+    background: none;
+    font-family: 'FontAwesome';
+    content: '\f0d7';
+    color: #CFC1B6;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 30px;
+    height: 8px;
+    font-size: 22px;
+    line-height: 8px;
+  }
 }
