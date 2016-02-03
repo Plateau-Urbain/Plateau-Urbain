@@ -1,216 +1,252 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb_items %}
-    <li><a href="{{ path('search_index') }}">Recherche</a></li>
-    <li><span>Fiche espace</span></li>
+  <li><a href="{{ path('search_index') }}">Recherche</a></li>
+  <li><span>Fiche espace</span></li>
 {% endblock %}
 
 {% block body %}
 
-
 {% if not application.isDraft %}
-<div class="alert alert-warning">
+  <div class="alert alert-warning">
     {% if application.space.isClosed %}
-    <p class="center">Ce projet est désormais clôturé.</p>
+      <p class="center">Ce projet est désormais clôturé.</p>
     {% endif %}
-    <p class="center">Vous avez envoyé votre dossier de candidature pour cet espace le {{ application.created|date('d/m/Y') }}</p>
-    <p class="center">
-        <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor">Voir votre candidature</a>
-    </p>
-</div>
+      <p class="center">
+        Vous avez envoyé votre dossier de candidature pour cet espace le {{ application.created|date('d/m/Y') }}
+      </p>
+      <p class="center">
+        <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor">
+          Voir votre candidature
+        </a>
+      </p>
+  </div>
 {% endif %}
 
 {% if invalidProfile and application.isDraft %}
-<div class="alert alert-warning">
+  <div class="alert alert-warning">
     <p class="center">
-        Veuillez compléter votre profil afin de proposer votre candidature.
+      Veuillez compléter votre profil afin de proposer votre candidature.
     </p>
     <p class="center">
-        <a href="{{ path('security_profil') }}" class="btn btn-fullcolor">Compléter mon profil</a>
+      <a href="{{ path('security_profil') }}" class="btn btn-fullcolor">
+        Compléter mon profil
+      </a>
     </p>
-</div>
+  </div>
 {% endif %}
 
 <div class="row">
-        <!-- BEGIN MAIN CONTENT -->
-        <div class="col-sm-12">
-            <h1 class="property-title">{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}<small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small></h1>
-        </div>
-        <div class="main col-sm-8">
-                <!-- BEGIN PROPERTY DETAIL SLIDERS WRAPPER -->
-                <div id="property-detail-wrapper" class="style1">
-
-                        {% if space.isClosed %}
-                            <img src="{{ asset('/bundles/app/images/closed.png') }}" alt="closed" class="closed" />
-                        {% endif %}
-
-                        <!-- BEGIN PROPERTY DETAIL LARGE IMAGE SLIDER -->
-                        <div id="property-detail-large" class="owl-carousel ">
-                            {% for p in space.pics %}
-                                <div class="item">
-                                    <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <!-- END PROPERTY DETAIL LARGE IMAGE SLIDER -->
-
-                        <!-- BEGIN PROPERTY DETAIL THUMBNAILS SLIDER -->
-                        <div id="property-detail-thumbs" class="owl-carousel">
-                            {% for p in space.pics %}
-                                <div class="item">
-                                    <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <!-- END PROPERTY DETAIL THUMBNAILS SLIDER -->
-
-                </div>
-                <!-- END AGENT INFORMATION -->
-        </div>
-        <!-- END MAIN CONTENT -->
-
-
-        <!-- BEGIN SIDEBAR -->
-        <div class="sidebar gray col-sm-4">
-            <!-- BEGIN ADVANCED SEARCH -->
-            <p class="pu-label">TYPE DE LOCAUX</p>
-            <p class="pu-value">{{ space.type | upper }}</p>
-
-            <p class="pu-label">BAILLEUR</p>
-            <p class="pu-value">
-                {% if space.owner.website %}
-                    <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
-                {% else %}
-                    {{ space.owner.company }}
-                {% endif %}
-            </p>
-
-            <div class="pu-price-zone">
-                <ul class="top-info">
-                    <li><i class="fa fa-info-circle"></i> Prix au m<sup>2</sup></li>
-                    <li>À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an H.C. - H.T.<sup>1</sup></li>
-                    <li>Soit {{ space.price }} € / m<sup>2</sup> / mois H.C. - H.T.<sup>1</sup></li>
-                </ul>
-                <ul class="top-info">
-                    <li><i class="fa fa-square-o"></i> {{ space.parcels | length }} espaces</li>
-                    <li>De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup></li>
-                    <li><a href="#parcels">Voir la répartition des espaces</a></li>
-                </ul>
-                <ul class="top-info">
-                    <li><i class="fa fa-calendar"></i> Disponibilité</li>
-                    <li>{{ space.availability }}</li>
-                </ul>
-            </div>
-
-            <div class="pu-apply-zone">
-                <h4 class="center">Date limite de candidature</h4>
-                <p class="center apply-date">
-                    {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
-                </p>
-                <p class="center">
-                    {% if application.isDraft and not invalidProfile %}
-                        <a href="#candidate" class="btn btn-fullcolor">{{ 'Candidater !' | upper }}</a>
-                    {% endif %}
-                    {% if not application.isDraft %}
-                        <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor">{{ 'Voir votre candidature !' | upper }}</a>
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-        <!-- END SIDEBAR -->
+  <!-- BEGIN MAIN CONTENT -->
+  <div class="col-sm-12">
+    <h1 class="property-title">
+      {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
+      <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+    </h1>
+  </div>
 </div>
 
 <div class="row">
+  <div class="main col-sm-8">
+    <div id="property-detail-wrapper" class="style1">
+      {% if space.isClosed %}
+        <img src="{{ asset('/bundles/app/images/closed.png') }}" alt="closed" class="closed" />
+      {% endif %}
 
-    <div class="col-sm-6">
-        <h3><i class="fa fa-map-marker"></i> {{ 'Description' | upper }}</h3>
-        <div class="pu-col-container">
-            <p>{{ space.description | nl2br }}</p>
-        </div>
+      <div id="property-detail-large" class="owl-carousel ">
+        {% for p in space.pics %}
+          <div class="item">
+            <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
+          </div>
+        {% endfor %}
+      </div>
+
+      <div id="property-detail-thumbs" class="owl-carousel">
+        {% for p in space.pics %}
+          <div class="item">
+            <img src="{{ vich_uploader_asset(p, 'file') }}" alt="{{ space.name }}" />
+          </div>
+        {% endfor %}
+      </div>
     </div>
-    <div class="col-sm-6">
-        <h3><i class="fa fa-search"></i> {{ 'Activités recherchées' | upper }}</h3>
-        <div class="pu-col-container">
-            <p>{{ space.activityDescription | nl2br }}</p>
-        </div>
+  </div>
+
+  <div class="sidebar no-padding col-sm-4">
+    <div class="content">
+      <p class="pu-label">TYPE DE LOCAUX</p>
+      <p class="pu-value">{{ space.type | upper }}</p>
+
+      <p class="pu-label">BAILLEUR</p>
+      <p class="pu-value">
+        {% if space.owner.website %}
+          <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
+        {% else %}
+          {{ space.owner.company }}
+        {% endif %}
+      </p>
     </div>
+
+    <hr />
+
+    <div class="pu-price-zone">
+      <div class="content">
+        <dl class="dl-horizontal">
+          <dt><i class="icon bkg medium info-red-bold"></i></dt>
+          <dd>
+            <span class="pu-label">Prix au m<sup>2</sup><br/></span>
+            À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an H.C. - H.T.<sup>1</sup><br/>
+            Soit {{ space.price }} € / m<sup>2</sup> / mois H.C. - H.T.<sup>1</sup>
+          </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+          <dt><i class="icon bkg medium square-red-bold"></i></dt>
+          <dd>
+            <span class="pu-title"><strong>{{ space.parcels | length }}</strong> espaces<br/></span>
+            De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup><br/>
+            <a href="#parcels">Voir la répartition des espaces</a>
+          </dd>
+        </dl>
+
+        <dl class="dl-horizontal">
+          <dt><i class="icon bkg medium cal-red-bold"></i></dt>
+          <dd>
+            <span class="pu-label">Disponibilité<br/></span>
+            {{ space.availability }}
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="pu-apply-zone">
+      <h4 class="center">Date limite de candidature</h4>
+      <p class="center apply-date">
+        {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+      </p>
+      <p class="center">
+        {% if application.isDraft and not invalidProfile %}
+          <a href="#candidate" class="btn btn-fullcolor btn-large apply">
+            {{ 'Candidater !' | upper }}
+          </a>
+        {% endif %}
+
+        {% if not application.isDraft %}
+          <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-large apply">
+            {{ 'Voir votre candidature !' | upper }}
+          </a>
+        {% endif %}
+      </p>
+    </div>
+  </div>
 </div>
 
-<p>&nbsp;</p>
+<div class="row">
+  <div class="col-sm-6">
+    <h3 class="has-icon medium no-margin">
+      <i class="icon medium inline pointer-red-bold"></i>
+      {{ 'Description' | upper }}
+    </h3>
+    <div class="pu-col-container content-block">
+      <p>{{ space.description | nl2br }}</p>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <h3 class="has-icon medium no-margin">
+      <i class="icon medium inline search-red-bold"></i>
+      {{ 'Activités recherchées' | upper }}
+    </h3>
+    <div class="pu-col-container content-block">
+      <p>{{ space.activityDescription | nl2br }}</p>
+    </div>
+  </div>
+</div>
 
 <div class="row">
-    <!-- BEGIN PROPERTY AMENITIES LIST -->
-    {%  if space.hasTagType(constant('AppBundle\\Entity\\SpaceAttribute::STATUS_INCLUDED')) %}
+  {%  if space.hasTagType(constant('AppBundle\\Entity\\SpaceAttribute::STATUS_INCLUDED')) %}
     <div class="col-sm-6">
-        <h3><i class="fa fa-cog"></i> {{ 'Prestations et services' | upper }}</h3>
-        <div class="pu-col-container">
-            <ul class="property-amenities-list">
-                {% for t in space.tags %}
-                    {% if t.isIncluded %}
-                        <li class="enabled">{{ t.attribute }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
+      <h3 class="has-icon medium no-margin">
+        <i class="icon medium inline cog-red-bold"></i>
+        {{ 'Prestations et services' | upper }}
+      </h3>
+      <div class="pu-col-container content-block">
+        <ul class="property-amenities-list">
+          {% for t in space.tags %}
+            {% if t.isIncluded %}
+              <li class="enabled">{{ t.attribute }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-    {% endif %}
+  {% endif %}
 
-    <!-- BEGIN PROPERTY AMENITIES LIST -->
-    {%  if space.hasTagType(constant('AppBundle\\Entity\\SpaceAttribute::STATUS_EXPECTED')) %}
+  {%  if space.hasTagType(constant('AppBundle\\Entity\\SpaceAttribute::STATUS_EXPECTED')) %}
     <div class="col-sm-6">
-        <h3><i class="fa fa-wrench"></i> {{ 'à prévoir' | upper }}</h3>
-        <div class="pu-col-container">
-            <ul class="property-amenities-list">
-                {% for t in space.tags %}
-                    {% if t.isExpected %}
-                        <li class="disabled">{{ t.attribute }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
+      <h3 class="has-icon medium no-margin">
+        <i class="icon medium inline tools-red-bold"></i>
+        {{ 'à prévoir' | upper }}
+      </h3>
+      <div class="pu-col-container content-block">
+        <ul class="property-amenities-list">
+          {% for t in space.tags %}
+            {% if t.isExpected %}
+              <li class="disabled">{{ t.attribute }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-    {% endif %}
+  {% endif %}
 </div>
 
 <p id="parcels">&nbsp;</p>
-
 <div class="row">
-    {% if space.parcels | length > 0 %}
+  {% if space.parcels | length > 0 %}
     <div class="col-sm-12">
-        <h3><i class="fa fa-square-o"></i> {{ 'Répartition des espaces' | upper }}</h3>
-        <div class="pu-col-container">
-            <table class="pu-parcels-table">
-                <thead>
-                    <tr>
-                        <th>{{'étage' | upper}}</th>
-                        <th>{{'Type de locaux' | upper}}</th>
-                        <th>{{'Surface' | upper}}</th>
-                        <th>{{'Disponibilité' | upper}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for p in space.parcels %}
-                        <tr {% if loop.index % 2 == 0 %}class="even"{% endif %}>
-                            <td>{{ p.floor }}</td>
-                            <td>{{ p.type }}</td>
-                            <td>{{ p.surface }}m<sup>2</sup></td>
-                            <td>{% if p.disponibility is not null %}{{ p.disponibility | date('d/m/Y') }}{% else %}Immédiat{% endif%}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+      <h3 class="has-icon medium no-margin">
+        <i class="icon medium inline square-red-bold"></i>
+        {{ 'Répartition des espaces' | upper }}
+      </h3>
+      <div class="pu-col-container content-block">
+        <div class="pu-table-wrapper">
+          <table class="pu-parcels-table">
+            <thead>
+              <tr>
+                <th>{{'étage' | upper}}</th>
+                <th>{{'Type de locaux' | upper}}</th>
+                <th>{{'Surface' | upper}}</th>
+                <th>{{'Disponibilité' | upper}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in space.parcels %}
+                <tr {% if loop.index % 2 == 0 %}class="even"{% endif %}>
+                  <td>{{ p.floor }}</td>
+                  <td>{{ p.type }}</td>
+                  <td>{{ p.surface }}m<sup>2</sup></td>
+                  <td>{% if p.disponibility is not null %}{{ p.disponibility | date('d/m/Y') }}{% else %}Immédiat{% endif%}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
-    {% endif %}
+  {% endif %}
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
-        <p>&nbsp;</p>
+  <div class="col-sm-12">
+    <div class="pu-col-container content-block desc-mention">
+      <div class="content">
         <hr />
-        <p><sup>1</sup> : HT (hors taxes), TTC (taxes comprises), HC (hors charges), CC (charges comprises)</p>
-        <p>{{ space.usageRestriction | nl2br }}</p>
+      </div>
+      <p><sup>1</sup> : HT (hors taxes), TTC (taxes comprises), HC (hors charges), CC (charges comprises)</p>
+      <p>{{ space.usageRestriction | nl2br }}</p>
     </div>
+  </div>
 </div>
 
 <a id="candidate">&nbsp;</a>
