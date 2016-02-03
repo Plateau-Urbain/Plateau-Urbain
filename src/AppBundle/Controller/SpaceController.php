@@ -93,7 +93,10 @@ class SpaceController extends Controller
 
         // Check if the profile is completed
         $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));
-        $invalidProfile = (count($errors) > 0) ? true : false;
+        foreach ($errors as $e) {
+            var_dump($e->getMessage());
+        }
+        $invalidProfile = (count($errors) > 0) && $user->isPorteur() ? true : false;
 
         return array(
             'space'          => $space,

@@ -7,36 +7,31 @@ $(document).ready(function() {
         addForm($('table.tags'));
     });
 
+    function initFormListener() {
+        $("form").submit(function(){
 
-    $('#addLot').on('click', function(e) {
-        // empêche le lien de créer un « # » dans l'URL
-        e.preventDefault();
+            var action = $(this).attr('action');
+            var formData = new FormData($(this)[0]);
 
-        // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
-        addForm($('table.lots'));
-    });
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    $("#js-form-space").html($(data).find('#js-form-space'));
+                    initFormListener();
+                    $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+                    $("select").chosen();
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
 
-    $('#addPhoto').on('click', function(e) {
-        // empêche le lien de créer un « # » dans l'URL
-        e.preventDefault();
+            return false;
+        });
+    }
 
-        // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
-        addForm($('table.photos'));
-    });
-
+    initFormListener();
 });
-
-function addForm(collectionHolder) {
-    // Récupère l'élément ayant l'attribut data-prototype comme expliqué plus tôt
-    var prototype = collectionHolder.attr('data-prototype');
-
-    // Remplace '__name__' dans le HTML du prototype par un nombre basé sur
-    // la longueur de la collection courante
-    var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
-
-    // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
-    var $newFormLi = $('<tr></tr>').append(newForm);
-
-    collectionHolder.append($newFormLi);
-    collectionHolder.find('tr:last-child .inline-date select').chosen();
-}

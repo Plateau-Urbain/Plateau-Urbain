@@ -208,7 +208,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/d71c2a234c61f53f1109a26ba8155902a51f8ca5",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/80a24d296c38032edc149a403eec7fae214df71c",
                 "reference": "731b82199de4597741c27ade8dfaac7381107c86",
                 "shasum": ""
             },
@@ -444,7 +444,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tehplague/swiftmailer-mailgun-bundle/zipball/f229e1257c41983ec3be3e694360b98374e09139",
+                "url": "https://api.github.com/repos/tehplague/swiftmailer-mailgun-bundle/zipball/005045e7478f678ec856b6fa6f333fbaecbfbec5",
                 "reference": "c0e661092f80e601e49cbc5bc22a4ff68bdec45c",
                 "shasum": ""
             },
@@ -1286,7 +1286,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/503ea5cc9c8ae38790a6899d842aaa92d55258bb",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/360ad927e2593deca126379a330704605ad0eeac",
                 "reference": "abb87d84ed21fd30c27bd3b52252a495a36d32fb",
                 "shasum": ""
             },
@@ -1575,7 +1575,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/008e69f17a1286c29b8a60082119b7d6eee69082",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/b312ab9d0c446971069e22a524fec01c7cddc75e",
                 "reference": "2cfecfe1dbc32cfec713db5c83c78c2ecc66c6dc",
                 "shasum": ""
             },
@@ -1627,7 +1627,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/f40f71fb62230a1de2c92c16acb14e38950b6464",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/08be3017f45cea64d6f10ec1c67c39c96f1e8ac3",
                 "reference": "f40f71fb62230a1de2c92c16acb14e38950b6464",
                 "shasum": ""
             },
@@ -1706,7 +1706,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fd6447e50b77739fb9b877fa175e0218922d054f",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/cb8d0f2e778af4c9f669684a934a5f910ef37696",
                 "reference": "fd861570a9c3c28d98f418feea1f43f6268bdfa0",
                 "shasum": ""
             },
@@ -3986,7 +3986,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/12df2454bd3840d94892fe932eadc0138bf36922",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/4e7499d25dc5d0862da09fa8e336164948a29a25",
                 "reference": "12df2454bd3840d94892fe932eadc0138bf36922",
                 "shasum": ""
             },
@@ -4321,16 +4321,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.30",
+            "version": "v2.3.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6dfe5551b71d156739a0df1043ba81b326e36f4a"
+                "reference": "bd506a5e84fdce41966ef4986255fff1e31fc056"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6dfe5551b71d156739a0df1043ba81b326e36f4a",
-                "reference": "6dfe5551b71d156739a0df1043ba81b326e36f4a",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/bd506a5e84fdce41966ef4986255fff1e31fc056",
+                "reference": "bd506a5e84fdce41966ef4986255fff1e31fc056",
                 "shasum": ""
             },
             "require": {
@@ -4425,7 +4425,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-05-29 22:16:04"
+            "time": "2015-07-13 09:12:26"
         },
         {
             "name": "twig/extensions",
@@ -4437,7 +4437,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/449e3c8a9ffad7c2479c7864557275a32b037499",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/afd3a08ad948e034b4ffdab23f53925538a91635",
                 "reference": "a155ec01555ffa3aab3e7e042d55aab549c83b75",
                 "shasum": ""
             },
@@ -4546,7 +4546,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/f951bbc994ba6da39d1f32b3015882c90ee220d6",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/5aa399d92dd734112f886ee0bbb61e6892456230",
                 "reference": "b1d4d9be54305f18b36ee3563391a87c0003ffdc",
                 "shasum": ""
             },
@@ -4707,7 +4707,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/b9803794e39c5d2d11cf4f2421fd00d287b79de4",
+                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/8610fe94d1d029c4ea6be4a9a3b5d552174ea2ef",
                 "reference": "5bdf65083b08a56a988036fb3c7c3709a032967c",
                 "shasum": ""
             },
@@ -4760,7 +4760,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/eddd25d3343a5fad708d77d0497583dd78bb58aa",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a22dd6b26d0cc201c3df9cbc576a5da0f271b25e",
                 "reference": "72d7343ba0d9a6e3f64d14a5a08164c14e2ef53c",
                 "shasum": ""
             },

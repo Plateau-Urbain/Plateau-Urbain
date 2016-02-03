@@ -426,7 +426,7 @@ class SpaceManagementController extends Controller
 
         $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 
-        return $this->redirect($this->generateUrl('space_manager_list'));
+        return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1')));
     }
 
     /**

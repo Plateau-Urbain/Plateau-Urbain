@@ -220,7 +220,8 @@ class User extends BaseUser
     /**
      * @ORM\Column(length=255, type="integer", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder"})
-     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder"})
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"projectHolder"})
      */
     protected $wishedSize;
 
@@ -238,8 +239,10 @@ class User extends BaseUser
     private $lengthTypeOccupation;
 
     /**
-     * @ORM\Column(length=255, type="string", nullable=true)
+     * @ORM\Column(length=255, type="integer", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder"})
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une durée positive.", groups={"projectHolder"})
      */
     protected $usageDuration;
 

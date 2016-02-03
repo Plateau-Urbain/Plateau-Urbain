@@ -35,50 +35,43 @@
                 <div class="col-sm-6">
                     {{ form_label(form.civility) }}
                     {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                    {{ form_errors(form.civility) }}
                 </div>
                 <div class="col-sm-6">
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.firstname)}}
-                    {{ form_widget(form.firstname) }}
+                    {{ form_row(form.firstname) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.lastname)}}
-                    {{ form_widget(form.lastname) }}
+                    {{ form_row(form.lastname) }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.birthday)}}
-                    {{ form_widget(form.birthday) }}
+                    {{ form_row(form.birthday) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.phone)}}
-                    {{ form_widget(form.phone) }}
+                    {{ form_row(form.phone) }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.email)}}
-                    {{ form_widget(form.email) }}
+                    {{ form_row(form.email) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.password)}}
-                    {{ form_widget(form.password) }}
+                    {{ form_row(form.password) }}
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    {{ form_label(form.description)}}
-                    {{ form_widget(form.description) }}
+                    {{ form_row(form.description) }}
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                    {{ form_widget(form.newsletter) }}
-                    {{ form_label(form.newsletter) }}
+                    {{ form_row(form.newsletter) }}
                 </div>
             </div>
             <div class="row">
@@ -93,85 +86,70 @@
         <div class="form-contener">
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.company)}}
-                    {{ form_widget(form.company) }}
+                    {{ form_row(form.company) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.companyStatus)}}
-                    {{ form_widget(form.companyStatus) }}
+                    {{ form_row(form.companyStatus) }}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.companyCreationDate)}}
-                    {{ form_widget(form.companyCreationDate) }}
+                    {{ form_row(form.companyCreationDate) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.siret)}}
-                    {{ form_widget(form.siret) }}
+                    {{ form_row(form.siret)}}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.address)}}
-                    {{ form_widget(form.address) }}
+                    {{ form_row(form.address)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.addressSuite)}}
-                    {{ form_widget(form.addressSuite) }}
+                    {{ form_row(form.addressSuite) }}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.zipcode)}}
-                    {{ form_widget(form.zipcode) }}
+                    {{ form_row(form.zipcode) }}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.city)}}
-                    {{ form_widget(form.city) }}
+                    {{ form_row(form.city)}}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.companyPhone)}}
-                    {{ form_widget(form.companyPhone) }}
+                    {{ form_row(form.companyPhone)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.companyMobile)}}
-                    {{ form_widget(form.companyMobile) }}
+                    {{ form_row(form.companyMobile) }}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-12">
-                    {{ form_label(form.companyDescription)}}
-                    {{ form_widget(form.companyDescription) }}
+                    {{ form_row(form.companyDescription)}}
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
-                    {{ form_label(form.companyEffective)}}
-                    {{ form_widget(form.companyEffective) }}
+                    {{ form_row(form.companyEffective)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.companyStructures)}}
-                    {{ form_widget(form.companyStructures) }}
+                    {{ form_row(form.companyStructures)}}
                 </div>
             </div>
 
             <div class="row form-group" >
                 <div class="col-sm-6">
-                    {{ form_label(form.companySite)}}
-                    {{ form_widget(form.companySite) }}
+                    {{ form_row(form.companySite)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.companyBlog)}}
-                    {{ form_widget(form.companyBlog) }}
+                    {{ form_row(form.companyBlog)}}
                 </div>
             </div>
 
@@ -187,31 +165,28 @@
         <div class="form-contener">
             <div class="row" >
                 <div class="col-sm-6">
-                    {{ form_label(form.wishedSize)}}
-                    {{ form_widget(form.wishedSize) }}
+                    {{ form_row(form.wishedSize)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.useType)}}
-                    {{ form_widget(form.useType) }}
+                    {{ form_row(form.useType)}}
                 </div>
             </div>
 
             <div class="row" >
                 <div class="col-sm-6">
-                    {{ form_label(form.usageDate)}}
-                    {{ form_widget(form.usageDate) }}
+                    {{ form_row(form.usageDate)}}
                 </div>
                 <div class="col-sm-6 pu-length-input">
                     {{ form_label(form.usageDuration)}}<br />
                     {{ form_widget(form.usageDuration) }}
                     {{ form_widget(form.lengthTypeOccupation) }}
+                    {{ form_errors(form.usageDuration) }}
                 </div>
             </div>
 
             <div class="row form-group">
                 <div class="col-sm-12">
-                    {{ form_label(form.projectDescription)}}
-                    {{ form_widget(form.projectDescription) }}
+                    {{ form_row(form.projectDescription)}}
                 </div>
             </div>
 
@@ -227,34 +202,28 @@
         <div class="form-contener">
             <div class="row" >
                 <div class="col-sm-6">
-                    {{ form_label(form.facebookUrl)}}
-                    {{ form_widget(form.facebookUrl) }}
+                    {{ form_row(form.facebookUrl)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.googleUrl)}}
-                    {{ form_widget(form.googleUrl) }}
+                    {{ form_row(form.googleUrl)}}
                 </div>
             </div>
 
             <div class="row" >
                 <div class="col-sm-6">
-                    {{ form_label(form.twitterUrl)}}
-                    {{ form_widget(form.twitterUrl) }}
+                    {{ form_row(form.twitterUrl)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.linkedinUrl)}}
-                    {{ form_widget(form.linkedinUrl) }}
+                    {{ form_row(form.linkedinUrl)}}
                 </div>
             </div>
 
             <div class="row form-group" >
                 <div class="col-sm-6">
-                    {{ form_label(form.instagramUrl)}}
-                    {{ form_widget(form.instagramUrl) }}
+                    {{ form_row(form.instagramUrl)}}
                 </div>
                 <div class="col-sm-6">
-                    {{ form_label(form.otherUrl)}}
-                    {{ form_widget(form.otherUrl) }}
+                    {{ form_row(form.otherUrl)}}
                 </div>
             </div>
 

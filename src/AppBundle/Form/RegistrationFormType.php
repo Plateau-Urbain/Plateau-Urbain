@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RegistrationFormType extends AbstractType {
 
@@ -23,6 +24,17 @@ class RegistrationFormType extends AbstractType {
 
 
         $builder->remove('username');
+    }
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\User',
+            'intention'  => 'registration',
+            'validation_groups' => array('projectHolder', 'Default')
+        ));
     }
 
     public function getParent() {

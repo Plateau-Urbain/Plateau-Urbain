@@ -23,12 +23,12 @@ class SearchType extends AbstractType
                     'choices'   => array_combine(range(10,1000,10), range(10,1000,10)),
                     'required'  => false,
                     'attr'      => array(
-                        'data-placeholder'=>"Prix min/m2/mois")) )
+                        'data-placeholder'=>"Prix min/m²/mois")) )
             ->add('maximumPrice', 'choice', array(
                 'choices'   => array_combine(range(100,1000,10), range(100,1000,10)),
                 'required'  => false,
                 'attr'      => array(
-                    'data-placeholder'=>"Prix max/m2/mois")) )
+                    'data-placeholder'=>"Prix max/m²/mois")) )
             ->add('minimumSurface', 'choice', array(
                 'choices'   => array_combine(range(5,1000,5), range(5,1000,5)),
                 'required'  => false,
