@@ -4,18 +4,29 @@
 @import '_footer';
 @import '_color-box';
 @import '_icons';
+@import '_partners';
+@import '_application';
 
 @brown-dark: #5A3A0B;
 @brown-light: #c0b7ad;
 @brown-text: #AB9B8B;
 @brown-text-dark: #6D4E22;
 @brown-ligther: #E6C68D;
+@brown-item: #C89641;
 @grey: #E4DBD4;
 @grey-button: #C0B7AE;
 @cream: #F6EFE7;
 @black: black;
 @white: white;
 @red: #bc1b38;
+
+#wrapper{
+  box-shadow: none;
+}
+
+.main{
+  padding-right: 15px;
+}
 
 h1, h2, h3, h4, h5, h6{
   color: @red;
@@ -47,6 +58,21 @@ h4{
   font-weight: bold;
 }
 
+.results-numbers h4{
+  color: @black;
+  line-height: 40px;
+}
+
+.left-title{
+  text-align: left;
+
+  & + hr{
+    border-top-color: @brown-light;
+    margin: 0;
+    opacity: .5
+  }
+}
+
 .section-title, .section-highlight{
   padding-bottom: 30px;
   margin-top: 30px;
@@ -61,6 +87,21 @@ h4{
   color: @red;
 }
 
+.alert-warning{
+  background-color: #E6C68D;
+  border: none;
+  color: @black;
+}
+
+.alert{
+  p{
+    font-size: 18px;
+    margin: 20px 0;
+    font-weight: 300;
+  }
+}
+
+
 span[data-class=danger] + .tooltip{
   .tooltip-inner{
     color: @white;
@@ -70,6 +111,10 @@ span[data-class=danger] + .tooltip{
   .tooltip-arrow:after{
     border-right-color: @red;
   }
+}
+
+.btn{
+  height: auto;
 }
 
 .btn-large{
@@ -84,7 +129,69 @@ span[data-class=danger] + .tooltip{
   width: 300px;
 }
 
+.btn-status{
+  width: 100%;
+  padding: 3px 20px;
+  color: @white;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 300;
+
+  i{
+    font-size: 1.1em;
+  }
+
+  &:hover{
+    color: @white;
+  }
+}
+
+.btn-grey{
+  background: #D4CAC0;
+  font-size: 16px;
+}
+
+.btn-refuse{
+  background: @black;
+}
+
+.btn-draft{
+  background: @red;
+}
+
+.btn-awaiting{
+  background: #C89641;
+}
+
+.btn-accepted{
+  background: #8CCB84;
+}
+
+.sort{
+  label i{
+    background: @white;
+  }
+}
+
+.chzn-container{
+  border-radius: 5px;
+}
+
 dl.dl-with-icon{
+  dt{
+    width: 25px;
+    text-align: center;
+  }
+  dd{
+    margin-left: 30px;
+  }
+
+  .dd-title{
+    line-height: 25px;
+  }
+}
+
+dl.dl-with-fa-icon{
   dt{
     width: 12px;
     text-align: center;
@@ -96,6 +203,21 @@ dl.dl-with-icon{
 
 .tip{
   color: #B3B3B3 !important;
+}
+
+.no-results{
+  margin: 30px 0;
+}
+
+.container > .top{
+  background: url('/bundles/app/images/white_top.png') no-repeat bottom;
+  background-size: contain;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -40px;
+  z-index: 100;
 }
 
 form .main .section-title{
@@ -119,185 +241,101 @@ form .main .section-title{
   }
 }
 
-
-.property-title{
-  font-size: 30px;
-  color: black;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin: 15px 0;
-
-  small{
-    font-weight: bold;
-    font-style: normal;
-    font-size: 18px;
-    color: @brown-dark;
-  }
+#listing-header{
+  border: none;
 }
 
+#property-listing{
 
-.sidebar{
-  background: @cream;
+  margin-top: 40px;
 
-  &.no-padding{
-    padding: 0;
-  }
+  .item{
+    background: #F2E9E2;
+    width: inherit;
 
-  hr{
-    border-top-color: @brown-light;
-    margin: 0;
-    opacity: .5
-  }
+    h3{
+      border: none;
+      font-size: 20px;
 
-  .content{
-    background: @cream;
-    padding: 20px;
-  }
-
-  .pu-label{
-    font-size: 12px;
-    text-transform: uppercase;
-    color: @brown-text;
-  }
-
-  .pu-price-zone{
-    border: none;
-    color: @black;
-
-    dt{
-      width: 50px;
-      text-align: center;
-    }
-    dd{
-      margin-left: 50px;
-
-      .pu-label{
-        line-height: 40px;
+      a{
+        font-size: 14px;
+        text-transform: none;
+        font-weight: normal;
+        text-decoration: underline;
+        color: @red;
       }
-      .pu-title{
-        font-weight: bold;
-        line-height: 40px;
 
-        strong{
-          font-size: 22px;
+      small{
+        color: @brown-item;
+        font-style: normal;
+        font-size: 16px;
+        margin-bottom: 5px;
+        display: block;
+      }
+    }
+
+    h4{
+      font-size: 14px;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: @brown-text;
+      margin-bottom: 5px;
+    }
+
+    .info{
+      width: auto;
+      float: none;
+      margin: auto;
+      padding: 25px 25px 0 0;
+
+      & > .row:not(:last-child){
+        margin-bottom: 20px;
+      }
+    }
+
+    .item-desc{
+      height: 60px;
+    }
+
+    .border-box{
+      border-right: solid 1px @brown-light;
+    }
+
+    .dd-title{
+      color: @brown-item;
+      font-size: 14px;
+
+      strong{
+        line-height: inherit;
+        font-size: 24px;
+      }
+    }
+
+    .image{
+      position: relative;
+      overflow: visible;
+      height: 265px;
+      width: 100%;
+
+      img{
+        transform: initial;
+      }
+
+      .image-wrapper{
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .overlay{
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        img{
+          max-width: 100%;
         }
       }
     }
+
   }
 
-  .pu-apply-zone{
-    h4{
-      color: @brown-text;
-      margin: 30px 0 5px;
-    }
-
-    .apply-date{
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .apply{
-      margin-bottom: 20px;
-    }
-  }
-}
-
-.pu-col-container.content-block{
-  padding-top: 0;
-  margin-bottom: 80px;
-
-  p,
-  .content,
-  .property-amenities-list,
-  .pu-table-wrapper{
-    color: @brown-text-dark;
-    padding-left: 35px;
-  }
-
-  .property-amenities-list li {
-    margin-left: 0;
-    &:before{
-      color: @red;
-    }
-  }
-
-  &.desc-mention {
-    hr{
-      border-top-color: @brown-text;
-      opacity: .5;
-    }
-
-    p{
-      color: @brown-text;
-      font-size: 12px;
-    }
-  }
-
-}
-
-
-.pu-parcels-table{
-  td, th{
-    &:not(:last-child){
-      border-right: solid 1px @grey;
-    }
-  }
-
-  thead th{
-    background: @brown-ligther;
-  }
-  tbody tr{
-    color: @black;
-    background: #F6EFE7;
-
-    &:nth-child(odd){
-      background: #E9E2DA;
-    }
-  }
-}
-
-
-.candidate-application{
-  position: relative;
-  background: @white;
-  padding-top: 40px;
-  padding-bottom: 40px;
-
-  .top{
-    background: url('/bundles/app/images/white_top.png') no-repeat bottom;
-    background-size: contain;
-    height: 40px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -40px;
-    z-index: 100;
-  }
-
-  h3{
-    font-size: 30px;
-  }
-
-  form{
-    margin-top: 30px;
-  }
-
-  p.tip{ 
-    margin-top: 30px;
-  }
-
-  .files{
-    margin-bottom: 20px;
-
-    .files-list{
-      color: @black;
-      margin-top: 10px;
-      margin-bottom: 20px;
-
-      i{
-        margin-right: 5px;
-        color: @red;
-      }
-    }
-  }
 }

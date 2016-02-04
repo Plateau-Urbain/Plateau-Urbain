@@ -2,6 +2,10 @@
 
 {% block breadcrumb %}{% endblock %}
 
+{% block containerbkg %}
+  <div class="top"></div>
+{% endblock %}
+
 {% block prebody %}
 
 <div class="container js-map">
@@ -21,6 +25,8 @@
 <!-- BEGIN PROPERTY LISTING -->
 <br />
     <div class="row last-space" id="js-results">
+
+
         <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les derniers espaces disponibles</h2>
 
         {% for space in latest %}
@@ -47,6 +53,7 @@
 
 {% block partners %}
     <div class="js-partners">
+      <div class="top"></div>
         <div class="container pb100">
             {% include '@App/Default/_partners.html.twig' %}
         </div>
