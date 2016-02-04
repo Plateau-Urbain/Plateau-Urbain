@@ -5,7 +5,8 @@
 @import '_color-box';
 @import '_icons';
 @import '_partners';
-@import '_application';
+@import '_space';
+@import '_applications';
 
 @brown-dark: #5A3A0B;
 @brown-light: #c0b7ad;
@@ -73,6 +74,53 @@ h4{
   }
 }
 
+.box-information{
+
+  .box-title{
+    position: relative;
+    padding-bottom: 30px;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    font-weight: normal;
+    border-bottom: solid 1px #CFC1B6;
+
+    .icon{
+      margin: auto;
+    }
+
+    &:after{
+      position: absolute;
+      background: none;
+      font-family: 'FontAwesome';
+      content: '\f0d7';
+      color: #CFC1B6;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 30px;
+      height: 8px;
+      font-size: 22px;
+      line-height: 8px;
+    }
+  }
+
+  .box-content{
+    background: #F2E9E2;
+
+    table tbody tr{
+      th{
+        font-weight: normal;
+        color: @brown-text-dark;
+      }
+      td{
+        color: @black;
+      }
+    }
+  }
+}
+
+
 .section-title, .section-highlight{
   padding-bottom: 30px;
   margin-top: 30px;
@@ -136,6 +184,7 @@ span[data-class=danger] + .tooltip{
   text-transform: uppercase;
   font-size: 20px;
   font-weight: 300;
+  cursor: auto;
 
   i{
     font-size: 1.1em;
@@ -241,101 +290,47 @@ form .main .section-title{
   }
 }
 
-#listing-header{
-  border: none;
-}
+.application-header {
 
-#property-listing{
-
-  margin-top: 40px;
-
-  .item{
-    background: #F2E9E2;
-    width: inherit;
-
-    h3{
-      border: none;
-      font-size: 20px;
-
-      a{
-        font-size: 14px;
-        text-transform: none;
-        font-weight: normal;
-        text-decoration: underline;
-        color: @red;
-      }
-
-      small{
-        color: @brown-item;
-        font-style: normal;
-        font-size: 16px;
-        margin-bottom: 5px;
-        display: block;
-      }
-    }
-
-    h4{
-      font-size: 14px;
-      font-weight: 300;
-      text-transform: uppercase;
-      color: @brown-text;
-      margin-bottom: 5px;
-    }
-
-    .info{
-      width: auto;
-      float: none;
-      margin: auto;
-      padding: 25px 25px 0 0;
-
-      & > .row:not(:last-child){
-        margin-bottom: 20px;
-      }
-    }
-
-    .item-desc{
-      height: 60px;
-    }
-
-    .border-box{
-      border-right: solid 1px @brown-light;
-    }
-
-    .dd-title{
-      color: @brown-item;
-      font-size: 14px;
-
-      strong{
-        line-height: inherit;
-        font-size: 24px;
-      }
-    }
-
-    .image{
-      position: relative;
-      overflow: visible;
-      height: 265px;
-      width: 100%;
-
-      img{
-        transform: initial;
-      }
-
-      .image-wrapper{
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .overlay{
-        position: absolute;
-        top: -3px;
-        left: -3px;
-        img{
-          max-width: 100%;
-        }
-      }
-    }
-
+  h1{
+    font-size: 36px;
   }
 
+  h2{
+    font-size: 26px;
+  }
+}
+
+.pagination-wrapper{
+  margin-top: 50px;
+  padding-top: 35px;
+  border-color: fade(@brown-text, 50%);
+}
+
+.pagination{
+  li{
+    display: inline-block;
+    margin: 10px;
+
+    &:first-child > span > span:before{
+      content: "\f053";
+      font-family: "FontAwesome";
+    }
+
+    &:last-child > span > span:before{
+      content: "\f054";
+      font-family: "FontAwesome";
+    }
+
+    & > span{
+      padding: 10px 20px;
+      cursor: pointer;
+      background: @black;
+      color: @white;
+
+      &:hover{
+        background: @red;
+      }
+    }
+  }
 }

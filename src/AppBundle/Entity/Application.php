@@ -504,6 +504,14 @@ class Application
     }
 
     /**
+     * @return bool
+     */
+    public function isUnread()
+    {
+        return $this->status === self::UNREAD_STATUS;
+    }
+
+    /**
      * @return null
      */
     public function getStatusLabel()
