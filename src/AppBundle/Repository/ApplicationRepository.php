@@ -37,6 +37,50 @@ class ApplicationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function formFilter($params)
+    {
+        $qb = $this->createQueryBuilder('a')
+          ->innerJoin('a.space','s');
+
+        if (!empty($params['applicant'])) {
+          $qb->andWhere('a.projectHolder = :user_id')->setParameter('user_id', $params['applicant']);
+        }
+
+        if (!empty($params['status'])) {
+          if($params['status'] == 'sent'){
+            $qb->andWhere('a.status = :awaiting OR a.status = :unread')
+              ->setParameter('awaiting', 'awaiting')
+              ->setParameter('unread', 'unread');
+          } else {
+            $qb->andWhere('a.status = :status')->setParameter('status', $params['status']);
+          }
+        }
+
+        if (!empty($params['orderBy'])) {
+            $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
+        } else {
+            $qb->orderBy('s.name', 'ASC');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param User $owner
+     *
+     * @return array
+     */
+    public function getApplicationPerApplicant(User $applicant)
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.projectHolder = :user_id')
+            ->setParameters(array(
+                'user_id' => $applicant->getId()
+            ));
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param array $params
      *
@@ -71,6 +115,8 @@ class ApplicationRepository extends EntityRepository
         return $qb;
     }
 
+
+
     /**
      * @param Application $application
      * @throws \Doctrine\ORM\NonUniqueResultException
@@ -99,6 +145,42 @@ class ApplicationRepository extends EntityRepository
             ->andWhere('a.space = :space')
             ->setParameter('space', $application->getSpace())
             ->setParameter('id', $application->getId())
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Application $application
+     * @param User $applicant
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getApplicantNextApplication(Application $application, User $applicant) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id > :id')
+            ->setParameter('id', $application->getId())
+            ->andWhere('a.projectHolder = :user_id')
+            ->setParameter('user_id', $applicant->getId())
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param Application $application
+     * @param User $applicant
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getApplicantPrevApplication(Application $application, User $applicant) {
+        $qb = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.id < :id')
+            ->setParameter('id', $application->getId())
+            ->andWhere('a.projectHolder = :user_id')
+            ->setParameter('user_id', $applicant->getId())
             ->orderBy('a.id', 'DESC')
             ->setMaxResults(1);
 

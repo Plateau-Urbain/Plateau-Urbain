@@ -46,12 +46,12 @@
         </div>
     </div>
 </div>
-    
+
 <!-- BEGIN PROPERTY LISTING -->
 <div id="property-listing" class="list-style clearfix management-list">
     <div class="row">
     {% for space in pagination %}
-        {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}        
+        {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}
     {% endfor %}
     </div>
 </div>
