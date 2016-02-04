@@ -71,10 +71,17 @@
   }
 }
 
-.control-label{
+label.control-label{
+  color: @black;
+  font-weight: normal;
+
   &.bold{
     font-weight: bold;
   }
+}
+
+label.inline{
+  line-height: 40px;
 }
 
 .file-infos{
@@ -110,5 +117,27 @@
       background: #bc1b38;
     }
 
+  }
+}
+
+
+.box-calculator{
+  border: none;
+  margin-bottom: 0;
+  input{
+    margin-bottom: 0;
+  }
+
+  span.calculator{
+    strong{
+      color: @red;
+      font-weight: normal;
+      line-height: 18px;
+
+      .price{
+        font-weight: bold;
+        font-size: 20px;
+      }
+    }
   }
 }

@@ -11,8 +11,10 @@
 @brown-text-dark: #6D4E22;
 @brown-ligther: #E6C68D;
 @grey: #E4DBD4;
+@grey-button: #C0B7AE;
 @cream: #F6EFE7;
 @black: black;
+@white: white;
 @red: #bc1b38;
 
 h1, h2, h3, h4, h5, h6{
@@ -37,6 +39,14 @@ h3{
   margin-bottom: 10px;
 }
 
+h3 + small{
+  margin-left: 45px;
+}
+
+h4{
+  font-weight: bold;
+}
+
 .section-title, .section-highlight{
   padding-bottom: 30px;
   margin-top: 30px;
@@ -47,8 +57,45 @@ h3{
   }
 }
 
+.danger{
+  color: @red;
+}
+
+span[data-class=danger] + .tooltip{
+  .tooltip-inner{
+    color: @white;
+    background-color: @red;
+  }
+
+  .tooltip-arrow:after{
+    border-right-color: @red;
+  }
+}
+
 .btn-large{
   padding: 6px 40px;
+}
+
+.btn-grey{
+  background-color: @grey-button;
+}
+
+.btn-wide{
+  width: 300px;
+}
+
+dl.dl-with-icon{
+  dt{
+    width: 12px;
+    text-align: center;
+  }
+  dd{
+    margin-left: 20px;
+  }
+}
+
+.tip{
+  color: #B3B3B3 !important;
 }
 
 form .main .section-title{
@@ -176,7 +223,7 @@ form .main .section-title{
 
   &.desc-mention {
     hr{
-      border-top-color: @brown-text; 
+      border-top-color: @brown-text;
       opacity: .5;
     }
 
@@ -205,6 +252,52 @@ form .main .section-title{
 
     &:nth-child(odd){
       background: #E9E2DA;
+    }
+  }
+}
+
+
+.candidate-application{
+  position: relative;
+  background: @white;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  .top{
+    background: url('/bundles/app/images/white_top.png') no-repeat bottom;
+    background-size: contain;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -40px;
+    z-index: 100;
+  }
+
+  h3{
+    font-size: 30px;
+  }
+
+  form{
+    margin-top: 30px;
+  }
+
+  p.tip{
+    margin-top: 30px;
+  }
+
+  .files{
+    margin-bottom: 20px;
+
+    .files-list{
+      color: @black;
+      margin-top: 10px;
+      margin-bottom: 20px;
+
+      i{
+        margin-right: 5px;
+        color: @red;
+      }
     }
   }
 }
