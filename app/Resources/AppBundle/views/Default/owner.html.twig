@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumb %}{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+  <a href="mailto:contact@plateau-urbain.com">demande d'inscription</a>
+
+</div>
+{% endblock %}
+
+{% block partners %}
+    <div>
+        <div class="container pb100">
+            {% include '@App/Default/_partners.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
