@@ -10,13 +10,16 @@
     </tr>
     </thead>
     <tbody>
-    {% for parcel in parcels %}
+    {% for parcel in parcels if parcel.id is not empty %}
         <tr>
             <td>{{ parcel.floor }}</td>
             <td>{{ parcel.type }}</td>
             <td>{{ parcel.surface }}</td>
             <td>
                 {{ parcel.disponibilityToString }}
+                <a href="{{ path('space_manager_removeparcel', { 'id': parcel.id, 'token': csrf_token('remove_parcel') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
+                    <i class="fa fa-times"></i>
+                </a>
             </td>
         </tr>
     {% else %}

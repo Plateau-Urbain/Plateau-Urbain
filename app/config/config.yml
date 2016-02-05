@@ -83,7 +83,8 @@ fos_user:
         address: noreply@plateau-urbain.fr
         sender_name: Plateau Urbain
     registration:
-       form:
+        form:
+           validation_groups: [register, default]
            type: project_holder_user_registration
 
 

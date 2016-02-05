@@ -16,7 +16,7 @@
 
         {% for space in latest %}
             <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
-                <a href="{{ path('space_show', {'id' : space.id}) }}">
+                <a href="{{ path('space_show', {'id' : space.id}) }}" target="_blank">
                     <div class="image">
                         <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
                     </div>

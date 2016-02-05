@@ -7,11 +7,48 @@ $(document).ready(function() {
         addForm($('table.tags'));
     });
 
-    function initFormListener() {
-        $("form").submit(function(){
+    function successAjax(data) {
+        $("#js-form-space").html($(data).find('#js-form-space'));
+        initFormListener();
+        initLinkListener();
+        $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+        $("select").chosen();
+    }
 
-            var action = $(this).attr('action');
-            var formData = new FormData($(this)[0]);
+    function initLinkListener() {
+        $('.js-btn-space').click(function() {
+
+            var href = $(this).attr('href');
+            var method = $(this).data('link-method');
+
+            $.ajax({
+                url: href,
+                type: method,
+                async: false,
+                success: function (data) {
+                    successAjax(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+
+            return false;
+        });
+    }
+
+
+    function initFormListener() {
+        $('button[type="submit"]').click(function(){
+
+            if ($(this).hasClass('js-publish')) {
+                return true;
+            }
+
+            var form = $(this).closest('form');
+            var action = form.attr('action');
+            var formData = new FormData(form[0]);
 
             $.ajax({
                 url: action,
@@ -19,10 +56,7 @@ $(document).ready(function() {
                 data: formData,
                 async: false,
                 success: function (data) {
-                    $("#js-form-space").html($(data).find('#js-form-space'));
-                    initFormListener();
-                    $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
-                    $("select").chosen();
+                    successAjax(data);
                 },
                 cache: false,
                 contentType: false,
@@ -34,4 +68,5 @@ $(document).ready(function() {
     }
 
     initFormListener();
+    initLinkListener();
 });
