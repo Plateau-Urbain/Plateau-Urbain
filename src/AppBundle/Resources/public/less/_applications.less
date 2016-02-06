@@ -3,8 +3,32 @@
 }
 
 #property-listing, #space-card{
-
   margin-top: 40px;
+
+  &.management-list .space-card{
+    height: auto;
+  }
+
+  .space-card .col-sm-8{
+    padding-top: 0;
+    padding-right: 15px;
+  }
+
+  .item.space-card .info > .row:not(:last-child){
+    margin-bottom: 5px;
+  }
+
+  h3.price{
+    position: initial;
+    background: initial;
+    color: inherit;
+    padding: 0;
+    color: @black;
+    &::before{
+      content: none;
+    }
+  }
+
 
   .item{
     background: #F2E9E2;
@@ -60,6 +84,31 @@
 
     .item-desc{
       height: 60px;
+
+      &.block{
+        height: auto;
+
+        .block-content{
+          height: auto;
+          min-height: 60px;
+          background: @white;
+        }
+      }
+
+      .row.status{
+        margin: 2px;
+        .col-sm-4{
+          padding: 0 2px;
+        }
+      }
+
+      .label-status{
+        padding: 4px 4px;
+        min-width: auto;
+        display: block;
+        font-size: 10px;
+      }
+
     }
 
     .border-box{

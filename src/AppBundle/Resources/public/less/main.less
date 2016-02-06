@@ -6,7 +6,7 @@
 @import '_icons';
 @import '_partners';
 @import '_space';
-@import '_applications'; 
+@import '_applications';
 
 @brown-dark: #5A3A0B;
 @brown-light: #c0b7ad;
@@ -200,6 +200,15 @@ span[data-class=danger] + .tooltip{
   font-size: 16px;
 }
 
+.btn-yellow{
+  background: #C89641;
+  font-size: 16px;
+
+  &:hover{
+    background: @red;
+  }
+}
+
 .btn-refuse{
   background: @black;
 }
@@ -224,6 +233,10 @@ span[data-class=danger] + .tooltip{
 
 .chzn-container{
   border-radius: 5px;
+}
+
+dl.no-margin{
+  margin: 0;
 }
 
 dl.dl-with-icon{
