@@ -114,9 +114,9 @@
 <hr class="brown" />
 
 <div class="center space-stats">
-    <a href="#space-stats" data-toggle="collapse" class="toggle-stats">
-        <i class="fa fa-lg fa-eye-slash" title="Masquer/Afficher les statistiques" data-toggle="tooltip"></i>
-    </a>
+  <a href="#space-stats" data-toggle="collapse" class="toggle-stats">
+    <i class="fa fa-lg fa-eye-slash" title="Masquer/Afficher les statistiques" data-toggle="tooltip"></i>
+  </a>
 </div>
 
 <div class="space-stats collapse in" id="space-stats">
@@ -157,116 +157,118 @@
 <hr class="brown">
 
 <div id="listing-header" class="clearfix">
-    <div class="row">
-        <div class="col-sm-12">
-            {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'candidatures' } %}
-        </div>
+  <div class="row">
+    <div class="col-sm-12 results-numbers">
+      <h4>
+        {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'candidatures' } %}
+      </h4>
+    </div>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-control-small">
+        <select id="groupActionSelect" data-placeholder="Actions groupées">
+          <option value=""> </option>
+          <option value="accept">Accepter</option>
+          <option value="refuse">Refuser</option>
+        </select>
+      </div>
+      <a href="#accept_content" class="btn btn-secondary btn-form" id="groupActionBtn">Appliquer</a>
     </div>
 
-    <p>&nbsp;</p>
+    <div class="col-sm-7">
+      {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.status_filter) }}
+      </div>
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_field) }}
+      </div>
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_order) }}
+      </div>
 
-    <div class="row">
-        <div class="col-sm-5">
-            <div class="form-control-small">
-                <select id="groupActionSelect" data-placeholder="Actions groupées">
-                    <option value=""> </option>
-                    <option value="accept">Accepter</option>
-                    <option value="refuse">Refuser</option>
-                </select>
-            </div>
-            <a href="#accept_content" class="btn btn-fullcolor" id="groupActionBtn">Appliquer</a>
-        </div>
-
-        <div class="col-sm-7">
-            {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.status_filter) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_field) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_order) }}
-            </div>
-
-            {{ form_end(filterForm) }}
-        </div>
+      {{ form_end(filterForm) }}
     </div>
+  </div>
 </div>
 
 <div class="application-list">
-    {% for application in pagination %}
-        <div class="item">
-            <div class="row">
-                <div class="col-sm-1">
-                    {% if application.isAwaiting %}
-                        <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
-                    {% endif %}
-                </div>
-                <div class="col-sm-6">
-                    <div class="application-status">
-                        Statut: <strong>{{ application.statusLabel | upper }}</strong>
-                    </div>
-                    <div class="application-title">
-                        <h4>{{ application.name }}</h4>
-                        PAR <strong>{{ application.projectHolder.company }}</strong>
-                    </div>
-
-                    <p><i class="fa fa-user"></i>&nbsp; {{ application.projectHolder.fullName }}</p>
-
-                    <p><i class="fa fa-file-text-o"></i>&nbsp; {{ application.description|truncate(250) }}</p>
-                </div>
-                <div class="col-sm-4">
-                    <div class="pull-right">
-                      <a href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
-                        {% if application.selected %}
-                          <i class="fa fa-star fa-2x"></i>
-                        {% else %}
-                          <i class="fa fa-star-o fa-2x"></i>
-                        {% endif %}
-                      </a>
-                    </div>
-
-                    <ul>
-                        <li>
-                            Candidature déposée le <strong>{{ application.created | date('d/m/Y') }}</strong>
-                        </li>
-                        <li>
-                            Type d'usage : <strong>{{ application.projectHolder.useType }}</strong>
-                        </li>
-                        <li>
-                            Type de projet : <strong>{{ application.category }}</strong>
-                        </li>
-                        <li>
-                            Surface recherchée : <strong>{{ application.wishedSize }}m²</strong>
-                        </li>
-                        <li>
-                            Durée d'occupation : <strong>{{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</strong>
-                        </li>
-                        <li>
-                            Date d'entrée souhaitée : <strong>{{ application.startOccupation|localizeddate('long', 'none') }}</strong>
-                        </li>
-                    </ul>
-                    <a href="{{ path('application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-block">Voir la candidature</a>
-                </div>
-            </div>
+  {% for application in pagination %}
+    <div class="item candidate-item">
+      <div class="row">
+        <div class="col-sm-1 actions">
+          {% if application.isAwaiting or application.isUnread %}
+            <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
+          {% endif %}
         </div>
-    {% else %}
-        <p class="center">Il n'y a aucune candidature sur cette espace</p>
-    {% endfor %}
+        <div class="col-sm-6 border-box">
+          <div class="cell-content">
+            <div class="application-status">
+              {% if application.status == 'unread' or application.status == 'awaiting'  %}
+                Statut: <strong class="awaiting">{{ application.statusLabel | upper }}</strong>
+              {% elseif application.status == 'accepted'  %}
+                Statut: <strong class="accepted">{{ application.statusLabel | upper }}</strong>
+              {% elseif application.status == 'rejected'  %}
+                Statut: <strong class="rejected">{{ application.statusLabel | upper }}</strong>
+              {% endif %}
+            </div>
+            <div class="application-title">
+                <h4>{{ application.name }}</h4>
+                PAR <strong>{{ application.projectHolder.company }}</strong>
+            </div>
+
+            <dl class="dl-horizontal dl-with-icon">
+              <dt><i class="icon small user-brown"></i></dt>
+              <dd><span class="dd-title">{{ application.projectHolder.fullName }}</dd>
+              <dt><i class="icon small list-brown"></i></dt>
+              <dd><span class="dd-title">{{ application.description|truncate(250) }}</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="cell-content">
+            <div class="pull-right">
+              <a class="toggle-star" href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
+                {% if application.selected %}
+                  <i class="fa fa-star fa-2x"></i>
+                {% else %}
+                  <i class="fa fa-star-o fa-2x"></i>
+                {% endif %}
+              </a>
+            </div>
+
+            <ul class="application-desc">
+              <li>Candidature déposée le : <strong>{{ application.created | date('d/m/Y') }}</strong></li>
+              <li>Type d'usage : <strong>{{ application.projectHolder.useType }}</strong></li>
+              <li>Type de projet : <strong>{{ application.category }}</strong></li>
+              <li>Surface recherchée : <strong>{{ application.wishedSize }}m²</strong></li>
+              <li>Durée d'occupation : <strong>{{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</strong></li>
+              <li>Date d'entrée souhaitée : <strong>{{ application.startOccupation|localizeddate('long', 'none') }}</strong></li>
+            </ul>
+
+            <a href="{{ path('application_show', { 'id': application.id }) }}" class="btn btn-secondary btn-block">Voir la candidature</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="no-results">
+      <p class="center">Il n'y a aucune candidature sur cette espace</p>
+    </div>
+  {% endfor %}
 </div>
 
 <div>
-    <div class="row">
-        <div class="col-sm-12">
-            {{ knp_pagination_render(pagination) }}
-        </div>
+  <div class="row">
+    <div class="col-sm-12">
+      {{ knp_pagination_render(pagination) }}
     </div>
+  </div>
 </div>
-
 
 <div style="display: none;">
     <div id="accept_content">

@@ -198,7 +198,7 @@ span[data-class=danger] + .tooltip{
   }
 }
 
-.sort{ 
+.sort{
   label i{
     background: @white;
   }
@@ -331,4 +331,77 @@ canvas {
   width: 100% !important;
   max-width: 800px;
   height: auto !important;
+}
+
+
+.candidate-item{
+
+  display: table;
+  width: 100%;
+
+  &.item{
+    background: #F2E9E2;
+    padding: 0;
+  }
+
+  .row{
+    display: table-row;
+
+    &::before, &::after{
+      content: none;
+    }
+
+    [class*="col-"]{
+      float: none;
+      display: table-cell;
+      vertical-align: top;
+    }
+
+    .cell-content{
+      padding: 15px;
+      color: @black;
+    }
+  }
+
+  .border-box{
+    border-right: solid 1px #DED4CB;
+  }
+
+  .application-status{
+    color: #B2A69A;
+
+    .awaiting{
+      color: #c89640;
+    }
+
+    .accepted{
+      color: #8BCA83;
+    }
+
+    .rejected{
+      color: @red;
+    }
+  }
+
+  .application-title{
+    color: #B2A69A;
+    text-transform: uppercase;
+    h4{
+      text-transform: inherit;
+    }
+  }
+
+  .application-desc li{
+    color: #B2A69A !important;
+  }
+
+  .toggle-star{
+    color: #c89640;
+  }
+
+  .actions{
+    padding: 15px;
+    text-align: center;
+    background: #DED4CB;
+  }
 }
