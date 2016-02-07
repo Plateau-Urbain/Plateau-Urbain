@@ -63,6 +63,10 @@ h3 + small{
 
 h4{
   font-weight: bold;
+
+  &.black{
+    color: @black;
+  }
 }
 
 .application-header {
@@ -75,6 +79,29 @@ h4{
   }
 }
 
+.list-dotted{
+  margin: 15px 0;
+  border-top: dotted 1px #CFC1B6;
+  border-bottom: dotted 1px #CFC1B6;
+  list-style: none;
+  padding: 0;
+
+  li{
+    padding: 5px 0;
+  }
+
+  li:not(:last-child){
+    border-bottom: dotted 1px #CFC1B6;
+  }
+}
+
+ul li.li-icon.check:before{
+  content: "\f00c";
+  display: inline;
+  font-family: "FontAwesome";
+  margin-right: 5px;
+  color: @red;
+}
 
 .results-numbers h4{
   color: @black;
@@ -403,5 +430,97 @@ canvas {
     padding: 15px;
     text-align: center;
     background: #DED4CB;
+  }
+}
+
+
+.application-header{
+  position: relative;
+
+  .toggle-star{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    a{
+      color: @white;
+    }
+  }
+}
+
+h4.add-file{
+  color: @red;
+}
+
+.lots.table{
+
+  margin-top: 5px;
+
+  td, th{
+    color: @black;
+    &:not(:last-child){
+      border-right: solid 1px @grey;
+    }
+  }
+
+  thead th{
+    background: @brown-ligther;
+    font-weight: normal;
+    color: @white;
+
+    label{
+      color: inherit;
+      margin: 0;
+    }
+  }
+  tbody tr{
+    color: @black;
+    background: #F6EFE7;
+
+    &:nth-child(odd){
+      background: #E9E2DA;
+    }
+  }
+}
+
+
+.thumbnail{
+  .caption{
+    padding: 0;
+    position: relative;
+
+    .remove-picture{
+      position: absolute;
+      right: 0;
+      top: 5px;
+
+      a{
+        font-size: 14px;
+        padding: 3px 5px;
+        line-height: initial;
+
+        i{
+          margin: 0;
+        }
+      }
+    }
+
+    .move-picture{
+      display: block;
+      text-align: center;
+      margin: 5px 0;
+      a{
+        border-radius: 2px;
+        font-size: 14px;
+        padding: 3px 5px;
+        line-height: initial;
+        border: none;
+        color: white;
+        background: @black;
+
+        i{
+          margin: 0;
+        }
+      }
+    }
   }
 }

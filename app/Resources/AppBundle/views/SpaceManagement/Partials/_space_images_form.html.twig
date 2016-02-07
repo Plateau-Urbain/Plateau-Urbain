@@ -6,44 +6,47 @@
 </p>
 
 <div class="row">
-    {% for image in images %}
-        <div class="col-sm-4">
-            <div class="thumbnail">
-                <img src="{{ vich_uploader_asset(image, 'file') }}" alt="{{ image.fileName }}">
-                <div class="caption clearfix">
-                    <p class="pull-right">
-                        <a href="{{ path('space_manager_removepicture', { 'id': image.id, 'token': csrf_token('remove_image') }) }}" class="btn" role="button" data-link-method="delete">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </p>
-                    <p>
-                        <a href="{{ path('space_manager_movepicture', { 'id': image.id, 'position': image.position-1, 'token': csrf_token('move_image') }) }}" class="btn {{ loop.first ? 'disabled' :'' }}" role="button" data-link-method="post">
-                            <i class="fa fa-chevron-left"></i>
-                        </a>
-                        <a href="{{ path('space_manager_movepicture', { 'id': image.id, 'position': image.position+1, 'token': csrf_token('move_image') }) }}" class="btn {{ loop.last ? 'disabled' :'' }}" role="button" data-link-method="post">
-                            <i class="fa fa-chevron-right"></i>
-                        </a>
-                    </p>
-                </div>
-            </div>
+  {% for image in images %}
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img src="{{ vich_uploader_asset(image, 'file') }}" alt="{{ image.fileName }}">
+        <div class="caption clearfix">
+          <span class="pull-right remove-picture">
+            <a href="{{ path('space_manager_removepicture', { 'id': image.id, 'token': csrf_token('remove_image') }) }}" class="btn" role="button" data-link-method="delete">
+              <i class="fa fa-times"></i>
+            </a>
+          </span>
+          <span class="move-picture">
+            <a href="{{ path('space_manager_movepicture', { 'id': image.id, 'position': image.position-1, 'token': csrf_token('move_image') }) }}" class="btn {{ loop.first ? 'disabled' :'' }}" role="button" data-link-method="post">
+              <i class="fa fa-chevron-left"></i>
+            </a>
+            <a href="{{ path('space_manager_movepicture', { 'id': image.id, 'position': image.position+1, 'token': csrf_token('move_image') }) }}" class="btn {{ loop.last ? 'disabled' :'' }}" role="button" data-link-method="post">
+              <i class="fa fa-chevron-right"></i>
+            </a>
+          </span>
         </div>
-    {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
 </div>
 
-<label class="form-label">
-    <i class="fa fa-plus-circle"></i>
-    {{ form.vars.label }}
-</label>
+<h4 class="black">
+  <i class="icon small inline add-black"></i>
+  Ajouter une image
+</h4>
 
 {{ form_errors(form) }}
 
+<p>&nbsp;</p>
+
 <div class="row">
-    <div class="col-sm-6">
-        {{ form_widget(form) }}
-    </div>
-    <div class="col-sm-4">
-        <button type="submit" class="btn  btn-fullcolor form-control">
-            Enregistrer
-        </button>
-    </div>
+  <div class="col-sm-7">
+    {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+  </div>
+
+  <div class="col-sm-5">
+    <button value="" type="submit" name="button" class="btn btn-block btn-fullcolor form-control">Enregistrer</button>
+  </div>
 </div>
+
+<p>&nbsp;</p>
