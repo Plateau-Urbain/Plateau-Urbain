@@ -19,8 +19,16 @@
 
         <div class="sort">
           <ul>
-            <li id="desc" {% if form.vars.value.sort =='desc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
-            <li id="asc" {% if form.vars.value.sort =='asc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
+            <li id="desc" {% if form.vars.value.sort =='desc'  %}class="active" {% endif %}>
+              <label {% if form.vars.value.sort =='desc'  %}class="checked" {% endif %}>
+                <i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i>
+              </label>
+            </li>
+            <li id="asc" {% if form.vars.value.sort =='asc'  %}class="active" {% endif %}>
+              <label {% if form.vars.value.sort =='asc'  %}class="checked" {% endif %}>
+                <i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i>
+              </label>
+            </li>
           </ul>
         </div>
       </div>
