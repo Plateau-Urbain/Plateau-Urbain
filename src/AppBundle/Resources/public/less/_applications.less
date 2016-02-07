@@ -5,6 +5,10 @@
 #property-listing, #space-card{
   margin-top: 40px;
 
+  .space-card{
+    height: auto;
+  }
+
   &.management-list .space-card{
     height: auto;
   }
@@ -16,6 +20,10 @@
 
   .item.space-card .info > .row:not(:last-child){
     margin-bottom: 5px;
+  }
+
+  .item.space-card .info > .row.margin-15{
+    margin-bottom: 15px;
   }
 
   h3.price{
@@ -33,6 +41,10 @@
   .item{
     background: #F2E9E2;
     width: inherit;
+
+    &.no-bkg{
+      background: none;
+    }
 
     h3{
       border: none;
@@ -76,6 +88,10 @@
       float: none;
       margin: auto;
       padding: 25px 25px 0 0;
+
+      &.no-padding{
+        padding: 0;
+      }
 
       & > .row:not(:last-child){
         margin-bottom: 20px;

@@ -1,0 +1,33 @@
+.pagination-wrapper{
+  margin-top: 50px;
+  padding-top: 35px;
+  border-color: fade(@brown-text, 50%);
+}
+
+.pagination{
+  li{
+    display: inline-block;
+    margin: 10px;
+
+    &:first-child > span > span:before{
+      content: "\f053";
+      font-family: "FontAwesome";
+    }
+
+    &:last-child > span > span:before{
+      content: "\f054";
+      font-family: "FontAwesome";
+    }
+
+    & > span{
+      padding: 10px 20px;
+      cursor: pointer;
+      background: @black;
+      color: @white;
+
+      &:hover{
+        background: @red;
+      }
+    }
+  }
+}

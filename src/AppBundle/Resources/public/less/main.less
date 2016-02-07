@@ -7,6 +7,8 @@
 @import '_partners';
 @import '_space';
 @import '_applications';
+@import '_buttons';
+@import '_pagination';
 
 @brown-dark: #5A3A0B;
 @brown-light: #c0b7ad;
@@ -41,6 +43,10 @@ h1, h2, h3, h4, h5, h6{
   &.no-margin{
     margin: 0;
   }
+
+  &.bold{
+    font-weight: bold;
+  }
 }
 
 h3{
@@ -59,6 +65,17 @@ h4{
   font-weight: bold;
 }
 
+.application-header {
+  h1{
+    font-size: 36px;
+  }
+
+  h2{
+    font-size: 26px;
+  }
+}
+
+
 .results-numbers h4{
   color: @black;
   line-height: 40px;
@@ -70,8 +87,28 @@ h4{
   & + hr{
     border-top-color: @brown-light;
     margin: 0;
-    opacity: .5
+    opacity: .5;
   }
+}
+
+.page-title{
+  line-height: 40px;
+}
+
+.page-header{
+  border: none;
+
+  hr{
+    border-top-color: @brown-light;
+    margin: 0;
+    opacity: .5;
+  }
+}
+
+hr.brown{
+  border-top-color: @brown-light;
+  margin: 0;
+  opacity: .5;
 }
 
 .box-information{
@@ -161,70 +198,6 @@ span[data-class=danger] + .tooltip{
   }
 }
 
-.btn{
-  height: auto;
-}
-
-.btn-large{
-  padding: 6px 40px;
-}
-
-.btn-grey{
-  background-color: @grey-button;
-}
-
-.btn-wide{
-  width: 300px;
-}
-
-.btn-status{
-  width: 100%;
-  padding: 3px 20px;
-  color: @white;
-  text-transform: uppercase;
-  font-size: 20px;
-  font-weight: 300;
-  cursor: auto;
-
-  i{
-    font-size: 1.1em;
-  }
-
-  &:hover{
-    color: @white;
-  }
-}
-
-.btn-grey{
-  background: #D4CAC0;
-  font-size: 16px;
-}
-
-.btn-yellow{
-  background: #C89641;
-  font-size: 16px;
-
-  &:hover{
-    background: @red;
-  }
-}
-
-.btn-refuse{
-  background: @black;
-}
-
-.btn-draft{
-  background: @red;
-}
-
-.btn-awaiting{
-  background: #C89641;
-}
-
-.btn-accepted{
-  background: #8CCB84;
-}
-
 .sort{
   label i{
     background: @white;
@@ -303,47 +276,50 @@ form .main .section-title{
   }
 }
 
-.application-header {
+.space-stats{
+  font-size: 20px;
+  margin: 20px 0;
 
-  h1{
-    font-size: 36px;
+  .toggle-stats{
+    color: #c89640;
   }
 
-  h2{
-    font-size: 26px;
+  h2.stats-title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+
+  }
+
+  .stats-title.secondary{
+    font-size: 18px;
+  }
+
+  .stats-summary{
+    color: black;
+  }
+
+  .pie-legend{
+    list-style: none;
+    padding: 0;
+
+    li{
+      color: @black;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    span{
+      vertical-align: text-top;
+    }
   }
 }
 
-.pagination-wrapper{
-  margin-top: 50px;
-  padding-top: 35px;
-  border-color: fade(@brown-text, 50%);
+#firstChart, #secondChart{
+  max-width: 100%;
 }
 
-.pagination{
-  li{
-    display: inline-block;
-    margin: 10px;
-
-    &:first-child > span > span:before{
-      content: "\f053";
-      font-family: "FontAwesome";
-    }
-
-    &:last-child > span > span:before{
-      content: "\f054";
-      font-family: "FontAwesome";
-    }
-
-    & > span{
-      padding: 10px 20px;
-      cursor: pointer;
-      background: @black;
-      color: @white;
-
-      &:hover{
-        background: @red;
-      }
-    }
-  }
+canvas {
+  width: 100% !important;
+  max-width: 800px;
+  height: auto !important;
 }

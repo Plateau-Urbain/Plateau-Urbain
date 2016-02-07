@@ -1,30 +1,20 @@
 {% extends "::base.html.twig" %}
 
 {% block breadcrumb_items %}
-    <li>
-        <a href="{{ path('security_profil') }}">Mon compte</a>
-    </li>
-    <li>
-        <a href="{{ path('space_manager_list') }}">Liste de mes espaces</a>
-    </li>
-    <li>
-        <a href="{{ path('space_show', { 'id': application.space.id }) }}">{{ application.space.name }}</a>
-    </li>
-    <li>
-        <a href="{{ path('space_manager_candidates', { 'id': application.space.id }) }}">Liste des candidats</a>
-    </li>
-    <li>
-        <span>Fiche candidat</span>
-    </li>
+  <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+  <li><a href="{{ path('space_manager_list') }}">Liste de mes espaces</a></li>
+  <li><a href="{{ path('space_show', { 'id': application.space.id }) }}">{{ application.space.name }}</a></li>
+  <li><a href="{{ path('space_manager_candidates', { 'id': application.space.id }) }}">Liste des candidats</a></li>
+  <li><span>Fiche candidat</span></li>
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
+  {{ parent() }}
 
-    {% stylesheets 'bundles/app/css/print.css'
-    filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="print" />
-    {% endstylesheets %}
+  {% stylesheets 'bundles/app/css/print.css'
+  filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="print" />
+  {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
