@@ -48,10 +48,18 @@ class ActualityAdmin extends Admin
             ->add('subtitle', null, array('label' => 'Sous-titre'))
             ->add('date', 'date')
             ->add('link', null, array('label' => 'Lien'))
-            ->add('image', 'file', array('label' => 'Image'))
+            ->add('image', 'image_admin_type', array('label' => 'Image'))
             ->add('published', null, array('label' => 'Publié ?'))
 
             ->end()
         ;
+    }
+
+    public function getFormTheme()
+    {
+        return array_merge(
+            array('AppBundle:Form:custom_admin_fields.html.twig'),
+            parent::getFormTheme()
+        );
     }
 }
