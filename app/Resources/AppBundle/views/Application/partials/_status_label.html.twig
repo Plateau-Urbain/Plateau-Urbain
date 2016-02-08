@@ -1,27 +1,27 @@
 {% if application.isAccepted %}
-    <div class="label-status accepted">
-        <i class="fa fa-check"></i>
-        Acceptée
-    </div>
+  <div class="label-status accepted">
+    <i class="fa fa-check"></i>
+    Acceptée
+  </div>
 {% endif %}
 
 {% if application.isRejected %}
 <div class="label-status rejected">
-    <i class="fa fa-times"></i>
-    Refusée
+  <i class="fa fa-times"></i>
+  Refusée
 </div>
 {% endif %}
 
 {% if application.isDraft %}
 <div class="label-status draft">
-    <i class="fa fa-pencil"></i>
-    A compléter
+  <i class="fa fa-pencil"></i>
+  A compléter
 </div>
 {% endif %}
 
-{% if application.isAwaiting %}
+{% if application.isAwaiting or application.isUnread %}
 <div class="label-status awaiting">
-    <i class="fa fa-hour"></i>
-    Envoyée
+  <i class="fa fa-hourglass-half"></i>
+  Envoyée
 </div>
 {% endif %}

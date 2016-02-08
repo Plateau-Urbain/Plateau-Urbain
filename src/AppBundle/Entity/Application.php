@@ -23,6 +23,7 @@ class Application
     const YEAR_TYPE  = "ans";
 
     const DRAFT_STATUS  = 'draft';
+    const UNREAD_STATUS  = 'unread';
     const WAIT_STATUS   = "awaiting";
     const ACCEPT_STATUS = "accepted";
     const REJECT_STATUS = "rejected";
@@ -34,6 +35,7 @@ class Application
     {
         return array(
             self::DRAFT_STATUS => 'Brouillon',
+            self::UNREAD_STATUS => 'Non lue',
             self::WAIT_STATUS => 'En attente',
             self::ACCEPT_STATUS => 'Accepté',
             self::REJECT_STATUS => 'Refusé',
@@ -55,6 +57,11 @@ class Application
      * @ORM\Column(name="status", type="string")
      */
     private $status = self::DRAFT_STATUS;
+
+    /**
+     * @ORM\Column(name="selected", type="boolean")
+     */
+    private $selected = false;
 
     /**
      * @var string
@@ -193,7 +200,7 @@ class Application
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -216,7 +223,7 @@ class Application
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -239,7 +246,7 @@ class Application
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getContribution()
     {
@@ -261,7 +268,7 @@ class Application
     /**
      * Get startOccupation
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartOccupation()
     {
@@ -330,8 +337,8 @@ class Application
     public function setStatus($status)
     {
         $this->status = $status;
-    }    
-    
+    }
+
     /**
      * @return string
      */
@@ -499,6 +506,14 @@ class Application
     }
 
     /**
+     * @return bool
+     */
+    public function isUnread()
+    {
+        return $this->status === self::UNREAD_STATUS;
+    }
+
+    /**
      * @return null
      */
     public function getStatusLabel()
@@ -553,5 +568,28 @@ class Application
                 ->addViolationAt('contribution', 'Cette valeur ne doit pas être vide.')
             ;
         }
+    }
+
+    /**
+     * Set selected
+     *
+     * @param boolean $selected
+     * @return Application
+     */
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+
+        return $this;
+    }
+
+    /**
+     * Get selected
+     *
+     * @return boolean
+     */
+    public function getSelected()
+    {
+        return $this->selected;
     }
 }

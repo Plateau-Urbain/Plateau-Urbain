@@ -9,49 +9,55 @@
 
 {% block body %}
 
-    <div class="row">
-        <!-- BEGIN MAIN CONTENT -->
-        <div class="main col-sm-8 col-sm-offset-2">
-            <h1 class="section-title">Liste de mes espaces</h1>
-        </div>
+<div class="row">
+  <div class="main col-sm-12">
+    <h1 class="section-title left-title">Liste de mes espaces</h1>
+    <hr />
+  </div>
+</div>
+
+<div id="listing-header" class="clearfix">
+  <div class="row">
+    <div class="col-sm-6 results-numbers">
+      <h4>
+        {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
+      </h4>
     </div>
+
+    <div class="col-sm-6">
+      {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+
+      <div class="col-sm-4">
+        {{ form_widget(filterForm.status_filter) }}
+      </div>
+
+      <div class="col-sm-4">
+        {{ form_widget(filterForm.sort_field) }}
+      </div>
+
+      <div class="col-sm-4">
+        {{ form_widget(filterForm.sort_order) }}
+      </div>
+
+      {{ form_end(filterForm) }}
+    </div>
+  </div>
+</div>
 
 {% if pagination | length == 0 %}
-    <div class="center">
-        <p>Vous n'avez aucun espace à gérer.</p>
-        <a href="{{ path('space_manager_add') }}" class="btn btn-fullcolor">Ajouter un espace</a>
+
+    <div class="no-results">
+      <p>Vous n'avez aucun espace à gérer :</p>
+      <a href="{{ path('space_manager_add') }}">Ajouter un espace</a>
     </div>
+
 {% else %}
-<div id="listing-header" class="clearfix">
-    <div class="row">
-        <div class="col-sm-6">
-            {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
-        </div>
-        <div class="col-sm-6">
-            {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
 
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.status_filter) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_field) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_order) }}
-            </div>
-
-            {{ form_end(filterForm) }}
-        </div>
-    </div>
-</div>
-    
 <!-- BEGIN PROPERTY LISTING -->
 <div id="property-listing" class="list-style clearfix management-list">
     <div class="row">
     {% for space in pagination %}
-        {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}        
+        {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}
     {% endfor %}
     </div>
 </div>

@@ -3,59 +3,63 @@
     <div class="main col-sm-8 col-sm-offset-2">
         <h1 class="section-title">Ajouter un espace</h1>
         <p class="center">
-            Pour ajouter une offre sur la plate-forme Plateau urbain, il vous suffit de remplir le formulaire ci-dessus.<br /> A tout moment, vous pouvez enregistrer le formulaire et reprendre son édition ultérieurement. Une fois complet, procédez à sa validation : un administrateur du site interviendra pour s’assurer qu’elle est complète et procéder à sa mise en ligne.        </p>
+            Pour ajouter une offre sur la plate-forme Plateau urbain, il vous suffit de remplir le formulaire ci-dessus.<br /> A tout moment, vous pouvez enregistrer le formulaire et reprendre son édition ultérieurement. Une fois complet, procédez à sa validation : un administrateur du site interviendra pour s’assurer qu’elle est complète et procéder à sa mise en ligne.
+        </p>
     </div>
 </div>
 
 {{ form_start(form) }}
 <div class="row">
     <div class="main col-sm-8 col-sm-offset-2">
-        <h2 class="section-title">Votre espace</h2>
+        <h2 class="section-title">
+          <i class="icon place-red-bold"></i>
+          Votre espace
+        </h2>
 
         {{ form_errors(form) }}
 
         <div class="form-contener">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.name) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.zipCode) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.city) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.limitAvailability) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.availability) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.type) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.price) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.description) }}
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.activityDescription) }}
                 </div>
             </div>
@@ -69,7 +73,10 @@
             <div style="clear: both"></div>
         </div>
 
-        <h2 class="section-title">Prestations et services</h2>
+        <h2 class="section-title">
+          <i class="icon cog-red-bold2"></i>
+          Prestations et services
+        </h2>
 
         <div class="form-contener">
             <div class="row">
@@ -78,30 +85,52 @@
                 </div>
             </div>
         </div>
-            
-        <h2 class="section-title">Répartition des surfaces</h2>
+
+        <h2 class="section-title">
+          <i class="icon square-red-bold2"></i>
+          Répartition des surfaces
+        </h2>
 
         <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-                </div>
+          <div class="row">
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
             </div>
+          </div>
         </div>
-                
-        <h2 class="section-title">Photos</h2>
+
+        <h2 class="section-title">
+          <i class="icon pin-red-bold"></i>
+          Pièces à joindre à la candidature
+        </h2>
 
         <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
-                </div>
+          <div class="row">
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' %}
             </div>
+
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
+            </div>
+          </div>
         </div>
+
+        <p>&nbsp;</p>
+        <hr class="brown" />
+        <p>&nbsp;</p>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <br />
+            <div class="col-sm-4 col-sm-offset-2">
+                {{ form_widget(
+                    form.preview, {
+                        'attr': {
+                            'class': 'btn btn-secondary form-control',
+                        }
+                    })
+                }}
+            </div>
+            <div class="col-sm-4">
                 {{ form_widget(
                     form.publish, {
                         'attr': {
@@ -111,10 +140,10 @@
                     })
                 }}
             </div>
-        </div>                
-                
+        </div>
+
         <p>&nbsp;</p>
-        <p>&nbsp;</p>    
+        <p>&nbsp;</p>
     </div>
 </div>
 <div style="display: none;">{{ form_rest(form) }}</div>

@@ -12,7 +12,7 @@
     {% if pagination | length > 0 %}
     <div id="listing-header" class="clearfix">
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-8 results-numbers">
                 {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
             </div>
             <div class="col-sm-4">
@@ -26,13 +26,20 @@
                         </select>
                     </div>
 
-                    <div class="sort">
-                        <ul>
-                            <li id="desc" {% if form.vars.value.sort =='desc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i></li>
-                            <li id="asc" {% if form.vars.value.sort =='asc'  %}class="active" {% endif %}><i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i></li>
-                        </ul>
-                    </div>
-
+                <div class="sort">
+                    <ul>
+                        <li id="desc" {% if form.vars.value.sort =='desc'  %}class="active" {% endif %}>
+                            <label {% if form.vars.value.sort =='desc'  %}class="checked" {% endif %}>
+                                <i data-toggle="tooltip" data-placement="top" title="Sort Descending" class="fa fa-chevron-down"></i>
+                            </label>
+                        </li>
+                        <li id="asc" {% if form.vars.value.sort =='asc'  %}class="active" {% endif %}>
+                            <label {% if form.vars.value.sort =='asc'  %}class="checked" {% endif %}>
+                                <i data-toggle="tooltip" data-placement="top" title="Sort Ascending" class="fa fa-chevron-up"></i>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -43,100 +50,102 @@
         <div class="row">
         {% for space in pagination %}
 
-            <div class="application-space space-card">
-                <div class="row">
+        <div class="col-sm-12">
+            <div class="item application-space space-card">
+                <div class="row  margin-15">
                     <div class="col-sm-4">
-                        {% if space.pics.first %}
-                            <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
-                        {% endif %}
+                        <div class="image">
+                            <div class="overlay">
+                                {% if space.isClosed %}
+                                    <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
+                                {% endif %}
+                            </div>
+                            <div class="image-wrapper">
+                                {% if space.pics.first %}
+                                    <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
+                                {% endif %}
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col-sm-8">
-                        <div class="row first-row">
-                            <div class="col-sm-6">
-                                <h2 class="space-title">
-                                    <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
-                                    {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
-                                </h2>
-                            </div>
-                            <div class="col-sm-4 col-sm-offset-2">
-                                <div class="space-price">
-                                    <span>À partir de</span>
-                                    <strong>{{ space.price }}€/m²/mois</strong>
-                                    H.C. H.T.<sup>1</sup>
+                        <div class="info">
+
+                            <div class="row">
+                                <div class="col-sm-7">
+                                    <h3>
+                                        <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+                                        {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}<br/>
+                                    </h3>
+                                </div>
+                                <div class="col-sm-5">
+                                    <h3 class="price">
+                                        <small>À partir de</small>
+                                        {{ space.price }}€/m²/mois
+                                        <small class="sub">H.C. H.T.<sup>1</sup></small>
+                                    </h3>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row second-row">
-                            <div class="col-sm-4">
-                                <div class="detail">
-                                    <div class="detail-icon">
-                                        <i class="fa fa-square-o"></i>
-                                    </div>
-                                    <h4 class="detail-title">
-                                        <strong>{{ space.parcels | length }}</strong> espaces
-                                    </h4>
-                                    <p class="detail-description">
-                                        De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
-                                    </p>
+
+                            <div class="row margin-15">
+                                <div class="col-sm-3 item-desc border-box">
+                                    <dl class="dl-horizontal dl-with-icon">
+                                        <dt><i class="icon small square-brown"></i></dt>
+                                        <dd>
+                                            <span class="dd-title"><strong>{{ space.parcels | length }}</strong> espaces</span><br/>
+                                            À partir de {{ space.size }}m<sup>2</sup>
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-4 item-desc border-box">
+                                    <dl class="dl-horizontal dl-with-icon">
+                                        <dt><i class="icon small cal-brown"></i></dt>
+                                        <dd>
+                                            <span class="dd-title">Disponibilité</span><br/>
+                                            {{ space.availability }}
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-5 item-desc">
+                                    <dl class="dl-horizontal dl-with-icon">
+                                        <dt><i class="icon small time-brown"></i></dt>
+                                        <dd>
+                                            <span class="dd-title">Date limite de candidature</span><br/>
+                                            {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+                                        </dd>
+                                    </dl>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="detail">
-                                    <div class="detail-icon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <h4 class="detail-title">
-                                        Disponibilités
-                                    </h4>
-                                    <p class="detail-description">
-                                        {{ space.availability }}
-                                    </p>
+
+
+                            <div class="row margin-15">
+                                <div class="col-sm-7">
+                                    <dl class="dl-horizontal dl-with-icon">
+                                        <dt><i class="icon small building-brown"></i></dt>
+                                        <dd>
+                                            <span class="dd-title">Bailleur</span><br/>
+                                            {{ space.owner.company }}
+                                        </dd>
+                                    </dl>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="detail last">
-                                    <div class="detail-icon">
-                                        <i class="fa fa-clock-o"></i>
-                                    </div>
-                                    <h4 class="detail-title">
-                                        Date limite de candidature
-                                    </h4>
-                                    <p class="detail-description">
-                                        {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
-                                    </p>
+                                <div class="col-sm-5">
+                                    <a href="{{ path('space_show', {'id' : space.id}) }}" class="btn btn-status btn-grey" target="_blank">Voir ce projet</a>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-8 bailleur">
-                                <div class="detail last">
-                                    <div class="detail-icon">
-                                        <i class="fa fa-building-o"></i>
-                                    </div>
-                                    <h4 class="detail-title">
-                                        Bailleur
-                                    </h4>
-                                    <p class="detail-description">
-                                        {{ space.owner.company }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <a href="{{ path('space_show', {'id' : space.id}) }}" class="btn btn-block btn-secondary" target="_blank">Voir ce projet</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
         {% else %}
-            <p>Aucun espace ne correspond à votre recherche</p>
+            <div class="no-results">
+                <p>Aucun espace ne correspond à votre recherche</p>
+            </div>
         {% endfor %}
         </div>
     </div>
 
     {{ knp_pagination_render(pagination) }}
-
 </div>
 <!-- END PROPERTY LISTING -->
 

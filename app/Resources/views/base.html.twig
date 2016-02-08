@@ -5,25 +5,25 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	
+
 	<!-- Page Title -->
 	<title>{% block title %}Plateau Urbain{% endblock %}</title>
-	
+
 	<meta name="keywords" content="real estate, responsive, retina ready, modern html5 template, bootstrap, css3" />
 	<meta name="description" content="Cozy - Responsive Real Estate HTML5 Template" />
 	<meta name="author" content="Wisely Themes - www.wiselythemes.com" />
-	
+
 	<!-- Mobile Meta Tag -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 	<!-- Fav and touch icons -->
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('/bundles/app/images/fav_touch_icons/favicon.ico') }}" />
-	
+
 	<!-- IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
-	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> 
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	
+
 	<!-- Google Web Font -->
 	<link href="http://fonts.googleapis.com/css?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" rel="stylesheet" type="text/css" />
 	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css' />
@@ -40,6 +40,11 @@
            <link rel="stylesheet" href="{{ asset_url }}" medial="all" />
         {% endstylesheets  %}
 
+				{% stylesheets '@AppBundle/Resources/public/less/main.less'
+		    filter='less' %}
+					<link rel="stylesheet" href="{{ asset_url }}" medial="all" />
+				{% endstylesheets %}
+
         {% block stylesheets %}{% endblock %}
 
         <!-- Modernizr -->
@@ -50,29 +55,30 @@
     <body>
 	<!-- BEGIN WRAPPER -->
 	<div id="wrapper">
-	
+
 		<!-- BEGIN HEADER -->
-		<header id="header">			
+		<header id="header">
 			<div id="nav-section">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
 							<a href="{{ path('homepage')}}" class="nav-logo"><img src="{{ asset('/public/images/logo.png') }}" alt="Plateau Urbain" /></a>
-							
+
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
 								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
 								{{ knp_menu_render('AppBundle:Builder:mainMenu') }}
 							</nav>
 							<!-- END MAIN MENU -->
-							
+
 						</div>
 					</div>
 				</div>
+				<div class="bottom"></div>
 			</div>
 		</header>
 		<!-- END HEADER -->
-		
+
 		<!-- BEGIN PAGE TITLE/BREADCRUMB -->
         {% block breadcrumb %}
             <div class="breadcrumb-header">
@@ -92,91 +98,21 @@
         <!-- END PAGE TITLE/BREADCRUMB -->
 
         {% block prebody %} {% endblock %}
-                
+
 		<div class="content">
 			<div class="container pb100">
+						{% block containerbkg %} {% endblock %}
         		{% block body %}{% endblock %}
 			</div>
 		</div>
 
 		{% block partners %}{% endblock %}
 
-		<!-- BEGIN FOOTER -->
-		<footer id="footer">
-			<div id="footer-top" class="container">
-				<div class="row">
-					<div class="block col-sm-3">
-						<a href="index.html"><img src="{{ asset('/public/images/logo.jpg') }}" alt="Plateau Urbain" /></a>
-						<br><br>
-						<p>Cozy is a simple clean and modern HTML template designed for Real Estate business. This template has a lot of useful features and it's highly customizable so you can turn it into your own awesome website.</p>
-					</div>
-					<div class="block col-sm-3">
-						<h3>Contact Info</h3>
-						<ul class="footer-contacts">
-							<li><i class="fa fa-map-marker"></i> 24th Street, New York, USA</li>
-							<li><i class="fa fa-phone"></i> 00351 123 456 789</li>
-							<li><i class="fa fa-envelope"></i> <a href="mailto:email@yourbusiness.com">email@yourbusiness.com</a></li>
-						</ul>
-					</div>
-					<div class="block col-sm-3">
-						<h3>Helpful Links</h3>
-						<ul class="footer-links">
-							<li><a href="properties-list.html">All Properties Available</a></li>
-							<li><a href="agent-listing.html">Look for an Agent</a></li>
-							<li><a href="agency-listing.html">Look for an Agency</a></li>
-							<li><a href="pricing-tables.html">See our Pricing Tables</a></li>
-						</ul>
-					</div>
-					<div class="block col-sm-3">
-						<h3>Latest Listings</h3>
-						<ul class="footer-listings">
-							<li>
-								<div class="image">
-									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
-								</div>
-								<p><a href="properties-detail.html">Luxury Apartment with great views<span>+</span></a></p>
-							</li>
-							<li>
-								<div class="image">
-									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
-								</div>
-								<p><a href="properties-detail.html">Stunning Villa with 5 bedrooms<span>+</span></a></p>
-							</li>
-							<li>
-								<div class="image">
-									<a href="properties-detail.html"><img src="http://placehold.it/760x670" alt="" /></a>
-								</div>
-								<p><a href="properties-detail.html">Recent construction with 3 bedrooms.<span>+</span></a></p>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			
-			
-			<!-- BEGIN COPYRIGHT -->
-			<div id="copyright">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-12">
-							&copy; 2014 Cozy
-							
-							<!-- BEGIN SOCIAL NETWORKS -->
-							<ul class="social-networks">
-								<li><a href="https://www.facebook.com/plateau.urbain" target="_blank"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="https://twitter.com/plateauurbain" target="_blank"><i class="fa fa-twitter"></i></a></li>
-							</ul>
-							<!-- END SOCIAL NETWORKS -->
-						
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- END COPYRIGHT -->
-			
-		</footer>
-		<!-- END FOOTER -->
-	
+
+		{% block footer %}
+			{% include '/Partials/footer.html.twig' %}
+		{% endblock %}
+
 	</div>
 	<!-- END WRAPPER -->
 
@@ -186,7 +122,7 @@
         'bundles/app/js/owl.carousel.min.js'
         'bundles/app/js/chosen.jquery.min.js'
         'bundles/app/js/infobox.min.js'
-        'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'  
+        'bundles/app/rs-plugin/js/jquery.themepunch.tools.min.js'
         'bundles/app/rs-plugin/js/jquery.themepunch.revolution.min.js'
         'bundles/app/js/jquery.colorbox.js'
         'bundles/app/js/bootstrap-checkbox.js'

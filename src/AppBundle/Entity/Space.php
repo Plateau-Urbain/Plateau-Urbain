@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Faker\Provider\DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
@@ -106,7 +107,7 @@ class Space
      * @Assert\NotBlank()
      */
     private $zipCode;
-    
+
     /**
      * @var string
      *
@@ -114,7 +115,7 @@ class Space
      * @Assert\NotBlank()
      */
     private $city;
-    
+
     /**
      * @var string
      *
@@ -172,7 +173,7 @@ class Space
      * @ORM\Column(name="closed", type="boolean")
      */
     private $closed = false;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist", "remove"})
      */
@@ -576,8 +577,8 @@ class Space
     public function setClosed($closed)
     {
         $this->closed = $closed;
-    }    
-    
+    }
+
     /**
      * @return User
      */
@@ -855,7 +856,9 @@ class Space
     public function nbApplication($type) {
         $ret = 0;
 
-        foreach ($this->application as $app) {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
             if ($app->getStatus() == $type) {
                 $ret++;
             }
@@ -871,7 +874,9 @@ class Space
     public function nbApplicationUseType($useType) {
         $ret = 0;
 
-        foreach ($this->application as $app) {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
             if ($app->getProjectHolder()->getUseType()->getId() == $useType->getId()) {
                 $ret++;
             }
@@ -887,7 +892,9 @@ class Space
     public function nbApplicationCategory($category) {
         $ret = 0;
 
-        foreach ($this->application as $app) {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
             if ($app->getCategory()->getId() == $category->getId()) {
                 $ret++;
             }
@@ -902,7 +909,9 @@ class Space
     public function getTotalWishedSize() {
         $ret = 0;
 
-        foreach ($this->application as $app) {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
             $ret += $app->getWishedSize();
         }
 
@@ -933,4 +942,3 @@ class Space
         }
     }
 }
-
