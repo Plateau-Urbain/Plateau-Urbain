@@ -69,13 +69,13 @@
                     <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="btn btn-fullcolor">Voir les candidats</a>
                 </div>
                 <div class="col-sm-4">
-                    {% if not space.submitted and not space.enabled and not space.closed %}
+                    {% if not space.submitted and not space.enabled and not space.isClosed %}
                         <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-fullcolor">Publier</a>
                     {% endif %}
                 </div>
                 <div class="col-sm-4">
-                    {% if space.published and space.closed == false %}
-                        <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clotûrer</a>
+                    {% if space.published and space.isClosed == false %}
+                        <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-fullcolor">Clôturer</a>
                     {% endif %}
                 </div>
             </div>

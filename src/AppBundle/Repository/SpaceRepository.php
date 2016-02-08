@@ -56,11 +56,11 @@ class SpaceRepository extends EntityRepository
         }
 
         if (!empty($params['zipCode'])) {
-            $qb->andWhere('s.zipCode LIKE :key')->setParameter('key', $params['zipCode'] . '%' );
+            $qb->andWhere('s.zipCode LIKE :zipCode')->setParameter('zipCode', $params['zipCode'] . '%' );
         }
 
         if (!empty($params['localType'])) {
-            $qb->andWhere('p.type = :key')->setParameter('key', $params['localType'] );
+            $qb->andWhere('p.type = :localType')->setParameter('localType', $params['localType'] );
         }
 
         if (!empty($params['minimumPrice'])) {

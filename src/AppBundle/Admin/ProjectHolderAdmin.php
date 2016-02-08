@@ -72,7 +72,7 @@ class ProjectHolderAdmin extends Admin
 
             ->end()
             ->with('Souhaits')
-            ->add('wishedSize', null, array('required' => false, 'label' => 'Taille souhaitée (m2)'))
+            ->add('wishedSize', null, array('required' => false, 'label' => 'Taille souhaitée (m²)'))
             ->add('useType', null, array('required' => false, 'label' => 'Type d\'usage'))
             ->add('usageDate', null, array('required' => false, 'label' => 'Date de disponibilité'))
             ->add('usageDuration', null, array('required' => false, 'label' => 'Durée d\'occupation'))

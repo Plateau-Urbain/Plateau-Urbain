@@ -20,20 +20,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class SpaceController extends Controller
 {
     /**
-     * @Route("/", name="space_list")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $repository = $this->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Space');
-        $spaces = $repository->findAllEnabled();
-
-        return array(
-            'spaces' => $spaces
-        );
-    }
-
-    /**
      * @Route("/fiche/{id}", name="space_show", methods={"get", "post"})
      * @Template()
      */
@@ -93,7 +79,7 @@ class SpaceController extends Controller
 
         // Check if the profile is completed
         $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));
-        $invalidProfile = (count($errors) > 0) ? true : false;
+        $invalidProfile = (count($errors) > 0) && $user->isPorteur() ? true : false;
 
         return array(
             'space'          => $space,

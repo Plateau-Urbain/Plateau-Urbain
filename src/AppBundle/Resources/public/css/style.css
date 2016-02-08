@@ -6393,6 +6393,8 @@ a.tp-caption.btn-lg {
 #footer {
   background-color: #f1f3f6;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 5000;
+  position: relative;
 }
 #footer #copyright {
   background-color: #D3D8DE;
@@ -8483,6 +8485,7 @@ div.dark_square #pp_full_res .pp_inline {
  */
 .space-card {
   height: 233px;
+  overflow: hidden;
 }
 
 .space-card .space-title {
