@@ -30,12 +30,12 @@ class DefaultController extends Controller
      * @Route("/cgu", name="cgu")
      * @Template()
      */
-    public function cguAction()
+    public function cgu2Action()
     {
         return array();
     }
 
-    /*
+    /**
      * @Route("/proprietaire", name="proprietaire")
      * @Template()
      */

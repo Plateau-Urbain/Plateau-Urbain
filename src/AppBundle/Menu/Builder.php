@@ -47,7 +47,7 @@ class Builder extends ContainerAware
 
         } else {
             $menu->addChild('Rechercher', array('uri' => '#inline_content', 'linkAttributes' => array('class' => 'inline cboxElement')));
-            $menu->addChild('Proposer', array('uri' => '#inline_content', 'linkAttributes' => array('class' => 'inline cboxElement')));
+            $menu->addChild('Proposer', array('route' => 'proprietaire'));
             $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!accueil/c66t', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('S’inscrire', array('uri' => '#inline_register_content',  'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild('Contact', array('uri' => '#footer'));

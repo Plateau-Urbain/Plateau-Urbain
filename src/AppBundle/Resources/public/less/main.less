@@ -214,6 +214,9 @@ hr.brown{
   }
 }
 
+.black{
+  color: @black;
+}
 
 span[data-class=danger] + .tooltip{
   .tooltip-inner{
@@ -538,5 +541,28 @@ h4.add-file{
     right: 0;
     top: -40px;
     z-index: 100;
+  }
+}
+
+
+.owner-desc{
+  text-align: center;
+  font-size: 18px;
+  color: #333;
+
+  ul{
+    display: inline-block;
+    margin: auto;
+    text-align: left;
+
+    li{
+      margin: 10px 0;
+    }
+
+    i{
+      color: @red;
+      margin-right: 10px;
+      font-size: 22px;
+    }
   }
 }

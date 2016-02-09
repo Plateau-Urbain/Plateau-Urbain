@@ -46,7 +46,7 @@
                 <li><a href="{{path('fos_user_profile_show')}}">Mon compte</a></li>
               {% else %}
                 <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
-                <li><a href="#inline_content" class="inline cboxElement">Proposer un espace</a></li>
+                <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
                 <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
               {% endif %}
             </ul>
@@ -102,8 +102,8 @@
         <div class="col-sm-12">
           <ul class="list-inline">
             <li>&copy; {{ "now"| date("Y") }} Plateau Urbain</li>
-            <li><a href="#">Conditions générales d'utilisation</a></li>
-            <li><a href="#">Mentions légales</a></li>
+            <li><a href="{{path('cgu')}}">Conditions générales d'utilisation</a></li>
+            <li><a href="{{path('mentions_legales')}}">Mentions légales</a></li>
             <li><a class="normal" href="http://www.widop.com/">Développement Wid'op</a></li>
             <li><a class="normal" href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
           </ul>

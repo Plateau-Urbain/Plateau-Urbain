@@ -61,7 +61,10 @@
 {% endblock %}
 
 {% block actualities %}
-  {{ render(controller('AppBundle:Actuality:show')) }}
+  <div class="row pu-actualities white-top">
+    <div class="top"></div>
+    {{ render(controller('AppBundle:Actuality:show')) }}
+  </div>
 {% endblock %}
 
 {% block partners %}
