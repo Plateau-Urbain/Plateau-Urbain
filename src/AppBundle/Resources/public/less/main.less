@@ -9,6 +9,7 @@
 @import '_applications';
 @import '_buttons';
 @import '_pagination';
+@import '_actualities';
 
 @brown-dark: #5A3A0B;
 @brown-light: #c0b7ad;
@@ -72,7 +73,7 @@ h4{
 .application-header {
   h1{
     font-size: 36px;
-  }  
+  }
 
   h2{
     font-size: 26px;
@@ -522,5 +523,20 @@ h4.add-file{
         }
       }
     }
+  }
+}
+
+.white-top {
+  position: relative;
+
+  .top{
+    background: url('/bundles/app/images/white_top.png') no-repeat bottom;
+    background-size: contain;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -40px;
+    z-index: 100;
   }
 }

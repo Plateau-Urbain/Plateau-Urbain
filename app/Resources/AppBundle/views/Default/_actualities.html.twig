@@ -1,21 +1,20 @@
-<div class="container">
+<div class="row pu-actualities white-top">
+
+  <div class="top"></div>
+
   <h2 class="section-title">Nos réalisations</h2>
-  <div class="row">
-    <div class="cycle-slideshow"
-      data-cycle-fx=carousel
-      data-cycle-carousel-visible=5
-      data-cycle-carousel-fluid=true
-      data-cycle-slides="div"
-      data-cycle-pause-on-hover=true>
+
+  <div id="home-grid">
+  	<div id="freewall" class="free-wall" data-fixSize="true">
       {% for actuality in actualities %}
-        <div class="col-xs-3">
-          <a href="{{actuality.link}}">
-            <h3>{{actuality.title}}</h3>
-            <p>{{actuality.subtitle}}</p>
-            <img src="{{ vich_uploader_asset(actuality, 'image') }}" alt="{{ actuality.title }}" />
-          </a>
-        </div>
+  		<div class="item">
+        <img src="{{ vich_uploader_asset(actuality, 'image') }}" />
+        <a href="{{actuality.link}}" class="info">
+  				<h3>{{actuality.title}}</h3>
+  				<span class="location">{{actuality.subtitle}}</span>
+        </a>
+  		</div>
       {% endfor %}
-    </div>
+  	</div>
   </div>
 </div>
