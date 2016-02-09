@@ -103,7 +103,7 @@ var Cozy;
                  * Initiate Parallax
                  */
                 $tis.parallaxItems();
-                
+
                 /**
                  * Activate placeholder in older browsers
                  */
@@ -473,13 +473,13 @@ var Cozy;
             },
 
             createCheckBoxes: function () {
-
-                if ($('input[type="checkbox"]').length) {
-                    $('input[type="checkbox"]').checkbox({
-                        checkedClass: 'fa fa-check-square-o',
-                        uncheckedClass: 'fa fa-square-o'
-                    });
-                }
+                //
+                // if ($('input[type="checkbox"]').length) {
+                //     $('input[type="checkbox"]').checkbox({
+                //         checkedClass: 'fa fa-check-square-o',
+                //         uncheckedClass: 'fa fa-square-o'
+                //     });
+                // }
             },
 
             propertiesGrid: function () {

@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <i id="filter-close" class="fa fa-minus"></i>
-                    {{ form_start(form, {'attr': {'id':'searchForm'} } )  }}
+                    {{ form_start(form, {'attr': {'id':'searchForm'}, 'action' : path('search_action') } )  }}
                     <div class="form-group">
 
                         <div class="form-control-large">

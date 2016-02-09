@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    
+
 <div class="row">
 
     <!-- BEGIN MAIN CONTENT -->
@@ -24,61 +24,54 @@
 
 </div>
 
-{{ form_start(form) }}    
+{{ form_start(form) }}
 <div class="row">
     <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">Mes informations</h1>
+        <h1 class="section-title">
+          <i class="icon user-red-bold"></i>
+          Mes informations
+        </h1>
 
         <div class="form-contener">
             <div class="row">
-
-                <div class="col-sm-6">
+                <div class="col-sm-6 inline-controls form-group">
                     {{ form_label(form.civility) }}
                     {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                </div>
-                <div class="col-sm-6">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.firstname)}}
-                    {{ form_widget(form.firstname) }}
-                </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.lastname)}}
-                    {{ form_widget(form.lastname) }}
+                    {{ form_errors(form.civility) }}
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.birthday)}}
-                    {{ form_widget(form.birthday) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.firstname) }}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.phone)}}
-                    {{ form_widget(form.phone) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.lastname) }}
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.email)}}
-                    {{ form_widget(form.email) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.birthday) }}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.password)}}
-                    {{ form_widget(form.password) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.phone) }}
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12">
-                    {{ form_label(form.description)}}
-                    {{ form_widget(form.description) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.email) }}
+                </div>
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.password) }}
                 </div>
             </div>
-            <div class="row form-group">
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    {{ form_row(form.description) }}
+                </div>
+            </div>
+            <div class="row form-group form-group">
                 <div class="col-sm-10 col-sm-offset-2">
-                    {{ form_widget(form.newsletter) }}
-                    {{ form_label(form.newsletter) }}
+                    {{ form_row(form.newsletter) }}
                 </div>
             </div>
             <div class="row">
@@ -87,91 +80,79 @@
                 </div>
             </div>
         </div>
-            
-        <h1 class="section-title">Ma structure</h1>
+
+        <h1 class="section-title">
+          <i class="icon struct-red-bold"></i>
+          Ma structure
+        </h1>
 
         <div class="form-contener">
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.company)}}
-                    {{ form_widget(form.company) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.company) }}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.companyStatus)}}
-                    {{ form_widget(form.companyStatus) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyStatus) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.companyCreationDate)}}
-                    {{ form_widget(form.companyCreationDate) }}
+                <div class="col-sm-6  form-group">
+                    {{ form_row(form.companyCreationDate) }}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.siret)}}
-                    {{ form_widget(form.siret) }}
+                <div class="col-sm-6  form-group">
+                    {{ form_row(form.siret)}}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.address)}}
-                    {{ form_widget(form.address) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.address)}}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.addressSuite)}}
-                    {{ form_widget(form.addressSuite) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.addressSuite) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.zipcode)}}
-                    {{ form_widget(form.zipcode) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.zipcode) }}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.city)}}
-                    {{ form_widget(form.city) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.city)}}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.companyPhone)}}
-                    {{ form_widget(form.companyPhone) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyPhone)}}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.companyMobile)}}
-                    {{ form_widget(form.companyMobile) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyMobile) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
-                    {{ form_label(form.companyDescription)}}
-                    {{ form_widget(form.companyDescription) }}
-                </div>
+               <div class="col-sm-12 form-group">
+                    {{ form_row(form.companyDescription)}}
+               </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
-                    {{ form_label(form.companyEffective)}}
-                    {{ form_widget(form.companyEffective) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyEffective)}}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.companyStructures)}}
-                    {{ form_widget(form.companyStructures) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyStructures)}}
                 </div>
             </div>
 
             <div class="row form-group" >
-                <div class="col-sm-6">
-                    {{ form_label(form.companySite)}}
-                    {{ form_widget(form.companySite) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companySite)}}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.companyBlog)}}
-                    {{ form_widget(form.companyBlog) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.companyBlog)}}
                 </div>
             </div>
 
@@ -182,36 +163,42 @@
             </div>
         </div>
 
-        <h1 class="section-title">Mes souhaits</h1>
+        <h1 class="section-title">
+          <i class="icon list-red-bold"></i>
+          Mes souhaits
+        </h1>
 
         <div class="form-contener">
             <div class="row" >
-                <div class="col-sm-6">
-                    {{ form_label(form.wishedSize)}}
-                    {{ form_widget(form.wishedSize) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.wishedSize)}}
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.useType)}}
-                    {{ form_widget(form.useType) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.useType)}}
                 </div>
             </div>
 
             <div class="row" >
-                <div class="col-sm-6">
-                    {{ form_label(form.usageDate)}}
-                    {{ form_widget(form.usageDate) }}
+                <div class="col-sm-6 form-group">
+                    {{ form_row(form.usageDate)}}
                 </div>
-                <div class="col-sm-6 pu-length-input">
+                <div class="col-sm-6 form-group">
                     {{ form_label(form.usageDuration)}}<br />
-                    {{ form_widget(form.usageDuration) }}
-                    {{ form_widget(form.lengthTypeOccupation) }}
+                    <div class="row">
+                      <div class="col-sm-5">
+                        {{ form_widget(form.usageDuration) }}
+                      </div>
+                      <div class="col-sm-7">
+                        {{ form_widget(form.lengthTypeOccupation) }}
+                      </div>
+                      {{ form_errors(form.usageDuration) }}
+                    </div>
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-sm-12">
-                    {{ form_label(form.projectDescription)}}
-                    {{ form_widget(form.projectDescription) }}
+                <div class="col-sm-12 form-group">
+                    {{ form_row(form.projectDescription)}}
                 </div>
             </div>
 
@@ -222,39 +209,60 @@
             </div>
         </div>
 
-        <h1 class="section-title">Réseaux sociaux</h1>
+        <h1 class="section-title">
+          <i class="icon soc-red-bold"></i>
+          Réseaux sociaux
+        </h1>
 
         <div class="form-contener">
             <div class="row" >
-                <div class="col-sm-6">
-                    {{ form_label(form.facebookUrl)}}
+                <div class="col-sm-6 form-group">
+                  <div class="input-group social-group">
+                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
                     {{ form_widget(form.facebookUrl) }}
+                    {{ form_errors(form.facebookUrl) }}
+                  </div>
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.googleUrl)}}
+                <div class="col-sm-6 form-group">
+                  <div class="input-group social-group">
+                    <span class="input-group-addon"><i class="fa fa-google-plus"></i></span>
                     {{ form_widget(form.googleUrl) }}
+                    {{ form_errors(form.googleUrl) }}
+                  </div>
                 </div>
             </div>
 
             <div class="row" >
-                <div class="col-sm-6">
-                    {{ form_label(form.twitterUrl)}}
+                <div class="col-sm-6 form-group">
+                  <div class="input-group social-group">
+                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
                     {{ form_widget(form.twitterUrl) }}
+                    {{ form_errors(form.twitterUrl) }}
+                  </div>
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.linkedinUrl)}}
+                <div class="col-sm-6 form-group">
+                  <div class="input-group social-group">
+                    <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
                     {{ form_widget(form.linkedinUrl) }}
+                    {{ form_errors(form.linkedinUrl) }}
+                  </div>
                 </div>
             </div>
 
-            <div class="row form-group" >
-                <div class="col-sm-6">
-                    {{ form_label(form.instagramUrl)}}
-                    {{ form_widget(form.instagramUrl) }}
+            <div class="row" >
+                <div class="col-sm-6 form-group">
+                  <div class="input-group social-group">
+                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                      {{ form_widget(form.instagramUrl) }}
+                      {{ form_errors(form.instagramUrl) }}
+                  </div>
                 </div>
-                <div class="col-sm-6">
-                    {{ form_label(form.otherUrl)}}
-                    {{ form_widget(form.otherUrl) }}
+                <div class="col-sm-6 form-group">
+                    <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-viadeo"></i></span>
+                          {{ form_widget(form.otherUrl) }}
+                          {{ form_errors(form.otherUrl) }}
+                    </div>
                 </div>
             </div>
 
@@ -265,10 +273,82 @@
             </div>
 
         </div>
+
+        <h1 class="section-title">
+          <i class="icon doc-red-bold"></i>
+          Documents à fournir
+        </h1>
+
+        <div class="form-contener">
+
+          <div class="row">
+            <div class="col-sm-5 required-files">
+
+              <ul class="list-unstyled">
+                <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
+                <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
+              </ul>
+
+            </div>
+
+            <div class="col-sm-7">
+
+              <label class="control-label bold">Mes téléchargements</label>
+
+              <dl class="dl-horizontal info-block">
+                <dt><i class="fa fa-info-circle"></i></dt>
+                <dd>
+                  Les documents suivants seront attachés à toutes vos candidatures.
+                  Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
+                  doivent être téléchargés à partir de chaque fiche projet.
+                </dd>
+              </dl>
+
+              <div class="files">
+                <div class="file-infos">
+                  <span>file_name.png</span>
+
+                  <div class="pull-right actions">
+                    <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
+                    <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
+                  </div>
+                </div>
+                <div class="file-infos">
+                  <span>file_name.png</span>
+
+                  <div class="pull-right actions">
+                    <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
+                    <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="add-file">
+                <h4>
+                  <i class="icon small inline add-red"></i>
+                  Ajouter un fichier
+                </h4>
+
+                <dl class="dl-horizontal info-block">
+                  <dt><i class="fa fa-info-circle"></i></dt>
+                  <dd>
+                    Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
+                    Chaque fichier ne doit pas excéder 5MO.
+                  </dd>
+                </dl>
+
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
     </div>
-</div>    
+</div>
 {{ form_end(form) }}
-    
+
 {% endblock %}
 
 {% block javascript %}

@@ -12,7 +12,7 @@
           <a href="{{actuality.link}}">
             <h3>{{actuality.title}}</h3>
             <p>{{actuality.subtitle}}</p>
-            <img src="http://lorempixel.com/200/200/">
+            <img src="{{ vich_uploader_asset(actuality, 'image') }}" alt="{{ actuality.title }}" />
           </a>
         </div>
       {% endfor %}

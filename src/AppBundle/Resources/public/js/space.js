@@ -7,36 +7,66 @@ $(document).ready(function() {
         addForm($('table.tags'));
     });
 
+    function successAjax(data) {
+        $("#js-form-space").html($(data).find('#js-form-space'));
+        initFormListener();
+        initLinkListener();
+        $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+        $("select").chosen();
+    }
 
-    $('#addLot').on('click', function(e) {
-        // empêche le lien de créer un « # » dans l'URL
-        e.preventDefault();
+    function initLinkListener() {
+        $('.js-btn-space').click(function() {
 
-        // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
-        addForm($('table.lots'));
-    });
+            var href = $(this).attr('href');
+            var method = $(this).data('link-method');
 
-    $('#addPhoto').on('click', function(e) {
-        // empêche le lien de créer un « # » dans l'URL
-        e.preventDefault();
+            $.ajax({
+                url: href,
+                type: method,
+                async: false,
+                success: function (data) {
+                    successAjax(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
 
-        // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
-        addForm($('table.photos'));
-    });
 
+            return false;
+        });
+    }
+
+
+    function initFormListener() {
+        $('button[type="submit"]').click(function(){
+
+            if ($(this).hasClass('js-publish')) {
+                return true;
+            }
+
+            var form = $(this).closest('form');
+            var action = form.attr('action');
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    successAjax(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+    }
+
+    initFormListener();
+    initLinkListener();
 });
-
-function addForm(collectionHolder) {
-    // Récupère l'élément ayant l'attribut data-prototype comme expliqué plus tôt
-    var prototype = collectionHolder.attr('data-prototype');
-
-    // Remplace '__name__' dans le HTML du prototype par un nombre basé sur
-    // la longueur de la collection courante
-    var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
-
-    // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
-    var $newFormLi = $('<tr></tr>').append(newForm);
-
-    collectionHolder.append($newFormLi);
-    collectionHolder.find('tr:last-child .inline-date select').chosen();
-}

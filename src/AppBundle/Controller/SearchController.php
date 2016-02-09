@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SearchController extends Controller
 {
+    private $availableCodes = array('95', '78', '92', '93', '75', '94', '77', '91');
+
     /**
      * @Route("/", name="search_index")
      * @Template()
@@ -34,13 +36,7 @@ class SearchController extends Controller
 
         $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
-        foreach ($all as $space) {
-            if (!isset($departements[$space->getDepCode()])) {
-                $departements[$space->getDepCode()] = 0;
-            }
-
-            $departements[$space->getDepCode()] += 1;
-        }
+        $departements = $this->buildDepartementsFromSpaces($all);
 
         return array(
             'form'         => $form->createView(),
@@ -48,6 +44,7 @@ class SearchController extends Controller
             'departements' => $departements,
         );
     }
+
     /**
      * @Route("/resultats", name="search_action")
      * @Template()
@@ -75,6 +72,10 @@ class SearchController extends Controller
 
             $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
+            unset($params['zipCode']);
+            $departementsSpace = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
+            $departements = $this->buildDepartementsFromSpaces($departementsSpace);
+
             $paginator  = $this->get('knp_paginator');
             $pagination = $paginator->paginate(
                 $query,
@@ -82,7 +83,32 @@ class SearchController extends Controller
                 10
             );
 
-            return array("pagination" => $pagination, "form" => $search->createView());
+            return array(
+                'zipCode'       => $search->get('zipCode')->getData(),
+                'pagination'    => $pagination,
+                'form'          => $search->createView(),
+                'departements'  => $departements
+            );
         }
+    }
+
+    /**
+     * @param $spaces
+     * @return mixed
+     */
+    private function buildDepartementsFromSpaces($spaces) {
+        $departements = array();
+
+        foreach ($spaces as $space) {
+            if (in_array($space->getDepCode(), $this->availableCodes)) {
+                if (!isset($departements[$space->getDepCode()])) {
+                    $departements[$space->getDepCode()] = 0;
+                }
+
+                $departements[$space->getDepCode()] += 1;
+            }
+        }
+
+        return $departements;
     }
 }

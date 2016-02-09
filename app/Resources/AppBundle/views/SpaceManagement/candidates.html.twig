@@ -1,15 +1,9 @@
 {% extends "::base.html.twig" %}
 
 {% block breadcrumb_items %}
-    <li>
-        <a href="{{ path('space_manager_list') }}">Liste de mes espaces</a>
-    </li>
-    <li>
-        <a href="{{ path('space_show', { 'id': space.id }) }}">{{ space.name }}</a>
-    </li>
-    <li>
-        <span>Liste des candidats</span>
-    </li>
+  <li><a href="{{ path('space_manager_list') }}">Liste de mes espaces</a></li>
+  <li><a href="{{ path('space_show', { 'id': space.id }) }}">{{ space.name }}</a></li>
+  <li><span>Liste des candidats</span></li>
 {% endblock %}
 
 {% block stylesheets %}
@@ -23,236 +17,258 @@
 
 {% block body %}
 <div class="page-header">
-    <div class="row">
-        <!-- BEGIN MAIN CONTENT -->
-        <div class="col-sm-6">
-            <h1 class="page-title">Liste des candidats ({{ pagination.getTotalItemCount }})</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <div class="btn-toolbar pull-right">
-                <a href="{{ path('space_manager_candidatesexport', { 'id': space.id }) }}" class="btn btn-secondary">
-                    <i class="fa fa-download"></i>
-                    Exporter la liste
-                </a>
-                <a href="javascript:print();" class="btn btn-secondary">
-                    <i class="fa fa-print"></i>
-                    Imprimer
-                </a>
-            </div>
-        </div>
+  <div class="row">
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="col-sm-6">
+      <h1 class="page-title">Liste des candidats ({{ pagination.getTotalItemCount }})</h1>
     </div>
+
+    <div class="col-sm-6">
+      <div class="btn-toolbar pull-right">
+        <a href="{{ path('space_manager_candidatesexport', { 'id': space.id }) }}" class="btn btn-secondary">
+          <i class="fa fa-download"></i>
+          Exporter la liste
+        </a>
+        <a href="javascript:print();" class="btn btn-secondary">
+          <i class="fa fa-print"></i>
+          Imprimer
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr/>
 </div>
 
 <!-- BEGIN PROPERTY LISTING -->
-<div id="space-card" class="space-card clearfix">
+<div id="property-listing">
+  <div id="space-card" class="item application-space space-card no-bkg">
     <div class="row">
-        <div class="col-sm-4">
-            {% if space.pics.first %}
-                <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
-            {% endif %}
-
+      <div class="col-sm-4">
+        <div class="image">
+          <div class="overlay">
             {% if space.isClosed %}
-                <img src="{{ asset('/bundles/app/images/closed.png') }}" alt="closed" class="closed" />
+              <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
             {% endif %}
+          </div>
+          <div class="image-wrapper">
+            <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="{{ space.pics.first.fileName }}" />
+          </div>
         </div>
-        <div class="col-sm-8">
-            <div class="col-sm-6">
-                <h2 class="space-title">
-                    {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
-                    <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
-                </h2>
-            </div>
-            <div class="col-sm-4 col-sm-offset-2">
-                <div class="space-price">
-                    À partir de
-                    <strong>{{ space.price }}€/m²/mois</strong>
-                    H.C. H.T.<sup>1</sup>
-                </div>
-            </div>
+      </div>
 
-            <div class="col-sm-12">
-                <div class="space-description">
-                    <p>
-                        {{ space.description }} ...
-                        <a href="{{ path('space_show', { 'id': space.id }) }}">Voir l'annonce</a>
-                    </p>
-                </div>
-                <div class="space-date-limit">
-                    Date limite de candidature
-                    <strong>
-                        {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
-                    </strong>
-                </div>
+      <div class="col-sm-8">
+        <div class="info no-padding">
+          <div class="row margin-15">
+            <div class="col-sm-7">
+              <h3>
+                <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+                {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}<br/>
+              </h3>
             </div>
+            <div class="col-sm-5">
+              <h3 class="price">
+                <small>À partir de</small>
+                {{ space.price }}€/m²/mois
+                <small class="sub">H.C. H.T.<sup>1</sup></small>
+              </h3>
+            </div>
+          </div>
 
+          <div class="row margin-15">
             <div class="col-sm-12">
-                {% if space.isEnabled and not space.isClosed %}
-                    <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-fullcolor">Clôturer</a>
-                {% endif %}
+              <div class="space-description">
+                <p>
+                  {{ space.description }} ...
+                  <a href="{{ path('space_show', { 'id': space.id }) }}">Voir l'annonce</a>
+                </p>
+              </div>
+              <div class="space-date-limit">
+                Date limite de candidature
+                <strong>
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                </strong>
+              </div>
             </div>
+          </div>
+
+          <div class="row margin-15">
+            <div class="col-sm-4">
+              {% if not space.submitted and not space.enabled and not space.closed %}
+                <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-status btn-secondary">Modifier</a>
+              {% endif %}
+            </div>
+            <div class="col-sm-4">
+              {% if space.published and space.closed == false %}
+                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-secondary">Clotûrer</a>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<hr>
+<hr class="brown" />
 
-<div class="center">
-    <a href="#space-stats" data-toggle="collapse">
-        <i class="fa fa-lg fa-eye-slash" title="Masquer/Afficher les statistiques" data-toggle="tooltip"></i>
-    </a>
+<div class="center space-stats">
+  <a href="#space-stats" data-toggle="collapse" class="toggle-stats">
+    <i class="fa fa-lg fa-eye-slash" title="Masquer/Afficher les statistiques" data-toggle="tooltip"></i>
+  </a>
 </div>
 
 <div class="space-stats collapse in" id="space-stats">
-    <div class="row first-line">
-        <div class="col-sm-12">
-            <h3 class="stats-title">
-                Statistiques des candidatures sur cet espace
-            </h3>
+  <div class="row first-line">
+    <div class="col-sm-12">
+      <h2 class="stats-title bold">
+        Statistiques des candidatures sur cet espace
+      </h2>
 
-            <p class="stats-summary">
-                Cet espace compte <strong>{{ pagination.totalItemCount }} candidatures</strong><br>
-                représentant une demande totale de <strong>{{ space.totalWishedSize }} m<sup>2</sup></strong>
-            </p>
-        </div>
+      <p class="stats-summary">
+        Cet espace compte <strong>{{ pagination.totalItemCount }} candidatures</strong><br>
+        représentant une demande totale de <strong>{{ space.totalWishedSize }} m<sup>2</sup></strong>
+      </p>
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-sm-6" id="firstChartContener">
-            <h4 class="stats-title secondary">Par type de candidature</h4>
-
-            <canvas id="firstChart" width="585px" height="300px"></canvas>
-        </div>
-        <div class="col-sm-6" id="secondChartContener">
-            <h4 class="stats-title secondary">Par type de projet</h4>
-
-            <canvas id="secondChart" width="585px" height="300px"></canvas>
-        </div>
+  <div class="row">
+    <div class="col-sm-6" id="firstChartContener">
+      <h4 class="stats-title secondary">Par type de candidature</h4>
+      <canvas id="firstChart" width="585px" height="300px"></canvas>
     </div>
-
-    <div class="row">
-        <div class="col-sm-12 center">
-            <a href="javascript:print();" class="btn btn-secondary">
-                <i class="fa fa-print"></i>
-                Imprimer
-            </a>
-        </div>
+    <div class="col-sm-6" id="secondChartContener">
+      <h4 class="stats-title secondary">Par type de projet</h4>
+      <canvas id="secondChart" width="585px" height="300px"></canvas>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 center">
+      <a href="javascript:print();" class="btn btn-secondary">
+        <i class="fa fa-print"></i>
+        Imprimer
+      </a>
+    </div>
+  </div>
 </div>
 
-<hr>
+<hr class="brown">
 
 <div id="listing-header" class="clearfix">
-    <div class="row">
-        <div class="col-sm-12">
-            {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'candidatures' } %}
-        </div>
+  <div class="row">
+    <div class="col-sm-12 results-numbers">
+      <h4>
+        {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'candidatures' } %}
+      </h4>
+    </div>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-control-small">
+        <select id="groupActionSelect" data-placeholder="Actions groupées">
+          <option value=""> </option>
+          <option value="accept">Accepter</option>
+          <option value="refuse">Refuser</option>
+        </select>
+      </div>
+      <a href="#accept_content" class="btn btn-secondary btn-form" id="groupActionBtn">Appliquer</a>
     </div>
 
-    <p>&nbsp;</p>
+    <div class="col-sm-7">
+      {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.status_filter) }}
+      </div>
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_field) }}
+      </div>
+      <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_order) }}
+      </div>
 
-    <div class="row">
-        <div class="col-sm-5">
-            <div class="form-control-small">
-                <select id="groupActionSelect" data-placeholder="Actions groupées">
-                    <option value=""> </option>
-                    <option value="accept">Accepter</option>
-                    <option value="refuse">Refuser</option>
-                </select>
-            </div>
-            <a href="#accept_content" class="btn btn-fullcolor" id="groupActionBtn">Appliquer</a>
-        </div>
-
-        <div class="col-sm-7">
-            {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.status_filter) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_field) }}
-            </div>
-
-            <div class="col-sm-4">
-                {{ form_widget(filterForm.sort_order) }}
-            </div>
-
-            {{ form_end(filterForm) }}
-        </div>
+      {{ form_end(filterForm) }}
     </div>
+  </div>
 </div>
 
 <div class="application-list">
-    {% for application in pagination %}
-        <div class="item">
-            <div class="row">
-                <div class="col-sm-1">
-                    {% if application.isAwaiting %}
-                        <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
-                    {% endif %}
-                </div>
-                <div class="col-sm-6">
-                    <div class="application-status">
-                        Statut: <strong>{{ application.statusLabel | upper }}</strong>
-                    </div>
-                    <div class="application-title">
-                        <h4>{{ application.name }}</h4>
-                        PAR <strong>{{ application.projectHolder.company }}</strong>
-                    </div>
-
-                    <p><i class="fa fa-user"></i>&nbsp; {{ application.projectHolder.fullName }}</p>
-
-                    <p><i class="fa fa-file-text-o"></i>&nbsp; {{ application.description|truncate(250) }}</p>
-                </div>
-                <div class="col-sm-4">
-                    <div class="pull-right">
-                      <a href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
-                        {% if application.selected %}
-                          <i class="fa fa-star fa-2x"></i>
-                        {% else %}
-                          <i class="fa fa-star-o fa-2x"></i>
-                        {% endif %}
-                      </a>
-                    </div>
-
-                    <ul>
-                        <li>
-                            Candidature déposée le <strong>{{ application.created | date('d/m/Y') }}</strong>
-                        </li>
-                        <li>
-                            Type d'usage : <strong>{{ application.projectHolder.useType }}</strong>
-                        </li>
-                        <li>
-                            Type de projet : <strong>{{ application.category }}</strong>
-                        </li>
-                        <li>
-                            Surface recherchée : <strong>{{ application.wishedSize }}m²</strong>
-                        </li>
-                        <li>
-                            Durée d'occupation : <strong>{{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</strong>
-                        </li>
-                        <li>
-                            Date d'entrée souhaitée : <strong>{{ application.startOccupation|localizeddate('long', 'none') }}</strong>
-                        </li>
-                    </ul>
-                    <a href="{{ path('application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-block">Voir la candidature</a>
-                </div>
-            </div>
+  {% for application in pagination %}
+    <div class="item candidate-item">
+      <div class="row">
+        <div class="col-sm-1 actions">
+          {% if application.isAwaiting or application.isUnread %}
+            <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
+          {% endif %}
         </div>
-    {% else %}
-        <p class="center">Il n'y a aucune candidature sur cette espace</p>
-    {% endfor %}
+        <div class="col-sm-6 border-box">
+          <div class="cell-content">
+            <div class="application-status">
+              {% if application.status == 'unread' or application.status == 'awaiting'  %}
+                Statut: <strong class="awaiting">{{ application.statusLabel | upper }}</strong>
+              {% elseif application.status == 'accepted'  %}
+                Statut: <strong class="accepted">{{ application.statusLabel | upper }}</strong>
+              {% elseif application.status == 'rejected'  %}
+                Statut: <strong class="rejected">{{ application.statusLabel | upper }}</strong>
+              {% endif %}
+            </div>
+            <div class="application-title">
+                <h4>{{ application.name }}</h4>
+                PAR <strong>{{ application.projectHolder.company }}</strong>
+            </div>
+
+            <dl class="dl-horizontal dl-with-icon">
+              <dt><i class="icon small user-brown"></i></dt>
+              <dd><span class="dd-title">{{ application.projectHolder.fullName }}</dd>
+              <dt><i class="icon small list-brown"></i></dt>
+              <dd><span class="dd-title">{{ application.description|truncate(250) }}</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="cell-content">
+            <div class="pull-right">
+              <a class="toggle-star" href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}">
+                {% if application.selected %}
+                  <i class="fa fa-star fa-2x"></i>
+                {% else %}
+                  <i class="fa fa-star-o fa-2x"></i>
+                {% endif %}
+              </a>
+            </div>
+
+            <ul class="application-desc">
+              <li>Candidature déposée le : <strong>{{ application.created | date('d/m/Y') }}</strong></li>
+              <li>Type d'usage : <strong>{{ application.projectHolder.useType }}</strong></li>
+              <li>Type de projet : <strong>{{ application.category }}</strong></li>
+              <li>Surface recherchée : <strong>{{ application.wishedSize }}m²</strong></li>
+              <li>Durée d'occupation : <strong>{{ application.lengthOccupation }} {{ application.lengthTypeOccupation }}</strong></li>
+              <li>Date d'entrée souhaitée : <strong>{{ application.startOccupation|localizeddate('long', 'none') }}</strong></li>
+            </ul>
+
+            <a href="{{ path('application_show', { 'id': application.id }) }}" class="btn btn-secondary btn-block">Voir la candidature</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="no-results">
+      <p class="center">Il n'y a aucune candidature sur cette espace</p>
+    </div>
+  {% endfor %}
 </div>
 
 <div>
-    <div class="row">
-        <div class="col-sm-12">
-            {{ knp_pagination_render(pagination) }}
-        </div>
+  <div class="row">
+    <div class="col-sm-12">
+      {{ knp_pagination_render(pagination) }}
     </div>
+  </div>
 </div>
-
 
 <div style="display: none;">
     <div id="accept_content">
@@ -261,7 +277,6 @@
                 <h4>Accepter les candidatures selectionnées</h4>
                 <br />
                 <p>Vous allez accepter les dossiers de <strong>$nb_candidates$ candidature(s)</strong></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Accepter" class="btn btn-fullcolor">
@@ -275,8 +290,7 @@
             <div class="colorBox-content">
                 <h4>Refuser les candidatures selectionnées</h4>
                 <br />
-                <p>Vous allez effectuer un refus groupé de <strong>$nb_candidates$ candidature(s)</strong></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
+                <p>Vous allez effectuer un refus de <strong>$nb_candidates$ candidature(s)</strong></p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Envoyer un refus groupé" class="btn btn-fullcolor">
@@ -289,14 +303,12 @@
         <div class="colorBox-content">
             <h4>Le message d'acceptation a été envoyé aux candidatures sélectionnées</h4>
             <br />
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
         </div>
     </div>
     <div id="refuse_confirm">
         <div class="colorBox-content">
             <h4>Le message de refus a été envoyé aux candidatures sélectionnées</h4>
             <br />
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
         </div>
     </div>
 </div>

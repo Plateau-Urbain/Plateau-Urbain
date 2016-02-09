@@ -3,7 +3,7 @@
     <div class="main col-sm-8 col-sm-offset-2">
         <h1 class="section-title">Ajouter un espace</h1>
         <p class="center">
-            Nulla a risus sed magna lobortis interdum. Praesent diam eros, iaculis gravida sollicitudin nec, convallis ac elit. Vivamus id enim malesuada, condimentum tellus eu, facilisis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Quisque turpis purus, commodo ac mi nec, molestie euismod nulla. Nunc at placerat ante. Aliquam rhoncus et neque sed faucibus. Aenean auctor imperdiet dui.
+            Pour ajouter une offre sur la plate-forme Plateau urbain, il vous suffit de remplir le formulaire ci-dessus.<br /> A tout moment, vous pouvez enregistrer le formulaire et reprendre son édition ultérieurement. Une fois complet, procédez à sa validation : un administrateur du site interviendra pour s’assurer qu’elle est complète et procéder à sa mise en ligne.
         </p>
     </div>
 </div>
@@ -11,52 +11,55 @@
 {{ form_start(form) }}
 <div class="row">
     <div class="main col-sm-8 col-sm-offset-2">
-        <h2 class="section-title">Votre espace</h2>
+        <h2 class="section-title">
+          <i class="icon place-red-bold"></i>
+          Votre espace
+        </h2>
 
         {{ form_errors(form) }}
 
         <div class="form-contener">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.name) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.zipCode) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.city) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.limitAvailability) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.availability) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.type) }}
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6 form-group">
                     {{ form_row(form.price) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.description) }}
                 </div>
             </div>
 
             <div class="row form-group">
-                <div class="col-sm-12">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.activityDescription) }}
                 </div>
             </div>
@@ -70,7 +73,10 @@
             <div style="clear: both"></div>
         </div>
 
-        <h2 class="section-title">Prestations et services</h2>
+        <h2 class="section-title">
+          <i class="icon cog-red-bold2"></i>
+          Prestations et services
+        </h2>
 
         <div class="form-contener">
             <div class="row">
@@ -80,48 +86,56 @@
             </div>
         </div>
 
-        <h2 class="section-title">Répartition des surfaces</h2>
+        <h2 class="section-title">
+          <i class="icon square-red-bold2"></i>
+          Répartition des surfaces
+        </h2>
 
         <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-                </div>
+          <div class="row">
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
             </div>
+          </div>
         </div>
 
-        <h2 class="section-title">Photos</h2>
+        <h2 class="section-title">
+          <i class="icon pin-red-bold"></i>
+          Pièces à joindre à la candidature
+        </h2>
 
         <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
-                </div>
+          <div class="row">
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' %}
             </div>
+
+            <div class="col-sm-12">
+              {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.newImage } %}
+            </div>
+          </div>
         </div>
 
-        <h2 class="section-title">Publication</h2>
-
-        <p class="center">
-            Attention une fois publiée, vous ne pourrez pas modifier l'annonce sans intervention d'un administrateur.
-        </p>
+        <p>&nbsp;</p>
+        <hr class="brown" />
+        <p>&nbsp;</p>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
+            <div class="col-sm-4 col-sm-offset-2">
                 {{ form_widget(
                     form.preview, {
                         'attr': {
-                            'class': 'btn btn-fullcolor form-control',
+                            'class': 'btn btn-secondary form-control',
                         }
                     })
                 }}
             </div>
-            <div class="col-sm-4 col-sm-offset-4">
+            <div class="col-sm-4">
                 {{ form_widget(
                     form.publish, {
                         'attr': {
-                            'class': 'btn btn-fullcolor form-control',
-                            'onclick': "return confirm('Êtes-vous sûr de vouloir continuer?')"
+                            'class': 'btn btn-fullcolor form-control js-publish',
+                            'onclick': "return confirm(\'Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?');"
                         }
                     })
                 }}

@@ -31,7 +31,14 @@ class RegistrationController extends BaseController
             $url = $this->container->get('router')->generate("homepage");
             $response = new RedirectResponse($url);
 
-            $this->setFlash('error_sign', 'Erreur lors de l\'inscription, veuillez vérifier votre e-mail et votre mot de passe.');
+            $user = $form->getData();
+
+            if ($user->getWishedSize() < 0) {
+                $this->setFlash('error_sign', 'Vous devez obligatoirement renseigner une surface positive.');
+            } else {
+                $this->setFlash('error_sign', 'Erreur lors de l\'inscription, veuillez vérifier votre e-mail et votre mot de passe.');
+            }
+
             return $response;
         }
 
