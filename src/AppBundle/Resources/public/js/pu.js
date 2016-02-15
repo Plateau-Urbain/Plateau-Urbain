@@ -98,3 +98,16 @@ $(function () {
         });
     });
 });
+
+
+
+$(function(){
+  var sizePhotoListItem = function() {
+    var $images = $('.photo-list .photo-item .image');
+    $images.each(function(){
+      $(this).css({height: $(this).width() * 0.75});
+    });
+  };
+  $(window).on('resize', sizePhotoListItem);
+  sizePhotoListItem();
+});
