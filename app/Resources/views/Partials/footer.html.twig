@@ -39,14 +39,14 @@
           <div class="block col-sm-12">
             <h3>Développer vos projets</h3>
             <ul class="footer-links">
-              <li><a href="#">Comment ça marche ?</a></li>
+              <li><a href="{{path('proprietaire')}}">Comment ça marche ?</a></li>
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
                 <li><a href="{{path('space_manager_add')}}">Proposer un espace</a></li>
                 <li><a href="{{path('fos_user_profile_show')}}">Mon compte</a></li>
               {% else %}
                 <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
-                <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
+                <li><a href="#inline_content">Proposer un espace</a></li>
                 <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
               {% endif %}
             </ul>
@@ -82,9 +82,8 @@
           <div class="block col-sm-12">
             <h3>Suivez-nous</h3>
             <ul class="list-inline">
-              <li><a href="#"><img src="{{ asset('/bundles/app/images/facebook_red.png') }}" /></a></li>
-              <li><a href="#"><img src="{{ asset('/bundles/app/images/twitter_red.png') }}" /></a></li>
-              <li><a href="#"><img src="{{ asset('/bundles/app/images/gplus_red.png') }}" /></a></li>
+              <li><a href="https://www.facebook.com/plateau.urbain/" target="_blank"><img src="{{ asset('/bundles/app/images/facebook_red.png') }}" /></a></li>
+              <li><a href="https://twitter.com/plateauurbain" target="_blank"><img src="{{ asset('/bundles/app/images/twitter_red.png') }}" /></a></li>
               <li><a href="#"><img src="{{ asset('/bundles/app/images/linkedin_red.png') }}" /></a></li>
             </ul>
           </div>
