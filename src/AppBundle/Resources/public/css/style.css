@@ -420,8 +420,8 @@ iframe[src="about:blank"] {
   content: " ";
   position: absolute;
   bottom: 8px;
-  left: 54%;
-  margin-left: -50px;
+  left: 50%;
+  margin-left: -10px;
   width: 19px;
   height: 9px;
 }
