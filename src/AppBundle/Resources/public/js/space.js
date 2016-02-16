@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 
     function initFormListener() {
-        $('button[type="submit"]').click(function(){
+        $('button[type="submit"]:not(.no-ajax)').click(function(){
 
             if ($(this).hasClass('js-publish')) {
                 return true;
