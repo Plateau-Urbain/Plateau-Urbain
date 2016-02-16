@@ -7,7 +7,15 @@
 .pagination{
   li{
     display: inline-block;
-    margin: 10px;
+    margin: -2px;
+
+    &.active > span{
+      border-color: #eee8e1 !important;
+    }
+
+    &.disabled > span{
+      background-color: #eee8e1 !important;
+    }
 
     &:first-child > span > span:before,
     &:first-child > a > span:before{
@@ -25,7 +33,7 @@
       padding: 10px 20px;
       cursor: pointer;
       background: @black;
-      color: @white;
+      color: @white !important;
 
       &:hover{
         background: @red !important;

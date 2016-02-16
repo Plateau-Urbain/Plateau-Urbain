@@ -14,13 +14,13 @@
         {% if previous is defined %}
         <li class="{{ previous is defined ? '' : 'disabled' }}">
             <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}" aria-label="Previous">
-                <span aria-hidden="true">&lang;</span>
+                <span aria-hidden="true"></span>
             </a>
         </li>
         {% else %}
             <li class="disabled">
                 <span aria-label="Previous">
-                    <span aria-hidden="true">&lang;</span>
+                    <span aria-hidden="true"></span>
                 </span>
             </li>
         {% endif %}
@@ -40,13 +40,13 @@
         {% if next is defined %}
             <li>
                 <a href="{{ path(route, query|merge({(pageParameterName): next})) }}" aria-label="Next">
-                    <span aria-hidden="true">&rang;</span>
+                    <span aria-hidden="true"></span>
                 </a>
             </li>
         {% else %}
             <li class="disabled">
                 <span aria-label="Next">
-                    <span aria-hidden="true">&rang;</span>
+                    <span aria-hidden="true"></span>
                 </span>
             </li>
         {% endif %}
