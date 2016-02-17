@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Application;
+use AppBundle\Entity\UserDocument;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -133,10 +134,19 @@ class ProjectHolderAdmin extends Admin
         return $instance;
     }
 
+    public function syncDocs($user, $children)
+    {
+        foreach ($children as $child) {
+            $child->setProjectHolder($user);
+        }
+    }
+
     public function preUpdate($user)
     {
         $this->getUserManager()->updateCanonicalFields($user);
         $this->getUserManager()->updatePassword($user);
+
+        $this->syncDocs($user, $user->getDocuments());
     }
 
     public function setUserManager(\FOS\UserBundle\Model\UserManagerInterface $userManager)
@@ -158,5 +168,13 @@ class ProjectHolderAdmin extends Admin
         $datasourceit->setDateTimeFormat('d/m/Y H:i');
 
         return $datasourceit;
+    }
+
+    public function getFormTheme()
+    {
+        return array_merge(
+            array('AppBundle:Form:custom_admin_fields.html.twig'),
+            parent::getFormTheme()
+        );
     }
 }

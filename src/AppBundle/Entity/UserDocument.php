@@ -49,14 +49,14 @@ class UserDocument
      *          "application/msword"
      *      }
      * )
-     * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="user_documents", fileNameProperty="fileName")
      */
     private $file;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fileName", type="string", nullable=true)
+     * @ORM\Column(name="file_name", type="string", nullable=true)
      */
     private $fileName;
 
@@ -99,14 +99,15 @@ class UserDocument
     }
 
     /**
-     * Set file
-     *
-     * @param string $file
-     * @return UserDocument
+     * @param mixed $file
      */
-    public function setFile($file)
+    public function setFile(\Symfony\Component\HttpFoundation\File\File $file = null)
     {
         $this->file = $file;
+
+        if ($file) {
+            $this->updatedAt = new \DateTime('now');
+        }
 
         return $this;
     }
@@ -183,7 +184,7 @@ class UserDocument
     /**
      * Get projectHolder
      *
-     * @return \AppBundle\Entity\User 
+     * @return \AppBundle\Entity\User
      */
     public function getProjectHolder()
     {

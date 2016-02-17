@@ -32,7 +32,8 @@ class UserDocumentAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', 'image_admin_type', array(
+            ->add('file', 'doc_admin_type', array(
+                'label' => 'Document',
                 'required' => false,
             ));
 

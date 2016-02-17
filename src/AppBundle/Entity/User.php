@@ -268,6 +268,7 @@ class User extends BaseUser
      *     orphanRemoval=true,
      *     cascade={"persist", "remove"}
      * )
+     * @Assert\Valid()
      */
     protected $documents;
 
