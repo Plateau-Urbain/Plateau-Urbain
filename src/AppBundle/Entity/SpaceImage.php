@@ -61,7 +61,7 @@ class SpaceImage implements UploadCollectionFileInterface
      * @var \DateTime
      */
     private $updatedAt;
-    
+
     /**
      * @return int
      */

@@ -57,6 +57,15 @@ services:
             - AppBundle\Entity\SpaceImage
             -
 
+    app.admin.spaces.images:
+        class: AppBundle\Admin\UserDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: documents porteurs de projets , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\UserDocument
+            -
+
     app.admin.application.files:
         class: AppBundle\Admin\FileAdmin
         tags:

@@ -90,6 +90,18 @@ class ProjectHolderAdmin extends Admin
 
             ->end()
 
+            ->with('Documents')
+            ->add('documents', 'sonata_type_collection',
+                array('by_reference' => false,
+                  'label' => 'Documents',
+                ),
+                array(
+                  'edit' => 'inline',
+                  'inline' => 'table',
+                )
+            )
+            ->end()
+
         ;
     }
 

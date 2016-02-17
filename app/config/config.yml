@@ -133,11 +133,16 @@ knp_gaufrette:
         actuality_adapter :
             local:
                 directory: %kernel.root_dir%/../web/uploads/actuality
+        user_documents_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/user_documents
     filesystems:
         space_cover_fs:
             adapter:    space_file_adapter
         actuality_fs:
             adapter:    actuality_adapter
+        user_documents_fs:
+            adapter:    user_documents_adapter
 
 vich_uploader:
     db_driver: orm
@@ -153,6 +158,13 @@ vich_uploader:
         actuality:
             uri_prefix: /uploads/actuality
             upload_destination: actuality_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_uniqid
+            inject_on_load: true
+        user_documents:
+            uri_prefix: /uploads/user_documents
+            upload_destination: user_documents_fs
             delete_on_remove:   true
             delete_on_update:   true
             namer: vich_uploader.namer_uniqid
