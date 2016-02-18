@@ -95,6 +95,12 @@ class ProjectOwnerType extends AbstractType {
                     'mapped' => false,
                     'required' => ($user->hasDocuments(UserDocument::ID_TYPE) ? false : true)
                 ))
+
+                ->add('newDocument', new UserDocumentType(), array(
+                    'label' => false,
+                    'mapped' => false,
+                    'required' => false
+                ))
         ;
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
@@ -111,7 +117,9 @@ class ProjectOwnerType extends AbstractType {
                   $currentKbis->setFile($kbis->getFile());
                   $currentKbis->setFileName($kbis->getFileName());
                 } else {
-                  $projectHolder->addDocument($kbis);
+                  if($kbis->getFile()){
+                    $projectHolder->addDocument($kbis);
+                  }
                 }
             }
 
@@ -126,7 +134,9 @@ class ProjectOwnerType extends AbstractType {
                   $currentIdcard->setFile($idcard->getFile());
                   $currentIdcard->setFileName($idcard->getFileName());
                 } else {
-                  $projectHolder->addDocument($idcard);
+                  if($idcard->getFile()){
+                    $projectHolder->addDocument($idcard);
+                  }
                 }
             }
         });
