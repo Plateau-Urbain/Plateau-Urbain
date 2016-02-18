@@ -57,6 +57,15 @@ services:
             - AppBundle\Entity\SpaceImage
             -
 
+    app.admin.spaces.documents:
+        class: AppBundle\Admin\SpaceDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: documents de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceDocument
+            -
+
     app.admin.users.admin.project_holder.documents:
         class: AppBundle\Admin\UserDocumentAdmin
         tags:
