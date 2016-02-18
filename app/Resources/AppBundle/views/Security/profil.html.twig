@@ -282,15 +282,28 @@
 
             <div class="form-contener">
 
-              <div class="row">
-                <div class="col-sm-5 required-files">
+          <div class="row">
+            <div class="col-sm-5 required-files">
+              <ul class="list-unstyled">
+                <li class="idcard-file">
+                  {% if app.user.hasDocuments('id') %}
+                      <i class="fa fa-check"></i>
+                  {% else %}
+                      <i class="fa fa-times"></i>
+                  {% endif %}
+                  <label class="required">Pièce d'identité</label>
+                </li>
 
-                  <ul class="list-unstyled">
-                    <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
-                    <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
-                  </ul>
-
-                </div>
+                <li class="kbis-file">
+                  {% if app.user.hasDocuments('kbis') %}
+                      <i class="fa fa-check"></i>
+                  {% else %}
+                      <i class="fa fa-times"></i>
+                  {% endif %}
+                  <label class="required">Kbis</label>
+                </li>
+              </ul>
+            </div>
 
                 <div class="col-sm-7">
 
@@ -305,23 +318,32 @@
                     </dd>
                   </dl>
 
-                  <div class="files">
-                    <div class="file-infos">
-                      <span>file_name.png</span>
+              <div class="files">
+                <div class="idcard-file file-infos">
+                  <span>Pièce d'identité</span>
+                  <div class="pull-right actions">
+                    <label class="custom-file-input btn btn-accepted">
+                        {{ form_widget(form.idcard) }}
+                        <i class="fa fa-upload"></i>
+                    </label>
+                    {% if app.user.hasDocuments('id') %}
+                        {% set file =  app.user.getDocumentsType('kbis')[0] %}
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                    {% endif %}
+                  </div>
+                </div>
 
-                      <div class="pull-right actions">
-                        <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
-                        <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
-                      </div>
-                    </div>
-                    <div class="file-infos">
-                      <span>file_name.png</span>
-
-                      <div class="pull-right actions">
-                        <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
-                        <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
-                      </div>
-                    </div>
+                <div class="kbis-file file-infos">
+                  <span>Kbis</span>
+                  <div class="pull-right actions">
+                    <label class="custom-file-input btn btn-accepted">
+                        {{ form_widget(form.kbis) }}
+                        <i class="fa fa-upload"></i>
+                    </label>
+                    {% if app.user.hasDocuments('kbis') %}
+                        {% set file =  app.user.getDocumentsType('kbis')[0] %}
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                    {% endif %}
                   </div>
 
                   <div class="add-file">

@@ -1155,6 +1155,39 @@ class User extends BaseUser
     }
 
     /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function hasDocuments($type)
+    {
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function getDocumentsType($type)
+    {
+      $documents = [];
+
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          $documents[] = $document;
+        }
+      }
+      return $documents;
+    }
+
+    /**
      * Get documents
      *
      * @return \Doctrine\Common\Collections\Collection

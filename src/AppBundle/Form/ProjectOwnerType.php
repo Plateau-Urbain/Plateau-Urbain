@@ -2,8 +2,12 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\UserDocument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
@@ -11,6 +15,8 @@ use AppBundle\Entity\Application;
 class ProjectOwnerType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $user = $options['data'];
+
         $builder
                 // add your custom field
                 ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'expanded' => true, 'label' => "Civilité", 'attr' => array('class' => 'pu-radios')))
@@ -77,8 +83,53 @@ class ProjectOwnerType extends AbstractType {
                 ->add('googleUrl', null, array('label' => "Google+", 'attr' => array('class' => 'form-control')))
                 ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
                 ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
+
+                ->add('kbis', new UserDocumentType(), array(
+                    'label' => false,
+                    'mapped' => false,
+                    'required' => ($user->hasDocuments(UserDocument::KBIS_TYPE) ? false : true)
+                ))
+
+                ->add('idcard', new UserDocumentType(), array(
+                    'label' => false,
+                    'mapped' => false,
+                    'required' => ($user->hasDocuments(UserDocument::ID_TYPE) ? false : true)
+                ))
         ;
 
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $projectHolder = $event->getData();
+
+            // Handles kbis
+            $kbis = $event->getForm()->get('kbis')->getData();
+            if ($kbis instanceof UserDocument) {
+                $kbis->setProjectHolder($projectHolder);
+                $kbis->setType(UserDocument::KBIS_TYPE);
+
+                if ($projectHolder->hasDocuments(UserDocument::KBIS_TYPE)) {
+                  $currentKbis = $projectHolder->getDocumentsType(UserDocument::KBIS_TYPE)[0];
+                  $currentKbis->setFile($kbis->getFile());
+                  $currentKbis->setFileName($kbis->getFileName());
+                } else {
+                  $projectHolder->addDocument($kbis);
+                }
+            }
+
+            // Handles ID card
+            $idcard = $event->getForm()->get('idcard')->getData();
+            if ($idcard instanceof UserDocument) {
+                $idcard->setProjectHolder($projectHolder);
+                $idcard->setType(UserDocument::ID_TYPE);
+
+                if ($projectHolder->hasDocuments(UserDocument::ID_TYPE)) {
+                  $currentIdcard = $projectHolder->getDocumentsType(UserDocument::ID_TYPE)[0];
+                  $currentIdcard->setFile($idcard->getFile());
+                  $currentIdcard->setFileName($idcard->getFileName());
+                } else {
+                  $projectHolder->addDocument($idcard);
+                }
+            }
+        });
 
 
         $builder->remove('username');

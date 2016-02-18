@@ -17,6 +17,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class UserDocument
 {
+    const NO_TYPE  = '';
+    const ID_TYPE  = 'id';
+    const KBIS_TYPE   = 'kbis';
+
     /**
      * @var integer
      *
@@ -25,6 +29,13 @@ class UserDocument
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string")
+     */
+    private $type = self::NO_TYPE;
 
     /**
      * @var \DateTime
@@ -189,5 +200,28 @@ class UserDocument
     public function getProjectHolder()
     {
         return $this->projectHolder;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return UserDocument
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

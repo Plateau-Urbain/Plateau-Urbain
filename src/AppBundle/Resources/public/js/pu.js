@@ -25,7 +25,7 @@ $(function () {
 $(function () {
     var createLinkMethodForm = function (action, data) {
         var $form = $('<form action="' + action + '" method="POST"></form>');
-        for (input in data) {
+        for (var input in data) {
             if (data.hasOwnProperty(input)) {
                 $form.append('<input name="' + input + '" value="' + data[input] + '">');
             }
@@ -110,4 +110,20 @@ $(function(){
   };
   $(window).on('resize', sizePhotoListItem);
   sizePhotoListItem();
+});
+
+
+$(function(){
+
+  var toggleIdFiles = function(){
+    if ($('#project_owner_companyStatus').val() == 'Association') {
+      $('.idcard-file').show();
+      $('.kbis-file').hide();
+    } else {
+      $('.idcard-file').hide();
+      $('.kbis-file').show();
+    }
+  };
+  $('#project_owner_companyStatus').change(toggleIdFiles);
+  toggleIdFiles();
 });
