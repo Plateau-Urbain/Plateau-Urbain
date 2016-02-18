@@ -6,6 +6,7 @@ use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceAttribute;
 use AppBundle\Entity\SpaceImage;
+use AppBundle\Entity\SpaceDocument;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -70,6 +71,11 @@ class SpaceType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ))
+            ->add('newDocument', new SpaceDocumentType(), array(
+                'label'     => 'Ajouter un document',
+                'mapped' => false,
+                'required' => false
+            ))
         ;
 
         $attributes = $this->getAttributes();
@@ -103,6 +109,13 @@ class SpaceType extends AbstractType
             $newImage = $event->getForm()->get('newImage')->getData();
             if ($newImage instanceof SpaceImage) {
                 $event->getData()->addPic($newImage);
+            }
+
+            // Handles new document
+            $newDocument = $event->getForm()->get('newDocument')->getData();
+            if ($newDocument instanceof SpaceDocument) {
+                $newDocument->setSpace($event->getData());
+                $event->getData()->addDocument($newDocument);
             }
         });
     }

@@ -107,7 +107,7 @@
         <div class="form-contener">
           <div class="row">
             <div class="col-sm-12">
-              {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' %}
+              {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' with { 'documents': form.vars.data.documents,'form': form.newDocument } %}
             </div>
 
             <div class="col-sm-12">
