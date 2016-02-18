@@ -167,7 +167,7 @@ vich_uploader:
             upload_destination: user_documents_fs
             delete_on_remove:   true
             delete_on_update:   true
-            namer: vich_uploader.namer_uniqid
+            namer: vich_uploader.namer_origname
             inject_on_load: true
 
 

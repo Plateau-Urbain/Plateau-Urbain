@@ -345,12 +345,29 @@
                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                     {% endif %}
                   </div>
+                </div>
 
-                  <div class="add-file">
-                    <h4>
-                      <i class="icon small icon-inline add-red"></i>
-                      Ajouter un fichier
-                    </h4>
+                <hr />
+
+                {% for doc in form.vars.data.getDocumentsType('') %}
+                    <div class="kbis-file file-infos">
+                      <span>{{doc.fileName | truncate(25)}}</span>
+                      <div class="pull-right actions">
+                          <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                      </div>
+                    </div>
+                {% endfor %}
+
+              </div>
+
+
+
+              <div class="add-file">
+                <h4>
+                  <i class="icon small inline add-red"></i>
+                  Ajouter un fichier
+                </h4>
 
                     <dl class="dl-horizontal info-block">
                       <dt><i class="fa fa-info-circle"></i></dt>
@@ -360,7 +377,7 @@
                       </dd>
                     </dl>
 
-                <!-- {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }} -->
+                {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
 
                 </div>
               </div>

@@ -139,6 +139,14 @@ class ProjectOwnerType extends AbstractType {
                   }
                 }
             }
+
+            // Handles others
+            $kbis = $event->getForm()->get('newDocument')->getData();
+            if ($kbis instanceof UserDocument) {
+                $kbis->setProjectHolder($projectHolder);
+                $kbis->setType(UserDocument::NO_TYPE);
+                $projectHolder->addDocument($kbis);
+            }
         });
 
 
