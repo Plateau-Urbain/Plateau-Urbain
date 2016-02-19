@@ -150,9 +150,8 @@
                         <span>{{document.name}}</span>
                         <div class="pull-right actions">
 
-
                           <label class="custom-file-input btn btn-accepted">
-                              <input type="file" required/>
+                              {{ form_widget(attribute(form, "document_#{document.id}")) }}
                               <i class="fa fa-upload"></i>
                           </label>
                           <!-- <a target="_blank" href="" class="btn btn-show"><i class="fa fa-search"></i></a> -->

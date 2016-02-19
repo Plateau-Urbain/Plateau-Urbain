@@ -44,6 +44,12 @@ class ApplicationFile
     protected $application;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SpaceDocument", inversedBy="files")
+     * @ORM\JoinColumn(name="space_document_id", referencedColumnName="id")
+     */
+    protected $spaceDocument;
+
+    /**
      * @return int
      */
     public function getId()
@@ -112,5 +118,28 @@ class ApplicationFile
     public function setApplication($application)
     {
         $this->application = $application;
+    }
+
+    /**
+     * Set spaceDocument
+     *
+     * @param \AppBundle\Entity\SpaceDocument $spaceDocument
+     * @return SpaceDocument
+     */
+    public function setSpaceDocument(\AppBundle\Entity\SpaceDocument $spaceDocument = null)
+    {
+        $this->spaceDocument = $spaceDocument;
+
+        return $this;
+    }
+
+    /**
+     * Get spaceDocument
+     *
+     * @return \AppBundle\Entity\Application
+     */
+    public function getSpaceDocument()
+    {
+        return $this->spaceDocument;
     }
 }

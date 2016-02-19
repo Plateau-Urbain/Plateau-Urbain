@@ -35,6 +35,11 @@ class SpaceDocument
     protected $space;
 
     /**
+     * @ORM\OneToMany(targetEntity="ApplicationFile", mappedBy="spaceDocument", cascade={"persist", "remove"})
+     */
+    private $files;
+
+    /**
      * Get id
      *
      * @return integer
@@ -83,10 +88,50 @@ class SpaceDocument
     /**
      * Get space
      *
-     * @return \AppBundle\Entity\Space 
+     * @return \AppBundle\Entity\Space
      */
     public function getSpace()
     {
         return $this->space;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->files = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add files
+     *
+     * @param \AppBundle\Entity\ApplicationFile $files
+     * @return SpaceDocument
+     */
+    public function addFile(\AppBundle\Entity\ApplicationFile $files)
+    {
+        $this->files[] = $files;
+
+        return $this;
+    }
+
+    /**
+     * Remove files
+     *
+     * @param \AppBundle\Entity\ApplicationFile $files
+     */
+    public function removeFile(\AppBundle\Entity\ApplicationFile $files)
+    {
+        $this->files->removeElement($files);
+    }
+
+    /**
+     * Get files
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

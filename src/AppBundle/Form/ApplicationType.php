@@ -22,6 +22,8 @@ class ApplicationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $application = $builder->getData();
+
         $builder
             ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')) )
             ->add('description', null, array(
@@ -75,13 +77,34 @@ class ApplicationType extends AbstractType
             ))
         ;
 
+        foreach ($application->getSpace()->getDocuments() as $field) {
+          $builder->add('document_' . $field->getId(),
+            new ApplicationFileType(),
+            array(
+              'label' => false,
+              'mapped' => false,
+              'required' => false
+            )
+          );
+        }
+
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
             $application = $event->getData();
 
             $document = $event->getForm()->get('newDocument')->getData();
             if ($document instanceof ApplicationFile) {
                 $document->setApplication($application);
                 $application->addFile($document);
+            }
+
+            foreach ($application->getSpace()->getDocuments() as $field) {
+              $document = $event->getForm()->get('document_' . $field->getId())->getData();
+              if ($document instanceof ApplicationFile) {
+                  $document->setApplication($application);
+                  $document->setSpaceDocument($field);
+                  $application->addFile($document);
+              }
             }
         });
     }
