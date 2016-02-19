@@ -1,10 +1,12 @@
 <?php
 
 namespace AppBundle\Form;
-
 use AppBundle\Entity\Application;
+use AppBundle\Entity\ApplicationFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -65,7 +67,23 @@ class ApplicationType extends AbstractType
                 'attr' => array('class' => 'input-box'),
                 'block_name' => 'size_calculator'
             ))
+
+            ->add('newDocument', new ApplicationFileType(), array(
+                'label' => false,
+                'mapped' => false,
+                'required' => false
+            ))
         ;
+
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $application = $event->getData();
+
+            $document = $event->getForm()->get('newDocument')->getData();
+            if ($document instanceof ApplicationFile) {
+                $document->setApplication($application);
+                $application->addFile($document);
+            }
+        });
     }
 
     /**

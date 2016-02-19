@@ -84,6 +84,15 @@ services:
             - AppBundle\Entity\File
             -
 
+    app.admin.application.application_files:
+        class: AppBundle\Admin\ApplicationFileAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\ApplicationFile
+            -
+
     app.admin.spaces.parcel:
         class: AppBundle\Admin\ParcelAdmin
         tags:

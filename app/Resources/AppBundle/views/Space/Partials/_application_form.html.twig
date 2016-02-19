@@ -79,27 +79,11 @@
 
               <div class="col-md-6 files">
 
-                <h4>5 fichiers à joindre à votre candidature *</h4>
+                <h4>{{space.getDocuments() | length}} fichiers à joindre à votre candidature *</h4>
 
-                <ul class="list-unstyled files-list">
-                  <li><i class="fa fa-check"></i>test</li>
-                  <li><i class="fa fa-check"></i>test</li>
-                  <li><i class="fa fa-check"></i>test</li>
-                  <li><i class="fa fa-check"></i>test</li>
-                  <li><i class="fa fa-check"></i>test</li>
-                </ul>
+                <ul class="list-unstyled files-list"></ul>
 
-                <label class="control-label">Fichiers déjà enregistrés dans votre compte, et qui seront joints à votre fichier de candidature</label>
-                <dl class="dl-horizontal dl-with-fa-icon tip">
-                  <dt><i class="fa fa-info-circle"></i></dt>
-                  <dd>
-                    Pour ajouter ou supprimer des fichiers de cette liste,
-                    rendez-vous dans la section "Documents à fournir" de
-                    votre profil
-                  </dd>
-                </dl>
-
-                <div class="row">
+                <!-- <div class="row">
                   <div class="files col-sm-10">
                     <div class="file-infos">
                       <span>file_name.png</span>
@@ -113,6 +97,70 @@
                         <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
                       </div>
                     </div>
+                  </div>
+                </div> -->
+
+                <label class="control-label">Fichiers déjà enregistrés dans votre compte, et qui seront joints à votre fichier de candidature</label>
+                <dl class="dl-horizontal dl-with-fa-icon tip">
+                  <dt><i class="fa fa-info-circle"></i></dt>
+                  <dd>
+                    Pour ajouter ou supprimer des fichiers de cette liste,
+                    rendez-vous dans la section "Documents à fournir" de
+                    votre profil
+                  </dd>
+                </dl>
+
+                <div class="row">
+                  <div class="files col-sm-12">
+
+                    {% if app.user.getCompanyStatus() == 'Association' %}
+
+                      {% set idcard = app.user.getDocumentsType('id')[0] %}
+                      <div class="kbis-file file-infos">
+                        <span>Pièce d'identité</span>
+                        <div class="pull-right actions">
+                          <a target="_blank" href="{{ asset(vich_uploader_asset(idcard, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        </div>
+                      </div>
+
+                    {% else %}
+
+                      {% set kbis = app.user.getDocumentsType('kbis')[0] %}
+                      <div class="kbis-file file-infos">
+                        <span>Kbis</span>
+                        <div class="pull-right actions">
+                          <a target="_blank" href="{{ asset(vich_uploader_asset(kbis, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        </div>
+                      </div>
+
+                    {% endif %}
+
+                    {% for doc in app.user.getDocumentsType('') %}
+                        <div class="file-infos">
+                          <span>{{doc.fileName | slice(14, 100)}}</span>
+                          <div class="pull-right actions">
+                              <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          </div>
+                        </div>
+                    {% endfor %}
+
+
+                    {% for document in space.documents %}
+                      <div class="file-infos">
+                        <span>{{document.name}}</span>
+                        <div class="pull-right actions">
+
+
+                          <label class="custom-file-input btn btn-accepted">
+                              <input type="file" required/>
+                              <i class="fa fa-upload"></i>
+                          </label>
+                          <!-- <a target="_blank" href="" class="btn btn-show"><i class="fa fa-search"></i></a> -->
+                        </div>
+                      </div>
+                    {% endfor %}
+
+
                   </div>
                 </div>
 
@@ -128,30 +176,37 @@
                 </dl>
 
                 <div class="row">
-                  <div class="files col-sm-10">
-                    <div class="file-infos">
-                      <span>file_name.png</span>
-                      <div class="pull-right actions">
-                        <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
-                        <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
-                      </div>
-                    </div>
+                  <div class="files col-sm-12">
+
+                    {% for file in form.vars.data.files %}
+                        <div class="file-infos">
+                          <span>{{file.fileName | slice(14, 100)}}</span>
+                          <div class="pull-right actions">
+                              <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                              <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                          </div>
+                        </div>
+                    {% endfor %}
                   </div>
                 </div>
 
-                <div class="add-file">
-                  <h4>
-                    <i class="icon small icon-inline add-red"></i>
-                    Ajouter un fichier
-                  </h4>
+                <div class="row">
+                  <div class="add-file col-sm-10">
+                    <h4>
+                      <i class="icon small inline add-red"></i>
+                      Ajouter un fichier
+                    </h4>
 
-                  <dl class="dl-horizontal dl-with-fa-icon tip">
-                    <dt><i class="fa fa-info-circle"></i></dt>
-                    <dd>
-                      Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                      Chaque fichier ne doit pas excéder 10MO.
-                    </dd>
-                  </dl>
+                    <dl class="dl-horizontal dl-with-fa-icon tip">
+                      <dt><i class="fa fa-info-circle"></i></dt>
+                      <dd>
+                        Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
+                        Chaque fichier ne doit pas excéder 5MO.
+                      </dd>
+                    </dl>
+
+                    {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
+                  </div>
                 </div>
               </div>
 

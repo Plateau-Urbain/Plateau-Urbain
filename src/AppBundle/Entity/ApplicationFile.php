@@ -28,7 +28,7 @@ class ApplicationFile
      * @Assert\File(
      *     maxSize="20M"
      * )
-     * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="application", fileNameProperty="fileName")
      */
     protected $file;
 

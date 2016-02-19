@@ -350,8 +350,8 @@
                 <hr />
 
                 {% for doc in form.vars.data.getDocumentsType('') %}
-                    <div class="kbis-file file-infos">
-                      <span>{{doc.fileName | truncate(25)}}</span>
+                    <div class="file-infos">
+                      <span>{{doc.fileName | slice(14, 100)}}</span>
                       <div class="pull-right actions">
                           <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                           <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
