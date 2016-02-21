@@ -406,6 +406,45 @@ class Application
     }
 
     /**
+     * Has file
+     *
+     * @return mixed
+     */
+    public function hasFileType($typeId)
+    {
+      foreach ($this->files as $file) {
+        if($file->getSpaceDocument() != null && $file->getSpaceDocument()->getId() == $typeId){
+          return true;
+        } elseif($file->getSpaceDocument() == null && $typeId == null) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function getFilesType($typeId)
+    {
+      $files = [];
+
+      foreach ($this->files as $file) {
+        if($file->getSpaceDocument() && $file->getSpaceDocument()->getId() == $typeId){
+          $files[] = $file;
+        } elseif(!$file->getSpaceDocument() && $typeId == null) {
+          $files[] = $file;
+        }
+      }
+
+      return $files;
+    }
+
+
+    /**
      * @param ApplicationFile $file
      */
     public function removeFile(ApplicationFile $file)

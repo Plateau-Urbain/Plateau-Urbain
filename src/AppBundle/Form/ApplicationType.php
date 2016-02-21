@@ -100,10 +100,20 @@ class ApplicationType extends AbstractType
 
             foreach ($application->getSpace()->getDocuments() as $field) {
               $document = $event->getForm()->get('document_' . $field->getId())->getData();
+
               if ($document instanceof ApplicationFile) {
                   $document->setApplication($application);
                   $document->setSpaceDocument($field);
-                  $application->addFile($document);
+
+                  if ($application->hasFileType($field->getId())) {
+                    $currentDocument = $application->getFilesType($field->getId())[0];
+                    $currentDocument->setFile($document->getFile());
+                    $currentDocument->setFileName($document->getFileName());
+                  } else {
+                    if($document->getFile()){
+                      $application->addFile($document);
+                    }
+                  }
               }
             }
         });

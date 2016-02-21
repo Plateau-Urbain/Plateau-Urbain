@@ -154,7 +154,9 @@
                               {{ form_widget(attribute(form, "document_#{document.id}")) }}
                               <i class="fa fa-upload"></i>
                           </label>
-                          <!-- <a target="_blank" href="" class="btn btn-show"><i class="fa fa-search"></i></a> -->
+                          {% if form.vars.data.getFilesType(document.id) %}
+                            <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          {% endif %}
                         </div>
                       </div>
                     {% endfor %}
@@ -177,7 +179,7 @@
                 <div class="row">
                   <div class="files col-sm-12">
 
-                    {% for file in form.vars.data.files %}
+                    {% for file in form.vars.data.getFilesType(null) %}
                         <div class="file-infos">
                           <span>{{file.fileName | slice(14, 100)}}</span>
                           <div class="pull-right actions">

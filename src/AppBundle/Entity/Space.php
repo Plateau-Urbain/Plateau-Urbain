@@ -864,6 +864,10 @@ class Space
 
         $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
 
+        if($type == null){
+          return count($this->getApplication()->matching($criteria));
+        }
+
         foreach ($this->getApplication()->matching($criteria) as $app) {
             if ($app->getStatus() == $type) {
                 $ret++;
