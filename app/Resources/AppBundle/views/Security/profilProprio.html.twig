@@ -17,167 +17,208 @@
                 <br />
                 Enrichissez votre profil pour permettre aux autres usagers de la plate-forme de découvrir votre projet.
                 <br />
-                Voir les <a href="">Conditions générales d'utilisation</a>
+                Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
             </p>
         </center>
     </div>
 
 </div>
 
-{{ form_start(form) }}
-{{ form_errors(form) }}
-<div class="row">
-    <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">
-          <i class="icon user-red-bold"></i>
-          Mes informations
-        </h1>
+<div id="js-form-space">
 
-        <div class="form-contener">
-            <div class="row">
-              <div class="col-sm-6 inline-controls form-group">
-                  {{ form_label(form.civility) }}
-                  {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-              </div>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="row">
+        <div class="main col-sm-8 col-sm-offset-2">
+            <h1 class="section-title">
+              <i class="icon user-red-bold"></i>
+              Mes informations
+            </h1>
+
+            <div class="form-contener">
+                <div class="row">
+                  <div class="col-sm-6 inline-controls form-group">
+                      {{ form_label(form.civility) }}
+                      {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.firstname)}}
+                        {{ form_widget(form.firstname) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.lastname)}}
+                        {{ form_widget(form.lastname) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.email)}}
+                        {{ form_widget(form.email) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.companyFunction)}}
+                        {{ form_widget(form.companyFunction) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.companyPhone)}}
+                        {{ form_widget(form.companyPhone) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.companyMobile)}}
+                        {{ form_widget(form.companyMobile) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.firstname)}}
-                    {{ form_widget(form.firstname) }}
+
+            <h1 class="section-title">
+              <i class="icon struct-red-bold"></i>
+              Ma structure
+            </h1>
+
+            <div class="form-contener">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.company)}}
+                        {{ form_widget(form.company) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.companyStatus)}}
+                        {{ form_widget(form.companyStatus) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.lastname)}}
-                    {{ form_widget(form.lastname) }}
+
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.address)}}
+                        {{ form_widget(form.address) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.addressSuite)}}
+                        {{ form_widget(form.addressSuite) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.zipcode)}}
+                        {{ form_widget(form.zipcode) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.city)}}
+                        {{ form_widget(form.city) }}
+                    </div>
+                </div>
+
+                <div class="row form-group" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.companySite)}}
+                        {{ form_widget(form.companySite) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.email)}}
-                    {{ form_widget(form.email) }}
+
+            <h1 class="section-title">
+              <i class="icon lock-red-bold"></i>
+              Modifier mon mot de passe
+            </h1>
+
+            <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.oldPassword, null, {'label_attr' : {'class' : 'inline'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.oldPassword) }}
+                        {% for msg in app.session.flashbag.get('error_msg')  %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.companyFunction)}}
-                    {{ form_widget(form.companyFunction) }}
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.password.first, null, {'label_attr' : {'class' : 'inline'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.password.first) }}
+                        {{ form_errors(form.password.first)}}
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.password.second, null, {'label_attr' : {'class' : 'inline'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.password.second) }}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
                 </div>
             </div>
-            <div class="row form-group">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.companyPhone)}}
-                    {{ form_widget(form.companyPhone) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.companyMobile)}}
-                    {{ form_widget(form.companyMobile) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
-                </div>
-            </div>
+
         </div>
-
-        <h1 class="section-title">
-          <i class="icon struct-red-bold"></i>
-          Ma structure
-        </h1>
-
-        <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.company)}}
-                    {{ form_widget(form.company) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.companyStatus)}}
-                    {{ form_widget(form.companyStatus) }}
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.address)}}
-                    {{ form_widget(form.address) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.addressSuite)}}
-                    {{ form_widget(form.addressSuite) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.zipcode)}}
-                    {{ form_widget(form.zipcode) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.city)}}
-                    {{ form_widget(form.city) }}
-                </div>
-            </div>
-
-            <div class="row form-group" >
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.companySite)}}
-                    {{ form_widget(form.companySite) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
-                </div>
-            </div>
-        </div>
-
-        <h1 class="section-title">
-          <i class="icon lock-red-bold"></i>
-          Modifier mon mot de passe
-        </h1>
-
-        <div class="form-contener">
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.oldPassword, null, {'label_attr' : {'class' : 'inline'}})}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_widget(form.oldPassword) }}
-                    {% for msg in app.session.flashbag.get('error_msg')  %}
-                        {{ msg }}
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.password.first, null, {'label_attr' : {'class' : 'inline'}})}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_widget(form.password.first) }}
-                    {{ form_errors(form.password.first)}}
-                </div>
-            </div>
-
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.password.second, null, {'label_attr' : {'class' : 'inline'}})}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_widget(form.password.second) }}
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
-                </div>
-            </div>
-        </div>
-
     </div>
+    {{ form_end(form) }}
 </div>
-{{ form_end(form) }}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function initFormListener() {
+        $('input[type="submit"]').click(function(){
+
+            var form = $(this).closest('form');
+            var action = form.attr('action');
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    successAjax(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+    }
+
+    function successAjax(data) {
+        $("#js-form-space").html($(data).find('#js-form-space'));
+        initFormListener();
+        $("select").chosen();
+    }
+
+    $(document).ready(function() {
+        initFormListener();
+    });
+</script>
 
 {% endblock %}

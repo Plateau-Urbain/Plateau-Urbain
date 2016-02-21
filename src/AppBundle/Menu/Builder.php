@@ -26,7 +26,7 @@ class Builder extends ContainerAware
                 $menu->addChild('Proposer', array('route' => 'space_manager_add'));
             }
 
-            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!accueil/c66t', 'linkAttributes' => array('target' => '_blank')));
+            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('S’inscrire', array('uri' => '#inline_register_content',  'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild('Contact', array('uri' => '#footer'));
             $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
@@ -48,7 +48,7 @@ class Builder extends ContainerAware
         } else {
             $menu->addChild('Rechercher', array('uri' => '#inline_content', 'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild('Proposer', array('route' => 'proprietaire'));
-            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!accueil/c66t', 'linkAttributes' => array('target' => '_blank')));
+            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('S’inscrire', array('uri' => '#inline_register_content',  'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild('Contact', array('uri' => '#footer'));
             $menu->addChild("Se connecter", array('uri' => '#inline_content', 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));

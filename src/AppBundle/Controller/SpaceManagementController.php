@@ -358,7 +358,7 @@ class SpaceManagementController extends Controller
         $em->persist($application);
         $em->flush();
 
-        return $this->redirect($request->server->get('HTTP_REFERER'));
+        return $this->redirect($request->server->get('HTTP_REFERER') . "#listing-header");
     }
 
     /**

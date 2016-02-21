@@ -50,7 +50,7 @@ class ProjectOwnerType extends AbstractType {
                 ->add('city', null, array('label' => "Ville", 'attr' => array('class' => 'form-control')))
                 ->add('companyPhone', null, array('label' => "Téléphone fixe", 'attr' => array('class' => 'form-control')))
                 ->add('companyMobile', null, array('label' => "Téléphone mobile", 'attr' => array('class' => 'form-control')))
-                ->add('companyDescription', null, array('label' => "Présentation de l'entreprise", 'attr' => array('class' => 'form-control', 'rows' => 5)))
+                ->add('companyDescription', null, array('label' => "Présentation de la structure", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('companyEffective', null, array('label' => "Nombre de personnes dans la structure", 'attr' => array('class' => 'form-control')))
                 ->add('companyStructures', null, array('label' => "Structure(s) d'accompagnement", 'attr' => array('class' => 'form-control')))
                 ->add('companySite', null, array('label' => "Site web", 'attr' => array('class' => 'form-control')))

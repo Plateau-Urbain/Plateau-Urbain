@@ -84,7 +84,7 @@ class SecurityController extends Controller
                     $em->persist($user);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('homepage'));
+                    return $this->redirect($this->generateUrl('security_profil'));
                 }
             } else {
                 $new_pwd = $form->get('password')->getData();
@@ -99,7 +99,7 @@ class SecurityController extends Controller
                 $em->persist($this->getUser());
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('homepage'));
+                return $this->redirect($this->generateUrl('security_profil'));
             }
         }
 

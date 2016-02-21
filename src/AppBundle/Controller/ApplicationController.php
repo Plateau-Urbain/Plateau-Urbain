@@ -44,10 +44,12 @@ class ApplicationController extends Controller
 
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $application->setStatus(Application::WAIT_STATUS);
+        if ($this->getUser()->isProprio()) {
+            $application->setStatus(Application::WAIT_STATUS);
 
-        $em->persist($application);
-        $em->flush();
+            $em->persist($application);
+            $em->flush();
+        }
 
         return array(
             'prevApplication'   => $prevApplication,

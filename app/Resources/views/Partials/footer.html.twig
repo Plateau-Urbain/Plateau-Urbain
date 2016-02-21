@@ -39,14 +39,14 @@
           <div class="block col-sm-12">
             <h3>Développer vos projets</h3>
             <ul class="footer-links">
-              <li><a href="{{path('proprietaire')}}">Comment ça marche ?</a></li>
+              <li><a href="http://www.plateau-urbain.com/#!plate-forme/eqbhd" target="_blank">Comment ça marche ?</a></li>
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
                 <li><a href="{{path('space_manager_add')}}">Proposer un espace</a></li>
                 <li><a href="{{path('fos_user_profile_show')}}">Mon compte</a></li>
               {% else %}
                 <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
-                <li><a href="#inline_content">Proposer un espace</a></li>
+                <li><a href="{{ path('proprietaire') }}">Proposer un espace</a></li>
                 <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
               {% endif %}
             </ul>
@@ -59,7 +59,7 @@
             <ul class="footer-links">
               <li><a href="http://www.plateau-urbain.com/">Nous connaître</a></li>
               <li><a href="http://www.plateau-urbain.com/#!dons/y36xk" target="_blank">Soutenir l’association</a></li>
-              <li><a href="mailto:contact@plateau-urbain.com">Contact</a></li>
+              <li><a href="http://www.plateau-urbain.com/#!formulaire/c1v9l" target="_blank">Contact</a></li>
             </ul>
           </div>
         </div>
@@ -70,10 +70,9 @@
         <div class="row">
 
           <div class="block col-sm-12">
-            <a href="index.html"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
+            <a href="http://www.plateau-urbain.com" target="_blank"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
             <ul class="list-unstyled infos">
-              <li><strong>Siège : </strong> 14-16 rue Planchat 75020 Paris</li>
-              <li><strong>Locaux : </strong> 82 avenue Denfert Rochereau 75014 Paris</li>
+              <li><strong>Locaux : </strong> 82 av. Denfert Rochereau 75014 Paris</li>
               <li><i class="fa fa-envelope"></i>contact@plateau-urbain.com</li>
               <li><i class="fa fa-phone"></i>06 75 53 32 60</li>
             </ul>
@@ -101,8 +100,7 @@
         <div class="col-sm-12">
           <ul class="list-inline">
             <li>&copy; {{ "now"| date("Y") }} Plateau Urbain</li>
-            <li><a href="{{path('cgu')}}">Conditions générales d'utilisation</a></li>
-            <li><a href="{{path('mentions_legales')}}">Mentions légales</a></li>
+            <li><a href="{{path('cgu')}}">Conditions générales d'utilisation et Mentions légales</a></li>
             <li><a class="normal" href="http://www.widop.com/">Développement Wid'op</a></li>
             <li><a class="normal" href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
           </ul>
