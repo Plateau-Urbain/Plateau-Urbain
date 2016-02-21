@@ -83,7 +83,7 @@ class ApplicationType extends AbstractType
             array(
               'label' => false,
               'mapped' => false,
-              'required' => false
+              'required' => ($application->hasFileType($field->getId()) ? false : true)
             )
           );
         }
