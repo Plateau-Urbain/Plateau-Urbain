@@ -133,3 +133,10 @@ $(function(){
   $('#project_owner_companyStatus').change(toggleIdFiles);
   toggleIdFiles();
 });
+
+$(function(){
+  $('#appbundle_application_save').click(function(e){
+    e.preventDefault();
+    $(this).parents('form').attr('no-validate', 'true').submit();
+  });
+});

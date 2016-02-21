@@ -56,9 +56,6 @@ class SpaceController extends Controller
                 array(
                     'id' => $space->getId()
                 )
-            ),
-            'attr' => array(
-                'novalidate' => true
             )
         ));
 
