@@ -250,8 +250,7 @@
 </div>
 
 <a id="candidate">&nbsp;</a>
-
-{% if application.isDraft and not invalidProfile %}
+{% if application.isDraft and not invalidProfile and app.user.typeUser != 1 %}
     {% include '@App/Space/Partials/_application_form.html.twig' %}
 {% endif %}
 
