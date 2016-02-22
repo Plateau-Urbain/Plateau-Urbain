@@ -179,6 +179,51 @@
             </div>
 
         </div>
+
+        <h1 class="section-title">
+          <i class="icon lock-red-bold"></i>
+          Modifier mon mot de passe
+        </h1>
+
+        <div class="form-contener">
+            <div class="row" >
+                <div class="col-sm-6 form-group">
+                    {{ form_label(form.oldPassword, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                </div>
+                <div class="col-sm-6 form-group">
+                    {{ form_widget(form.oldPassword) }}
+                    {% for msg in app.session.flashbag.get('error_msg')  %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-6 form-group">
+                    {{ form_label(form.password.first, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                </div>
+                <div class="col-sm-6 form-group">
+                    {{ form_widget(form.password.first) }}
+                    {{ form_errors(form.password.first)}}
+                </div>
+            </div>
+
+            <div class="row" >
+                <div class="col-sm-6 form-group">
+                    {{ form_label(form.password.second, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                </div>
+                <div class="col-sm-6 form-group">
+                    {{ form_widget(form.password.second) }}
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-4">
+                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                </div>
+            </div>
+        </div>
     </div>
     {{ form_end(form) }}
 </div>
