@@ -6,6 +6,7 @@ use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceAttribute;
 use AppBundle\Entity\SpaceImage;
+use AppBundle\Entity\SpaceDocument;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,7 +50,7 @@ class SpaceType extends AbstractType
                 )
             )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
-            ->add('price', null, array('label' => 'Prix au m²', 'attr' => array('class' => 'form-control')))
+            ->add('price', null, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
@@ -67,6 +68,11 @@ class SpaceType extends AbstractType
             ))
             ->add('newParcel', new ParcelType(), array(
                 'label'     => 'Ajouter un lot',
+                'mapped' => false,
+                'required' => false
+            ))
+            ->add('newDocument', new SpaceDocumentType(), array(
+                'label'     => 'Ajouter un document',
                 'mapped' => false,
                 'required' => false
             ))
@@ -103,6 +109,13 @@ class SpaceType extends AbstractType
             $newImage = $event->getForm()->get('newImage')->getData();
             if ($newImage instanceof SpaceImage) {
                 $event->getData()->addPic($newImage);
+            }
+
+            // Handles new document
+            $newDocument = $event->getForm()->get('newDocument')->getData();
+            if ($newDocument instanceof SpaceDocument) {
+                $newDocument->setSpace($event->getData());
+                $event->getData()->addDocument($newDocument);
             }
         });
     }

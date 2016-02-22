@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\Application;
+use AppBundle\Entity\UserDocument;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ProjectOwnerType;
@@ -84,7 +85,7 @@ class SecurityController extends Controller
                     $em->persist($user);
                     $em->flush();
 
-                    return $this->redirect($this->generateUrl('homepage'));
+                    return $this->redirect($this->generateUrl('security_profil'));
                 }
             } else {
                 $new_pwd = $form->get('password')->getData();
@@ -99,7 +100,7 @@ class SecurityController extends Controller
                 $em->persist($this->getUser());
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('homepage'));
+                return $this->redirect($this->generateUrl('security_profil'));
             }
         }
 
@@ -168,6 +169,23 @@ class SecurityController extends Controller
       );
     }
 
+    /**
+     * @Route("/document/{id}/delete", name="profile_removedocument")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeDocumentAction(Request $request, UserDocument $userDocument)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($userDocument);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
+
+        return $this->redirect($this->generateUrl('security_profil'));
+    }
 
     /**
      * @param Request $request

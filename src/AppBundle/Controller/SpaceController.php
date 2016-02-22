@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ApplicationFile;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
@@ -55,9 +56,6 @@ class SpaceController extends Controller
                 array(
                     'id' => $space->getId()
                 )
-            ),
-            'attr' => array(
-                'novalidate' => true
             )
         ));
 
@@ -112,6 +110,26 @@ class SpaceController extends Controller
             'form'           => $form->createView(),
             'invalidProfile' => $invalidProfile,
             'application'    => $application
+        );
+    }
+
+    /**
+     * @Route("/file/{id}/delete", name="space_removefile")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeFileAction(ApplicationFile $applicationFile, Request $request)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($applicationFile);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
+
+        return $this->redirect(
+          $this->generateUrl('space_show', array( 'id' => $applicationFile->getApplication()->getSpace()->getId()))
         );
     }
 

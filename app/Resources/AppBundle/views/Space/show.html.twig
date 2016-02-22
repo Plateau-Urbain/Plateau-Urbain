@@ -250,8 +250,7 @@
 </div>
 
 <a id="candidate">&nbsp;</a>
-
-{% if application.isDraft and not invalidProfile %}
+{% if application.isDraft and not invalidProfile and app.user.typeUser != 1 %}
     {% include '@App/Space/Partials/_application_form.html.twig' %}
 {% endif %}
 
@@ -273,7 +272,7 @@
             <br />
 
             <p>
-                Votre candidature est désormais clôturée est sera transmise au bailleur.<br /> Ce dossier de candidature est disponible dans votre compte,<br /> vous pourrez donc revenir le consulter et l'imprimer.
+                Votre candidature est désormais clôturée et sera transmise au bailleur.<br /> Ce dossier de candidature est disponible dans votre compte,<br /> vous pourrez donc revenir le consulter et l'imprimer.
             </p>
             <p>
                 {% if application and application.id != '' %}
@@ -299,8 +298,7 @@
             }
             if (hash == "espace_sauvegarde") {
                 $.colorbox({html:$('#saveBox').html()});
-            }
-        });
+            } });
     </script>
 
 {% endblock %}

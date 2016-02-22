@@ -6,7 +6,10 @@
           <div class="overlay">
             {% if space.isClosed %}
               <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
+            {% elseif not space.isSubmitted %}
+              <img src="{{ asset('/bundles/app/images/edit.png')  }}" alt=""/>
             {% endif %}
+
           </div>
           <div class="image-wrapper">
             {% if space.pics.0 is defined %}
@@ -44,7 +47,11 @@
                   <dt><i class="icon small user-brown"></i></dt>
                   <dd>
                     <span class="dd-title">
-                      <strong>{{ space.application | length }}</strong> candidatures
+<<<<<<< HEAD
+                      <strong>{{ space.nbValidApplication }}</strong> candidatures
+=======
+                      <strong>{{ space.nbApplication(null) }}</strong> candidatures
+>>>>>>> Add documents to application
                     </span>
                   </dd>
                 </dl>
@@ -52,19 +59,19 @@
                 <div class="row status">
                   <div class="col-sm-4">
                     <div class="label-status awaiting">
-                      <i class="fa fa-hourglass-half"></i>
+                      <i class="fa fa-hourglass-half"></i>&nbsp;
                       {{ space.nbApplication(constant('AppBundle\\Entity\\Application::WAIT_STATUS'))  }} en attente
                     </div>
                   </div>
                   <div class="col-sm-4">
                     <div class="label-status rejected">
-                      <i class="fa fa-times"></i>
+                      <i class="fa fa-times"></i>&nbsp;
                       {{ space.nbApplication(constant('AppBundle\\Entity\\Application::REJECT_STATUS'))  }} refusées
                     </div>
                   </div>
                   <div class="col-sm-4">
                     <div class="label-status accepted">
-                      <i class="fa fa-check"></i>
+                      <i class="fa fa-check"></i>&nbsp;
                       {{ space.nbApplication(constant('AppBundle\\Entity\\Application::ACCEPT_STATUS'))  }} acceptées
                     </div>
                   </div>
@@ -97,7 +104,7 @@
             </div>
             <div class="col-sm-4">
               {% if space.published and space.isClosed == false %}
-                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-yellow">Clotûrer</a>
+                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-yellow">Clôturer</a>
               {% endif %}
             </div>
           </div>

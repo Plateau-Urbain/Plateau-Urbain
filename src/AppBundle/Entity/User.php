@@ -29,10 +29,10 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="civility", length=3, type="string", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
@@ -53,7 +53,7 @@ class User extends BaseUser
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="newsletter", type="boolean", nullable=true)
      */
     protected $newsletter;
@@ -136,7 +136,7 @@ class User extends BaseUser
      *
      */
     protected $companyFunction;
-   
+
     /**
      * @ORM\Column(name="company_description", type="text", nullable=true)
      *
@@ -260,6 +260,17 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Application", mappedBy="projectHolder", cascade={"remove"})
      */
     protected $applications;
+
+    /**
+     * @ORM\OneToMany(
+     *     targetEntity="UserDocument",
+     *     mappedBy="projectHolder",
+     *     orphanRemoval=true,
+     *     cascade={"persist", "remove"}
+     * )
+     * @Assert\Valid()
+     */
+    protected $documents;
 
     /**
      * @ORM\OneToMany(targetEntity="Space", mappedBy="owner", cascade={"remove"})
@@ -583,7 +594,7 @@ class User extends BaseUser
     {
         $this->newsletter = $newsletter;
     }
-    
+
     /**
      * @return mixed
      */
@@ -623,7 +634,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -646,7 +657,7 @@ class User extends BaseUser
     /**
      * Get companyStatus
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyStatus()
     {
@@ -669,7 +680,7 @@ class User extends BaseUser
     /**
      * Get companyCreationDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCompanyCreationDate()
     {
@@ -692,7 +703,7 @@ class User extends BaseUser
     /**
      * Get addressSuite
      *
-     * @return string 
+     * @return string
      */
     public function getAddressSuite()
     {
@@ -715,7 +726,7 @@ class User extends BaseUser
     /**
      * Get companyPhone
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyPhone()
     {
@@ -738,7 +749,7 @@ class User extends BaseUser
     /**
      * Get companyMobile
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyMobile()
     {
@@ -761,7 +772,7 @@ class User extends BaseUser
     /**
      * Get company_site
      *
-     * @return string 
+     * @return string
      */
     public function getCompanySite()
     {
@@ -784,7 +795,7 @@ class User extends BaseUser
     /**
      * Get company_blog
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyBlog()
     {
@@ -794,7 +805,7 @@ class User extends BaseUser
     /**
      * Get groups
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getGroups()
     {
@@ -817,7 +828,7 @@ class User extends BaseUser
     /**
      * Get googleUrl
      *
-     * @return string 
+     * @return string
      */
     public function getGoogleUrl()
     {
@@ -840,7 +851,7 @@ class User extends BaseUser
     /**
      * Get linkedinUrl
      *
-     * @return string 
+     * @return string
      */
     public function getLinkedinUrl()
     {
@@ -863,7 +874,7 @@ class User extends BaseUser
     /**
      * Get otherUrl
      *
-     * @return string 
+     * @return string
      */
     public function getOtherUrl()
     {
@@ -886,7 +897,7 @@ class User extends BaseUser
     /**
      * Get lengthTypeOccupation
      *
-     * @return string 
+     * @return string
      */
     public function getLengthTypeOccupation()
     {
@@ -932,7 +943,7 @@ class User extends BaseUser
     /**
      * Get projectDescription
      *
-     * @return string 
+     * @return string
      */
     public function getProjectDescription()
     {
@@ -955,7 +966,7 @@ class User extends BaseUser
     /**
      * Get companyDescription
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyDescription()
     {
@@ -978,13 +989,13 @@ class User extends BaseUser
     /**
      * Get companyDescription
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyFunction()
     {
         return $this->companyFunction;
     }
-    
+
     /**
      * Set companyEffective
      *
@@ -1001,7 +1012,7 @@ class User extends BaseUser
     /**
      * Get companyEffective
      *
-     * @return integer 
+     * @return integer
      */
     public function getCompanyEffective()
     {
@@ -1024,13 +1035,13 @@ class User extends BaseUser
     /**
      * Get companyStructures
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyStructures()
     {
         return $this->companyStructures;
     }
-    
+
     /**
      * Get all company statut
      *
@@ -1085,5 +1096,137 @@ class User extends BaseUser
             $this->getFirstname(),
             $this->getLastname()
         );
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \AppBundle\Entity\Application $applications
+     * @return User
+     */
+    public function addApplication(\AppBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \AppBundle\Entity\Application $applications
+     */
+    public function removeApplication(\AppBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * Add documents
+     *
+     * @param \AppBundle\Entity\UserDocument $documents
+     * @return User
+     */
+    public function addDocument(\AppBundle\Entity\UserDocument $documents)
+    {
+        $this->documents[] = $documents;
+
+        return $this;
+    }
+
+    /**
+     * Remove documents
+     *
+     * @param \AppBundle\Entity\UserDocument $documents
+     */
+    public function removeDocument(\AppBundle\Entity\UserDocument $documents)
+    {
+        $this->documents->removeElement($documents);
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function hasDocuments($type)
+    {
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function getDocumentsType($type)
+    {
+      $documents = [];
+
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          $documents[] = $document;
+        }
+      }
+      return $documents;
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    /**
+     * Add spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     * @return User
+     */
+    public function addSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces[] = $spaces;
+
+        return $this;
+    }
+
+    /**
+     * Remove spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     */
+    public function removeSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces->removeElement($spaces);
+    }
+
+    /**
+     * Get spaces
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpaces()
+    {
+        return $this->spaces;
     }
 }

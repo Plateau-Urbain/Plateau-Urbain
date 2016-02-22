@@ -13,6 +13,24 @@
   border-radius: 2px;
 }
 
+.custom-file-input{
+  position: relative;
+  
+  .form-group{
+    margin: 0;
+  }
+
+  input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+}
+
 .input-group{
   width: 100%;
 }
