@@ -25,3 +25,12 @@ parameters:
 
     mail_confirmation_to : ~
     mail_confirmation_from : noreply@plateau-urbain.fr
+
+    facebook_client_id:     ~
+    facebook_client_secret: ~
+
+    google_client_id:      ~
+    google_client_secret:  ~
+
+    linkedin_client_id:      ~
+    linkedin_client_secret:  ~

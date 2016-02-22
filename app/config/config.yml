@@ -258,8 +258,8 @@ hwi_oauth:
     resource_owners:
         facebook:
             type:          facebook
-            client_id:     570239633124785
-            client_secret: 160129ffb77b1abab32545694073610e
+            client_id:     %facebook_client_id%
+            client_secret: %facebook_client_secret%
             scope:         "email, public_profile"
             infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
             paths:
@@ -269,16 +269,16 @@ hwi_oauth:
 
         google:
             type:           google
-            client_id:      410143813482-1c59cv9p9a5799i1qk14pmbrk86abagm.apps.googleusercontent.com
-            client_secret:  OZprSYO7EK3vtzwXPasa5_-f
+            client_id:      %google_client_id%
+            client_secret:  %google_client_secret%
             scope:          "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             paths:
                 email: email
 
         linkedin:
             type:           linkedin
-            client_id:      77lah7d46wx1ye
-            client_secret:  bS7rPmYrX5NHp0qB
+            client_id:      %linkedin_client_id%
+            client_secret:  %linkedin_client_secret%
             scope:          r_emailaddress
             paths:
                 email: emailAddress
