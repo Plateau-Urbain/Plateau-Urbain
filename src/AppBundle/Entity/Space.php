@@ -175,17 +175,17 @@ class Space
     private $closed = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Parcel", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $parcels;
 
     /**
-     * @ORM\OneToMany(targetEntity="SpaceDocument", mappedBy="space", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SpaceDocument", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $tags;
 
