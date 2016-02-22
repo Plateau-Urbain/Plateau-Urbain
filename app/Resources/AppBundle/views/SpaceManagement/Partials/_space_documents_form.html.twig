@@ -3,9 +3,12 @@
 </h4>
 
 <ul class="list-dotted">
-  <li class="li-icon check">Lorem ipsum dolor sit amet.</li>
-  <li class="li-icon check">Lorem ipsum dolor sit amet.</li>
-  <li class="li-icon check">Lorem ipsum dolor sit amet.</li>
+  {% for document in documents %}
+    <li class="li-icon check">
+      {{document.name}}
+      <a href="{{ path('space_manager_removedocument', { 'id': document.id }) }}" class="pull-right"><i class="fa fa-trash"></i></a>
+    </li>
+  {% endfor %}
 </ul>
 
 <h4 class="black">
@@ -17,7 +20,7 @@
 
 <div class="row">
   <div class="col-sm-7">
-    <input type="text" name="" value="" placeholder="Nom de la pièce" class="form-control">
+    {{form_widget(form.name, {'attr': {'placeholder': 'Nom de la pièce'}})}}
   </div>
 
   <div class="col-sm-5">

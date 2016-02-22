@@ -6,6 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
+use AppBundle\Entity\SpaceDocument;
 use Exporter\Handler;
 use Exporter\Source\DoctrineORMQuerySourceIterator;
 use Exporter\Writer\CsvWriter;
@@ -416,6 +417,30 @@ class SpaceManagementController extends Controller
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'La photo a été déplacée.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
+     * @Route("/document/{id}/delete", name="space_manager_removedocument")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeDocumentAction(Request $request, SpaceDocument $spaceDocument)
+    {
+        if (!$spaceDocument->getSpace()->isOwner($this->getUser())) {
+            throw new AccessDeniedException();
+        }
+
+        $spaceId = $spaceDocument->getSpace()->getId();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($spaceDocument);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
 
         return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
     }

@@ -180,6 +180,11 @@ class Space
     private $parcels;
 
     /**
+     * @ORM\OneToMany(targetEntity="SpaceDocument", mappedBy="space", cascade={"persist", "remove"})
+     */
+    private $documents;
+
+    /**
      * @ORM\OneToMany(targetEntity="SpaceAttribute", mappedBy="space", cascade={"persist", "remove"})
      */
     private $tags;
@@ -247,6 +252,7 @@ class Space
         $this->pics = new ArrayCollection();
         $this->parcels = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
     /**
      * Get id.
@@ -858,6 +864,10 @@ class Space
 
         $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
 
+        if($type == null){
+          return count($this->getApplication()->matching($criteria));
+        }
+
         foreach ($this->getApplication()->matching($criteria) as $app) {
             if ($app->getStatus() == $type) {
                 $ret++;
@@ -952,5 +962,94 @@ class Space
                 ->addViolationAt("newImage", sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD))
             ;
         }
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Get submitted
+     *
+     * @return boolean
+     */
+    public function getSubmitted()
+    {
+        return $this->submitted;
+    }
+
+    /**
+     * Set submittedAt
+     *
+     * @param \DateTime $submittedAt
+     * @return Space
+     */
+    public function setSubmittedAt($submittedAt)
+    {
+        $this->submittedAt = $submittedAt;
+
+        return $this;
+    }
+
+    /**
+     * Add documents
+     *
+     * @param \AppBundle\Entity\SpaceDocument $documents
+     * @return Space
+     */
+    public function addDocument(\AppBundle\Entity\SpaceDocument $documents)
+    {
+        $this->documents[] = $documents;
+
+        return $this;
+    }
+
+    /**
+     * Remove documents
+     *
+     * @param \AppBundle\Entity\SpaceDocument $documents
+     */
+    public function removeDocument(\AppBundle\Entity\SpaceDocument $documents)
+    {
+        $this->documents->removeElement($documents);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    /**
+     * Add application
+     *
+     * @param \AppBundle\Entity\Application $application
+     * @return Space
+     */
+    public function addApplication(\AppBundle\Entity\Application $application)
+    {
+        $this->application[] = $application;
+
+        return $this;
+    }
+
+    /**
+     * Remove application
+     *
+     * @param \AppBundle\Entity\Application $application
+     */
+    public function removeApplication(\AppBundle\Entity\Application $application)
+    {
+        $this->application->removeElement($application);
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
+use AppBundle\Entity\ApplicationFile;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -39,15 +40,15 @@ class ApplicationAdmin extends Admin
 
             ->end()
             ->with('Documents')
-            /*            ->add('files', 'sonata_type_collection',
-                            array('by_reference' => false,
-
-                                'label' => 'Photos',
-                            ),
-                            array(
-                                'edit' => 'inline',
-                                'inline' => 'table',
-                            ))*/
+              ->add('files', 'sonata_type_collection',
+                  array('by_reference' => false,
+                    'label' => 'Documents',
+                  ),
+                  array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                  )
+              )
             ->end()
 
         ;

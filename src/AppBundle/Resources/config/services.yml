@@ -57,6 +57,24 @@ services:
             - AppBundle\Entity\SpaceImage
             -
 
+    app.admin.spaces.documents:
+        class: AppBundle\Admin\SpaceDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: documents de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceDocument
+            -
+
+    app.admin.users.admin.project_holder.documents:
+        class: AppBundle\Admin\UserDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: documents porteurs de projets , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\UserDocument
+            -
+
     app.admin.application.files:
         class: AppBundle\Admin\FileAdmin
         tags:
@@ -64,6 +82,15 @@ services:
         arguments:
             - ~
             - AppBundle\Entity\File
+            -
+
+    app.admin.application.application_files:
+        class: AppBundle\Admin\ApplicationFileAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\ApplicationFile
             -
 
     app.admin.spaces.parcel:
@@ -145,6 +172,11 @@ services:
          class: AppBundle\Form\ImageAdminType
          tags:
              - { name: form.type, alias: image_admin_type }
+
+    app.admin.doc_admin_type:
+         class: AppBundle\Form\DocAdminType
+         tags:
+             - { name: form.type, alias: doc_admin_type }
 
     project_holder_user_registration:
          class: AppBundle\Form\RegistrationFormType

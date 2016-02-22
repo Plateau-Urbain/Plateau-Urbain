@@ -19,6 +19,7 @@ class SpaceAdmin extends Admin
     public function prePersist($space)
     {
         $this->syncSpace($space, $space->getPics());
+        $this->syncSpace($space, $space->getDocuments());
     }
 
     /**
@@ -27,6 +28,7 @@ class SpaceAdmin extends Admin
     public function preUpdate($space)
     {
         $this->syncSpace($space, $space->getPics());
+        $this->syncSpace($space, $space->getDocuments());
     }
 
     protected $baseRouteName = 'property';
@@ -91,6 +93,18 @@ class SpaceAdmin extends Admin
                 array('by_reference' => false,
 
                     'label' => 'Photos',
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ))
+
+            ->end()
+            ->with('Documents')
+
+            ->add('documents', 'sonata_type_collection',
+                array('by_reference' => false,
+                    'label' => false
                 ),
                 array(
                     'edit' => 'inline',

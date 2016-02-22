@@ -2,11 +2,12 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\SpaceDocument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ApplicationFileType extends AbstractType
+class SpaceDocumentType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,9 +16,9 @@ class ApplicationFileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-          ->add('file', 'file', array(
-              'label' => false
-          ))
+            ->add('name', null, array(
+                'label' => false
+            ))
         ;
     }
 
@@ -27,7 +28,8 @@ class ApplicationFileType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\ApplicationFile',
+            'data_class' => 'AppBundle\Entity\SpaceDocument',
+            'required' => false
         ));
     }
 
@@ -36,6 +38,6 @@ class ApplicationFileType extends AbstractType
      */
     public function getName()
     {
-        return 'application_file';
+        return 'user_document';
     }
 }
