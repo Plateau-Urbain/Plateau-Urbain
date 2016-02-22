@@ -8,7 +8,7 @@
 
       <div class="col-sm-12">
         <h3 class="has-icon medium no-margin">
-          <i class="icon medium style-inline bkg list-red-bold"></i>
+          <i class="icon medium icon-inline bkg list-red-bold"></i>
           {{ 'Vous êtes candidat' | upper }}
         </h3>
         <small>
@@ -26,7 +26,7 @@
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-4">
-                      {{ form_label(form.category, null, {'label_attr' : {'class' : 'inline'}}) }}
+                      {{ form_label(form.category, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
                     <div class="col-sm-8" {{ form.category.vars.errors|length ? 'has-error' : '' }}>
                       {{ form_widget(form.category) }}
@@ -42,7 +42,7 @@
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-5">
-                      {{ form_label(form.lengthOccupation, null, {'label_attr' : {'class' : 'inline'}}) }}
+                      {{ form_label(form.lengthOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
 
                     <div class="col-sm-3 {{ form.lengthOccupation.vars.errors|length ? 'has-error' : '' }}">
@@ -59,7 +59,7 @@
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-6">
-                      {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline'}}) }}
+                      {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
                     <div class="col-sm-6">
                       {{ form_widget(form.startOccupation) }}
@@ -141,7 +141,7 @@
 
                 <div class="add-file">
                   <h4>
-                    <i class="icon small style-inline add-red"></i>
+                    <i class="icon small icon-inline add-red"></i>
                     Ajouter un fichier
                   </h4>
 
