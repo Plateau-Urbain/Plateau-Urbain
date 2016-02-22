@@ -868,6 +868,18 @@ class Space
     }
 
     /**
+     * @param $type
+     * @return int
+     */
+    public function nbValidApplication() {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        $ret = $this->getApplication()->matching($criteria)->count();
+
+        return $ret;
+    }
+
+    /**
      * @param $useType
      * @return int
      */

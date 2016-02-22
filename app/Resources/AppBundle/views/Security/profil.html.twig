@@ -13,341 +13,343 @@
         <h1 class="section-title">Mon profil</h1>
         <center>
             <p>
-                Vous pouvez dès à présent rechercher une offre, mais nous vous invitons à compléter votre profil dès à présent.
+                Vous pouvez dès à présent rechercher une offre, mais nous vous invitons à compléter votre profil.
                 <br />
                 Un profil complet est indispensable pour pouvoir répondre à une offre.
                 <br />
-                Voir les <a href="">Conditions générales d'utilisation</a>
+                Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
             </p>
         </center>
     </div>
 
 </div>
 
-{{ form_start(form) }}
-<div class="row">
-    <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">
-          <i class="icon user-red-bold"></i>
-          Mes informations
-        </h1>
+<div id="js-form-space">
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="main col-sm-8 col-sm-offset-2">
+            <h1 class="section-title">
+              <i class="icon user-red-bold"></i>
+              Mes informations
+            </h1>
 
-        <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-6 inline-controls form-group">
-                    {{ form_label(form.civility) }}
-                    {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                    {{ form_errors(form.civility) }}
+            <div class="form-contener">
+                <div class="row">
+                    <div class="col-sm-6 inline-controls form-group">
+                        {{ form_label(form.civility) }}
+                        {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                        {{ form_errors(form.civility) }}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.firstname) }}
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.firstname) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.lastname) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.lastname) }}
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.birthday) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.phone) }}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.birthday) }}
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.password) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.phone) }}
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        {{ form_row(form.description) }}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.email) }}
+                <div class="row form-group form-group">
+                    <div class="col-sm-10 col-sm-offset-2">
+                        {{ form_row(form.newsletter) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.password) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 form-group">
-                    {{ form_row(form.description) }}
-                </div>
-            </div>
-            <div class="row form-group form-group">
-                <div class="col-sm-10 col-sm-offset-2">
-                    {{ form_row(form.newsletter) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
-                </div>
-            </div>
-        </div>
-
-        <h1 class="section-title">
-          <i class="icon struct-red-bold"></i>
-          Ma structure
-        </h1>
-
-        <div class="form-contener">
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.company) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyStatus) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6  form-group">
-                    {{ form_row(form.companyCreationDate) }}
-                </div>
-                <div class="col-sm-6  form-group">
-                    {{ form_row(form.siret)}}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.address)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.addressSuite) }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.zipcode) }}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.city)}}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyPhone)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyMobile) }}
-                </div>
-            </div>
-
-            <div class="row">
-               <div class="col-sm-12 form-group">
-                    {{ form_row(form.companyDescription)}}
-               </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyEffective)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyStructures)}}
-                </div>
-            </div>
-
-            <div class="row form-group" >
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companySite)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.companyBlog)}}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
-                </div>
-            </div>
-        </div>
-
-        <h1 class="section-title">
-          <i class="icon list-red-bold"></i>
-          Mes souhaits
-        </h1>
-
-        <div class="form-contener">
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.wishedSize)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.useType)}}
-                </div>
-            </div>
-
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.usageDate)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_label(form.usageDuration)}}<br />
-                    <div class="row">
-                      <div class="col-sm-5">
-                        {{ form_widget(form.usageDuration) }}
-                      </div>
-                      <div class="col-sm-7">
-                        {{ form_widget(form.lengthTypeOccupation) }}
-                      </div>
-                      {{ form_errors(form.usageDuration) }}
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
                     </div>
                 </div>
             </div>
 
-            <div class="row form-group">
-                <div class="col-sm-12 form-group">
-                    {{ form_row(form.projectDescription)}}
-                </div>
-            </div>
+            <h1 class="section-title">
+              <i class="icon struct-red-bold"></i>
+              Ma structure
+            </h1>
 
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <div class="form-contener">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.company) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyStatus) }}
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <h1 class="section-title">
-          <i class="icon soc-red-bold"></i>
-          Réseaux sociaux
-        </h1>
+                <div class="row">
+                    <div class="col-sm-6  form-group">
+                        {{ form_row(form.companyCreationDate) }}
+                    </div>
+                    <div class="col-sm-6  form-group">
+                        {{ form_row(form.siret)}}
+                    </div>
+                </div>
 
-        <div class="form-contener">
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                  <div class="input-group social-group">
-                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
-                    {{ form_widget(form.facebookUrl) }}
-                    {{ form_errors(form.facebookUrl) }}
-                  </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.address)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.addressSuite) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                  <div class="input-group social-group">
-                    <span class="input-group-addon"><i class="fa fa-google-plus"></i></span>
-                    {{ form_widget(form.googleUrl) }}
-                    {{ form_errors(form.googleUrl) }}
-                  </div>
-                </div>
-            </div>
 
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                  <div class="input-group social-group">
-                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
-                    {{ form_widget(form.twitterUrl) }}
-                    {{ form_errors(form.twitterUrl) }}
-                  </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.zipcode) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.city)}}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                  <div class="input-group social-group">
-                    <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
-                    {{ form_widget(form.linkedinUrl) }}
-                    {{ form_errors(form.linkedinUrl) }}
-                  </div>
-                </div>
-            </div>
 
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                  <div class="input-group social-group">
-                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
-                      {{ form_widget(form.instagramUrl) }}
-                      {{ form_errors(form.instagramUrl) }}
-                  </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyPhone)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyMobile) }}
+                    </div>
                 </div>
-                <div class="col-sm-6 form-group">
-                    <div class="input-group social-group">
-                        <span class="input-group-addon"><i class="fa fa-viadeo"></i></span>
-                          {{ form_widget(form.otherUrl) }}
-                          {{ form_errors(form.otherUrl) }}
+
+                <div class="row">
+                   <div class="col-sm-12 form-group">
+                        {{ form_row(form.companyDescription)}}
+                   </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyEffective)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyStructures)}}
+                    </div>
+                </div>
+
+                <div class="row form-group" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companySite)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyBlog)}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+            <h1 class="section-title">
+              <i class="icon list-red-bold"></i>
+              Mes souhaits
+            </h1>
+
+            <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.wishedSize)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.useType)}}
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.usageDate)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.usageDuration)}}<br />
+                        <div class="row">
+                          <div class="col-sm-5">
+                            {{ form_widget(form.usageDuration) }}
+                          </div>
+                          <div class="col-sm-7">
+                            {{ form_widget(form.lengthTypeOccupation) }}
+                          </div>
+                          {{ form_errors(form.usageDuration) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-12 form-group">
+                        {{ form_row(form.projectDescription)}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
                 </div>
             </div>
 
-        </div>
+            <h1 class="section-title">
+              <i class="icon soc-red-bold"></i>
+              Réseaux sociaux
+            </h1>
 
-        <h1 class="section-title">
-          <i class="icon doc-red-bold"></i>
-          Documents à fournir
-        </h1>
+            <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                        {{ form_widget(form.facebookUrl) }}
+                        {{ form_errors(form.facebookUrl) }}
+                      </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-google-plus"></i></span>
+                        {{ form_widget(form.googleUrl) }}
+                        {{ form_errors(form.googleUrl) }}
+                      </div>
+                    </div>
+                </div>
 
-        <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                        {{ form_widget(form.twitterUrl) }}
+                        {{ form_errors(form.twitterUrl) }}
+                      </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
+                        {{ form_widget(form.linkedinUrl) }}
+                        {{ form_errors(form.linkedinUrl) }}
+                      </div>
+                    </div>
+                </div>
 
-          <div class="row">
-            <div class="col-sm-5 required-files">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                          {{ form_widget(form.instagramUrl) }}
+                          {{ form_errors(form.instagramUrl) }}
+                      </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <div class="input-group social-group">
+                            <span class="input-group-addon"><i class="fa fa-viadeo"></i></span>
+                              {{ form_widget(form.otherUrl) }}
+                              {{ form_errors(form.otherUrl) }}
+                        </div>
+                    </div>
+                </div>
 
-              <ul class="list-unstyled">
-                <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
-                <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
-              </ul>
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
+                </div>
 
             </div>
 
-            <div class="col-sm-7">
+            <h1 class="section-title">
+              <i class="icon doc-red-bold"></i>
+              Documents
+            </h1>
 
-              <label class="control-label bold">Mes téléchargements</label>
+            <div class="form-contener">
 
-              <dl class="dl-horizontal info-block">
-                <dt><i class="fa fa-info-circle"></i></dt>
-                <dd>
-                  Les documents suivants seront attachés à toutes vos candidatures.
-                  Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
-                  doivent être téléchargés à partir de chaque fiche projet.
-                </dd>
-              </dl>
+              <div class="row">
+                <div class="col-sm-5 required-files">
 
-              <div class="files">
-                <div class="file-infos">
-                  <span>file_name.png</span>
+                  <ul class="list-unstyled">
+                    <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
+                    <li><i class="fa fa-check"></i><label class="required">Pièce d'identité</label></li>
+                  </ul>
 
-                  <div class="pull-right actions">
-                    <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
-                    <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
-                  </div>
                 </div>
-                <div class="file-infos">
-                  <span>file_name.png</span>
 
-                  <div class="pull-right actions">
-                    <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
-                    <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
+                <div class="col-sm-7">
+
+                  <label class="control-label bold">Mes téléchargements</label>
+
+                  <dl class="dl-horizontal info-block">
+                    <dt><i class="fa fa-info-circle"></i></dt>
+                    <dd>
+                      Les documents suivants seront attachés à toutes vos candidatures.
+                      Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
+                      doivent être téléchargés à partir de chaque fiche projet.
+                    </dd>
+                  </dl>
+
+                  <div class="files">
+                    <div class="file-infos">
+                      <span>file_name.png</span>
+
+                      <div class="pull-right actions">
+                        <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
+                      </div>
+                    </div>
+                    <div class="file-infos">
+                      <span>file_name.png</span>
+
+                      <div class="pull-right actions">
+                        <a href="#" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a href="#" class="btn btn-delete"><i class="fa fa-trash-o"></i></a>
+                      </div>
+                    </div>
                   </div>
+
+                  <div class="add-file">
+                    <h4>
+                      <i class="icon small style-inline add-red"></i>
+                      Ajouter un fichier
+                    </h4>
+
+                    <dl class="dl-horizontal info-block">
+                      <dt><i class="fa fa-info-circle"></i></dt>
+                      <dd>
+                        Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
+                        Chaque fichier ne doit pas excéder 10MO.
+                      </dd>
+                    </dl>
+
+
+                  </div>
+
                 </div>
               </div>
 
-              <div class="add-file">
-                <h4>
-                  <i class="icon small inline add-red"></i>
-                  Ajouter un fichier
-                </h4>
-
-                <dl class="dl-horizontal info-block">
-                  <dt><i class="fa fa-info-circle"></i></dt>
-                  <dd>
-                    Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                    Chaque fichier ne doit pas excéder 5MO.
-                  </dd>
-                </dl>
-
-
-              </div>
-
             </div>
-          </div>
 
         </div>
-
     </div>
+    {{ form_end(form) }}
 </div>
-{{ form_end(form) }}
 
 {% endblock %}
 
@@ -359,6 +361,44 @@
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    <script type="text/javascript">
+        function initFormListener() {
+            $('input[type="submit"]').click(function(){
+
+                var form = $(this).closest('form');
+                var action = form.attr('action');
+                var formData = new FormData(form[0]);
+
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function (data) {
+                        successAjax(data);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+                return false;
+            });
+        }
+
+        function successAjax(data) {
+            $("#js-form-space").html($(data).find('#js-form-space'));
+            initFormListener();
+            $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+            $("select").chosen();
+        }
+
+        $(document).ready(function() {
+            initFormListener();
+        });
+    </script>
+
 {% endblock %}
 
 {% block stylesheets %}

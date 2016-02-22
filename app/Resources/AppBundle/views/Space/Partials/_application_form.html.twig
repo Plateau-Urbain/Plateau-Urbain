@@ -8,12 +8,12 @@
 
       <div class="col-sm-12">
         <h3 class="has-icon medium no-margin">
-          <i class="icon medium inline bkg list-red-bold"></i>
+          <i class="icon medium style-inline bkg list-red-bold"></i>
           {{ 'Vous êtes candidat' | upper }}
         </h3>
         <small>
           Attention ! Assurez-vous que votre profil soit le plus à jour possible avant de candidater :
-          <a href="#">voir mon profil</a>
+          <a href="{{ path('security_profil') }}">voir mon profil</a>
         </small>
 
         <div class="pu-col-container content-block">
@@ -141,7 +141,7 @@
 
                 <div class="add-file">
                   <h4>
-                    <i class="icon small inline add-red"></i>
+                    <i class="icon small style-inline add-red"></i>
                     Ajouter un fichier
                   </h4>
 
@@ -149,7 +149,7 @@
                     <dt><i class="fa fa-info-circle"></i></dt>
                     <dd>
                       Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                      Chaque fichier ne doit pas excéder 5MO.
+                      Chaque fichier ne doit pas excéder 10MO.
                     </dd>
                   </dl>
                 </div>

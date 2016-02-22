@@ -33,7 +33,7 @@ class ApplicationType extends AbstractType
                 'required' => false,
                 'label'=>"Quelle serait votre contribution au projet global du propriétaire ?",
                 'attr' => array('class' => 'textarea-box', 'rows'=> 6),
-                'help' => 'Some help text'
+                'help' => 'En cochant cette case vous acceptez d’intégrer une association de gestion des locaux avec d’autres porteurs de projet'
             ))
             ->add('startOccupation', 'date', array(
                     'label'=>"Date d'entrée souhaitée",

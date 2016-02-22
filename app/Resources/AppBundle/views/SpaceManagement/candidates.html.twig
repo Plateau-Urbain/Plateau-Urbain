@@ -51,7 +51,9 @@
             {% endif %}
           </div>
           <div class="image-wrapper">
-            <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="{{ space.pics.first.fileName }}" />
+              {% if space.pics.0 is defined %}
+                    <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="{{ space.pics.first.fileName }}" />
+              {% endif %}
           </div>
         </div>
       </div>
@@ -99,7 +101,7 @@
             </div>
             <div class="col-sm-4">
               {% if space.published and space.closed == false %}
-                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-secondary">Clotûrer</a>
+                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-secondary">Clôturer</a>
               {% endif %}
             </div>
           </div>

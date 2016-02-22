@@ -8327,8 +8327,8 @@ div.dark_square #pp_full_res .pp_inline {
   font-size: 60px;
 }
 
-.slide2 .pu-main-title {
-  color: #bc1b38;
+.slide3 .pu-main-title {
+  color: white;
   font-size: 60px;
 }
 
@@ -8354,8 +8354,8 @@ div.dark_square #pp_full_res .pp_inline {
   line-height: 42px;
 }
 
-.slide2 .pu-sub-title {
-  color: black;
+.slide3 .pu-sub-title {
+  color: white;
   font-size: 26px;
 }
 
@@ -9106,4 +9106,24 @@ form .main .section-title {
   width: 15px;
   display: inline-block;
   margin-right: 5px;
+}
+
+@media (max-width: 1095px) {
+  .navbar {
+    margin-right: 0px;
+  }
+
+  .navbar-nav > li > a {
+    padding: 0 22px;
+  }
+}
+
+.tooltip-inner {
+  max-width: none;
+}
+
+@media (max-width: 1200px) {
+  .application_buttons .btn-block, .application_buttons .btn-block {
+    font-size: 12px;
+  }
 }
