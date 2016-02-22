@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
+use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
 use Exporter\Handler;
@@ -357,11 +358,11 @@ class SpaceManagementController extends Controller
         $em->persist($application);
         $em->flush();
 
-        return $this->redirect($request->server->get('HTTP_REFERER'));
+        return $this->redirect($request->server->get('HTTP_REFERER') . "#listing-header");
     }
 
     /**
-     * @Route("/photo/{id}/delete", name="space_manager_removepicture", methods={"delete"})
+     * @Route("/photo/{id}/delete", name="space_manager_removepicture")
      *
      * @param Request $request
      *
@@ -420,6 +421,35 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * @Route("/parcel/{id}/delete", name="space_manager_removeparcel")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeParcelAction(Request $request, Parcel $parcel)
+    {
+        if (!$parcel->getSpace()->isOwner($this->getUser())) {
+            throw new AccessDeniedException();
+        }
+
+        // Check csrfToken
+        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove_parcel', $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid token');
+        }
+
+        $spaceId = $parcel->getSpace()->getId();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($parcel);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'Le lot a bien été supprimé.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
      * @param Space $data
      * @param array $options
      *
@@ -471,7 +501,7 @@ class SpaceManagementController extends Controller
 
         $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
 
-        return $this->redirect($this->generateUrl('space_manager_list'));
+        return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1')));
     }
 
 

@@ -57,7 +57,7 @@ class SpaceAdmin extends Admin
             ->add('type', null, array('label' => "Type d'espace", 'required' => true))
             ->add('description', null, array('label' => "Description de l'espace"))
             ->add('activityDescription', null, array('label' => "Activités recherchées"))
-            ->add('price', null, array('label' => 'Prix de la redevance au m2 mensuel'))
+            ->add('price', null, array('label' => 'Prix de la redevance au m² mensuel'))
             ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
 
             ->end()

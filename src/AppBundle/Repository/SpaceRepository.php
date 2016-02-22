@@ -45,10 +45,12 @@ class SpaceRepository extends EntityRepository
 
         if (!empty($params['enabled'])) {
             $qb->andWhere('s.enabled = :enabled')->setParameter('enabled', $params['enabled']);
+            $qb->andWhere('s.limitAvailability >= :limitAvailability')->setParameter('limitAvailability', new \DateTime('now'));
         }
         
         if (isset($params['closed'])) {
             $qb->andWhere('s.closed = :closed')->setParameter('closed', $params['closed']);
+            $qb->orWhere('s.limitAvailability < :limitAvailability')->setParameter('limitAvailability', new \DateTime('now'));
         }
 
         if (!empty($params['limitAvailability'])) {
@@ -56,11 +58,11 @@ class SpaceRepository extends EntityRepository
         }
 
         if (!empty($params['zipCode'])) {
-            $qb->andWhere('s.zipCode LIKE :key')->setParameter('key', $params['zipCode'] . '%' );
+            $qb->andWhere('s.zipCode LIKE :zipCode')->setParameter('zipCode', $params['zipCode'] . '%' );
         }
 
         if (!empty($params['localType'])) {
-            $qb->andWhere('p.type = :key')->setParameter('key', $params['localType'] );
+            $qb->andWhere('p.type = :localType')->setParameter('localType', $params['localType'] );
         }
 
         if (!empty($params['minimumPrice'])) {

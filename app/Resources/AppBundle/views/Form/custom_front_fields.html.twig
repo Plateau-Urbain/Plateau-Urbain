@@ -28,7 +28,7 @@
 {% block form_label %}
     {{- parent() -}}
     {% if help|default(false) %}
-        <span data-toggle="tooltip" data-placement="right" title="{{ help }}">
+        <span data-toggle="tooltip" data-placement="right" title="{{ help }}" data-class="danger">
         <i class="fa fa-info-circle danger"></i>
     </span>
     {% endif %}
@@ -44,9 +44,11 @@
                         {{ form_widget(form) }}
                     </div>
                     <div class="col-sm-9">
-                        Environ <span data-model="monthPrice">-</span> &euro; / mois H.C. - H.T.
+                      <span class="calculator">
+                        <strong>Environ <span class="price" data-model="monthPrice">-</span> &euro; / mois H.C. - H.T.<sup>1</sup></strong>
                         <br>
-                        Soit <span data-model="yearPrice">-</span> &euro; / an H.C. - H.T.
+                        Soit <span data-model="yearPrice">-</span> &euro; / an H.C. - H.T.<sup>1</sup>
+                      </span>
                     </div>
                 </div>
             </div>

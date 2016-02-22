@@ -1,29 +1,42 @@
-<div class="colorBox-content">
+<div class="colorBox-content registration">
+
+    <img class="icon" src="{{ asset('/bundles/app/images/user_icon.png') }}" />
+
     <h4>Inscription</h4>
-    <br />
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis diam nec lacus porta, vel tempor augue viverra. </p>
+    <p>Pour vous inscrire, merci de renseigner la nature de votre projet, ainsi que la surface idéale dont vous auriez besoin.</p>
+
     <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-        {{ form_label(form.wishedSize) }}
-        {{ form_widget(form.wishedSize) }}
 
-        {{ form_label(form.useType) }}
+        <div class="form-group inline-field">
+          {{ form_label(form.wishedSize) }}
+          {{ form_widget(form.wishedSize) }}
+        </div>
+
         {{ form_widget(form.useType) }}
 
         <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" alt="Sign in with Facebook">Sign in with Facebook</a>
 
-        <br />
-        <br />
-        <br />
-        <br />
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            {{ form_widget(form.email) }}
+          </div>
+        </div>
 
-        <label>Mot de passe *</label>
-        {{ form_widget(form.plainPassword.first) }}
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+            {{ form_widget(form.plainPassword.first) }}
+          </div>
+        </div>
 
-        <label>Confirmation du mot de passe *</label>
-        {{ form_widget(form.plainPassword.second) }}
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+            {{ form_widget(form.plainPassword.second) }}
+          </div>
+        </div>
 
         {{ form_rest(form) }}
 
@@ -31,9 +44,11 @@
             <p style="color: red;">{{ msg }}</p>
         {% endfor %}
 
-        <div>
-            <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
-        </div>
-        <br />
+        <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
+
+        <p>
+          Vous allez recevoir un email de confirmation.
+          Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
+        </p>
     </form>
 </div>

@@ -28,7 +28,7 @@ class ApplicationAdmin extends Admin
             ->add('projectHolder', null, array('label' => 'Porteur de projet'))
             ->add('name', null, array('label'=>"Nom du projet") )
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true))
-            ->add('wishedSize', null, array('label'=> 'Surface souhaitée (m2)'))
+            ->add('wishedSize', null, array('label'=> 'Surface souhaitée (m²)'))
             ->add('lengthOccupation', null, array('label'=> 'Durée d\'occupation'))
             ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(), 'label'=> 'Durée d\'occupation'))
             ->add('startOccupation', 'date', array('label'=>"Date d'entrée souhaitée"))

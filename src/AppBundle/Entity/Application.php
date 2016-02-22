@@ -100,6 +100,7 @@ class Application
      * @ORM\Column(name="length_occupation", type="integer")
      * @Assert\NotBlank()
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une durée positive.", groups={"projectHolder"})
      */
     private $lengthOccupation;
 
@@ -163,6 +164,7 @@ class Application
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.")
      */
     protected $wishedSize;
 
@@ -501,6 +503,14 @@ class Application
     public function isRejected()
     {
         return $this->status === self::REJECT_STATUS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnread()
+    {
+        return $this->status === self::UNREAD_STATUS;
     }
 
     /**

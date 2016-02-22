@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -97,4 +97,17 @@ $(function () {
            recalculate_size_price($element, basePrice);
         });
     });
+});
+
+
+
+$(function(){
+  var sizePhotoListItem = function() {
+    var $images = $('.photo-list .photo-item .image');
+    $images.each(function(){
+      $(this).css({height: $(this).width() * 0.75});
+    });
+  };
+  $(window).on('resize', sizePhotoListItem);
+  sizePhotoListItem();
 });

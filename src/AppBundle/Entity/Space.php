@@ -16,7 +16,7 @@ use AppBundle\Entity\User;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
- * @Assert\Callback({"validatePicturesCount"})
+ * @Assert\Callback({"validateNbParcels", "validatePicturesCount"})
  */
 class Space
 {
@@ -564,6 +564,14 @@ class Space
     }
 
     /**
+     * @return bool
+     */
+    public function getClosed()
+    {
+        return $this->closed;
+    }
+
+    /**
      * @param bool $closed
      */
     public function setClosed($closed)
@@ -689,7 +697,7 @@ class Space
     public function addParcel(Parcel $parcel)
     {
         $this->setUpdated(new \DateTime());
-        $this->parcels[] = $parcel;
+        $this->parcels->add($parcel);
 
         $parcel->setSpace($this);
 
@@ -860,6 +868,18 @@ class Space
     }
 
     /**
+     * @param $type
+     * @return int
+     */
+    public function nbValidApplication() {
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        $ret = $this->getApplication()->matching($criteria)->count();
+
+        return $ret;
+    }
+
+    /**
      * @param $useType
      * @return int
      */
@@ -908,6 +928,18 @@ class Space
         }
 
         return $ret;
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validateNbParcels(ExecutionContextInterface $context)
+    {
+        if ($this->parcels->count() < 1) {
+            $context
+                ->addViolationAt("newParcel", 'Vous devez créer au moins un lot pour votre espace.')
+            ;
+        }
     }
 
     /**

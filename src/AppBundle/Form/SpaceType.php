@@ -49,7 +49,7 @@ class SpaceType extends AbstractType
                 )
             )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
-            ->add('price', null, array('label' => 'Prix au m²', 'attr' => array('class' => 'form-control')))
+            ->add('price', null, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
@@ -92,16 +92,16 @@ class SpaceType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             // Handles new parcel
             $newParcel = $event->getForm()->get('newParcel')->getData();
-            if ($newParcel instanceof Parcel && $event->getForm()->isValid()) {
+            if ($newParcel instanceof Parcel) {
                 $event->getData()->addParcel($newParcel);
             }
 
             // Handles new image
             $newImage = $event->getForm()->get('newImage')->getData();
-            if ($newImage instanceof SpaceImage && $event->getForm()->isValid()) {
+            if ($newImage instanceof SpaceImage) {
                 $event->getData()->addPic($newImage);
             }
         });

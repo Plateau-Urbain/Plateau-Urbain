@@ -8,25 +8,27 @@
     <div class="revslider" >
         <ul>
             <li data-transition="fade" data-slotamount="7" class="slide1">
-                <img src="{{ asset('/bundles/app/images/slide1.png') }}" alt="Porteurs de projet" />
+                <img src="{{ asset('/bundles/app/images/ACCUEIL.png') }}" alt="Porteurs de projet" />
                 <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="320" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Porteurs de projet' | upper }}</div>
                 <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="390" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">Vous êtes à la recherche d'espaces à prix abordable pour<br /> héberger votre projet ? La plate-forme Plateau Urbain<br /> vous aide à trouver l'endroit rêvé. Inscrivez-vous pour <br />découvrir les espaces.</div>
                 <a href="{% if app.user %}{{ path('security_profil') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">S'INSCRIRE</a>
             </li>
             <li data-transition="fade" data-slotamount="7" class="slide2">
-                <img src="{{ asset('/bundles/app/images/slide2.png') }}" alt="Rechercher un espace" />
-                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="120" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Rechercher <br />un espace' | upper | raw }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="255" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">LA VACANCE... 4 000 000 m2 de<br />bureaux inocupés en Ile de France.<br />Une charge financière pour les<br /> propriétaires et la ville en général.<br /> Mais aussi une opportunité pour <br />ceux qui cherchent à bénéficier des <br /> ressources urbaines à moindres <br />coûts, pour se loger et travailler. <br /><b>Rejoignez-nous dès maintenant!</b></div>
-                <a href="{% if app.user %}{{ path('search_index') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="75" data-y="550" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">SOUTENIR PLATEAU URBAIN</a>
+                <img src="{{ asset('/bundles/app/images/CREATION.png') }}" alt="Rechercher un espace" />
+                <div class="caption sfr slider-title pu-main-title" data-x="70" data-y="180" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Soutenez<br/> la création' | upper | raw }}</div>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="75" data-y="315" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme de mise à disposition de locaux<br /> est un service gratuit pour les porteurs de projets <br />économiques, sociaux et culturels.<br /> Vos dons permettent de continuer à la développer,<br /> au service de la création sous toutes ses formes.</div>
+                <a href="http://www.plateau-urbain.com/#!dons/y36xk" target="_blank" class="caption sfb btn btn-fullcolor btn-lg" data-x="75" data-y="490" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">FAIRE UN DON À PLATEAU URBAIN</a>
             </li>
             <li data-transition="fade" data-slotamount="7" class="slide3">
-                <img src="{{ asset('/bundles/app/images/slide3b.png') }}" alt="Propriétaires et gérants" />
+                <img src="{{ asset('/bundles/app/images/PROPRIO.png') }}" alt="Propriétaires et gérants" />
                 <div class="caption sfr slider-title pu-main-title" data-x="120" data-y="220" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Propriétaires <br />et gérants' | upper | raw }}</div>
                 <div class="caption sfl slider-subtitle pu-sub-title" data-x="120" data-y="360" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme Plateau Urbain vous offre la <br />possibilité de valoriser votre patrimoine <br />inutilisé, en permettant à des projets venus<br /> de tout le Grand Paris de naître ou de se<br /> développer.</div>
                 <a href="{% if app.user %}{{ path('space_manager_add') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg inline_register" data-x="120" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">PROPOSER UN ESPACE</a>
             </li>
         </ul>
     </div>
+
+    <div class="bottom"></div>
 </div>
 <!-- END HOME SLIDER SECTION -->
 {% endblock %}
@@ -52,10 +54,17 @@
         <div class='col-sm-6'>
             <p class="ml65 mt15 pu-size"><strong>4 000 000 m²</strong><br /> de bureaux vacants</p>
         </div>
-        
+
     </div>
 </div>
 
+{% endblock %}
+
+{% block actualities %}
+  <div class="row pu-actualities white-top">
+    <div class="top"></div>
+    {{ render(controller('AppBundle:Actuality:show')) }}
+  </div>
 {% endblock %}
 
 {% block partners %}

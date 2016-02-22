@@ -21,19 +21,19 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null, array('label'=>"Nom du projet", 'attr' => array('placeholder'=>"Nom du projet", 'class'=>'form-control input-box')) )
+            ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')) )
             ->add('description', null, array(
                 'label'=>"Description du projet",
                 'attr' => array(
-                    'placeholder'=>"Description du projet",
-                    'class'=>'textarea-box'
+                    'class'=>'textarea-box',
+                    'rows'=> 6
                 )
             ))
             ->add('contribution', null, array(
                 'required' => false,
                 'label'=>"Quelle serait votre contribution au projet global du propriétaire ?",
-                'attr' => array('class' => 'textarea-box'),
-                'help' => 'Some help text'
+                'attr' => array('class' => 'textarea-box', 'rows'=> 6),
+                'help' => 'En cochant cette case vous acceptez d’intégrer une association de gestion des locaux avec d’autres porteurs de projet'
             ))
             ->add('startOccupation', 'date', array(
                     'label'=>"Date d'entrée souhaitée",
@@ -59,7 +59,7 @@ class ApplicationType extends AbstractType
                     'label' => "Durée d'occupation"
                 )
             )
-            ->add('category', null, array('label'=>"Categorie du projet",'required'=> true, 'attr'=> array('placeholder'=>"Categorie du projet", 'class'=>'form-control input-box')))
+            ->add('category', null, array('label'=>"Type de projet",'required'=> true, 'attr'=> array('placeholder'=>"Categorie du projet", 'class'=>'form-control input-box')))
             ->add('wishedSize', null, array(
                 'label'=>"Surface souhaitée en m²",
                 'attr' => array('class' => 'input-box'),
@@ -67,7 +67,7 @@ class ApplicationType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
