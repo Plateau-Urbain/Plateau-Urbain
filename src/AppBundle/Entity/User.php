@@ -1305,19 +1305,6 @@ class User extends BaseUser
     }
 
     /**
-     * Add spaces
-     *
-     * @param \AppBundle\Entity\Space $spaces
-     * @return User
-     */
-    public function addSpace(\AppBundle\Entity\Space $spaces)
-    {
-        $this->spaces[] = $spaces;
-
-        return $this;
-    }
-
-    /**
      * Get linkedinId
      *
      * @return string
@@ -1327,23 +1314,4 @@ class User extends BaseUser
         return $this->linkedinId;
     }
 
-    /**
-     * Remove spaces
-     *
-     * @param \AppBundle\Entity\Space $spaces
-     */
-    public function removeSpace(\AppBundle\Entity\Space $spaces)
-    {
-        $this->spaces->removeElement($spaces);
-    }
-
-    /**
-     * Get spaces
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSpaces()
-    {
-        return $this->spaces;
-    }
 }
