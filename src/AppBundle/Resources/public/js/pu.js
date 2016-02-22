@@ -113,23 +113,24 @@ $(function(){
 });
 
 
-$(function(){
-  var idCardRequired = $('.file-infos.idcard-file input[type=file]').attr('required');
-  var kbisRequired = $('.file-infos.kbis-file input[type=file]').attr('required');
+var idCardRequired = $('.file-infos.idcard-file input[type=file]').attr('required');
+var kbisRequired = $('.file-infos.kbis-file input[type=file]').attr('required');
 
-  var toggleIdFiles = function(){
+var toggleIdFiles = function(){
     if ($('#project_owner_companyStatus').val() == 'Association') {
-      $('.idcard-file').show();
-      $('.kbis-file').hide();
-      $('.file-infos.idcard-file').show().find('input[type=file]').attr('required', idCardRequired);
-      $('.file-infos.kbis-file').hide().find('input[type=file]').attr('required', false);
+        $('.idcard-file').show();
+        $('.kbis-file').hide();
+        $('.file-infos.idcard-file').show().find('input[type=file]').attr('required', idCardRequired);
+        $('.file-infos.kbis-file').hide().find('input[type=file]').attr('required', false);
     } else {
-      $('.idcard-file').hide();
-      $('.kbis-file').show();
-      $('.file-infos.idcard-file').hide().find('input[type=file]').attr('required', false);
-      $('.file-infos.kbis-file').show().find('input[type=file]').attr('required', kbisRequired);
+        $('.idcard-file').hide();
+        $('.kbis-file').show();
+        $('.file-infos.idcard-file').hide().find('input[type=file]').attr('required', false);
+        $('.file-infos.kbis-file').show().find('input[type=file]').attr('required', kbisRequired);
     }
-  };
+};
+
+$(function(){
   $('#project_owner_companyStatus').change(toggleIdFiles);
   toggleIdFiles();
 });

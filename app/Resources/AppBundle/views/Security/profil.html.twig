@@ -365,7 +365,7 @@
 
               <div class="add-file">
                 <h4>
-                  <i class="icon small inline add-red"></i>
+                  <i class="icon small icon-inline add-red"></i>
                   Ajouter un fichier
                 </h4>
 
@@ -383,12 +383,12 @@
               </div>
 
             </div>
-          </div>
           <div class="row">
               <div class="col-sm-4 col-sm-offset-4">
                   <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
               </div>
           </div>
+        </div>
         </div>
     </div>
     {{ form_end(form) }}
@@ -435,6 +435,7 @@
             initFormListener();
             $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
             $("select").chosen();
+            toggleIdFiles();
         }
 
         $(document).ready(function() {
