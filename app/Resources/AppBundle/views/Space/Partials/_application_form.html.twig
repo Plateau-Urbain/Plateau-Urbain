@@ -79,9 +79,28 @@
 
               <div class="col-md-6 files">
 
-                <h4>{{space.getDocuments() | length}} fichiers à joindre à votre candidature *</h4>
+                {% if space.getDocuments() | length > 0 %}
+                  <h4>{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature *</h4>
+                {% endif %}
 
                 <ul class="list-unstyled files-list"></ul>
+
+                {% for document in space.documents %}
+                  <div class="file-infos">
+                    <span>{{document.name}}</span>
+                    <div class="pull-right actions">
+
+                      <label class="custom-file-input btn btn-accepted">
+                        {{ form_widget(attribute(form, "document_#{document.id}")) }}
+                        <i class="fa fa-upload"></i>
+                      </label>
+                      {% if form.vars.data.getFilesType(document.id) %}
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+
 
                 <label class="control-label">Fichiers déjà enregistrés dans votre compte, et qui seront joints à votre fichier de candidature</label>
                 <dl class="dl-horizontal dl-with-fa-icon tip">
@@ -127,24 +146,6 @@
                         </div>
                     {% endfor %}
 
-
-                    {% for document in space.documents %}
-                      <div class="file-infos">
-                        <span>{{document.name}}</span>
-                        <div class="pull-right actions">
-
-                          <label class="custom-file-input btn btn-accepted">
-                              {{ form_widget(attribute(form, "document_#{document.id}")) }}
-                              <i class="fa fa-upload"></i>
-                          </label>
-                          {% if form.vars.data.getFilesType(document.id) %}
-                            <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                          {% endif %}
-                        </div>
-                      </div>
-                    {% endfor %}
-
-
                   </div>
                 </div>
 
@@ -167,7 +168,9 @@
                           <span>{{file.fileName | slice(14, 100)}}</span>
                           <div class="pull-right actions">
                               <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                              <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                              {% if file.id is not empty %}
+                                <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                              {% endif %}
                           </div>
                         </div>
                     {% endfor %}
@@ -177,7 +180,7 @@
                 <div class="row">
                   <div class="add-file col-sm-10">
                     <h4>
-                      <i class="icon small inline add-red"></i>
+                      <i class="icon small icon-inline add-red"></i>
                       Ajouter un fichier
                     </h4>
 
@@ -185,7 +188,7 @@
                       <dt><i class="fa fa-info-circle"></i></dt>
                       <dd>
                         Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                        Chaque fichier ne doit pas excéder 5MO.
+                        Chaque fichier ne doit pas excéder 10MO.
                       </dd>
                     </dl>
 
