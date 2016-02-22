@@ -7,6 +7,23 @@
         <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
     {% endif %}
 
+    <div class="social-connect">
+      <a class="btn btn-block btn-social btn-facebook" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
+        Me connecter avec Facebook
+      </a>
+
+      <a class="btn btn-block btn-social btn-google-plus" href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+        Me connecter avec Google+
+      </a>
+      <a class="btn btn-block btn-social btn-linkedin" href="{{ path('hwi_oauth_service_redirect', {'service': 'linkedin' }) }}">
+        Me connecter avec LinkedIn
+      </a>
+    </div>
+
+    <div>
+      <span class="btn-rounded grey">OU</span>
+    </div>
+
     <form action="{{ path("fos_user_security_check") }}" method="post">
       <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 

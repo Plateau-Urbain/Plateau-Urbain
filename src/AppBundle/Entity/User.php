@@ -31,6 +31,21 @@ class User extends BaseUser
     protected $id;
 
     /**
+      * @ORM\Column(name="facebook_id", type="string", length=255, nullable=true)
+     */
+    protected $facebookId;
+
+    /**
+      * @ORM\Column(name="google_id", type="string", length=255, nullable=true)
+     */
+    protected $googleId;
+
+    /**
+      * @ORM\Column(name="linkedin_id", type="string", length=255, nullable=true)
+     */
+    protected $linkedinId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="civility", length=3, type="string", nullable=true)
@@ -1099,6 +1114,29 @@ class User extends BaseUser
     }
 
     /**
+     * Set facebookId
+     *
+     * @param string $facebookId
+     * @return User
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * Get facebookId
+     *
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
      * Add applications
      *
      * @param \AppBundle\Entity\Application $applications
@@ -1132,6 +1170,19 @@ class User extends BaseUser
     }
 
     /**
+     * Add spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     * @return User
+     */
+    public function addSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces[] = $spaces;
+
+        return $this;
+    }
+
+    /**
      * Add documents
      *
      * @param \AppBundle\Entity\UserDocument $documents
@@ -1140,6 +1191,62 @@ class User extends BaseUser
     public function addDocument(\AppBundle\Entity\UserDocument $documents)
     {
         $this->documents[] = $documents;
+
+        return $this;
+    }
+
+    /**
+     * Remove spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     */
+    public function removeSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces->removeElement($spaces);
+    }
+
+    /**
+     * Get spaces
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpaces()
+    {
+        return $this->spaces;
+    }
+
+    /**
+     * Set googleId
+     *
+     * @param string $googleId
+     * @return User
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * Set linkedinId
+     *
+     * @param string $linkedinId
+     * @return User
+     */
+    public function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
 
         return $this;
     }
@@ -1198,35 +1305,13 @@ class User extends BaseUser
     }
 
     /**
-     * Add spaces
+     * Get linkedinId
      *
-     * @param \AppBundle\Entity\Space $spaces
-     * @return User
+     * @return string
      */
-    public function addSpace(\AppBundle\Entity\Space $spaces)
+    public function getLinkedinId()
     {
-        $this->spaces[] = $spaces;
-
-        return $this;
+        return $this->linkedinId;
     }
 
-    /**
-     * Remove spaces
-     *
-     * @param \AppBundle\Entity\Space $spaces
-     */
-    public function removeSpace(\AppBundle\Entity\Space $spaces)
-    {
-        $this->spaces->removeElement($spaces);
-    }
-
-    /**
-     * Get spaces
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSpaces()
-    {
-        return $this->spaces;
-    }
 }

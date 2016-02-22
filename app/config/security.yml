@@ -34,6 +34,7 @@ security:
         # defaut login area for standard users
         main:
             pattern:            ^/
+
             form_login:
                 provider:       fos_userbundle
                 login_path:     security_login_error
@@ -42,9 +43,27 @@ security:
                 check_path:     fos_user_security_check
                 #failure_path:   null
                 default_target_path: homepage
+
+            oauth:
+                provider: fos_userbundle
+
+                login_path: /
+                check_path: /connect_check
+                login_path: security_login_error
+                default_target_path: homepage
+
+                resource_owners:
+                    facebook: "/connect/check-facebook"
+                    google: "/connect/check-google"
+                    linkedin: "/connect/check-linkedin"
+
+                oauth_user_provider:
+                  service: app.provider.oauth
+
             logout:
                 path: fos_user_security_logout
                 target: homepage
+
             anonymous:    true
 
 
@@ -55,6 +74,8 @@ security:
         - { path: ^/espaces/, roles: ROLE_USER }
         - { path: ^/recherche/, roles: ROLE_USER }
         - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/connexion, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/inscription, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/mot-de-passe-oublie, roles: IS_AUTHENTICATED_ANONYMOUSLY }

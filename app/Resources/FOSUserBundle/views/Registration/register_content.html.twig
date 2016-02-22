@@ -15,6 +15,22 @@
 
         {{ form_widget(form.useType) }}
 
+        <div class="social-connect">
+          <a class="btn btn-block btn-social btn-facebook" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
+            Me connecter avec Facebook
+          </a>
+          <a class="btn btn-block btn-social btn-google-plus" href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+            Me connecter avec Google+
+          </a>
+          <a class="btn btn-block btn-social btn-linkedin" href="{{ path('hwi_oauth_service_redirect', {'service': 'linkedin' }) }}">
+            Me connecter avec LinkedIn
+          </a>
+        </div>
+
+        <div>
+          <span class="btn-rounded grey">OU</span>
+        </div>
+
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-user"></i></span>
