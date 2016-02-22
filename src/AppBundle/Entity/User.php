@@ -36,6 +36,16 @@ class User extends BaseUser
     protected $facebookId;
 
     /**
+      * @ORM\Column(name="google_id", type="string", length=255, nullable=true)
+     */
+    protected $googleId;
+
+    /**
+      * @ORM\Column(name="linkedin_id", type="string", length=255, nullable=true)
+     */
+    protected $linkedinId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="civility", length=3, type="string", nullable=true)
@@ -1108,7 +1118,7 @@ class User extends BaseUser
     /**
      * Get facebookId
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -1141,7 +1151,7 @@ class User extends BaseUser
     /**
      * Get applications
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApplications()
     {
@@ -1174,10 +1184,56 @@ class User extends BaseUser
     /**
      * Get spaces
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSpaces()
     {
         return $this->spaces;
+    }
+
+    /**
+     * Set googleId
+     *
+     * @param string $googleId
+     * @return User
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * Set linkedinId
+     *
+     * @param string $linkedinId
+     * @return User
+     */
+    public function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
+
+        return $this;
+    }
+
+    /**
+     * Get linkedinId
+     *
+     * @return string 
+     */
+    public function getLinkedinId()
+    {
+        return $this->linkedinId;
     }
 }

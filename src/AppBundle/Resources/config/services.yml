@@ -166,3 +166,7 @@ services:
             -
         tags:
             - {name: sonata.admin, manager_type: orm, group: Actualités,label: Lister, show_in_dashboard: true}
+
+    app.provider.oauth:
+        class: AppBundle\Security\OAuthUserProvider
+        arguments: [@fos_user.user_manager,{facebook: facebookId, google: googleId, linkedin: linkedinId}]

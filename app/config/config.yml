@@ -229,22 +229,33 @@ stof_doctrine_extensions:
 
 hwi_oauth:
     firewall_name: main
-
-    connect: ~
-    # connect:
-    #     confirmation: true
-        # account_connector: hwi_oauth.user.provider.fosub_bridge
-        # registration_form_handler: hwi_oauth.registration.form.handler.fosub_bridge
-        # registration_form: fos_user.registration.form
+    connect:
+      account_connector: app.provider.oauth
 
     resource_owners:
         facebook:
             type:          facebook
             client_id:     570239633124785
             client_secret: 160129ffb77b1abab32545694073610e
-            scope:         ""
+            scope:         "email, public_profile"
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
+            paths:
+                email: email
+            options:
+                display: page
 
-    fosub:
-        username_iterations: 30
-        properties:
-            facebook: facebookId
+        google:
+            type:           google
+            client_id:      410143813482-1c59cv9p9a5799i1qk14pmbrk86abagm.apps.googleusercontent.com
+            client_secret:  OZprSYO7EK3vtzwXPasa5_-f
+            scope:          "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email
+
+        linkedin:
+            type:           linkedin
+            client_id:      77lah7d46wx1ye
+            client_secret:  bS7rPmYrX5NHp0qB
+            scope:          r_emailaddress
+            paths:
+                email: emailAddress

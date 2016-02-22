@@ -70,3 +70,59 @@
 .btn-accepted{
   background: #8CCB84;
 }
+
+.btn-rounded{
+  background: #EDE8E2;
+  font-size: 12px;
+  border-radius: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  padding: 7px;
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #BFB7AC;
+  line-height: 18px;
+}
+
+.btn-social{
+  color: @white;
+  text-align: left;
+  font-size: 14px;
+  padding: 7px 10px;
+
+  &:hover{ color: @white; }
+
+  &:before{
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+    font-family: "FontAwesome";
+    margin-right: 15px;
+    font-size: 20px;
+    line-height: 14px;
+  }
+
+  &:after{
+    width: 20px;
+    float: right;
+    text-align: center;
+    display: inline-block;
+    font-family: "FontAwesome";
+    content: '\f054';
+  }
+
+  &.btn-facebook{
+    background-color: #3B5999;
+    &:before{ content: '\f09a'; }
+  }
+
+  &.btn-google-plus{
+    background-color: #E12F2F;
+    &:before{ content: '\f0d5'; }
+  }
+
+  &.btn-linkedin{
+    background-color: #0177B5;
+    &:before{ content: '\f0e1'; }
+  }
+}
