@@ -277,6 +277,17 @@ class User extends BaseUser
     protected $applications;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="UserDocument",
+     *     mappedBy="projectHolder",
+     *     orphanRemoval=true,
+     *     cascade={"persist", "remove"}
+     * )
+     * @Assert\Valid()
+     */
+    protected $documents;
+
+    /**
      * @ORM\OneToMany(targetEntity="Space", mappedBy="owner", cascade={"remove"})
      */
     protected $spaces;
@@ -1172,6 +1183,19 @@ class User extends BaseUser
     }
 
     /**
+     * Add documents
+     *
+     * @param \AppBundle\Entity\UserDocument $documents
+     * @return User
+     */
+    public function addDocument(\AppBundle\Entity\UserDocument $documents)
+    {
+        $this->documents[] = $documents;
+
+        return $this;
+    }
+
+    /**
      * Remove spaces
      *
      * @param \AppBundle\Entity\Space $spaces
@@ -1228,12 +1252,98 @@ class User extends BaseUser
     }
 
     /**
+     * Remove documents
+     *
+     * @param \AppBundle\Entity\UserDocument $documents
+     */
+    public function removeDocument(\AppBundle\Entity\UserDocument $documents)
+    {
+        $this->documents->removeElement($documents);
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function hasDocuments($type)
+    {
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    /**
+     * Has document type
+     *
+     * @return mixed
+     */
+    public function getDocumentsType($type)
+    {
+      $documents = [];
+
+      foreach ($this->documents as $document) {
+        if ($document->getType() == $type){
+          $documents[] = $document;
+        }
+      }
+      return $documents;
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    /**
+     * Add spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     * @return User
+     */
+    public function addSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces[] = $spaces;
+
+        return $this;
+    }
+
+    /**
      * Get linkedinId
      *
-     * @return string 
+     * @return string
      */
     public function getLinkedinId()
     {
         return $this->linkedinId;
+    }
+
+    /**
+     * Remove spaces
+     *
+     * @param \AppBundle\Entity\Space $spaces
+     */
+    public function removeSpace(\AppBundle\Entity\Space $spaces)
+    {
+        $this->spaces->removeElement($spaces);
+    }
+
+    /**
+     * Get spaces
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpaces()
+    {
+        return $this->spaces;
     }
 }

@@ -28,7 +28,7 @@ class ApplicationFile
      * @Assert\File(
      *     maxSize="20M"
      * )
-     * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="application", fileNameProperty="fileName")
      */
     protected $file;
 
@@ -42,6 +42,12 @@ class ApplicationFile
      * @ORM\JoinColumn(name="application_id", referencedColumnName="id")
      */
     protected $application;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SpaceDocument", inversedBy="files")
+     * @ORM\JoinColumn(name="space_document_id", referencedColumnName="id")
+     */
+    protected $spaceDocument;
 
     /**
      * @return int
@@ -112,5 +118,28 @@ class ApplicationFile
     public function setApplication($application)
     {
         $this->application = $application;
+    }
+
+    /**
+     * Set spaceDocument
+     *
+     * @param \AppBundle\Entity\SpaceDocument $spaceDocument
+     * @return SpaceDocument
+     */
+    public function setSpaceDocument(\AppBundle\Entity\SpaceDocument $spaceDocument = null)
+    {
+        $this->spaceDocument = $spaceDocument;
+
+        return $this;
+    }
+
+    /**
+     * Get spaceDocument
+     *
+     * @return \AppBundle\Entity\Application
+     */
+    public function getSpaceDocument()
+    {
+        return $this->spaceDocument;
     }
 }

@@ -246,20 +246,46 @@
 
       <div class="box-content">
         <div class="files">
-          <div class="file-infos">
-            <span>file_name.png</span>
 
-            <div class="pull-right actions">
-              <a href="#" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+          {% if application.projectHolder.companyStatus == 'Association' %}
+            <div class="file-infos">
+              <span>Pièce d'identité</span>
+              <div class="pull-right actions">
+                {% if application.projectHolder.hasDocuments('id') %}
+                {% set file =  application.projectHolder.getDocumentsType('id')[0] %}
+                <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                {% endif %}
+              </div>
             </div>
-          </div>
-          <div class="file-infos">
-            <span>file_name.png</span>
+          {% else %}
+            <div class="file-infos">
+              <span>Kbis</span>
+              <div class="pull-right actions">
+                {% if application.projectHolder.hasDocuments('kbis') %}
+                {% set file =  application.projectHolder.getDocumentsType('kbis')[0] %}
+                <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
 
-            <div class="pull-right actions">
-              <a href="#" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
-            </div>
-          </div>
+          {% for doc in application.projectHolder.getDocumentsType('') %}
+              <div class="file-infos">
+                <span>{{doc.fileName | slice(14, 100)}}</span>
+                <div class="pull-right actions">
+                    <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                </div>
+              </div>
+          {% endfor %}
+
+          {% for doc in application.files %}
+              <div class="file-infos">
+                <span>{{doc.fileName | slice(14, 100)}}</span>
+                <div class="pull-right actions">
+                    <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                </div>
+              </div>
+          {% endfor %}
         </div>
       </div>
     </div>

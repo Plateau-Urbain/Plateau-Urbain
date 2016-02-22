@@ -1,10 +1,12 @@
 <?php
 
 namespace AppBundle\Form;
-
 use AppBundle\Entity\Application;
+use AppBundle\Entity\ApplicationFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -20,6 +22,8 @@ class ApplicationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $application = $builder->getData();
+
         $builder
             ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')) )
             ->add('description', null, array(
@@ -65,7 +69,54 @@ class ApplicationType extends AbstractType
                 'attr' => array('class' => 'input-box'),
                 'block_name' => 'size_calculator'
             ))
+
+            ->add('newDocument', new ApplicationFileType(), array(
+                'label' => false,
+                'mapped' => false,
+                'required' => false
+            ))
         ;
+
+        foreach ($application->getSpace()->getDocuments() as $field) {
+          $builder->add('document_' . $field->getId(),
+            new ApplicationFileType(),
+            array(
+              'label' => false,
+              'mapped' => false,
+              'required' => ($application->hasFileType($field->getId()) ? false : true)
+            )
+          );
+        }
+
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $application = $event->getData();
+
+            $document = $event->getForm()->get('newDocument')->getData();
+            if ($document instanceof ApplicationFile) {
+                $document->setApplication($application);
+                $application->addFile($document);
+            }
+
+            foreach ($application->getSpace()->getDocuments() as $field) {
+              $document = $event->getForm()->get('document_' . $field->getId())->getData();
+
+              if ($document instanceof ApplicationFile) {
+                  $document->setApplication($application);
+                  $document->setSpaceDocument($field);
+
+                  if ($application->hasFileType($field->getId())) {
+                    $currentDocument = $application->getFilesType($field->getId())[0];
+                    $currentDocument->setFile($document->getFile());
+                    $currentDocument->setFileName($document->getFileName());
+                  } else {
+                    if($document->getFile()){
+                      $application->addFile($document);
+                    }
+                  }
+              }
+            }
+        });
     }
 
     /**

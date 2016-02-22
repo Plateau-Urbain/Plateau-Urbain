@@ -25,7 +25,7 @@ $(function () {
 $(function () {
     var createLinkMethodForm = function (action, data) {
         var $form = $('<form action="' + action + '" method="POST"></form>');
-        for (input in data) {
+        for (var input in data) {
             if (data.hasOwnProperty(input)) {
                 $form.append('<input name="' + input + '" value="' + data[input] + '">');
             }
@@ -110,4 +110,33 @@ $(function(){
   };
   $(window).on('resize', sizePhotoListItem);
   sizePhotoListItem();
+});
+
+
+$(function(){
+  var idCardRequired = $('.file-infos.idcard-file input[type=file]').attr('required');
+  var kbisRequired = $('.file-infos.kbis-file input[type=file]').attr('required');
+
+  var toggleIdFiles = function(){
+    if ($('#project_owner_companyStatus').val() == 'Association') {
+      $('.idcard-file').show();
+      $('.kbis-file').hide();
+      $('.file-infos.idcard-file').show().find('input[type=file]').attr('required', idCardRequired);
+      $('.file-infos.kbis-file').hide().find('input[type=file]').attr('required', false);
+    } else {
+      $('.idcard-file').hide();
+      $('.kbis-file').show();
+      $('.file-infos.idcard-file').hide().find('input[type=file]').attr('required', false);
+      $('.file-infos.kbis-file').show().find('input[type=file]').attr('required', kbisRequired);
+    }
+  };
+  $('#project_owner_companyStatus').change(toggleIdFiles);
+  toggleIdFiles();
+});
+
+$(function(){
+  $('#appbundle_application_save').click(function(e){
+    e.preventDefault();
+    $(this).parents('form').attr('no-validate', 'true').submit();
+  });
 });

@@ -133,11 +133,21 @@ knp_gaufrette:
         actuality_adapter :
             local:
                 directory: %kernel.root_dir%/../web/uploads/actuality
+        user_documents_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/user_documents
+        application_files_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/application_files
     filesystems:
         space_cover_fs:
             adapter:    space_file_adapter
         actuality_fs:
             adapter:    actuality_adapter
+        user_documents_fs:
+            adapter:    user_documents_adapter
+        application_files_fs:
+            adapter:    application_files_adapter
 
 vich_uploader:
     db_driver: orm
@@ -157,7 +167,20 @@ vich_uploader:
             delete_on_update:   true
             namer: vich_uploader.namer_uniqid
             inject_on_load: true
-
+        user_documents:
+            uri_prefix: /uploads/user_documents
+            upload_destination: user_documents_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_origname
+            inject_on_load: true
+        application:
+            uri_prefix: /uploads/application_files
+            upload_destination: application_files_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_origname
+            inject_on_load: true
 
 ornicar_apc:
       host: %base_url%
