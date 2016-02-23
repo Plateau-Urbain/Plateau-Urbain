@@ -9127,3 +9127,8 @@ form .main .section-title {
     font-size: 12px;
   }
 }
+
+.block-content .dl-with-icon {
+  padding-left: 10px;
+  padding-top: 5px;
+}

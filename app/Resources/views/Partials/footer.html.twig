@@ -42,7 +42,7 @@
               <li><a href="http://www.plateau-urbain.com/#!plate-forme/eqbhd" target="_blank">Comment ça marche ?</a></li>
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
-                <li><a href="{{path('space_manager_add')}}">Proposer un espace</a></li>
+                <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
                 <li><a href="{{path('fos_user_profile_show')}}">Mon compte</a></li>
               {% else %}
                 <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>

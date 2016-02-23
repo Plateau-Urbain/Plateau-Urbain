@@ -63,6 +63,7 @@
                     </div>
                     <div class="col-sm-6">
                       {{ form_widget(form.startOccupation) }}
+                      {{ form_errors(form.startOccupation) }}
                     </div>
                   </div>
                 </div>
@@ -118,22 +119,26 @@
                     {% if app.user.getCompanyStatus() == 'Association' %}
 
                       {% set idcard = app.user.getDocumentsType('id')[0] %}
-                      <div class="kbis-file file-infos">
-                        <span>Pièce d'identité</span>
-                        <div class="pull-right actions">
-                          <a target="_blank" href="{{ asset(vich_uploader_asset(idcard, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                      {% if idcard %}
+                        <div class="kbis-file file-infos">
+                          <span>Pièce d'identité</span>
+                          <div class="pull-right actions">
+                            <a target="_blank" href="{{ asset(vich_uploader_asset(idcard, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          </div>
                         </div>
-                      </div>
+                      {% endif %}
 
                     {% else %}
 
                       {% set kbis = app.user.getDocumentsType('kbis')[0] %}
+                      {% if kbis %}
                       <div class="kbis-file file-infos">
                         <span>Kbis</span>
                         <div class="pull-right actions">
                           <a target="_blank" href="{{ asset(vich_uploader_asset(kbis, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                         </div>
                       </div>
+                      {% endif %}
 
                     {% endif %}
 
