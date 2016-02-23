@@ -40,7 +40,7 @@
   <!-- BEGIN MAIN CONTENT -->
   <div class="col-sm-12">
     <h1 class="property-title">
-      {{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
+      {{ space.name }} {% if space.size is not empty %}à partir de {{ space.minSize }}m<sup>2</sup>{% endif %}
       <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
     </h1>
   </div>

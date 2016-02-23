@@ -49,8 +49,7 @@ class SpaceRepository extends EntityRepository
         }
         
         if (isset($params['closed'])) {
-            $qb->andWhere('s.closed = :closed')->setParameter('closed', $params['closed']);
-            $qb->orWhere('s.limitAvailability < :limitAvailability')->setParameter('limitAvailability', new \DateTime('now'));
+            $qb->andWhere('s.closed = :closed OR s.limitAvailability < :limitAvailability')->setParameter('closed', $params['closed'])->setParameter('limitAvailability', new \DateTime('now'));
         }
 
         if (!empty($params['limitAvailability'])) {
