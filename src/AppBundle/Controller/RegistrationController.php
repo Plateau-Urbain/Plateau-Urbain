@@ -13,6 +13,18 @@ class RegistrationController extends BaseController
         $formHandler = $this->container->get('fos_user.registration.form.handler');
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
+        $data = $this->container->get('request')->get('fos_user_registration_form');
+
+        $em = $this->container->get('doctrine')->getManager();
+        $exists = $em->getRepository('AppBundle:User')->findOneByEmail($data['email']);
+
+        if ($exists) {
+            $this->setFlash('error_sign', 'Cette adresse email est déjà utilisée.');
+            $url = $this->container->get('router')->generate("homepage");
+            $response = new RedirectResponse($url);
+            return $response;
+        }
+
         $process = $formHandler->process($confirmationEnabled);
 
         if ($process) {
