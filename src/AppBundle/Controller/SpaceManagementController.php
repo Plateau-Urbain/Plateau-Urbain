@@ -511,7 +511,7 @@ class SpaceManagementController extends Controller
         $this->get('doctrine.orm.entity_manager')->flush();
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Nouvelle propriété ! ')b
+            ->setSubject('Nouvelle propriété ! ')
             ->setFrom($this->container->getParameter('mail_confirmation_from'))
             ->setTo($this->container->getParameter('mail_confirmation_to'))
             ->setBody(
