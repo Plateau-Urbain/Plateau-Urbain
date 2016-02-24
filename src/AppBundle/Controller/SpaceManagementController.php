@@ -153,7 +153,9 @@ class SpaceManagementController extends Controller
             }
 
             if ($form->get('preview')->isClicked()) {
-                return $this->redirect($this->generateUrl('space_manager_preview', array('id' => $space->getId())));
+                $response = new Response($this->generateUrl('space_manager_preview', array('id' => $space->getId())), 200);
+                $response->headers->set('Content-Type', 'text/plain');
+                return $response;
             }
 
             $this->get('doctrine.orm.entity_manager')->flush();
