@@ -50,12 +50,21 @@ $(document).ready(function() {
             var action = form.attr('action');
             var formData = new FormData(form[0]);
 
+            var previewing = $(this).attr('name') == 'appbundle_space[preview]';
+
+            if (previewing) {
+              formData.append('appbundle_space[preview]', null);
+            }
+
             $.ajax({
                 url: action,
                 type: 'POST',
                 data: formData,
                 async: false,
                 success: function (data) {
+                    if (previewing)
+                      return window.open(data);
+                      
                     successAjax(data);
                 },
                 cache: false,
