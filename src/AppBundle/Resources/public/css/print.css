@@ -16,6 +16,9 @@ canvas {
 .row {
     margin-left: -15px !important;
     margin-right: -15px !important;
+    font-size: 12px;
+    line-height: 1;
+    page-break-after: avoid;
 }
 
 .pie-legend span {
@@ -100,3 +103,13 @@ canvas {
     color: #000000 !important;
     font-size: 0.9em !important;
 }
+
+.pagination-wrapper, .icon  {
+    display: none;
+}
+
+.box-information .box-title {
+    margin-top: 0px;
+    font-size: 14px;
+}
+
