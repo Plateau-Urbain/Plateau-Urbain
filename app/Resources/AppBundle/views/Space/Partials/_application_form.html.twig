@@ -118,8 +118,9 @@
 
                     {% if app.user.getCompanyStatus() == 'Association' %}
 
-                      {% set idcard = app.user.getDocumentsType('id')[0] %}
-                      {% if idcard %}
+                      {% if app.user.getDocumentsType('id') is not empty %}
+                        {% set idcard = app.user.getDocumentsType('id')[0]%}
+
                         <div class="kbis-file file-infos">
                           <span>Pièce d'identité</span>
                           <div class="pull-right actions">
@@ -130,14 +131,14 @@
 
                     {% else %}
 
-                      {% set kbis = app.user.getDocumentsType('kbis')[0] %}
-                      {% if kbis %}
-                      <div class="kbis-file file-infos">
-                        <span>Kbis</span>
-                        <div class="pull-right actions">
-                          <a target="_blank" href="{{ asset(vich_uploader_asset(kbis, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                      {% if app.user.getDocumentsType('kbis') is not empty %}
+                        {% set kbis = app.user.getDocumentsType('kbis')[0] %}
+                        <div class="kbis-file file-infos">
+                          <span>Kbis</span>
+                          <div class="pull-right actions">
+                            <a target="_blank" href="{{ asset(vich_uploader_asset(kbis, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          </div>
                         </div>
-                      </div>
                       {% endif %}
 
                     {% endif %}
