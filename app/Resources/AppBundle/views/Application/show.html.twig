@@ -148,6 +148,8 @@
             <tr><th>Date de naissance</th><td>{{ application.projectHolder.birthday|date('d/m/Y') }}</td></tr>
             <tr><th>Téléphone</th><td></td></tr>
             <tr><th>Email</th><td>{{ application.projectHolder.email }}</td></tr>
+            <tr><th>Ville</th><td>{{ application.projectHolder.city }}</td></tr>
+            <tr><th>Code postal</th><td>{{ application.projectHolder.zipcode }}</td></tr>
             <tr><th>À propos</th><td>{{ application.projectHolder.description|nl2br }}</td></tr>
           </tbody>
         </table>
