@@ -70,7 +70,7 @@ class ProjectOwnerType extends AbstractType {
                             'data-provide' => 'datepicker'
                         )
                     ))
-                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control small-input')))
+                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))

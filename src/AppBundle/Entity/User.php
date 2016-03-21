@@ -57,16 +57,22 @@ class User extends BaseUser
 
     /**
      * @var string
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      *
      */
     protected $firstname;
 
     /**
      * @var string
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $lastname;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
+     */
+    protected $email;
 
     /**
      * @var string
@@ -85,13 +91,13 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $company;
 
     /**
      * @ORM\Column(name="company_status", length=255, type="string", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $companyStatus;
 
@@ -104,7 +110,7 @@ class User extends BaseUser
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
      *
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $address;
 
@@ -138,13 +144,13 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(length=10, type="string", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $zipcode;
 
     /**
      * @ORM\Column(length=255, type="string", nullable=true)
-     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $city;
 
