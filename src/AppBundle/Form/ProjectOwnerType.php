@@ -24,13 +24,11 @@ class ProjectOwnerType extends AbstractType {
                 ->add('lastname', null, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
                 ->add('birthday', 'birthday',
                     array(
-                        'label' => 'Date de naissance',
-                        'widget' => 'single_text',
-                        'format' => 'dd/MM/yyyy',
-                        'attr' => array(
-                            'class' => 'form-control',
-                            'data-provide' => 'datepicker'
-                        )
+                      'input'  => 'datetime',
+                      'widget' => 'choice',
+                      'attr' => array(
+                          'class' => 'oneline-date'
+                      )
                     ))
                 ->add('phone', null, array('label' => "Téléphone", 'attr' => array('class' => 'form-control')))
                 ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control')))
@@ -41,13 +39,11 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
                 ->add('companyCreationDate', 'birthday',
                     array(
-                        'label' => 'Date de création',
-                        'widget' => 'single_text',
-                        'format' => 'dd/MM/yyyy',
-                        'attr' => array(
-                            'class' => 'form-control',
-                            'data-provide' => 'datepicker'
-                        )
+                      'input'  => 'datetime',
+                      'widget' => 'choice',
+                      'attr' => array(
+                          'class' => 'oneline-date'
+                      )
                     ))
                 ->add('siret', null, array('label' => "SIRET", 'attr' => array('class' => 'form-control')))
                 ->add('address', null, array('label' => "Adresse de la structure", 'attr' => array('class' => 'form-control')))
@@ -74,7 +70,7 @@ class ProjectOwnerType extends AbstractType {
                             'data-provide' => 'datepicker'
                         )
                     ))
-                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control small-input')))
+                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))
