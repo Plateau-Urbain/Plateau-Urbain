@@ -11,7 +11,7 @@ $(document).ready(function() {
         $("#js-form-space").html($(data).find('#js-form-space'));
         initFormListener();
         initLinkListener();
-        $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+        $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").chosen();
     }
 
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 success: function (data) {
                     if (previewing)
                       return window.open(data);
-                      
+
                     successAjax(data);
                 },
                 cache: false,

@@ -463,6 +463,7 @@ var Cozy;
             },
 
             createSelectBoxes: function () {
+                $("select").attr("data-placeholder", "Sélectionnez une option");
 
                 if ($('select').length) {
                     $("select").chosen({
