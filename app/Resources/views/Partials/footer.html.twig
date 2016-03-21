@@ -43,7 +43,7 @@
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
                 <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
-                <li><a href="{{path('fos_user_profile_show')}}">Mon compte</a></li>
+                <li><a href="{{path('security_profil')}}">Mon compte</a></li>
               {% else %}
                 <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
                 <li><a href="{{ path('proprietaire') }}">Proposer un espace</a></li>
@@ -57,7 +57,7 @@
           <div class="block col-sm-12">
             <h3>Plateau urbain</h3>
             <ul class="footer-links">
-              <li><a href="http://www.plateau-urbain.com/">Nous connaître</a></li>
+              <li><a href="http://www.plateau-urbain.com/" target="_blank">Nous connaître</a></li>
               <li><a href="http://www.plateau-urbain.com/#!dons/y36xk" target="_blank">Soutenir l’association</a></li>
               <li><a href="http://www.plateau-urbain.com/#!formulaire/c1v9l" target="_blank">Contact</a></li>
             </ul>
