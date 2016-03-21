@@ -12,9 +12,7 @@
 
           </div>
           <div class="image-wrapper">
-            {% if space.pics.0 is defined %}
-              <img src="{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}" alt="{{ space.pics.first.fileName }}" />
-            {% endif %}
+            <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
           </div>
         </div>
       </div>
