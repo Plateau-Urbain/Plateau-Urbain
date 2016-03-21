@@ -33,7 +33,6 @@ class SpaceOwnerType extends AbstractType {
         ;
 
 
-
         $builder->remove('username');
     }
 

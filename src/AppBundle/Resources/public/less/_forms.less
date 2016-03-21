@@ -8,9 +8,35 @@
 
 }
 
+form.has-crosses.submitted{
+  .form-group{
+    position: relative;
+  }
+
+  .form-group:not(.required-field):after{
+    font-family: 'FontAwesome';
+    position: absolute;
+    right: -17px;
+    top: 35px;
+  }
+
+  .form-group.is-valid:not(.required-field):after{
+    content: '\f00c';
+    color: #8DCA85;
+  }
+  .form-group.has-error:not(.required-field):after{
+    content: '\f00d';
+    color: @red;
+  }
+}
+
 .form-control{
   border: solid 1px #CFC1B6;
   border-radius: 2px;
+}
+
+.chzn-container{
+  margin-bottom: 0;
 }
 
 .oneline-date .chzn-container{

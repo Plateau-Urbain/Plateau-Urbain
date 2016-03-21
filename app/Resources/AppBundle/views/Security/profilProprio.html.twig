@@ -26,7 +26,7 @@
 
 <div id="js-form-space">
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
     <div class="row">
         <div class="main col-sm-8 col-sm-offset-2">
             <h1 class="section-title">
@@ -55,6 +55,7 @@
                     {{ form_row(form.companyFunction) }}
                     {{ form_row(form.companyMobile) }}
                   </div>
+                </div>
 
                 <div class="row">
                     <div class="col-sm-4 col-sm-offset-4">
@@ -183,7 +184,7 @@
     }
 
     function successAjax(data) {
-        $("#js-form-space").html($(data).find('#js-form-space'));
+        $("#js-form-space").html($(data).find('#js-form-space')).find('form').addClass('submitted');
         initFormListener();
         $("select").chosen();
     }

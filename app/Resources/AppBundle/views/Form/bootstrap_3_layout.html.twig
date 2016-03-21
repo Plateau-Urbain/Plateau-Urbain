@@ -1,7 +1,7 @@
 {% use 'form_div_layout.html.twig' %}
 
 {% block form_row -%}
-    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %} {% if valid and not compound %} is-valid{% endif %} {% if not required %} required-field{% endif %}">
         {{- form_label(form) -}}
         {{- form_widget(form) -}}
         {{- form_errors(form) -}}
