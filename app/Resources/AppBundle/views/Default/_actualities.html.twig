@@ -5,7 +5,7 @@
     {% for actuality in actualities %}
 		<div class="item">
       <img src="{{ vich_uploader_asset(actuality, 'image') }}" />
-      <a href="{{actuality.link}}" class="info">
+      <a href="{{actuality.link}}" class="info" target="_blank">
 				<h3>{{actuality.title}}</h3>
 				<span class="location">{{actuality.subtitle}}</span>
       </a>
