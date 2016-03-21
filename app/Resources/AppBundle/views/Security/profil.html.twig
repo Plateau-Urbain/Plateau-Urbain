@@ -448,7 +448,7 @@
         function successAjax(data) {
             $("#js-form-space").html($(data).find('#js-form-space'));
             initFormListener();
-            $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy'});
+            $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
             $("select").chosen();
             toggleIdFiles();
         }
