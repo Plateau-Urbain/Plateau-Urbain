@@ -6,7 +6,7 @@
           <div class="overlay">
             {% if space.isClosed %}
               <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
-            {% elseif not space.isSubmitted %}
+            {% elseif not space.isSubmitted and not space.isEnabled %}
               <img src="{{ asset('/bundles/app/images/edit.png')  }}" alt=""/>
             {% endif %}
 
