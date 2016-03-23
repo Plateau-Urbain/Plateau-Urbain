@@ -184,7 +184,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="add-file col-sm-10">
+                  <div class="add-file col-xs-12">
                     <h4>
                       <i class="icon small icon-inline add-red"></i>
                       Ajouter un fichier
@@ -199,6 +199,14 @@
                     </dl>
 
                     {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="center">
+                    <p>
+                      {{ form_widget(form.save_file, {'attr': {'class': 'btn-fullcolor btn-wide'}}) }}
+                    </p>
                   </div>
                 </div>
               </div>
