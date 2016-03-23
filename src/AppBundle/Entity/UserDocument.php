@@ -47,10 +47,7 @@ class UserDocument
 
     /**
      * @Assert\File(
-     *     maxSize="5M"
-     * )
-     * @Assert\File(
-     *      maxSize="5242880",
+     *      maxSize="10M",
      *      mimeTypes = {
      *          "image/png",
      *          "image/jpeg",
