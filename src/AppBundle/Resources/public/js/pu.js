@@ -136,7 +136,7 @@ $(function(){
 });
 
 $(function(){
-  $('#appbundle_application_save').click(function(e){
+  $('#appbundle_application_save, #appbundle_application_save_file').click(function(e){
     e.preventDefault();
     $(this).parents('form').attr('no-validate', 'true').submit();
   });

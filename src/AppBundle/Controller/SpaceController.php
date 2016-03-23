@@ -64,6 +64,11 @@ class SpaceController extends Controller
             'attr' => array('class' => 'btn btn-fullcolor submit_form')
         ));
 
+        $form->add('save_file', 'submit', array(
+            'label' => 'Ajouter le fichier',
+            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+        ));
+
         $form->add('submit', 'submit', array(
             'label' => 'Clôturer ma candidature',
             'attr' => array('class' => 'btn btn-fullcolor submit_form')
@@ -96,10 +101,7 @@ class SpaceController extends Controller
                   ) . "#espace_confirmation"
               );
             }
-
         }
-
-
 
         // Check if the profile is completed
         $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));
