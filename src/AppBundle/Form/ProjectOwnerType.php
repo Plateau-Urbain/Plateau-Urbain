@@ -24,6 +24,7 @@ class ProjectOwnerType extends AbstractType {
                 ->add('lastname', null, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
                 ->add('birthday', 'birthday',
                     array(
+                      'label' => "Date de naissance",
                       'input'  => 'datetime',
                       'widget' => 'choice',
                       'attr' => array(
@@ -39,6 +40,7 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
                 ->add('companyCreationDate', 'birthday',
                     array(
+                      'label' => "Date de création",
                       'input'  => 'datetime',
                       'widget' => 'choice',
                       'attr' => array(
