@@ -148,8 +148,6 @@
             <tr><th>Date de naissance</th><td>{{ application.projectHolder.birthday|date('d/m/Y') }}</td></tr>
             <tr><th>Téléphone</th><td></td></tr>
             <tr><th>Email</th><td>{{ application.projectHolder.email }}</td></tr>
-            <tr><th>Ville</th><td>{{ application.projectHolder.city }}</td></tr>
-            <tr><th>Code postal</th><td>{{ application.projectHolder.zipcode }}</td></tr>
             <tr><th>À propos</th><td>{{ application.projectHolder.description|nl2br }}</td></tr>
           </tbody>
         </table>
@@ -198,7 +196,10 @@
               </td>
             </tr>
             <tr><th>SIRET</th><td>{{ application.projectHolder.siret }}</td></tr>
+            <tr><th>Ville</th><td>{{ application.projectHolder.city }}</td></tr>
+            <tr><th>Code postal</th><td>{{ application.projectHolder.zipcode }}</td></tr>
             <tr><th>Adresse</th><td>{{ application.projectHolder.address }}</td></tr>
+            <tr><th>Adresse (suite)</th><td>{{ application.projectHolder.addressSuite }}</td></tr>
             <tr><th>Téléphone fixe</th><td>{{ application.projectHolder.companyPhone }}</td></tr>
             <tr><th>Téléphone mobile</th><td>{{ application.projectHolder.companyMobile }}</td></tr>
             <tr><th>Présentation</th><td>{{ application.projectHolder.companyDescription|nl2br }}</td></tr>
