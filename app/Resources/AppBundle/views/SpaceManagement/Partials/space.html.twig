@@ -97,7 +97,7 @@
               {% endif %}
             </div>
             <div class="col-sm-4">
-              {% if space.published and space.isClosed == false %}
+              {% if space.isEnabled and not space.isClosed %}
                 <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-yellow" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
               {% endif %}
             </div>
