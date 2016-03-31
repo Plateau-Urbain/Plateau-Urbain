@@ -329,6 +329,7 @@
                     {% if app.user.hasDocuments('id') %}
                         {% set file =  app.user.getDocumentsType('id')[0] %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
                 </div>
@@ -343,6 +344,7 @@
                     {% if app.user.hasDocuments('kbis') %}
                         {% set file =  app.user.getDocumentsType('kbis')[0] %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
                 </div>
@@ -453,6 +455,10 @@
 
         $(document).ready(function() {
             initFormListener();
+
+            $(document).on('change', '.idcard-file input[type=file], .kbis-file input[type=file]', function(){
+              $(this).parents('.form-contener').find('input[type="submit"]').trigger('click');
+            });
         });
     </script>
 
