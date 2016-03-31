@@ -451,6 +451,10 @@
             $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
             $("select").chosen();
             toggleIdFiles();
+
+            if($('.form-group.has-error').length > 0) {
+              $.colorbox({html:$('#errorBox').html()});
+            }
         }
 
         $(document).ready(function() {
@@ -461,6 +465,13 @@
             });
         });
     </script>
+
+    <div id="errorBox" style="display: none;">
+        <div class="colorBox-content">
+            <i class="fa fa-info-circle danger"></i>
+            <p>Le formulaire comporte des erreurs.</p>
+        </div>
+    </div>
 
 {% endblock %}
 

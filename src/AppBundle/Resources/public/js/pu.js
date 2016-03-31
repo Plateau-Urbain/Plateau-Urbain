@@ -141,3 +141,9 @@ $(function(){
     $(this).parents('form').attr('no-validate', 'true').submit();
   });
 });
+
+$(function(){
+  $(document).on('focus', '.form-group.has-error input', function(){
+    $(this).parents('.form-group.has-error').removeClass('has-error').find('.help-block').detach();
+  });
+});
