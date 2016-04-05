@@ -12,6 +12,7 @@ $(document).ready(function() {
         initFormListener();
         initLinkListener();
         $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
+        $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
     }
 

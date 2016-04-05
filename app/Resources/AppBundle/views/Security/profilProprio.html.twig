@@ -186,6 +186,7 @@
     function successAjax(data) {
         $("#js-form-space").html($(data).find('#js-form-space')).find('form').addClass('submitted');
         initFormListener();
+        $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
 
         if($('.form-group.has-error').length > 0) {
