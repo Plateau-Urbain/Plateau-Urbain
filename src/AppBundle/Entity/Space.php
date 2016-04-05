@@ -16,7 +16,7 @@ use AppBundle\Entity\User;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
- * @Assert\Callback({"validateNbParcels", "validatePicturesCount"})
+ * @Assert\Callback(methods={"validateNbParcels", "validatePicturesCount"}, groups={"save"})
  */
 class Space
 {
@@ -34,8 +34,8 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"save", "draft"})
      * @Assert\Length(max=255)
      */
     private $name;
@@ -59,16 +59,16 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="activity_description", type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="activity_description", type="text", nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $activityDescription;
 
@@ -103,16 +103,16 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="zip_code", type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="zip_code", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $zipCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $city;
 
@@ -126,24 +126,24 @@ class Space
     /**
      * @var string
      *
-     * @ORM\Column(name="availability", type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="availability", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $availability;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="limitAvailability", type="date")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="limitAvailability", type="date", nullable=true)
+     * @Assert\NotBlank(groups={"save", "draft"})
      */
     private $limitAvailability;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="float")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="price", type="float", nullable=true)
+     * @Assert\NotBlank(groups={"save"})
      */
     private $price;
 
