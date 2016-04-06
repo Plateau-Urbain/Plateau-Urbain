@@ -7,13 +7,17 @@ $(document).ready(function() {
         addForm($('table.tags'));
     });
 
-    function successAjax(data) {
+    function successAjax(data, saving) {
         $("#js-form-space").html($(data).find('#js-form-space'));
         initFormListener();
         initLinkListener();
         $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
+
+        if (saving) {
+            $.colorbox({html:$('#saveBox').html()});
+        }
     }
 
     function initLinkListener() {
@@ -41,10 +45,16 @@ $(document).ready(function() {
 
 
     function initFormListener() {
-        $('button[type="submit"]:not(.no-ajax)').click(function(){
+        $('button[type="submit"]:not(.no-ajax), input[type="submit"]:not(.no-ajax)').click(function(){
+
+            var saving = false;
 
             if ($(this).hasClass('js-publish')) {
                 return true;
+            }
+
+            if ($(this).hasClass('save')) {
+                saving = true;
             }
 
             var form = $(this).closest('form');
@@ -66,7 +76,7 @@ $(document).ready(function() {
                     if (previewing)
                       return window.open(data);
 
-                    successAjax(data);
+                    successAjax(data, saving);
                 },
                 cache: false,
                 contentType: false,
