@@ -8,14 +8,14 @@ $(document).ready(function() {
     });
 
     function successAjax(data, saving) {
-        $("#js-form-space").html($(data).find('#js-form-space'));
+        $("#js-form-space").replaceWith($(data).find('#js-form-space'));
         initFormListener();
         initLinkListener();
         $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
 
-        if (saving) {
+        if (saving && $("#js-form-space .has-error").length < 1) {
             $.colorbox({html:$('#saveBox').html()});
         }
     }
