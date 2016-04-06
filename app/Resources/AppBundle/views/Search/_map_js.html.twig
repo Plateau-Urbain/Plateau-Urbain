@@ -101,7 +101,7 @@
                                 /* SHOW TOOLTIP */
                                 toolTip.show();
                                 toolTip.css('top', (offset.top - 185) + 'px').css('left', (offset.left - 162 + (width / 2)) + 'px');
-                                toolTip.html("<span class='zone_title'>"+ coords['{{ code }}'].name +"</span><br />{{ qt }} espace{% if qt > 1 %}s{% endif %} disponible{% if qt > 1 %}s{% endif %}<br /><a href='#' onclick=\"loadSearch('{{ code }}')\" class='btn btn-fullcolor'>Voir les espaces</a><img src='{{ asset('/bundles/app/images/close.png') }}' class='close' onclick='hideTooltip();' />");
+                                toolTip.html("<span class='zone_title'>"+ coords['{{ code }}'].name +"</span><br />{{ qt }} espace{% if qt > 1 %}s{% endif %} disponible{% if qt > 1 %}s{% endif %}<br /><a href='#' onclick=\"loadSearch('{{ code }}')\" class='btn btn-fullcolor'>Voir les espaces</a><span class='close' onclick='hideTooltip();'><i class='fa fa-times'></i></span>");
 
                                 /* CLICK IN TOOLTIP */
                                 $(toolTip).find('a').click(function() {
