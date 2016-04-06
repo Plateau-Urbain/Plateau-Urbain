@@ -449,6 +449,7 @@
             $("#js-form-space").html($(data).find('#js-form-space').html()).find('form').addClass('submitted');
             initFormListener();
             $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
+            $("select").attr("data-placeholder", "Sélectionnez une option");
             $("select").chosen();
             toggleIdFiles();
 

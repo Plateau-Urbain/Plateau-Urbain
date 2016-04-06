@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SpaceType extends AbstractType
@@ -127,7 +128,14 @@ class SpaceType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Space',
-            'cascade_validation' => true
+            'cascade_validation' => true,
+            'validation_groups' => function(FormInterface $form) {
+                if ($form->get('publish')->isClicked()) {
+                  return 'save';
+                }
+
+                return 'draft';
+            }
         ));
     }
 
