@@ -8867,6 +8867,9 @@ div.dark_square #pp_full_res .pp_inline {
   cursor: pointer;
   top: 15px;
   right: 20px;
+  color: #bc1b38;
+  opacity: 1;
+  font-size: 16px;
 }
 
 #pu_tool_tip a {
