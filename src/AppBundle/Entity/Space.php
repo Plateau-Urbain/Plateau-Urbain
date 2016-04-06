@@ -899,9 +899,11 @@ class Space
         $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
 
         foreach ($this->getApplication()->matching($criteria) as $app) {
+          if ($app->getProjectHolder()->getUseType()) {
             if ($app->getProjectHolder()->getUseType()->getId() == $useType->getId()) {
-                $ret++;
+              $ret++;
             }
+          }
         }
 
         return $ret;
