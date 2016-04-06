@@ -127,9 +127,11 @@
       </p>
       <p class="center">
         {% if application.isDraft and not invalidProfile %}
-          <a href="#candidate" class="btn btn-fullcolor btn-large apply">
-            {{ 'Candidater !' | upper }}
-          </a>
+          {% if not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
+            <a href="#candidate" class="btn btn-fullcolor btn-large apply">
+              {{ 'Candidater !' | upper }}
+            </a>
+          {% endif %}
         {% endif %}
 
         {% if not application.isDraft %}
