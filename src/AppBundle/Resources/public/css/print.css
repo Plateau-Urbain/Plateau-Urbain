@@ -2,7 +2,6 @@
     display: none;
 }
 
-
 * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -113,3 +112,6 @@ canvas {
     font-size: 14px;
 }
 
+.toggle-star {
+  display: none !important;
+}
