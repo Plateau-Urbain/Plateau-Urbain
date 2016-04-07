@@ -278,7 +278,16 @@
             <div class="colorBox-content">
                 <h4>Accepter les candidatures selectionnées</h4>
                 <br />
-                <p>Vous allez accepter les dossiers de <strong>$nb_candidates$ candidature(s)</strong></p>
+                <p class="text-left">Vous allez accepter les dossiers de <strong>$nb_candidates$ candidature(s)</strong>. Les candidats recevront le texte-type suivant :</p>
+
+                <p class="text-left"><i>
+                  Bonjour,<br>
+                  Votre candidature sur le site plateau-urbain pour l'espace {{space.name}} à {{space.city}} a été acceptée.
+                </i></p>
+
+                <p class="text-left">
+                  Souhaitez-vous compléter ce message ?
+                </p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Accepter" class="btn btn-fullcolor">
@@ -292,7 +301,16 @@
             <div class="colorBox-content">
                 <h4>Refuser les candidatures selectionnées</h4>
                 <br />
-                <p>Vous allez effectuer un refus de <strong>$nb_candidates$ candidature(s)</strong></p>
+                <p class="text-left">Vous allez effectuer un refus de <strong>$nb_candidates$ candidature(s)</strong>. Les candidats recevront le texte-type suivant :</p>
+
+                <p class="text-left"><i>
+                  Bonjour,<br>
+                  Votre candidature sur le site plateau-urbain pour l'espace {{space.name}} à {{space.city}} a été refusée.
+                </i></p>
+
+                <p class="text-left">
+                  Souhaitez-vous compléter ce message ?
+                </p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Envoyer un refus groupé" class="btn btn-fullcolor">
