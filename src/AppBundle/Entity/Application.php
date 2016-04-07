@@ -67,16 +67,16 @@ class Application
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="name", type="string", nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      */
     private $description;
 
@@ -90,16 +90,16 @@ class Application
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_occupation", type="date")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="start_occupation", type="date", nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      */
     private $startOccupation;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="length_occupation", type="integer")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="length_occupation", type="integer", nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
      * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une durée positive.", groups={"projectHolder"})
      */
@@ -108,8 +108,8 @@ class Application
     /**
      * @var string
      *
-     * @ORM\Column(name="length_type_occupation", type="string", length=15)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="length_type_occupation", type="string", length=15, nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      */
     private $lengthTypeOccupation;
 
@@ -162,8 +162,8 @@ class Application
     private $updated;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
      * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.")
      */

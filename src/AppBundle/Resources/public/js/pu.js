@@ -135,12 +135,12 @@ $(function(){
   toggleIdFiles();
 });
 
-$(function(){
-  $('#appbundle_application_save, #appbundle_application_save_file').click(function(e){
-    e.preventDefault();
-    $(this).parents('form').attr('no-validate', 'true').submit();
-  });
-});
+// $(function(){
+//   $('#appbundle_application_save, #appbundle_application_save_file').click(function(e){
+//     e.preventDefault();
+//     // $(this).parents('form').attr('no-validate', 'true').submit();
+//   });
+// });
 
 $(function(){
   $(document).on('focus', '.form-group.has-error input', function(){

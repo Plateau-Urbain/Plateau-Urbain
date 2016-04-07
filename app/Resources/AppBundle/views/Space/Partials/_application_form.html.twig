@@ -97,6 +97,7 @@
                       </label>
                       {% if form.vars.data.getFilesType(document.id) %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                       {% endif %}
                     </div>
                   </div>
@@ -214,7 +215,7 @@
               <div class="col-sm-12">
                 <div class="center">
                   {{ form_widget(form.save, {'attr': {'class': 'btn-fullcolor btn-grey btn-wide'}}) }}
-                  {{ form_widget(form.submit, {'attr': {'class': 'btn-fullcolor btn-wide'}}) }}
+                  {{ form_widget(form.submit, {'attr': {'class': 'btn-fullcolor btn-wide submit'}}) }}
                 </div>
               </div>
 
