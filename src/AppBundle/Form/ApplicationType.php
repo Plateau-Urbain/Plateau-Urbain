@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -125,7 +126,15 @@ class ApplicationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Application'
+            'data_class' => 'AppBundle\Entity\Application',
+            'validation_groups' => function(FormInterface $form) {
+
+                if ($form->get('save')->isClicked()) {
+                  return "default";
+                }
+
+                return "submit";
+            }
         ));
     }
 

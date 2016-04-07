@@ -303,6 +303,112 @@
             } });
     </script>
 
+    <script type="text/javascript">
+        function initFormListener() {
+            $('input[type=submit], button[type=submit]').click(function(e){
+
+                var submitting = false;
+
+                if ($(this).hasClass('submit')) {
+                    submitting = true;
+                }
+
+                var form = $(this).closest('form');
+                var action = form.attr('action');
+                var formData = new FormData(form[0]);
+
+                if ($(this).attr('name') == 'appbundle_application[save]' || $(this).attr('name') == 'appbundle_application[save_file]') {
+                  formData.append('appbundle_application[save]', null);
+                } else {
+                  formData.append('appbundle_application[submit]', null);
+                }
+
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function (data) {
+                        successAjax(data, submitting);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+                return false;
+            });
+        }
+
+        function successAjax(data, submitting) {
+            $(".candidate-application").html($(data).find('.candidate-application').html());
+            initFormListener();
+            $("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
+            $("select").attr("data-placeholder", "Sélectionnez une option");
+            $("select").chosen();
+
+            if (submitting && $(".candidate-application .has-error").length < 1) {
+              window.location.replace(window.location.href + "#espace_confirmation");
+              window.location.reload(true);
+            }
+
+            $('[data-checkbox-toggle]').each(function () {
+                var $element = $(this);
+                var selector = $element.data('checkbox-toggle');
+                var $target = $(selector);
+
+                if ($element.is(':checked')) {
+                    $target.show();
+                } else {
+                    $target.hide();
+                }
+
+                $element.on('change', function () {
+                    if ($(this).is(':checked')) {
+                        $target.show();
+                    } else {
+                        $target.hide();
+                    }
+                });
+            });
+
+            var recalculate_size_price = function ($container, basePrice) {
+                var $input = $container.find('input');
+                var $monthPrice = $container.find('[data-model="monthPrice"]');
+                var $yearPrice = $container.find('[data-model="yearPrice"]');
+                var value = parseInt($input.val());
+
+                if (value > 0) {
+                    $monthPrice.text(value * basePrice);
+                    $yearPrice.text(value * basePrice * 12);
+                } else {
+                    $monthPrice.text('-');
+                    $yearPrice.text('-');
+                }
+            };
+
+            $('[data-size-calculator]').each(function () {
+                var $element = $(this);
+                var basePrice = $element.data('size-calculator');
+
+                recalculate_size_price($element, basePrice);
+
+                $element.on('change', 'input', function (e) {
+                   e.preventDefault();
+                   recalculate_size_price($element, basePrice);
+                });
+            });
+        }
+
+        $(document).ready(function() {
+            initFormListener();
+
+            $(".candidate-application").off('input[type=file]').on('change', 'input[type=file]', function(){
+              $('#appbundle_application_save').trigger('click');
+            });
+        });
+    </script>
+
 {% endblock %}
 
 {% block stylesheets %}
