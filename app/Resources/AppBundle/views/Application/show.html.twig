@@ -360,7 +360,16 @@
             <div class="colorBox-content">
                 <h4>Accepter cette candidature</h4>
                 <br />
-                <p>Vous allez accepter ce dossier de candidature</p>
+                <p class="text-left">Vous allez accepter ce dossier de candidature. Le candidat recevra le texte-type suivant :</p>
+
+                <p class="text-left"><i>
+                  Bonjour,<br>
+                  Votre candidature sur le site plateau-urbain pour l'espace {{space.name}} à {{space.city}} a été acceptée.
+                </i></p>
+
+                <p class="text-left">
+                  Souhaitez-vous compléter ce message ?
+                </p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Accepter" class="btn btn-fullcolor">
@@ -374,7 +383,16 @@
             <div class="colorBox-content">
                 <h4>Refuser cette candidature</h4>
                 <br />
-                <p>Vous allez refuser cette candidature</p>
+                <p class="text-left">Vous allez refuser cette candidature. Le candidat recevra le texte-type suivant :</p>
+
+                <p class="text-left"><i>
+                  Bonjour,<br>
+                  Votre candidature sur le site plateau-urbain pour l'espace {{space.name}} à {{space.city}} a été refusée.
+                </i></p>
+
+                <p class="text-left">
+                  Souhaitez-vous compléter ce message ?
+                </p>
 
                 <textarea name="message" rows="5" class="form-control"></textarea>
                 <input type="submit" value="Refuser" class="btn btn-fullcolor">
