@@ -164,6 +164,14 @@
 			</script>
 		{% endif %}
 
+		{% if app.request.get('confirm_inscription') %}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$.colorbox({html:"<div class='colorBox-content'><i class='fa fa-info-circle danger'></i><p>Vous allez recevoir un email de confirmation.<br /> Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.</p></div>", width:"400px"});
+				});
+			</script>
+		{% endif %}
+
 		{% block javascript %}
         {% endblock %}
 

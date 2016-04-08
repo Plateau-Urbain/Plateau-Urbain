@@ -30,13 +30,13 @@ class RegistrationController extends BaseController
         if ($process) {
             $user = $form->getData();
 
-            $route = 'fos_user_registration_confirmed';
+            $route = 'homepage';
 
             $this->setFlash('fos_user_success', 'registration.flash.user_created');
             $url = $this->container->get('router')->generate($route);
-            $response = new RedirectResponse($url);
+            $response = new RedirectResponse($url . '?confirm_inscription=1');
 
-            $this->authenticateUser($user, $response);
+//            $this->authenticateUser($user, $response);
 
             return $response;
         } else if ($process == false && 'POST' === $this->container->get('request')->getMethod()) {
