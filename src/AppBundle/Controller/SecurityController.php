@@ -67,7 +67,7 @@ class SecurityController extends Controller
 
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
 
-        if ($form->handleRequest($request)->isValid()) {
+        if ($form->handleRequest($request)->isSubmitted()) {
 
 
             $old_pwd = $this->getUser()->isProprio() ? $form->get('oldPassword')->getData() : '';
@@ -85,6 +85,12 @@ class SecurityController extends Controller
                     $em->persist($user);
                     $em->flush();
 
+                    if (!$form->isValid()) {
+                        return $this->render($template, array(
+                            'form' => $form->createView()
+                        ));
+                    }
+
                     return $this->redirect($this->generateUrl('security_profil'));
                 }
             } else {
@@ -99,6 +105,12 @@ class SecurityController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->getUser());
                 $em->flush();
+
+                if (!$form->isValid()) {
+                    return $this->render($template, array(
+                        'form' => $form->createView()
+                    ));
+                }
 
                 return $this->redirect($this->generateUrl('security_profil'));
             }

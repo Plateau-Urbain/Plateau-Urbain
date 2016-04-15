@@ -20,6 +20,13 @@ form.has-crosses.submitted{
     top: 35px;
   }
 
+  .custom-file-input {
+      .form-group:not(.required-field):after{
+        right: -100px;
+        top: 0px;
+    }
+  }
+
   .form-group.is-valid:not(.required-field):after{
     content: '\f00c';
     color: #8DCA85;
