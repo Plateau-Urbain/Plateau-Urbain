@@ -35,7 +35,7 @@
 
             <div class="form-contener">
                 <div class="row">
-                    <div class="col-sm-6 inline-controls form-group">
+                    <div class="col-sm-6 inline-controls form-group civility-group">
                         {{ form_label(form.civility) }}
                         {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
                         {{ form_errors(form.civility) }}
@@ -453,7 +453,7 @@
             $("select").chosen();
             toggleIdFiles();
 
-            if($('.form-group.has-error').length > 0) {
+            if($('.form-group.has-error').length > 0 || $('.help-block').length > 0) {
               $.colorbox({html:$('#errorBox').html()});
             }
         }
