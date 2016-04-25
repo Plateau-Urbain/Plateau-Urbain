@@ -25,6 +25,7 @@ class ApplicationAdmin extends Admin
     {
         $formMapper
             ->with('General')
+            ->add('status', 'choice', array('label' => 'Statut', 'choices' => Application::getStatusLabels()))
             ->add('space', null, array('label' => 'Espace'))
             ->add('projectHolder', null, array('label' => 'Porteur de projet'))
             ->add('name', null, array('label'=>"Nom du projet") )

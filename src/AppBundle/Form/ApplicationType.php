@@ -5,6 +5,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\ApplicationFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -78,6 +79,7 @@ class ApplicationType extends AbstractType
             ))
         ;
 
+
         foreach ($application->getSpace()->getDocuments() as $field) {
           $builder->add('document_' . $field->getId(),
             new ApplicationFileType(),
@@ -99,23 +101,28 @@ class ApplicationType extends AbstractType
                 $application->addFile($document);
             }
 
+
             foreach ($application->getSpace()->getDocuments() as $field) {
               $document = $event->getForm()->get('document_' . $field->getId())->getData();
 
-              if ($document instanceof ApplicationFile) {
-                  $document->setApplication($application);
-                  $document->setSpaceDocument($field);
+                if (($document instanceof ApplicationFile) == false && !$application->hasFileType($field->getId()) || ($document instanceof ApplicationFile && $document->getFile() == null && $event->getForm()->get('submit')->isClicked())) {
+                    $event->getForm()->get('document_' . $field->getId())->addError(new FormError('Le document ' . $field->getName() . ' est obligatoire'));
+                } else {
+                    if ($document instanceof ApplicationFile) {
+                        $document->setApplication($application);
+                        $document->setSpaceDocument($field);
 
-                  if ($application->hasFileType($field->getId())) {
-                    $currentDocument = $application->getFilesType($field->getId())[0];
-                    $currentDocument->setFile($document->getFile());
-                    $currentDocument->setFileName($document->getFileName());
-                  } else {
-                    if($document->getFile()){
-                      $application->addFile($document);
-                    }
-                  }
-              }
+                        if ($application->hasFileType($field->getId())) {
+                            $currentDocument = $application->getFilesType($field->getId())[0];
+                            $currentDocument->setFile($document->getFile());
+                            $currentDocument->setFileName($document->getFileName());
+                        } else {
+                            if ($document->getFile()) {
+                                $application->addFile($document);
+                            }
+                        }
+                   }
+                }
             }
         });
     }

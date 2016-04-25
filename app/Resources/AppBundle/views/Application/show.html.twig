@@ -205,8 +205,8 @@
             <tr><th>Présentation</th><td>{{ application.projectHolder.companyDescription|nl2br }}</td></tr>
             <tr><th>Nombre de personnes dans la structure</th><td>{{ application.projectHolder.companyEffective }}</td></tr>
             <tr><th>Structure(s) d'accompagnement</th><td>{{ application.projectHolder.companyStructures|nl2br }}</td></tr>
-            <tr><th>Site web</th><td>{{ application.projectHolder.companySite }}</td></tr>
-            <tr><th>Blog</th><td>{{ application.projectHolder.companyBlog }}</td></tr>
+            <tr><th>Site web</th><td><a href="{{ application.projectHolder.companySite }}" target="_blank">{{ application.projectHolder.companySite|length > 30 ? application.projectHolder.companySite|slice(0, 30) ~ '...' : application.projectHolder.companySite  }}</a></td></tr>
+            <tr><th>Blog</th><td><a href="{{ application.projectHolder.companyBlog }}" target="_blank">{{ application.projectHolder.companyBlog|length > 30 ? application.projectHolder.companyBlog|slice(0, 30) ~ '...' : application.projectHolder.companyBlog  }}</a></td></tr>
           </tbody>
         </table>
       </div>

@@ -348,10 +348,10 @@
             $("select").attr("data-placeholder", "Sélectionnez une option");
             $("select").chosen();
 
-            if (submitting && $(".candidate-application .has-error").length < 1) {
+            if (submitting && $(".candidate-application .has-error").length < 1 && $(".candidate-application .alert-danger").length < 1) {
               window.location.replace(location.protocol+'//'+location.host+location.pathname + "#espace_confirmation");
               window.location.reload(true);
-            } else if ($(".candidate-application .has-error").length < 1) {
+            } else if ($(".candidate-application .has-error").length < 1 && $(".candidate-application .alert-danger").length < 1) {
                 $.colorbox({html:$('#saveBox').html()});
             }
 

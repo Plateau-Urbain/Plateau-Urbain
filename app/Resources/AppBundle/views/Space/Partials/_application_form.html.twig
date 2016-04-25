@@ -19,6 +19,7 @@
         <div class="pu-col-container content-block">
           <div class="row">
             {{ form_start(form, {'attr' : {'class' : 'col-md-12'} } ) }}
+            {{ form_errors(form) }}
               <div class="col-md-6">
                 <div class="col-sm-12">
                   {{ form_row(form.name) }}
@@ -61,7 +62,7 @@
                     <div class="col-sm-6">
                       {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 {{ form.startOccupation.vars.errors|length ? 'has-error' : '' }}">
                       {{ form_widget(form.startOccupation) }}
                       {{ form_errors(form.startOccupation) }}
                     </div>
