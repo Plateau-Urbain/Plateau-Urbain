@@ -311,6 +311,7 @@
 
                 if ($(this).hasClass('submit')) {
                     submitting = true;
+                    $(".candidate-application .has-error").removeClass('has-error');
                 }
 
                 var form = $(this).closest('form');
@@ -348,8 +349,10 @@
             $("select").chosen();
 
             if (submitting && $(".candidate-application .has-error").length < 1) {
-              window.location.replace(window.location.href + "#espace_confirmation");
+              window.location.replace(location.protocol+'//'+location.host+location.pathname + "#espace_confirmation");
               window.location.reload(true);
+            } else if ($(".candidate-application .has-error").length < 1) {
+                $.colorbox({html:$('#saveBox').html()});
             }
 
             $('[data-checkbox-toggle]').each(function () {
