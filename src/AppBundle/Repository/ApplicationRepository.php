@@ -91,6 +91,9 @@ class ApplicationRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('a');
 
+        $qb->andWhere('a.status != :status');
+        $qb->setParameter('status', 'draft');
+
         if (!empty($params['space'])) {
             $qb->andWhere('a.space = :space')->setParameter('space', $params['space']);
         }
@@ -126,6 +129,8 @@ class ApplicationRepository extends EntityRepository
             ->select('a')
             ->where('a.id > :id')
             ->andWhere('a.space = :space')
+            ->andWhere('a.status != :status')
+            ->setParameter('status', 'draft')
             ->setParameter('space', $application->getSpace())
             ->setParameter('id', $application->getId())
             ->orderBy('a.id', 'ASC')
@@ -143,6 +148,8 @@ class ApplicationRepository extends EntityRepository
             ->select('a')
             ->where('a.id < :id')
             ->andWhere('a.space = :space')
+            ->andWhere('a.status != :status')
+            ->setParameter('status', 'draft')
             ->setParameter('space', $application->getSpace())
             ->setParameter('id', $application->getId())
             ->orderBy('a.id', 'DESC')
