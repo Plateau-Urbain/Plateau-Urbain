@@ -303,10 +303,17 @@
       </a>
   </div>
   <div class="col-sm-3">
-    <a href="" class="btn btn-block btn-status btn-yellow">
-      <i class="fa fa-star-o"></i>
-      Ajouter à ma sélection
+
+    <a href="{{ path('space_manager_toggle_selected_application', { 'id': application.id }) }}" class="btn btn-block btn-status btn-yellow">
+      {% if application.selected %}
+        <i class="fa fa-star fa-2x"></i>
+        Retirer de ma sélection
+      {% else %}
+        <i class="fa fa-star-o fa-2x"></i>
+        Ajouter à ma sélection
+      {% endif %}
     </a>
+    
   </div>
   {% if application.status == constant('AppBundle\\Entity\\Application::WAIT_STATUS') %}
     <div class="col-sm-3">

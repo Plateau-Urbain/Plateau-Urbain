@@ -63,7 +63,7 @@ class SpaceController extends Controller
         ));
 
         $form->add('save', 'submit', array(
-            'label' => 'Enregister',
+            'label' => 'Enregistrer',
             'attr' => array('class' => 'btn btn-fullcolor submit_form')
         ));
 

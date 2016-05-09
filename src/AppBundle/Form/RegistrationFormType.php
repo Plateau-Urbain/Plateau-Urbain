@@ -17,7 +17,7 @@ class RegistrationFormType extends AbstractType {
                     'first_options' => array('label' => 'form.password', 'attr' => array('class' => 'form-control', 'placeholder' => 'Mot de passe')),
                     'second_options' => array('label' => 'form.password_confirmation', 'attr' => array('class' => 'form-control', 'placeholder' => 'Confirmation')),
                     'label' => "Mot de passe"))
-                ->add('useType', null, array('label' => "Type d'usage", 'required' => true, 'empty_value' => 'Sélectionner un type d\'usage', 'attr' => array('class' => 'form-control')))
+                ->add('useType', null, array('label' => "Type d'usage", 'required' => true, 'empty_value' => 'Sélectionner un type d\'usage *', 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface en m²", 'attr' => array('class' => 'form-control')))
         ;
 

@@ -296,11 +296,18 @@
         $(function() {
 
             if (hash == "espace_confirmation") {
-                $.colorbox({html:$('#confirmBox').html()});
+              $.colorbox({
+                  html: $('#confirmBox').html(),
+                  fixed: true,
+                  onOpen: function() {
+                      $(window).scrollTop(0);
+                  }
+              });
             }
             if (hash == "espace_sauvegarde") {
                 $.colorbox({html:$('#saveBox').html()});
-            } });
+            }
+        });
     </script>
 
     <script type="text/javascript">
