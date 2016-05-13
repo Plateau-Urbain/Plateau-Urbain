@@ -1,0 +1,68 @@
+<div class="colorBox-content registration">
+
+    <img class="icon" src="{{ asset('/bundles/app/images/user_icon.png') }}" />
+
+    <h4>Inscription</h4>
+
+    <p>Pour vous inscrire, merci de renseigner la nature de votre projet, ainsi que la surface idéale dont vous auriez besoin.</p>
+
+    <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+
+        <div class="form-group inline-field">
+          {{ form_label(form.wishedSize) }}
+          {{ form_widget(form.wishedSize) }}
+        </div>
+
+        {{ form_widget(form.useType) }}
+
+        <div class="social-connect">
+          <a class="btn btn-block btn-social btn-facebook" href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}">
+            Me connecter avec Facebook
+          </a>
+          <a class="btn btn-block btn-social btn-google-plus" href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+            Me connecter avec Google+
+          </a>
+          <a class="btn btn-block btn-social btn-linkedin" href="{{ path('hwi_oauth_service_redirect', {'service': 'linkedin' }) }}">
+            Me connecter avec LinkedIn
+          </a>
+        </div>
+
+        <div>
+          <span class="btn-rounded grey">OU</span>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            {{ form_widget(form.email) }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+            {{ form_widget(form.plainPassword.first) }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+            {{ form_widget(form.plainPassword.second) }}
+          </div>
+        </div>
+
+        {{ form_rest(form) }}
+
+        {% for msg in app.session.flashbag.get('error_sign')  %}
+            <p style="color: red;">{{ msg }}</p>
+        {% endfor %}
+
+        <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
+
+        <p>
+          Vous allez recevoir un email de confirmation.
+          Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
+        </p>
+    </form>
+</div>

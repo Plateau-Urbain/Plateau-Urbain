@@ -1,0 +1,17 @@
+AppBundle\Entity\Space:
+    space1:
+        name: Les bureaux des acacias
+        description: super bureau aux portes de paris
+        locationDescription: Metro pas loin / Proche autoroutes
+        activityDescription: Activité
+        usageRestriction: Pas d'animaux
+        surface: 100
+        size: size
+        availability: availability
+        limitAvailability: <(new DateTime("2020-12-24"))>
+        price: 15
+        owner: @ownner1
+        enabled: true
+        zipCode: 75020
+        city: Paris
+        closed: false

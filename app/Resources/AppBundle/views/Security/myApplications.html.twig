@@ -1,0 +1,185 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_items %}
+  <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+  <li><span>Mes candidatures</span></li>
+{% endblock %}
+
+{% block body %}
+
+  <div class="row">
+    <div class="main col-sm-12">
+      <h1 class="section-title left-title">Mes candidatures</h1>
+      <hr />
+    </div>
+  </div>
+
+  <div id="listing-header" class="clearfix">
+    <div class="row">
+      <div class="col-sm-6 results-numbers">
+        <h4>
+          {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : applications, 'label' : 'candidatures' } %}
+        </h4>
+      </div>
+      <div class="col-sm-6">
+        {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
+
+        <div class="col-sm-4">
+          {{ form_widget(filterForm.status_filter) }}
+        </div>
+
+        <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_field) }}
+        </div>
+
+        <div class="col-sm-4">
+          {{ form_widget(filterForm.sort_order) }}
+        </div>
+
+        {{ form_end(filterForm) }}
+      </div>
+    </div>
+  </div>
+
+  {% if applications | length == 0 %}
+    <div class="no-results">
+      <p>
+        Vous n'avez aucune candidature :
+        <a href="{{ path('search_index') }}">Rechercher un espace</a>
+      </p>
+    </div>
+  {% else %}
+    <!-- BEGIN PROPERTY LISTING -->
+    <div id="property-listing" class="list-style clearfix">
+      <div class="row">
+        {% for application in applications %}
+          <div class="col-sm-12">
+            <div class="item">
+              <div class="row">
+
+                <div class="col-sm-4">
+                  <a href="{{ path('space_show', {'id': application.space.id}) }}">
+                    <div class="image">
+                      <div class="overlay">
+                        {% if application.space.isClosed %}
+                          <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
+                        {% else %}
+                          <img src="{{ asset('/bundles/app/images/inprogress.png')  }}" alt=""/>
+                        {% endif %}
+                      </div>
+                      <div class="image-wrapper">
+                        <img src="{% if application.space.pics.0 is defined %}{{ vich_uploader_asset(application.space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
+                <div class="col-sm-8">
+                  <div class="info">
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <h3>
+                          <small>{{ application.space.zipCode }} {{ application.space.city }}</small>
+                          {{ application.space.name }}<br/>
+                          <a href="{{ path('space_show', {'id': application.space.id}) }}">Voir l'annonce</a>
+                        </h3>
+                      </div>
+                      <div class="col-sm-5">
+                        <h4>Statut de votre candidature</h4>
+                        {% if application.status == 'draft' %}
+                          <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-draft"><i class="fa fa-pencil"></i>à compléter</a>
+                        {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
+                          <a href="#" class="btn btn-status btn-awaiting"><i class="fa fa-hourglass-half"></i>envoyée</a>
+                        {% elseif application.status == 'accepted'  %}
+                          <a href="#" class="btn btn-status btn-accepted"><i class="fa fa-check"></i>acceptée</a>
+                        {% elseif application.status == 'rejected'  %}
+                          <a href="#" class="btn btn-status btn-refuse"><i class="fa fa-times"></i>refusée</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3 item-desc border-box">
+                        <dl class="dl-horizontal dl-with-icon">
+                          <dt><i class="icon small square-brown"></i></dt>
+                          <dd>
+                            <span class="dd-title"><strong>{{ application.space.parcels | length }}</strong> espaces</span><br/>
+                            À partir de {{ application.space.size }}m<sup>2</sup>
+                          </dd>
+                        </dl>
+                      </div>
+                      <div class="col-sm-4 item-desc border-box">
+                        <dl class="dl-horizontal dl-with-icon">
+                          <dt><i class="icon small cal-brown"></i></dt>
+                          <dd>
+                            <span class="dd-title">Disponibilité</span><br/>
+                            {{ application.space.availability }}
+                          </dd>
+                        </dl>
+                      </div>
+                      <div class="col-sm-5 item-desc">
+                        <dl class="dl-horizontal dl-with-icon">
+                          <dt><i class="icon small time-brown"></i></dt>
+                          <dd>
+                            <span class="dd-title">Date limite de candidature</span><br/>
+                            {{ application.space.limitAvailability|localizeddate('long', 'none') }} à {{ application.space.limitAvailability|date('H') }}h
+                          </dd>
+                        </dl>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-7">
+                        <dl class="dl-horizontal dl-with-icon">
+                          <dt><i class="icon small building-brown"></i></dt>
+                          <dd>
+                            <span class="dd-title">Bailleur</span><br/>
+                            {{ application.space.owner.company }}
+                          </dd>
+                        </dl>
+                      </div>
+                      <div class="col-sm-5">
+                        {% if application.status == 'draft' %}
+                          <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-grey">Compléter ma candidature</a>
+                        {% else %}
+                          <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-status btn-grey">Voir ma candidature</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {{ knp_pagination_render(applications) }}
+{% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+          $(function () {
+              $('.sort').on('click', 'label', function () {
+                  var $input = $(this).find('input');
+
+                  $('.sort').find('label').removeClass('checked');
+
+                  if ($input.is(':checked')) {
+                      $(this).addClass('checked');
+                  }
+              });
+          });
+
+            // Submit form
+            $('form[data-submit]').on('change', function () {
+                console.log("here");
+                $(this).trigger('submit');
+            });
+
+        });
+    </script>
+{% endblock %}

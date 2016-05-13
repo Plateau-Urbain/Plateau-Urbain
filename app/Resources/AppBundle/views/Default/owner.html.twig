@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block breadcrumb_items %}
+  <li><span>Proposer un espace</span></li>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+  <div class="row">
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="col-sm-12">
+      <h1 class="property-title center">
+        Propriétaires et<br/>
+        gérants d'espaces<br/>
+        rejoignez nous !
+      </h1>
+
+      <p class="center black">
+        La plate-forme Plateau Urbain vous offre la possibilité de valoriser votre patrimoine<br />
+        inutilisé en permettant à des projets de nature multiple : coworking, résidences d'artistes,<br/>
+        fablabs... venus de toute la région Île-de-France de naître ou de se développer.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block actualities %}
+
+<div class="white-top">
+
+  <div class="top"></div>
+  <p>&nbsp;</p>
+  <h2 class="property-title center">
+    Pourquoi m'inscrire ?
+  </h2>
+
+  <div class="owner-desc">
+    <div class="center">
+      Pour ceux qu'unissent les valeurs de l'association,<br/>
+      rejoindre la plateforme a de multiples avantages :
+    </div>
+
+    <p>&nbsp;</p>
+
+    <ul class="list-unstyled">
+      <li><i class="fa fa-check-square"></i>redonner un usage à un espace vacant</li>
+      <li><i class="fa fa-check-square"></i>initier facilement des appels à projet</li>
+      <li><i class="fa fa-check-square"></i>attirer des projets d'horizons divers</li>
+      <li><i class="fa fa-check-square"></i>suivre les candidatures en temps réel</li>
+    </ul>
+    <p>&nbsp;</p>
+  </div>
+
+  <p class="center">
+    <a class="btn btn-fullcolor js-popin-mail" href="#">demande d'inscription</a>
+  </p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</div>
+
+<div class="row pu-actualities">
+  {{ render(controller('AppBundle:Actuality:show')) }}
+
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</div>
+
+<div class="js-popin-mail-content" style="display: none;">
+  <div class="colorBox-content registration">
+
+      <img class="icon" src="{{ asset('/bundles/app/images/user_icon.png') }}" />
+
+      <h4>Demande d'inscription</h4>
+
+      <p>
+        Pour vous inscrire merci d'envoyer un e-mail avec votre demande à <br /><a href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>.
+      </p>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".js-popin-mail").click(function() {
+        $.colorbox({html:$('.js-popin-mail-content').html(), width:"400px"});
+        return false;
+      });
+    });
+  </script>
+{% endblock %}

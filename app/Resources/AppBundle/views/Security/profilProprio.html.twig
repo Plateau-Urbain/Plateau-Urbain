@@ -1,0 +1,209 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_items %}
+    <li><span>Mon profil</span></li>
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="main col-sm-8 col-sm-offset-2">
+        <h1 class="section-title">Mon profil</h1>
+        <center>
+            <p>
+                Les informations précédées d’un astérisque sont obligatoires pour finaliser votre inscription.
+                <br />
+                Enrichissez votre profil pour permettre aux autres usagers de la plate-forme de découvrir votre projet.
+                <br />
+                Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
+            </p>
+        </center>
+    </div>
+
+</div>
+
+<div id="js-form-space">
+
+    {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
+    <div class="row">
+        <div class="main col-sm-8 col-sm-offset-2">
+            <h1 class="section-title">
+              <i class="icon user-red-bold"></i>
+              Mes informations
+            </h1>
+
+            <div class="form-contener">
+                <div class="row">
+                  <div class="col-sm-6 inline-controls form-group {% if form.civility.vars.errors|length %}has-error{% endif %}">
+                      {{ form_label(form.civility) }}
+                      {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                      {{ form_errors(form.civility) }}
+                  </div>
+                </div>
+                <div class="row">
+
+                  <div class="col-sm-6">
+                    {{ form_row(form.firstname) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.companyPhone) }}
+                  </div>
+
+                  <div class="col-sm-6">
+                    {{ form_row(form.lastname) }}
+                    {{ form_row(form.companyFunction) }}
+                    {{ form_row(form.companyMobile) }}
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="section-title">
+              <i class="icon struct-red-bold"></i>
+              Ma structure
+            </h1>
+
+            <div class="form-contener">
+
+              <div class="row">
+                <div class="col-sm-6">
+                  {{ form_row(form.company) }}
+                  {{ form_row(form.address) }}
+                  {{ form_row(form.zipcode) }}
+                  {{ form_row(form.companySite) }}
+                </div>
+                <div class="col-sm-6">
+                  {{ form_row(form.companyStatus) }}
+                  {{ form_row(form.addressSuite) }}
+                  {{ form_row(form.city) }}
+                </div>
+              </div>
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="section-title">
+              <i class="icon lock-red-bold"></i>
+              Modifier mon mot de passe
+            </h1>
+
+            <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.oldPassword, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.oldPassword) }}
+                        {% for msg in app.session.flashbag.get('error_msg')  %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.password.first, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.password.first) }}
+                        {{ form_errors(form.password.first)}}
+                    </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                        {{ form_label(form.password.second, null, {'label_attr' : {'class' : 'inline-label'}})}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_widget(form.password.second) }}
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="main col-sm-8 col-sm-offset-2">
+                    <center>
+                        <p>
+                            Vous souhaitez vous désinscrire ? Merci d’adresser votre demande à <a href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>
+                        </p>
+                    </center>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    function initFormListener() {
+        $('input[type="submit"]').click(function(){
+
+            var form = $(this).closest('form');
+            var action = form.attr('action');
+            var formData = new FormData(form[0]);
+
+            $.ajax({
+                url: action,
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (data) {
+                    successAjax(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+    }
+
+    function successAjax(data) {
+        $("#js-form-space").html($(data).find('#js-form-space')).find('form').addClass('submitted');
+        initFormListener();
+        $("select").attr("data-placeholder", "Sélectionnez une option");
+        $("select").chosen();
+
+        if($('.form-group.has-error').length > 0) {
+          $.colorbox({html:$('#errorBox').html()});
+        }
+    }
+
+    $(document).ready(function() {
+        initFormListener();
+    });
+</script>
+
+<div id="errorBox" style="display: none;">
+    <div class="colorBox-content">
+        <i class="fa fa-info-circle danger"></i>
+        <p>Le formulaire comporte des erreurs.</p>
+    </div>
+</div>
+
+{% endblock %}

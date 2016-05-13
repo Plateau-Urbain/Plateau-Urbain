@@ -1,0 +1,46 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_items %}
+    <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+    <li><span>Ajouter un espace</span></li>
+{% endblock %}
+
+
+{% block body %}
+<div id="js-form-space">
+    {% include "AppBundle:SpaceManagement/Partials:edit_spaces.html.twig" with { 'form': form } %}
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+    {{ parent() }}
+
+    {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/form-extensions.min.js'
+    'bundles/avocodeformextensions/datepicker/js/datepicker.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript" src="{{ asset('bundles/avocodeformextensions/datepicker/js/locales/bootstrap-datepicker.fr.js') }}"></script>
+
+    <script src="{{ asset('bundles/app/js/space.js') }}"></script>
+
+    <div id="saveBox" style="display: none;">
+        <div class="colorBox-content">
+            <i class="fa fa-info-circle danger"></i>
+            <p>L'espace a été enregistré.</p>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets filter='cssrewrite,?yui_css' output='assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
+        'bundles/avocodeformextensions/datepicker/css/datepicker.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+    {% endstylesheets %}
+{% endblock %}

@@ -1,0 +1,74 @@
+<h4>
+  <i class="icon icon-inline small square-brown"></i>
+  Lots
+</h4>
+
+<table class="lots table">
+  <thead>
+    <tr>
+      <th class="col-sm-3">Étage</th>
+      <th class="col-sm-3">Type de locaux</th>
+      <th class="col-sm-3">Surface</th>
+      <th class="col-sm-3">Disponibilité</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for parcel in parcels if parcel.id is not empty %}
+        <tr>
+            <td>{{ parcel.floor }}</td>
+            <td>{{ parcel.type }}</td>
+            <td>{{ parcel.surface }}</td>
+            <td>
+                {{ parcel.disponibilityToString }}
+                <a href="{{ path('space_manager_removeparcel', { 'id': parcel.id, 'token': csrf_token('remove_parcel') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4" class="center">Pas de lots</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h4 class="black">
+  {{ form.vars.label }}
+</h4>
+
+{{ form_errors(form) }}
+
+<table class="lots table">
+  <thead>
+    <tr>
+      <th class="col-sm-3">{{ form_label(form.floor) }}</th>
+      <th class="col-sm-3">{{ form_label(form.type) }}</th>
+      <th class="col-sm-3">{{ form_label(form.surface) }}</th>
+      <th class="col-sm-3">{{ form_label(form.disponibility) }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        {{ form_widget(form.floor) }}
+      </td>
+      <td>
+        {{ form_widget(form.type) }}
+      </td>
+      <td>
+        {{ form_widget(form.surface) }}
+      </td>
+      <td>
+        {{ form_widget(form.disponibility) }}
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<div class="col-sm-4 col-sm-offset-4">
+  <button type="submit" class="btn  btn-fullcolor form-control">
+      Ajouter
+  </button>
+</div>

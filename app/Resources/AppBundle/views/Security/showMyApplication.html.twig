@@ -1,0 +1,325 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_items %}
+  <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+  <li><a href="{{ path('my_applications_list') }}">Mes candidatures</a></span></li>
+  <li><span>Ma candidature pour : {{application.space.name}}</span></li>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+
+  {% stylesheets 'bundles/app/css/print.css'
+  filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="print" />
+  {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+
+<div class="application-header center">
+  <h1>{{ application.name }}</h1>
+  <h2>{{ application.projectHolder.company }}</h2>
+
+  {% if not application.isDraft %}
+    <p>Candidature envoyée le {{ application.created|date('d/m/Y') }}</p>
+  {% endif %}
+
+  <div class="application-status">
+    <p>Statut de ma candidature</p>
+    {% include '@App/Application/partials/_status_label.html.twig' %}
+  </div>
+</div>
+
+{% set space = application.space %}
+<div class="application-space space-card item" id="space-card">
+  <div class="item">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="image">
+          <div class="overlay">
+            {% if application.space.isClosed %}
+              <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
+            {% else %}
+              <img src="{{ asset('/bundles/app/images/inprogress.png')  }}" alt=""/>
+            {% endif %}
+          </div>
+          <div class="image-wrapper">
+            <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(application.space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-8">
+        <div class="info">
+          <div class="row">
+
+            <div class="col-sm-7">
+              <h3>
+                <small>{{ space.city }} ({{ space.zipCode|slice(0,2)}})</small>
+                {{ application.space.name }}<br/>
+                <a href="{{ path('space_show', {'id': space.id}) }}">Voir l'annonce</a>
+              </h3>
+            </div>
+            <div class="col-sm-5">
+              <h3 class="price">
+                <small>À partir de</small>
+                {{ space.price }}€/m²/mois
+                <small class="sub">H.C. H.T.<sup>1</sup></small>
+              </h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3 item-desc border-box">
+              <dl class="dl-horizontal dl-with-icon">
+                <dt><i class="icon small square-brown"></i></dt>
+                <dd>
+                  <span class="dd-title"><strong>{{ space.parcels | length }}</strong> espaces</span><br/>
+                  De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-4 item-desc border-box">
+              <dl class="dl-horizontal dl-with-icon">
+                <dt><i class="icon small cal-brown"></i></dt>
+                <dd>
+                  <span class="dd-title">Disponibilité</span><br/>
+                  {{ space.availability }}
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-5 item-desc">
+              <dl class="dl-horizontal dl-with-icon">
+                <dt><i class="icon small time-brown"></i></dt>
+                <dd>
+                  <span class="dd-title">Date limite de candidature</span><br/>
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-7">
+              <dl class="dl-horizontal dl-with-icon">
+                <dt><i class="icon small building-brown"></i></dt>
+                <dd>
+                  <span class="dd-title">Bailleur</span><br/>
+                  {{ application.space.owner.company }}
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-5">
+              <a href="{{ path('space_show', { 'id': space.id }) }}" class="btn btn-block btn-status btn-grey">Voir fiche projet</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="box-information">
+      <h4 class="box-title">
+        <i class="icon user-brown-bold"></i>
+        Contact
+      </h4>
+
+      <div class="box-content">
+        <table>
+          <tbody>
+            <tr><th>Candidat</th><td>{{ application.projectHolder.fullName }}</td></tr>
+            <tr><th>Date de naissance</th><td>{{ application.projectHolder.birthday|date('d/m/Y') }}</td></tr>
+            <tr><th>Téléphone</th><td></td></tr>
+            <tr><th>Email</th><td>{{ application.projectHolder.email }}</td></tr>
+            <tr><th>À propos</th><td>{{ application.projectHolder.description|nl2br }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="box-information">
+      <h4 class="box-title">
+        <i class="icon soc-brown-bold"></i>
+        Réseaux sociaux
+      </h4>
+
+      <div class="box-content">
+        <table>
+          <tbody>
+            <tr><th><i class="fa fa-facebook"></i></th><td>{{ application.projectHolder.facebookUrl }}</td></tr>
+            <tr><th><i class="fa fa-twitter"></i></th><td>{{ application.projectHolder.twitterUrl }}</td></tr>
+            <tr><th><i class="fa fa-instagram"></i></th><td>{{ application.projectHolder.instagramUrl }}</td></tr>
+            <tr><th><i class="fa fa-google-plus"></i></th><td>{{ application.projectHolder.googleUrl }}</td></tr>
+            <tr><th><i class="fa fa-linkedin"></i></th><td>{{ application.projectHolder.linkedinUrl }}</td></tr>
+            <tr><th><i class="fa fa-link"></i></th><td>{{ application.projectHolder.otherUrl }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="box-information">
+      <h4 class="box-title">
+        <i class="icon struct-brown-bold"></i>
+        Structure
+      </h4>
+
+      <div class="box-content">
+        <table>
+          <tbody>
+            <tr><th>Nom de la structure</th><td>{{ application.projectHolder.company }}</td></tr>
+            <tr><th>Statut</th><td>{{ application.projectHolder.companyStatus }}</td></tr>
+            <tr>
+              <th>Date de création</th>
+              <td>
+                {% if application.projectHolder.companyCreationDate %}
+                    {{ application.projectHolder.companyCreationDate|date("d/m/Y") }}
+                {% endif %}
+              </td>
+            </tr>
+            <tr><th>SIRET</th><td>{{ application.projectHolder.siret }}</td></tr>
+            <tr><th>Ville</th><td>{{ application.projectHolder.city }}</td></tr>
+            <tr><th>Code postal</th><td>{{ application.projectHolder.zipcode }}</td></tr>
+            <tr><th>Adresse</th><td>{{ application.projectHolder.address }}</td></tr>
+            <tr><th>Adresse (suite)</th><td>{{ application.projectHolder.addressSuite }}</td></tr>
+            <tr><th>Téléphone fixe</th><td>{{ application.projectHolder.companyPhone }}</td></tr>
+            <tr><th>Téléphone mobile</th><td>{{ application.projectHolder.companyMobile }}</td></tr>
+            <tr><th>Présentation</th><td>{{ application.projectHolder.companyDescription|nl2br }}</td></tr>
+            <tr><th>Nombre de personnes dans la structure</th><td>{{ application.projectHolder.companyEffective }}</td></tr>
+            <tr><th>Structure(s) d'accompagnement</th><td>{{ application.projectHolder.companyStructures|nl2br }}</td></tr>
+            <tr><th>Site web</th><td><a href="{{ application.projectHolder.companySite }}" target="_blank">{{ application.projectHolder.companySite|length > 30 ? application.projectHolder.companySite|slice(0, 30) ~ '...' : application.projectHolder.companySite  }}</a></td></tr>
+            <tr><th>Blog</th><td><a href="{{ application.projectHolder.companyBlog }}" target="_blank">{{ application.projectHolder.companyBlog|length > 30 ? application.projectHolder.companyBlog|slice(0, 30) ~ '...' : application.projectHolder.companyBlog  }}</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="box-information">
+      <h4 class="box-title">
+        <i class="icon list-brown-bold"></i>
+        Projet pour cet espace
+      </h4>
+
+      <div class="box-content">
+        <table>
+          <tbody>
+            <tr><th>Nom du projet</th><td>{{ application.name }}</td></tr>
+            <tr><th>Type d'usage</th><td>{{ application.projectHolder.useType }}</td></tr>
+            <tr><th>Type de projet</th><td>{{ application.category }}</td></tr>
+            <tr><th>Surface recherchée</th><td>{{ application.wishedSize }} m<sup>2</sup></td></tr>
+            <tr><th>Durée d'occupation</th><td>{{ application.fullLengthOccupation }}</td></tr>
+            <tr><th>Date d'entrée souhaitée</th><td>{{ application.startOccupation|date('d/m/Y') }}</td></tr>
+            <tr><th>Description</th><td>{{ application.description|nl2br }}</td></tr>
+            <tr><th>Ouvert(e) à un projet collectif</th><td>{{ application.openToGlobalProject ? 'Oui' : 'Non' }}</td></tr>
+            <tr><th>Contribution au projet global du propriétaire</th><td>{{ application.contribution|nl2br }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="box-information">
+      <h4 class="box-title">
+        <i class="icon doc-brown-bold"></i>
+        Documents disponibles
+      </h4>
+
+      <div class="box-content">
+        <div class="files">
+
+          {% if application.projectHolder.companyStatus == 'Association' %}
+            <div class="file-infos">
+              <span>Pièce d'identité</span>
+              <div class="pull-right actions">
+                {% if application.projectHolder.hasDocuments('id') %}
+                {% set file =  application.projectHolder.getDocumentsType('id')[0] %}
+                <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                {% endif %}
+              </div>
+            </div>
+          {% else %}
+            <div class="file-infos">
+              <span>Kbis</span>
+              <div class="pull-right actions">
+                {% if application.projectHolder.hasDocuments('kbis') %}
+                {% set file =  application.projectHolder.getDocumentsType('kbis')[0] %}
+                <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+          {% for doc in application.projectHolder.getDocumentsType('') %}
+              <div class="file-infos">
+                <span>{{doc.fileName | slice(14, 100)}}</span>
+                <div class="pull-right actions">
+                    <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                </div>
+              </div>
+          {% endfor %}
+
+          {% for doc in application.files %}
+              <div class="file-infos">
+                <span>{{doc.fileName | slice(14, 100)}}</span>
+                <div class="pull-right actions">
+                    <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-download"></i>Télécharger</a>
+                </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="center">
+    <a href="javascript:print();" class="btn btn-secondary">
+      <i class="fa fa-print"></i>
+      Imprimer ma candidature
+    </a>
+  </div>
+</div>
+
+
+<div class="pagination-wrapper">
+    <ul class="pagination">
+
+        <li>
+            {% if prevApplication %}
+                <a href="{{ path('my_application_show', { 'id': prevApplication.id }) }}" aria-label="Prev" title="Candidature précédente" data-toggle="tooltip">
+                    <span aria-hidden="true"></span>
+                </a>
+            {% else %}
+                <span aria-label="Previous">
+                    <span aria-hidden="true"></span>
+                </span>
+            {% endif %}
+        </li>
+
+        <li>
+            {% if nextApplication %}
+            <a href="{{ path('my_application_show', { 'id': nextApplication.id }) }}" aria-label="Next"  title="Candidature suivante" data-toggle="tooltip">
+                <span aria-hidden="true"></span>
+            </a>
+            {% else %}
+                <span aria-label="Next">
+                    <span aria-hidden="true"></span>
+                </span>
+            {% endif %}
+        </li>
+
+    </ul>
+</div>
+
+{% endblock %}

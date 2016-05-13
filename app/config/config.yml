@@ -1,0 +1,286 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:         ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - 'AppBundle:Form:custom_front_fields.html.twig'
+
+# Assetic Configuration
+assetic:
+    debug:          true
+    use_controller: false
+    bundles:       [ AvocodeFormExtensionsBundle, AppBundle, FOSUserBundle ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        less:
+            node:       /usr/local/bin/node
+            node_paths: [/usr/local/lib/node_modules]
+            apply_to:   "\.less$"
+        #closure:
+        #    jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        #yui_css:
+        #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# FOS User Bundle
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    group:
+        group_class: AppBundle\Entity\Group
+    from_email:
+        address: noreply@plateau-urbain.fr
+        sender_name: Plateau Urbain
+    registration:
+        confirmation:
+            enabled: true
+        form:
+            validation_groups: [register, default]
+            type: project_holder_user_registration
+
+
+# SONATA User Bundle
+sonata_user:
+    security_acl: false
+    manager_type: orm
+    class:
+        user: AppBundle\Entity\User
+        group: AppBundle\Entity\Group
+    impersonating:
+        route: homepage
+    admin:
+        user:
+            class: AppBundle\Admin\UserAdmin
+            controller: SonataAdminBundle:CRUD
+            translation: SonataUserBundle
+
+sonata_doctrine_orm_admin:
+    templates:
+        form:
+            - AppBundle:Admin:my_form_admin_fields.html.twig
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.block.service.text: ~
+        sonata.block.service.action: ~
+        sonata.block.service.rss: ~
+        sonata.admin.block.search_result: ~
+        sonata.user.block.menu: ~
+
+
+knp_gaufrette:
+    stream_wrapper: ~
+    adapters:
+        space_file_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/space
+        actuality_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/actuality
+        user_documents_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/user_documents
+        application_files_adapter :
+            local:
+                directory: %kernel.root_dir%/../web/uploads/application_files
+    filesystems:
+        space_cover_fs:
+            adapter:    space_file_adapter
+        actuality_fs:
+            adapter:    actuality_adapter
+        user_documents_fs:
+            adapter:    user_documents_adapter
+        application_files_fs:
+            adapter:    application_files_adapter
+
+vich_uploader:
+    db_driver: orm
+    storage: gaufrette
+    mappings:
+        file:
+            uri_prefix: /uploads/space
+            upload_destination: space_cover_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_uniqid
+            inject_on_load: true
+        actuality:
+            uri_prefix: /uploads/actuality
+            upload_destination: actuality_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_uniqid
+            inject_on_load: true
+        user_documents:
+            uri_prefix: /uploads/user_documents
+            upload_destination: user_documents_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_origname
+            inject_on_load: true
+        application:
+            uri_prefix: /uploads/application_files
+            upload_destination: application_files_fs
+            delete_on_remove:   true
+            delete_on_update:   true
+            namer: vich_uploader.namer_origname
+            inject_on_load: true
+
+ornicar_apc:
+      host: %base_url%
+      web_dir: %kernel.root_dir%/../web
+#      mode: curl
+
+avocode_form_extensions:
+    upload_manager: vich_uploader
+    collection_upload:
+        async_listener_enabled: true
+        async_route_name: upload_action
+        file_storage: avocode.form.file_storage.local
+
+
+cspoo_swiftmailer_mailgun:
+    key: "%mailgun_key%"
+    domain: "%mailgun_domain%"
+
+
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+#    driver: imagick
+    filter_sets:
+        cache: ~
+        thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [150, 150], mode: outbound, allow_upscale: true }
+        square:
+            quality: 75
+            filters:
+                thumbnail: { size: [400, 400], mode: outbound, allow_upscale: true }
+        product_thumb:
+            quality: 75
+            filters:
+                upscale: { min: [400, 300] }
+        product:
+            quality: 75
+            filters:
+                upscale: { min: [400, 300] }
+        post:
+            quality: 75
+            filters:
+                thumbnail: { size: [1000, 480], mode: outbound, allow_upscale: true }
+        pqj:
+            quality: 75
+            filters:
+                thumbnail: { size: [600, 370], mode: outbound, allow_upscale: true }
+
+knp_paginator:
+    page_range: 10                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            timestampable: true
+            sortable: true
+
+hwi_oauth:
+    firewall_name: main
+    connect:
+      account_connector: app.provider.oauth
+
+    resource_owners:
+        facebook:
+            type:          facebook
+            client_id:     %facebook_client_id%
+            client_secret: %facebook_client_secret%
+            scope:         "email, public_profile"
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
+            paths:
+                email: email
+            options:
+                display: page
+
+        google:
+            type:           google
+            client_id:      %google_client_id%
+            client_secret:  %google_client_secret%
+            scope:          "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                email: email
+
+        linkedin:
+            type:           linkedin
+            client_id:      %linkedin_client_id%
+            client_secret:  %linkedin_client_secret%
+            scope:          r_emailaddress
+            paths:
+                email: emailAddress

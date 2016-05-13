@@ -1,0 +1,204 @@
+services:
+    app.admin.users.admin.owners:
+        class: AppBundle\Admin\OwnerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Propriétaires }
+        arguments:
+            - ~
+            - AppBundle\Entity\User
+            -
+        calls:
+            - [setUserManager, [@fos_user.user_manager]]
+
+    app.admin.users.admin.project_holder:
+        class: AppBundle\Admin\ProjectHolderAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: Les porteurs de projet}
+        arguments:
+            - ~
+            - AppBundle\Entity\User
+            -
+        calls:
+            - [setUserManager, [@fos_user.user_manager]]
+
+    app.admin.spaces:
+        class: AppBundle\Admin\SpaceAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: Propriétés }
+        arguments:
+            - ~
+            - AppBundle\Entity\Space
+            -
+
+    app.admin.spaces.attributes:
+        class: AppBundle\Admin\AttributeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Attributs de propriété }
+        arguments:
+            - ~
+            - AppBundle\Entity\Attribute
+            -
+
+    app.admin.spaces.spaceattribute:
+        class: AppBundle\Admin\SpaceAttributeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Attributs de propriété , show_in_dashboard: false }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceAttribute
+            -
+
+    app.admin.spaces.images:
+        class: AppBundle\Admin\SpaceImageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: images de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceImage
+            -
+
+    app.admin.spaces.documents:
+        class: AppBundle\Admin\SpaceDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: documents de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceDocument
+            -
+
+    app.admin.users.admin.project_holder.documents:
+        class: AppBundle\Admin\UserDocumentAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: documents porteurs de projets , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\UserDocument
+            -
+
+    app.admin.application.files:
+        class: AppBundle\Admin\FileAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\File
+            -
+
+    app.admin.application.application_files:
+        class: AppBundle\Admin\ApplicationFileAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: images de Candidatures , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\ApplicationFile
+            -
+
+    app.admin.spaces.parcel:
+        class: AppBundle\Admin\ParcelAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Propriétés, label: lot de propriété , show_in_dashboard: false  }
+        arguments:
+            - ~
+            - AppBundle\Entity\Parcel
+            -
+
+    app.admin.spaces.floor:
+        class: AppBundle\Admin\FloorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Etages , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\Floor
+            -
+
+    app.admin.spaces.localtype:
+        class: AppBundle\Admin\LocalTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type de locaux , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\LocalType
+            -
+
+    app.admin.spaces.spacetype:
+        class: AppBundle\Admin\SpaceTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'espace , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\SpaceType
+            -
+
+    app.admin.spaces.category:
+        class: AppBundle\Admin\CategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Catégorie de projet , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\Category
+            -
+
+    app.admin.spaces.useType:
+        class: AppBundle\Admin\UseTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'usage , show_in_dashboard: true  }
+        arguments:
+            - ~
+            - AppBundle\Entity\UseType
+            -
+
+    app.admin.spaces.application:
+        class: AppBundle\Admin\ApplicationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Candidatures, label: Les candidatures}
+        arguments:
+            - ~
+            - AppBundle\Entity\Application
+            -
+
+    app.form.type.space:
+        class: AppBundle\Form\SpaceType
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: appbundle_space }
+
+    app.form.type.application:
+        class: AppBundle\Form\ApplicationType
+        tags:
+            - { name: form.type, alias: appbundle_application }
+
+    app.admin.image_admin_type:
+         class: AppBundle\Form\ImageAdminType
+         tags:
+             - { name: form.type, alias: image_admin_type }
+
+    app.admin.doc_admin_type:
+         class: AppBundle\Form\DocAdminType
+         tags:
+             - { name: form.type, alias: doc_admin_type }
+
+    project_holder_user_registration:
+         class: AppBundle\Form\RegistrationFormType
+         arguments: [%fos_user.model.user.class%]
+         tags:
+             - { name: form.type, alias: project_holder_user_registration }
+
+    # Twig extensions
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    app.admin.actuality:
+        class: AppBundle\Admin\ActualityAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Actuality
+            -
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Actualités,label: Lister, show_in_dashboard: true}
+
+    app.provider.oauth:
+        class: AppBundle\Security\OAuthUserProvider
+        arguments: [@fos_user.user_manager,{facebook: facebookId, google: googleId, linkedin: linkedinId}]

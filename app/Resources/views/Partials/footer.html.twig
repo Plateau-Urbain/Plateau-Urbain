@@ -1,0 +1,114 @@
+<!-- BEGIN FOOTER -->
+<footer id="footer">
+  <div class="top"></div>
+
+  <div id="footer-top" class="container">
+    <div class="row">
+
+      <div class="block col-sm-4">
+        <div class="row">
+
+          <div class="block col-sm-12">
+            <h3>Trouver un espace ou des porteurs de projets</h3>
+            <p>
+              Plateau Urbain est une association dédiée à la mise en relation et
+              à l'accompagnement des propriétaires de locaux vacants et des
+              porteurs de projet en Île-de-France.
+            </p>
+          </div>
+
+          <div class="block col-sm-12">
+            <h3>Plateau Urbain est soutenu par</h3>
+            <ul class="list-inline">
+              <li>
+                <a href="http://www.fondation-macif.org/" target="_blank"><img src="{{ asset('/public/images/macif_logo.png') }}" alt="" /></a>
+              </li>
+              <li>
+                <a href="http://www.atelier-idf.org/" target="_blank"><img src="{{ asset('/public/images/atelier_logo.png') }}" alt="" /></a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="block col-sm-4">
+        <div class="row">
+
+          <div class="block col-sm-12">
+            <h3>Développer vos projets</h3>
+            <ul class="footer-links">
+              <li><a href="http://www.plateau-urbain.com/#!plate-forme/eqbhd" target="_blank">Comment ça marche ?</a></li>
+              {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
+                <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
+                <li><a href="{{path('security_profil')}}">Mon compte</a></li>
+              {% else %}
+                <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
+                <li><a href="{{ path('proprietaire') }}">Proposer un espace</a></li>
+                <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
+              {% endif %}
+            </ul>
+            <hr />
+          </div>
+
+
+          <div class="block col-sm-12">
+            <h3>Plateau urbain</h3>
+            <ul class="footer-links">
+              <li><a href="http://www.plateau-urbain.com/" target="_blank">Nous connaître</a></li>
+              <li><a href="http://www.plateau-urbain.com/#!dons/y36xk" target="_blank">Soutenir l’association</a></li>
+              <li><a href="http://www.plateau-urbain.com/#!formulaire/c1v9l" target="_blank">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="block col-sm-4">
+
+        <div class="row">
+
+          <div class="block col-sm-12">
+            <a href="http://www.plateau-urbain.com" target="_blank"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
+            <ul class="list-unstyled infos">
+              <li><strong>Locaux : </strong> 82 av. Denfert Rochereau 75014 Paris</li>
+              <li><i class="fa fa-envelope"></i>contact@plateau-urbain.com</li>
+              <li><i class="fa fa-phone"></i>06 75 53 32 60</li>
+            </ul>
+          </div>
+
+          <div class="block col-sm-12">
+            <h3>Suivez-nous</h3>
+            <ul class="list-inline">
+              <li><a href="https://www.facebook.com/plateau.urbain/" target="_blank"><img src="{{ asset('/bundles/app/images/facebook_red.png') }}" /></a></li>
+              <li><a href="https://twitter.com/plateauurbain" target="_blank"><img src="{{ asset('/bundles/app/images/twitter_red.png') }}" /></a></li>
+              <li><a href="https://www.linkedin.com/company/plateau-urbain" target="_blank"><img src="{{ asset('/bundles/app/images/linkedin_red.png') }}" /></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BEGIN COPYRIGHT -->
+  <div id="copyright">
+    <div class="top"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="list-inline">
+            <li>&copy; {{ "now"| date("Y") }} Plateau Urbain</li>
+            <li><a href="{{path('cgu')}}">Conditions générales d'utilisation et Mentions légales</a></li>
+            <li><a class="normal" href="http://www.widop.com/">Développement Wid'op</a></li>
+            <li><a class="normal" href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END COPYRIGHT -->
+
+</footer>
+<!-- END FOOTER -->
