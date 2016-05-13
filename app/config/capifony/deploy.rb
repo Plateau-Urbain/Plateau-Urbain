@@ -23,6 +23,7 @@ set :model_manager, "doctrine"
 # Or: `propel`
 
 set :use_composer,               true
+set :composer_bin, "/usr/local/bin/composer"
 set :dump_assetic_assets,        true
 set :update_assets_version,      true
 set :normalize_asset_timestamps, false
