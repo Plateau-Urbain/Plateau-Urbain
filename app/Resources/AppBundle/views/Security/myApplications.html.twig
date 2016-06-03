@@ -85,15 +85,17 @@
                         </h3>
                       </div>
                       <div class="col-sm-5">
-                        <h4>Statut de votre candidature</h4>
-                        {% if application.status == 'draft' %}
-                          <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-draft"><i class="fa fa-pencil"></i>à compléter</a>
-                        {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
-                          <a href="#" class="btn btn-status btn-awaiting"><i class="fa fa-hourglass-half"></i>envoyée</a>
-                        {% elseif application.status == 'accepted'  %}
-                          <a href="#" class="btn btn-status btn-accepted"><i class="fa fa-check"></i>acceptée</a>
-                        {% elseif application.status == 'rejected'  %}
-                          <a href="#" class="btn btn-status btn-refuse"><i class="fa fa-times"></i>refusée</a>
+                        {% if not application.space.isClosed %}
+                          <h4>Statut de votre candidature</h4>
+                          {% if application.status == 'draft' %}
+                              <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-draft"><i class="fa fa-pencil"></i>à compléter</a>
+                          {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
+                            <a href="#" class="btn btn-status btn-awaiting"><i class="fa fa-hourglass-half"></i>envoyée</a>
+                          {% elseif application.status == 'accepted'  %}
+                            <a href="#" class="btn btn-status btn-accepted"><i class="fa fa-check"></i>acceptée</a>
+                          {% elseif application.status == 'rejected'  %}
+                            <a href="#" class="btn btn-status btn-refuse"><i class="fa fa-times"></i>refusée</a>
+                          {% endif %}
                         {% endif %}
                       </div>
                     </div>
@@ -137,10 +139,12 @@
                         </dl>
                       </div>
                       <div class="col-sm-5">
-                        {% if application.status == 'draft' %}
-                          <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-grey">Compléter ma candidature</a>
-                        {% else %}
-                          <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-status btn-grey">Voir ma candidature</a>
+                        {% if not application.space.isClosed %}
+                          {% if application.status == 'draft' %}
+                            <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-grey">Compléter ma candidature</a>
+                          {% else %}
+                            <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-status btn-grey">Voir ma candidature</a>
+                          {% endif %}
                         {% endif %}
                       </div>
                     </div>
