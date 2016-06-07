@@ -319,7 +319,7 @@
                   </dl>
 
               <div class="files">
-                <div class="idcard-file file-infos">
+                <div class="idcard-file file-infos {% if app.user.hasDocuments('id') %}present{% endif %}">
                   <span>Pièce d'identité</span>
                   <div class="pull-right actions">
                     <label class="custom-file-input btn btn-accepted">
@@ -334,7 +334,7 @@
                   </div>
                 </div>
 
-                <div class="kbis-file file-infos">
+                <div class="kbis-file file-infos {% if app.user.hasDocuments('kbis') %}present{% endif %}">
                   <span>Kbis</span>
                   <div class="pull-right actions">
                     <label class="custom-file-input btn btn-accepted">
@@ -423,6 +423,23 @@
     <script type="text/javascript">
         function initFormListener() {
             $('input[type="submit"]').click(function(){
+
+                if ($('.idcard-file:not(.present):visible input[type=file]').length > 0) {
+                  if ($('.idcard-file input[type=file]').get(0).files.length === 0) {
+                      $.colorbox({html:$('#errorBox').html()});
+                      $('.idcard-file').addClass('has-error');
+
+                      return false;
+                  }
+                }
+
+                if ($('.kbis-file:not(.present):visible input[type=file]').length > 0) {
+                  if ($('.kbis-file input[type=file]').get(0).files.length === 0) {
+                      $.colorbox({html:$('#errorBox').html()});
+                      $('.kbis-file').addClass('has-error');
+                      return false;
+                  }
+                }
 
                 var form = $(this).closest('form');
                 var action = form.attr('action');

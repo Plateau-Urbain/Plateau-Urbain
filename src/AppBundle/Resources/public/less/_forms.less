@@ -22,7 +22,7 @@ form.has-crosses.submitted{
 
   .custom-file-input {
       .form-group:not(.required-field):after{
-        right: -100px;
+        right: 35px;
         top: 0px;
     }
   }
@@ -152,6 +152,11 @@ label.inline-label{
   padding: 6px 12px;
   height: 41px;
   margin-bottom: 5px;
+
+  &.has-error {
+    border-color: @red;
+    color: @red;
+  }
 
   span {
     line-height: 28px;
