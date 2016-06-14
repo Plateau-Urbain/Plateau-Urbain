@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Entity\User;
@@ -83,15 +84,15 @@ class ProjectOwnerType extends AbstractType {
                 ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
 
                 ->add('kbis', new UserDocumentType(), array(
-                    'label' => false,
+                    'label' => 'Kbis',
                     'mapped' => false,
-                    'required' => ($user->hasDocuments(UserDocument::KBIS_TYPE) ? false : true)
+                    'error_bubbling' => false,
                 ))
 
                 ->add('idcard', new UserDocumentType(), array(
-                    'label' => false,
+                    'label' => 'Carte d\'identité',
                     'mapped' => false,
-                    'required' => ($user->hasDocuments(UserDocument::ID_TYPE) ? false : true)
+                    'error_bubbling' => false
                 ))
 
                 ->add('newDocument', new UserDocumentType(), array(
@@ -119,6 +120,10 @@ class ProjectOwnerType extends AbstractType {
                     $projectHolder->addDocument($kbis);
                   }
                 }
+            } else {
+              if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE) && $projectHolder->getCompanyStatus() != 'Association') {
+                $event->getForm()->get('kbis')->addError(new FormError('Cette valeur ne doit pas être vide.'));
+              }
             }
 
             // Handles ID card
@@ -136,6 +141,10 @@ class ProjectOwnerType extends AbstractType {
                     $projectHolder->addDocument($idcard);
                   }
                 }
+            } else {
+              if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE) && $projectHolder->getCompanyStatus() == 'Association') {
+                $event->getForm()->get('idcard')->addError(new FormError('Cette valeur ne doit pas être vide.'));
+              }
             }
 
             // Handles others
@@ -146,7 +155,6 @@ class ProjectOwnerType extends AbstractType {
                 $projectHolder->addDocument($doc);
             }
         });
-
 
         $builder->remove('username');
     }

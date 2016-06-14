@@ -319,7 +319,8 @@
                   </dl>
 
               <div class="files">
-                <div class="idcard-file file-infos {% if app.user.hasDocuments('id') %}present{% endif %}">
+                {{ form_errors(form.idcard) }}
+                <div class="idcard-file file-infos {% if not form.idcard.vars.valid %}has-error{% endif %}">
                   <span>Pièce d'identité</span>
                   <div class="pull-right actions">
                     <label class="custom-file-input btn btn-accepted">
@@ -332,9 +333,10 @@
                         <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
+                  {{ form_errors(form.idcard) }}
                 </div>
 
-                <div class="kbis-file file-infos {% if app.user.hasDocuments('kbis') %}present{% endif %}">
+                <div class="kbis-file file-infos {% if not form.kbis.vars.valid %}has-error{% endif %}">
                   <span>Kbis</span>
                   <div class="pull-right actions">
                     <label class="custom-file-input btn btn-accepted">
@@ -347,6 +349,7 @@
                         <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
+                  {{ form_errors(form.kbis) }}
                 </div>
 
                 <hr />
@@ -423,24 +426,6 @@
     <script type="text/javascript">
         function initFormListener() {
             $('input[type="submit"]').click(function(){
-
-                if ($('.idcard-file:not(.present):visible input[type=file]').length > 0) {
-                  if ($('.idcard-file input[type=file]').get(0).files.length === 0) {
-                      $.colorbox({html:$('#errorBox').html()});
-                      $('.idcard-file').addClass('has-error');
-
-                      return false;
-                  }
-                }
-
-                if ($('.kbis-file:not(.present):visible input[type=file]').length > 0) {
-                  if ($('.kbis-file input[type=file]').get(0).files.length === 0) {
-                      $.colorbox({html:$('#errorBox').html()});
-                      $('.kbis-file').addClass('has-error');
-                      return false;
-                  }
-                }
-
                 var form = $(this).closest('form');
                 var action = form.attr('action');
                 var formData = new FormData(form[0]);

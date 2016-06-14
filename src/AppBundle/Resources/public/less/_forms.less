@@ -95,6 +95,8 @@ form.has-crosses.submitted{
 }
 
 .add-file{
+  display: inline-block;
+
   h4{
     color: #bc1b38;
     font-size: 14px;
@@ -222,7 +224,10 @@ label.inline-label{
   }
 }
 
-.form-group.has-error, .form-group.civility-group{
+.form-group.has-error,
+.form-group.civility-group,
+.file-infos.has-error
+{
   .help-block{
     color: white;
     background-color: @red;
@@ -246,5 +251,12 @@ label.inline-label{
     	border-width: 5px;
     	margin-left: -5px;
     }
+  }
+}
+
+.file-infos.has-error
+{
+  .help-block{
+      margin: 15px -13px;
   }
 }
