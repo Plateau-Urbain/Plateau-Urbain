@@ -62,7 +62,7 @@ class SpaceRepository extends EntityRepository
         }
 
         if (!empty($params['localType'])) {
-            $qb->andWhere('p.type = :localType')->setParameter('localType', $params['localType'] );
+            $qb->andWhere('s.type = :localType')->setParameter('localType', $params['localType'] );
         }
 
         if (!empty($params['minimumPrice'])) {
