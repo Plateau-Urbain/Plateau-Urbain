@@ -27,7 +27,7 @@ class Parcel
      *
      * @ORM\Column(name="surface", type="integer")
      * @Assert\NotBlank()
-     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.")
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"draft", "save"})
      */
     private $surface;
 
