@@ -145,6 +145,8 @@ class User extends BaseUser
     /**
      * @ORM\Column(length=10, type="string", nullable=true)
      * @Assert\NotBlank(groups={"projectHolder", "owner"})
+     * @Assert\Length(max="5", min="5", minMessage="Code postal invalide", maxMessage="Code postal invalide", groups={"projectHolder", "owner"})
+     * @Assert\Regex(pattern="/[0-9]{2}[0-9]{3}/", message="Code postal invalide", groups={"projectHolder", "owner"})
      */
     protected $zipcode;
 

@@ -105,6 +105,9 @@ class Space
      *
      * @ORM\Column(name="zip_code", type="string", length=255, nullable=true)
      * @Assert\NotBlank(groups={"save"})
+     * @Assert\Length(max="5", min="5", minMessage="Code postal invalide", maxMessage="Code postal invalide", groups={"draft", "save"})
+     * @Assert\Regex(pattern="/[0-9]{2}[0-9]{3}/", message="Code postal invalide", groups={"draft", "save"})
+     *
      */
     private $zipCode;
 

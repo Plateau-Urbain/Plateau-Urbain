@@ -15,22 +15,22 @@ class SearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('localType', 'entity', array('class'=>'AppBundle\Entity\LocalType', 'property' => 'name',
+            ->add('localType', 'entity', array('class'=>'AppBundle\Entity\SpaceType', 'property' => 'name',
                 'required'  => false,
                 'attr'      => array(
                 'data-placeholder'=>"Type de local")) ) //liste déroulante)
             ->add('minimumPrice', 'choice', array(
-                    'choices'   => array_combine(range(10,1000,10), range(10,1000,10)),
+                    'choices'   => array_combine(range(0,1000,10), range(0,1000,10)),
                     'required'  => false,
                     'attr'      => array(
                         'data-placeholder'=>"Prix min/m²/mois")) )
             ->add('maximumPrice', 'choice', array(
-                'choices'   => array_combine(range(100,1000,10), range(100,1000,10)),
+                'choices'   => array_combine(range(10,1000,10), range(10,1000,10)),
                 'required'  => false,
                 'attr'      => array(
                     'data-placeholder'=>"Prix max/m²/mois")) )
             ->add('minimumSurface', 'choice', array(
-                'choices'   => array_combine(range(5,1000,5), range(5,1000,5)),
+                'choices'   => array_combine(range(0,1000,5), range(0,1000,5)),
                 'required'  => false,
                 'attr'      => array(
                     'data-placeholder'=>"Surface min")
