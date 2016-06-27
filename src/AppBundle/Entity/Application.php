@@ -164,8 +164,8 @@ class Application
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\NotBlank(groups={"submit"})
-     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
-     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.")
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder", "default", "submit"})
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"projectHolder", "default", "submit"})
      */
     protected $wishedSize;
 

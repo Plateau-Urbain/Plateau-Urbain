@@ -315,16 +315,27 @@ class SpaceManagementController extends Controller
         $sourceIterator = new DoctrineORMQuerySourceIterator(
             $qb->getQuery(),
             array(
+                'Espace' => 'space',
                 'Statut' => 'statusLabel',
                 'Nom' => 'name',
                 'Structure' => 'projectHolder.company',
                 'Nom du porteur' => 'projectHolder.fullName',
+                'Téléphone' => 'projectHolder.companyPhone',
+                'Email' => 'projectHolder.email',
+                'Présentation' => 'projectHolder.companyDescription',
+                'Facebook' => 'projectHolder.facebookUrl',
+                'Twitter' => 'projectHolder.twitterUrl',
+                'Instagram' => 'projectHolder.instagramUrl',
+                'Google+' => 'projectHolder.googleUrl',
+                'Linkedin' => 'projectHolder.linkedinUrl',
+                'Autre' => 'projectHolder.otherUrl',
                 'Description' => 'description',
                 'Date de dépôt de la candidature' => 'created',
                 'Type de projet' => 'category',
                 'Surface recherchée' => 'wishedSize',
                 'Durée d\'occupation souhaitée' => 'fullLengthOccupation',
-                'Date d\'entrée souhaitée' => 'startOccupation'
+                'Date d\'entrée souhaitée' => 'startOccupation',
+                'Contribution au projet du propriétaire' => 'contribution'
             ),
             'd/m/Y'
         );

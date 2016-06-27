@@ -44,6 +44,7 @@ class ProjectOwnerType extends AbstractType {
                       'label' => "Date de création",
                       'input'  => 'datetime',
                       'widget' => 'choice',
+                      'years' => range(date('Y') - 100, date('Y') + 5),
                       'attr' => array(
                           'class' => 'oneline-date'
                       )
@@ -56,24 +57,24 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyPhone', null, array('label' => "Téléphone fixe", 'attr' => array('class' => 'form-control')))
                 ->add('companyMobile', null, array('label' => "Téléphone mobile", 'attr' => array('class' => 'form-control')))
                 ->add('companyDescription', null, array('label' => "Présentation de la structure", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-                ->add('companyEffective', null, array('label' => "Nombre de personnes dans la structure", 'attr' => array('class' => 'form-control')))
+                ->add('companyEffective', null, array('label' => "Nombre de personnes dans la structure", 'attr' => array('class' => 'form-control', 'min' => 0)))
                 ->add('companyStructures', null, array('label' => "Structure(s) d'accompagnement", 'attr' => array('class' => 'form-control')))
                 ->add('companySite', null, array('label' => "Site web", 'attr' => array('class' => 'form-control')))
                 ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
-                ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control')))
+                ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
                 ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
                 ->add('usageDate', null,
                     array(
                         'label' => 'Date de disponibilité',
                         'widget' => 'single_text',
                         'format' => 'dd/MM/yyyy',
-                        'years' => range(2015, 2020),
+                        'years' => range(date('Y') - 5, date('Y') + 5),
                         'attr' => array(
                             'class' => 'form-control',
                             'data-provide' => 'datepicker'
                         )
                     ))
-                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
+                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control', 'min' => 0)))
                 ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
                 ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))

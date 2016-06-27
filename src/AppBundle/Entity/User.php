@@ -170,7 +170,8 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="company_effective", type="integer", nullable=true)
-     *
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder"})
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une valeur positive.", groups={"projectHolder"})
      */
     protected $companyEffective;
 

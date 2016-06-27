@@ -457,6 +457,8 @@
 
             if($('.form-group.has-error').length > 0 || $('.help-block').length > 0) {
               $.colorbox({html:$('#errorBox').html()});
+            } else {
+              $.colorbox({html:$('#confirmBox').html()});
             }
         }
 
@@ -473,6 +475,13 @@
         <div class="colorBox-content">
             <i class="fa fa-info-circle danger"></i>
             <p>Il manque des informations obligatoires pour enregistrer votre profil.</p>
+        </div>
+    </div>
+
+    <div id="confirmBox" style="display: none;">
+        <div class="colorBox-content">
+            <i class="fa fa-check danger"></i>
+            <p>Votre profil est enregistré.</p>
         </div>
     </div>
 

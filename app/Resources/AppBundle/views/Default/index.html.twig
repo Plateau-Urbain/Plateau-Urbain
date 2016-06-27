@@ -23,7 +23,7 @@
                 <img src="{{ asset('/bundles/app/images/PROPRIO.png') }}" alt="Propriétaires et gérants" />
                 <div class="caption sfr slider-title pu-main-title" data-x="120" data-y="220" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Propriétaires <br />et gérants' | upper | raw }}</div>
                 <div class="caption sfl slider-subtitle pu-sub-title" data-x="120" data-y="360" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme Plateau Urbain vous offre la <br />possibilité de valoriser votre patrimoine <br />inutilisé, en permettant à des projets venus<br /> de tout le Grand Paris de naître ou de se<br /> développer.</div>
-                <a href="{% if app.user %}{% if app.user.isProprio %}{{ path('space_manager_add') }}{% else %}{{ path('proprietaire') }}{% endif %}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg {% if not app.user %}inline_register{% endif %}" data-x="120" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">PROPOSER UN ESPACE</a>
+                <a href="{% if app.user and app.user.isProprio %}{{ path('space_manager_add') }}{% else %}{{ path('proprietaire') }}{% endif %}" class="caption sfb btn btn-fullcolor btn-lg" data-x="120" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">PROPOSER UN ESPACE</a>
             </li>
         </ul>
     </div>
