@@ -90,6 +90,7 @@ class ApplicationAdmin extends Admin
 
     public function getExportFields() {
         return array(
+          'Espace' => 'space',
           'Statut' => 'statusLabel',
           'Nom' => 'name',
           'Structure' => 'projectHolder.company',

@@ -315,6 +315,7 @@ class SpaceManagementController extends Controller
         $sourceIterator = new DoctrineORMQuerySourceIterator(
             $qb->getQuery(),
             array(
+                'Espace' => 'space',
                 'Statut' => 'statusLabel',
                 'Nom' => 'name',
                 'Structure' => 'projectHolder.company',
