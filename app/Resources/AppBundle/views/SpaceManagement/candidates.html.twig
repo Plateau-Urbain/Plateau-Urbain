@@ -20,7 +20,7 @@
   <div class="row">
     <!-- BEGIN MAIN CONTENT -->
     <div class="col-sm-6">
-      <h1 class="page-title">Liste des candidats ({{ space.application| length }})</h1>
+      <h1 class="page-title">Liste des candidats ({{ pagination| length }})</h1>
     </div>
 
     <div class="col-sm-6">
@@ -129,7 +129,7 @@
       </h2>
 
       <p class="stats-summary">
-        Cet espace compte <strong>{{ space.application| length }} candidatures</strong><br>
+        Cet espace compte <strong>{{ space.application | length }} candidature{% if space.application | length > 1 %}s{% endif %}</strong><br>
         représentant une demande totale de <strong>{{ space.totalWishedSize }} m<sup>2</sup></strong>
       </p>
     </div>
