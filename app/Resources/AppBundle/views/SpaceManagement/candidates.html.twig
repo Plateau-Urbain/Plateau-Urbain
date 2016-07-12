@@ -129,7 +129,7 @@
       </h2>
 
       <p class="stats-summary">
-        Cet espace compte <strong>{{ space.application | length }} candidature{% if space.application | length > 1 %}s{% endif %}</strong><br>
+        Cet espace compte <strong>{{ pagination | length }} candidature{% if pagination | length > 1 %}s{% endif %}</strong><br>
         représentant une demande totale de <strong>{{ space.totalWishedSize }} m<sup>2</sup></strong>
       </p>
     </div>
