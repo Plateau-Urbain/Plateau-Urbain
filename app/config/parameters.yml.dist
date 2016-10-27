@@ -24,7 +24,7 @@ parameters:
     mailgun_domain : ~
 
     mail_confirmation_to : ~
-    mail_confirmation_from : noreply@plateau-urbain.fr
+    mail_confirmation_from : noreply@plateau-urbain.com
 
     facebook_client_id:     ~
     facebook_client_secret: ~
