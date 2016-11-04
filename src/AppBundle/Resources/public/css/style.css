@@ -206,6 +206,14 @@ iframe[src="about:blank"] {
 .invalid {
   border-color: #F23030 !important;
 }
+.cc_container .cc_btn, .cc_container .cc_btn:visited {
+    color: #000;
+    background-color: #b800f1;
+}
+
+
+
+
 .btn {
   font-size: 13px;
   height: 35px;

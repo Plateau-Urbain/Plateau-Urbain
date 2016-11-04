@@ -49,6 +49,35 @@
 
         {% block stylesheets %}{% endblock %}
 
+		<!-- Cookie-Consent -->
+		{% stylesheets  'bundles/app/css/cookieconsent.min.css' %}
+		<link rel="stylesheet" href="{{ asset_url }}" medial="all" />
+		{% endstylesheets %}
+        {% javascripts  'bundles/app/js/cookieconsent.min.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts  %}
+	<script>
+		window.addEventListener("load", function(){
+		window.cookieconsent.initialise({
+		  "palette": {
+			"popup": {
+			  "background": "#edeff5",
+			  "text": "#838391"
+			},
+			"button": {
+			  "background": "#bc1b38"
+			}
+		  },
+		  "content": {
+			"message": "Pour améliorer votre navigation, ce site utilise des cookies",
+			"dismiss": "OK!",
+			"link": "En savoir plus",
+			"href": "http://pu.plateau-urbain.com/cgu"
+		  }
+		})});
+	</script>
+
+
         <!-- Modernizr -->
         {% javascripts  'bundles/app/js/modernizr-2.8.1.min.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
