@@ -23,21 +23,27 @@
 	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
-	<!-- Google Web Font -->
-	<link href="{{ app.request.getScheme() }}://fonts.googleapis.com/css?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" rel="stylesheet" type="text/css" />
-	<link href='{{ app.request.getScheme() }}://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css' />
-
-	<link href="https://file.myfontastic.com/n6vo44Re5QaWo8oCKShBs7/icons.css" rel="stylesheet">
+	<!-- Google-Fonts Embeded -->
+	 <!-- Raleway -->
+	 {% stylesheets  'bundles/app/css/Raleway.css' %}
+	  <link rel="stylesheet" href="{{ asset_url }}?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" medial="all" />
+	 {% endstylesheets  %}
+	 <!-- Roboto -->
+	 {% stylesheets  'bundles/app/css/Roboto.css' %}
+	  <link rel="stylesheet" href="{{ asset_url }}?family=Roboto:300,400,500,700" medial="all" />
+	 {% endstylesheets  %}
 
 	<!-- Template CSS -->
         {% stylesheets  'bundles/app/css/bootstrap.min.css'
+                        'bundles/app/css/icons.css'
                         'bundles/app/css/font-awesome.min.css'
                         'bundles/app/css/cozy-real-estate-font.css'
                         'bundles/app/css/owl.transitions.css'
                         'bundles/app/css/colorbox.css'
                         'bundles/app/rs-plugin/css/settings.css'
                         'bundles/app/css/style.css'
-												'bundles/app/css/cycle.css'
+                        'bundles/app/css/cycle.css'
+
         filter='cssrewrite' %}
            <link rel="stylesheet" href="{{ asset_url }}" medial="all" />
         {% endstylesheets  %}
