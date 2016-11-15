@@ -120,15 +120,15 @@ class ImportUserCommand extends ContainerAwareCommand
     function sendEmail(\AppBundle\Entity\User $user, OutputInterface $output)
     {
 	$output->writeln("Trying to send email to : ".$user->getEmail());
-	$ttl = $this->getContainer()->getParameter('fos_user.resetting.token_ttl');
-	$output->writeln("TTL = $ttl");
+	//$ttl = $this->getContainer()->getParameter('fos_user.resetting.token_ttl');
+	//$output->writeln("TTL = $ttl");
 	if (null === $user->getConfirmationToken()) {
 		$tokenGenerator = $this->getContainer()->get('fos_user.util.token_generator');
 		$token = $tokenGenerator->generateToken();
 		$output->writeln("token = $token");
 		$user->setConfirmationToken($token);
 	}
-	//$user->setPasswordRequestedAt(new \DateTime());
+	$user->setPasswordRequestedAt(new \DateTime());
 	//$mailer = $this->getContainer()->get('fos_user.mailer');
 	$base_url = $this->getContainer()->getParameter('base_url');
 	$from = $this->getContainer()->getParameter('mail_confirmation_from');
