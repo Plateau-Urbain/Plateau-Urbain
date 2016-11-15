@@ -134,7 +134,9 @@ class ImportUserCommand extends ContainerAwareCommand
 	$from = $this->getContainer()->getParameter('mail_confirmation_from');
 	$router = $this->getContainer()->get('router');
 	$router->getContext()->setHost($base_url);
-	//$router->getContext()->setScheme('https');
+	if($base_url != 'pu.plateau-urbain.com') {
+		$router->getContext()->setScheme('https'); // PROD en HTTPS
+	}
 	$url = $router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
 	$output->writeln("URL = $url");
 	// protected method !!!
