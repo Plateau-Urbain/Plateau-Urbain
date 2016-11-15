@@ -138,7 +138,9 @@ class ImportUserCommand extends ContainerAwareCommand
 		$router->getContext()->setScheme('https'); // PROD en HTTPS
 	}
 	$url = $router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+	$homeurl = $router->generate('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
 	$output->writeln("URL = $url");
+	//$output->writeln("   $homeurl");
 	// protected method !!!
 	//$mailer->sendEmailMessage("ceci est un test\n$url",
 	//                          $mailer->parameters['from_email']['resetting'],
@@ -149,8 +151,12 @@ class ImportUserCommand extends ContainerAwareCommand
 	$message->setSubject('Votre inscription à la plateforme Plateau-Urbain');
 	$message->setFrom($from);
 	$message->setTo($user->getEmail());
-	$message->setBody($templating->render('AppBundle/views/Email/confirm.html.twig', array('url'=>$url)), 'text/html');
-	$message->addPart($templating->render('AppBundle/views/Email/confirm.txt.twig', array('url'=>$url)), 'text/plain');
+	$message->setBody($templating->render('AppBundle/views/Email/confirm.html.twig',
+	                           array('url'=>$url, 'email'=>$user->getEmail(), 'homeurl'=>$homeurl)),
+	                           'text/html');
+	$message->addPart($templating->render('AppBundle/views/Email/confirm.txt.twig',
+	                           array('url'=>$url, 'email'=>$user->getEmail(), 'homeurl'=>$homeurl)),
+	                           'text/plain');
 	$this->getContainer()->get('mailer')->send($message);
     }
 }
