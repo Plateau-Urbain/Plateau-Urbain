@@ -5,6 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
@@ -98,8 +99,10 @@ class ImportUserCommand extends ContainerAwareCommand
 			//$output->writeln(get_class_methods($user));
 			$user->setPlainPassword(md5(time().rand()));
 			$userManager->updateUser($user);
+			$this->sendEmail($user, $output);
 		} else {
 			$output->writeln("User already in base : $email");
+			$this->sendEmail($user, $output);
 		}
 		break;	// STOP AFTER 1ST USER
 	}
@@ -111,6 +114,32 @@ class ImportUserCommand extends ContainerAwareCommand
 	$d = explode('/', $str);
 	if(count($d) == 0) return NULL;
 	return new \DateTime(implode('/', array_reverse($d)));
+    }
+
+    function sendEmail(\AppBundle\Entity\User $user, OutputInterface $output)
+    {
+	$output->writeln("Trying to send email to : ".$user->getEmail());
+	$ttl = $this->getContainer()->getParameter('fos_user.resetting.token_ttl');
+	$output->writeln("TTL = $ttl");
+	if (null === $user->getConfirmationToken()) {
+		$tokenGenerator = $this->getContainer()->get('fos_user.util.token_generator');
+		$token = $tokenGenerator->generateToken();
+		$output->writeln("token = $token");
+		$user->setConfirmationToken($token);
+	}
+	//$user->setPasswordRequestedAt(new \DateTime());
+	$mailer = $this->getContainer()->get('fos_user.mailer');
+	$base_url = $this->getContainer()->getParameter('base_url');
+	$router = $this->getContainer()->get('router');
+	$router->getContext()->setHost($base_url);
+	//$router->getContext()->setScheme('https');
+	$url = $router->generate('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+	$output->writeln("URL = $url");
+	// protected method !!!
+	//$mailer->sendEmailMessage("ceci est un test\n$url",
+	//                          $mailer->parameters['from_email']['resetting'],
+	//                          (string) $user->getEmail());
+	$mailer->sendResettingEmailMessage($user);
     }
 }
 
