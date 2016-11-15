@@ -98,11 +98,12 @@ class ImportUserCommand extends ContainerAwareCommand
 			$user->setNewsletter($newsletter != 'N');
 			//$output->writeln(get_class_methods($user));
 			$user->setPlainPassword(md5(time().rand()));
-			$userManager->updateUser($user);
 			$this->sendEmail($user, $output);
+			$userManager->updateUser($user);
 		} else {
 			$output->writeln("User already in base : $email");
 			$this->sendEmail($user, $output);
+			//$userManager->updateUser($user);
 		}
 		break;	// STOP AFTER 1ST USER
 	}
@@ -128,8 +129,9 @@ class ImportUserCommand extends ContainerAwareCommand
 		$user->setConfirmationToken($token);
 	}
 	//$user->setPasswordRequestedAt(new \DateTime());
-	$mailer = $this->getContainer()->get('fos_user.mailer');
+	//$mailer = $this->getContainer()->get('fos_user.mailer');
 	$base_url = $this->getContainer()->getParameter('base_url');
+	$from = $this->getContainer()->getParameter('mail_confirmation_from');
 	$router = $this->getContainer()->get('router');
 	$router->getContext()->setHost($base_url);
 	//$router->getContext()->setScheme('https');
@@ -139,7 +141,15 @@ class ImportUserCommand extends ContainerAwareCommand
 	//$mailer->sendEmailMessage("ceci est un test\n$url",
 	//                          $mailer->parameters['from_email']['resetting'],
 	//                          (string) $user->getEmail());
-	$mailer->sendResettingEmailMessage($user);
+	//$mailer->sendResettingEmailMessage($user); // does not work ?
+	$templating = $this->getContainer()->get('templating');
+	$message = \Swift_Message::newInstance();
+	$message->setSubject('Votre inscription à la plateforme Plateau-Urbain');
+	$message->setFrom($from);
+	$message->setTo($user->getEmail());
+	$message->setBody($templating->render('AppBundle/views/Email/confirm.html.twig', array('url'=>$url)), 'text/html');
+	$message->addPart($templating->render('AppBundle/views/Email/confirm.txt.twig', array('url'=>$url)), 'text/plain');
+	$this->getContainer()->get('mailer')->send($message);
     }
 }
 
