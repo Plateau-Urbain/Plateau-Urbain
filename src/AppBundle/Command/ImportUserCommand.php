@@ -33,6 +33,7 @@ class ImportUserCommand extends ContainerAwareCommand
 		$output->writeln('ERROR can not open '.$csvfile);
 		return FALSE;
 	}
+	$n = 0;
 	$headers = fgetcsv($f);       // delimiter ,
 	while(!feof($f)) {
 		$a = fgetcsv($f);	// delimiter ,
@@ -100,14 +101,16 @@ class ImportUserCommand extends ContainerAwareCommand
 			$user->setPlainPassword(md5(time().rand()));
 			$this->sendEmail($user, $output);
 			$userManager->updateUser($user);
+			$n++;
 		} else {
 			$output->writeln("User already in base : $email");
-			$this->sendEmail($user, $output);
+			//$this->sendEmail($user, $output);
 			//$userManager->updateUser($user);
 		}
-		break;	// STOP AFTER 1ST USER
+		//if($n>=1) break;	// STOP AFTER 1ST USER
 	}
 	fclose($f);
+	$output->writeln("$n users imported");
     }
 
     static function convDate($str)
