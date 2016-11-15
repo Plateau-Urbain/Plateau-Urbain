@@ -39,6 +39,10 @@ class ImportUserCommand extends ContainerAwareCommand
 		$a = fgetcsv($f);	// delimiter ,
 		$email = strtolower(trim($a[4]));
 		if($email == '') continue;
+		if(strpos($email, '@') === FALSE) {
+			$output->writeln("invalid email address : $email");
+			continue;
+		}
 		//$output->writeln(print_r($a, true));
 		$user = $userManager->findUserByEmail($email);
 		if(is_null($user)) {
