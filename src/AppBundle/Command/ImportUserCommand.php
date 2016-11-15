@@ -44,7 +44,7 @@ class ImportUserCommand extends ContainerAwareCommand
 			$user = $userManager->createUser($email);
 			$user->setTypeUser(0);	// 0 : porteur de projet
 			// Horodateur
-			$user->setCivility($a[1]);	// Civilité
+			$user->setCivility(str_replace('.','',$a[1]));	// Civilité
 			$user->setLastName($a[2]);	// Nom
 			$user->setFirstName($a[3]);	// Prénom
 			$user->setEmail($email);	// Email
