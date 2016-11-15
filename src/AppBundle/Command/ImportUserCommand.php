@@ -36,7 +36,7 @@ class ImportUserCommand extends ContainerAwareCommand
 	$headers = fgetcsv($f);       // delimiter ,
 	while(!feof($f)) {
 		$a = fgetcsv($f);	// delimiter ,
-		$email = trim($a[4]);
+		$email = strtolower(trim($a[4]));
 		if($email == '') continue;
 		//$output->writeln(print_r($a, true));
 		$user = $userManager->findUserByEmail($email);
