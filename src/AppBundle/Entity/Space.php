@@ -565,7 +565,7 @@ class Space
      */
     public function isClosed()
     {
-        if ($this->closed || $this->getLimitAvailability() <= new \DateTime('now')) {
+        if ($this->closed || $this->getLimitAvailability() < new \DateTime('today')) {
             return true;
         } else {
             return false;
