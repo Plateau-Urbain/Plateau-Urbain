@@ -29,7 +29,7 @@ class SearchController extends Controller
         $params = array(
             'orderBy'           => 'created',
             'sort'              => 'DESC',
-            'limitAvailability' => new \DateTime('now'),
+            'limitAvailability' => new \DateTime('today'),
             'enabled'           => true,
             'closed'            => false,
         );
