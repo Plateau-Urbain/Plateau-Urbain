@@ -65,7 +65,7 @@ class SearchController extends Controller
                 'maximumSurface'    => $search->get('maximumSurface')->getData(),
                 'orderBy'           => $search->get('orderBy')->getData(),
                 'sort'              => $search->get('sort')->getData(),
-                'limitAvailability' => new \DateTime('now'),
+                'limitAvailability' => new \DateTime('today'),
                 'enabled'           => true,
                 'closed'            => false,
             );
