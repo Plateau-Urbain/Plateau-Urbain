@@ -253,7 +253,7 @@ stof_doctrine_extensions:
             sortable: true
 
 hwi_oauth:
-    firewall_name: main
+    firewall_names: [main]
     connect:
       account_connector: app.provider.oauth
 
