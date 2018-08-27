@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use Avocode\FormExtensionsBundle\Form\Model\UploadCollectionFileInterface;
+//use Avocode\FormExtensionsBundle\Form\Model\UploadCollectionFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
  * @Vich\Uploadable
  */
-class SpaceImage implements UploadCollectionFileInterface
+class SpaceImage /*implements UploadCollectionFileInterface*/
 {
     /**
      * @var int

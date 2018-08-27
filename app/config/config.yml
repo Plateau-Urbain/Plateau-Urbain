@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          true
     use_controller: false
-    bundles:       [ AvocodeFormExtensionsBundle, AppBundle, FOSUserBundle ]
+    bundles:       [ AppBundle, FOSUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -188,14 +188,6 @@ ornicar_apc:
       host: %base_url%
       web_dir: %kernel.root_dir%/../web
 #      mode: curl
-
-avocode_form_extensions:
-    upload_manager: vich_uploader
-    collection_upload:
-        async_listener_enabled: true
-        async_route_name: upload_action
-        file_storage: avocode.form.file_storage.local
-
 
 cspoo_swiftmailer_mailgun:
     key: "%mailgun_key%"

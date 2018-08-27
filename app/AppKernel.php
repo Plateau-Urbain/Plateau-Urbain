@@ -41,7 +41,7 @@ class AppKernel extends Kernel
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
-            new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
+            //new Avocode\FormExtensionsBundle\AvocodeFormExtensionsBundle(),
 
             new cspoo\Swiftmailer\MailgunBundle\cspooSwiftmailerMailgunBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
