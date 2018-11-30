@@ -64,6 +64,6 @@ class UseType
 
     public function __toString()
     {
-        return $this->getName();
+        return strval($this->getName());
     }
 }
