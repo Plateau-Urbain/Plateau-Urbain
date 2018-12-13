@@ -1,4 +1,5 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,6 +44,11 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
+        $logger = $this->get('logger');
+        $user = $this->getUser();
+        if (!is_null($user)) {
+            $logger->debug('loginAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
+        }
         return array();
     }
 
@@ -52,9 +58,11 @@ class SecurityController extends Controller
      */
     public function profilAction(Request $request)
     {
+        $logger = $this->get('logger');
         $user = $this->getUser();
         $em   = $this->getDoctrine()->getManager();
 
+        $logger->debug('profilAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
         if ($this->getUser()->isProprio()) {
             $form = $this->createForm(new SpaceOwnerType(), $user);
             $template = 'AppBundle:Security:profilProprio.html.twig';
