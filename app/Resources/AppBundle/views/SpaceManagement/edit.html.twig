@@ -16,13 +16,8 @@
 {% block javascript %}
     {{ parent() }}
 
-    {% javascripts filter='?yui_js' output='assetic/js/compiled/avocodeformextensions/form-extensions.min.js'
-    'bundles/avocodeformextensions/datepicker/js/datepicker.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-
-    <script type="text/javascript" src="{{ asset('bundles/avocodeformextensions/datepicker/js/locales/bootstrap-datepicker.fr.js') }}"></script>
+{# Thomas BERNARD datepicker supprime
+#}
 
     <script src="{{ asset('bundles/app/js/space.js') }}"></script>
 
@@ -38,9 +33,6 @@
 {% block stylesheets %}
     {{ parent() }}
 
-    {% stylesheets filter='cssrewrite,?yui_css' output='assetic/css/compiled/avocodeformextensions/form-extensions.min.css'
-        'bundles/avocodeformextensions/datepicker/css/datepicker.css'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
-    {% endstylesheets %}
+{# Thomas BERNARD datepicker supprime
+#}
 {% endblock %}
