@@ -43,11 +43,11 @@ class ApplicationType extends AbstractType
             ))
             ->add('startOccupation', 'date', array(
                     'label'=>"Date d'entrée souhaitée",
-                    'input'  => 'datetime',
+                    'input'  => 'datetime', // 'datetime' is the default !
                     'widget'=>'single_text',
-                    'format' => 'd/M/y',
+                    //'format' => 'd/M/y',
                     'attr' => array(
-                        'data-provide' => 'datepicker'
+                        //'data-provide' => 'datepicker'
                     )
                 )
             )

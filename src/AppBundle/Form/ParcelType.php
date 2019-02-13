@@ -21,10 +21,10 @@ class ParcelType extends AbstractType
             ->add('disponibility', 'date', array(
                 'label' => 'Disponibilité',
                 'widget' => 'single_text',
-                'format' => 'dd/MM/yyyy',
+                //'format' => 'dd/MM/yyyy',
                 'attr' => array(
                     'class' => 'form-control',
-                    'data-provide' => 'datepicker'
+                    //'data-provide' => 'datepicker'
                 )
             ))
         ;

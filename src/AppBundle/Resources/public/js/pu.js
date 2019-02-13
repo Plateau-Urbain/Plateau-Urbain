@@ -11,13 +11,13 @@ $(document).ready(function() {
     $(".inline_register").colorbox({inline:true, width:"400px"});
 });
 
-$(function () {
-    if ($.fn.datepicker) {
-        $('[data-provide="datepicker"]').datepicker({
-            'language': 'fr'
-        });
-    }
-});
+//$(function () {
+//    if ($.fn.datepicker) {
+//        $('[data-provide="datepicker"]').datepicker({
+//            'language': 'fr'
+//        });
+//    }
+//});
 
 /**
  * Fake put/delete/post deletes on links

@@ -63,15 +63,15 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
                 ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
-                ->add('usageDate', null,
+                ->add('usageDate', 'date',
                     array(
                         'label' => 'Date de disponibilité',
                         'widget' => 'single_text',
-                        'format' => 'dd/MM/yyyy',
+                        //'format' => 'dd/MM/yyyy',
                         'years' => range(date('Y') - 5, date('Y') + 5),
                         'attr' => array(
                             'class' => 'form-control',
-                            'data-provide' => 'datepicker'
+                            //'data-provide' => 'datepicker'
                         )
                     ))
                 ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control', 'min' => 0)))

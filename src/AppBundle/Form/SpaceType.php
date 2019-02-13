@@ -43,10 +43,12 @@ class SpaceType extends AbstractType
                 array(
                     'label' => 'Date limite de candidature',
                     'widget' => 'single_text',
-                    'format' => 'dd/MM/yyyy',
+                    // format for html5 is yyyy-MM-dd
+                    //'format' => 'dd/MM/yyyy',
                     'attr' => array(
                         'class' => 'form-control',
-                        'data-provide' => 'datepicker'
+                        //'class' => 'js-datepicker'
+                        //'data-provide' => 'datepicker'
                     )
                 )
             )
