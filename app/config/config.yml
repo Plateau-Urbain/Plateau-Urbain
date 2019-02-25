@@ -91,7 +91,8 @@ fos_user:
             enabled: true
         form:
             validation_groups: [register, default]
-            type: project_holder_user_registration
+            type: AppBundle\Form\RegistrationFormType
+#            type: project_holder_user_registration     # for symfony < 2.8
 
 
 # SONATA User Bundle

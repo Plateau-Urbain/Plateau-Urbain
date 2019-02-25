@@ -39,10 +39,16 @@ class RegistrationFormType extends AbstractType {
 
     public function getParent() {
         return 'fos_user_registration';
+        //return FOS\UserBundle\Form\Type\RegistrationFormType::class;
     }
 
-    public function getName() {
+    // The FormTypeInterface::getName() method is deprecated since Symfony 2.8 and will be removed in 3.0.
+    // Remove it from your classes. Use getBlockPrefix() if you want to customize the template block prefix.
+    //This method will be added to the FormTypeInterface with Symfony 3.0
+    //public function getName() {
+    //    return 'project_holder_user_registration';
+    //}
+    public function getBlockPrefix() {
         return 'project_holder_user_registration';
     }
-
 }
