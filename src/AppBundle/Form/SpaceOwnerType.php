@@ -1,9 +1,10 @@
 <?php
-
+// vim:expandtab:sw=4 softtabstop=4:
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
@@ -28,8 +29,12 @@ class SpaceOwnerType extends AbstractType {
                 ->add('city', null, array('label' => "Ville", 'attr' => array('class' => 'form-control')))
                 ->add('companySite', null, array('label' => "Site web", 'attr' => array('class' => 'form-control')))
                 ->add('oldPassword', 'password', array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
-                ->add('password', 'repeated', array('type' => 'password', 'required' => false, 'invalid_message' => 'Erreur dans la répétition du mot de passe.', 'first_options'  => array('label' => 'Nouveau mot de passe', 'attr' => array('class' => 'form-control')),
-                    'second_options' => array('label' => 'Répéter nouveau mot de passe', 'attr' => array('class' => 'form-control'))))
+                ->add('password', 'repeated',
+                    array('type' => PasswordType::class,
+                          'required' => false,
+                          'invalid_message' => 'Erreur dans la répétition du mot de passe.',
+                          'first_options'  => array('label' => 'Nouveau mot de passe', 'attr' => array('class' => 'form-control')),
+                          'second_options' => array('label' => 'Répéter nouveau mot de passe', 'attr' => array('class' => 'form-control'))))
         ;
 
 

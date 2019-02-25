@@ -1,19 +1,24 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class RegistrationFormType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        // Accessing type "password" by its string name is deprecated since Symfony 2.8 and will be removed in 3.0.
+        // Symfony\Component\Form\Extension\Core\Type\PasswordType
         $builder
                 // add your custom field
                 ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control', 'placeholder' => 'Adresse email')))
-                ->add('plainPassword', 'repeated', array(
-                    'type' => 'password',
+                ->add('plainPassword', RepeatedType::class, array(
+                    'type' => PasswordType::class,
                     'first_options' => array('label' => 'form.password', 'attr' => array('class' => 'form-control', 'placeholder' => 'Mot de passe')),
                     'second_options' => array('label' => 'form.password_confirmation', 'attr' => array('class' => 'form-control', 'placeholder' => 'Confirmation')),
                     'label' => "Mot de passe"))
