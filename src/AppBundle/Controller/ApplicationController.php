@@ -1,5 +1,5 @@
 <?php
-
+// vim:expandtab:sw=4 softtabstop=4:
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
@@ -25,7 +25,8 @@ class ApplicationController extends Controller
      */
     public function indexAction()
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+	// see https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $applications = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->getApplicationPerOwner($user);
 
         return array(

@@ -1,4 +1,5 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Menu;
 
@@ -9,7 +10,10 @@ class Builder extends ContainerAware
 {
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $isLogged = $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY');
+        // security.context is deprecated in symfony 2.6
+        // replace by 'security.token_storage' and 'security.authorization_checker'
+        // https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        $isLogged = $this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
 
         $menu = $factory->createItem('root', array(
             'childrenAttributes'    => array(

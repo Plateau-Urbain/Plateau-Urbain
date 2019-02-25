@@ -1,4 +1,5 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Controller;
 
@@ -34,7 +35,8 @@ class SpaceManagementController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $user = $this->get('security.context')->getToken()->getUser();
+        // see https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
         // Handle the filter form
         $filterForm = $this->handleSpaceFilterForm($request, array(
