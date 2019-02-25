@@ -6,7 +6,10 @@
 
     <p>Pour vous inscrire, merci de renseigner la nature de votre projet, ainsi que la surface idéale dont vous auriez besoin.</p>
 
+{#   form_enctype() is deprecated. Use form_start() instead
     <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+#}
+{{ form_start(form, {'attr': {'class':'fos_user_registration_register'}}) }}
 
         <div class="form-group inline-field">
           {{ form_label(form.wishedSize) }}
@@ -48,5 +51,8 @@
           Vous allez recevoir un email de confirmation.
           Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
         </p>
+{#
     </form>
+#}
+{{ form_end(form) }}
 </div>
