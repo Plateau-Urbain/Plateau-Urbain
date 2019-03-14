@@ -565,7 +565,7 @@ class SpaceManagementController extends Controller
                 'lengthOccupation' => 'Durée d\'occupation',
                 'created' => 'Date de candidature'
             ),
-            'empty_value' => 'Trier par',
+            'placeholder' => 'Trier par',
             'empty_data' => 'created'
         ));
 
@@ -578,14 +578,14 @@ class SpaceManagementController extends Controller
                 Application::REJECT_STATUS => 'Refusé',
                 'selected' => 'Sélectionnés'
             ),
-            'empty_value' => 'Filtrer par',
+            'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));
 
         $builder->add('sort_order', 'choice', array(
             'required' => false,
             'expanded' => true,
-            'empty_value' => false,
+            'placeholder' => false,
             'choices' => array(
                 'asc' => 'Trier par ordre croissant',
                 'desc' => 'Trier par ordre décroissant'
@@ -621,7 +621,7 @@ class SpaceManagementController extends Controller
                 'city' => 'Localité',
                 'name' => 'Nom du bâtiment'
             ),
-            'empty_value' => 'Trier par',
+            'placeholder' => 'Trier par',
             'empty_data' => ''
         ));
 
@@ -631,14 +631,14 @@ class SpaceManagementController extends Controller
                 'enabled' => 'Projets en cours',
                 'closed'  => 'Projets clôturés',
             ),
-            'empty_value' => 'Filtrer par',
+            'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));
 
         $builder->add('sort_order', 'choice', array(
             'required' => false,
             'expanded' => true,
-            'empty_value' => false,
+            'placeholder' => false,
             'choices' => array(
                 'asc' => 'Trier par ordre croissant',
                 'desc' => 'Trier par ordre décroissant'

@@ -230,7 +230,7 @@ class SecurityController extends Controller
               'city' => 'Localité',
               'name' => 'Nom du bâtiment'
           ),
-          'empty_value' => 'Trier par',
+          'placeholder' => 'Trier par',
           'empty_data' => ''
       ));
 
@@ -242,14 +242,14 @@ class SecurityController extends Controller
               'accepted' => 'Acceptées',
               'rejected'  => 'Refusées',
           ),
-          'empty_value' => 'Filtrer par',
+          'placeholder' => 'Filtrer par',
           'empty_data' => ''
       ));
 
       $builder->add('sort_order', 'choice', array(
           'required' => false,
           'expanded' => true,
-          'empty_value' => false,
+          'placeholder' => false,
           'choices' => array(
               'asc' => 'Trier par ordre croissant',
               'desc' => 'Trier par ordre décroissant'
