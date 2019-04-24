@@ -1,4 +1,5 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Entity;
 
@@ -16,7 +17,7 @@ use AppBundle\Entity\User;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
- * @Assert\Callback(methods={"validateNbParcels", "validatePicturesCount"}, groups={"save"})
+ * @Assert\Callback(callback={"validateNbParcels", "validatePicturesCount"}, groups={"save"})
  */
 class Space
 {
