@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\UserDocument;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\ProjectOwnerType;
 use AppBundle\Form\SpaceOwnerType;
@@ -30,7 +30,7 @@ class SecurityController extends Controller
         $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
 
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
+        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
 
         return array(
             'csrf_token' => $csrfToken,
