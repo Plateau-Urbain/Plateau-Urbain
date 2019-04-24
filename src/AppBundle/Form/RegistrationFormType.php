@@ -43,7 +43,11 @@ class RegistrationFormType extends AbstractType {
     }
 
     public function getParent() {
-        return 'fos_user_registration';
+        /* Accessing type "fos_user_registration" by its string name
+         * is deprecated since Symfony 2.8 and will be removed in 3.0.
+         * Use the fully-qualified type class name
+         * "FOS\UserBundle\Form\Type\RegistrationFormType" instead. */
+        return 'FOS\\UserBundle\\Form\\Type\\RegistrationFormType';
         //return FOS\UserBundle\Form\Type\RegistrationFormType::class;
     }
 
