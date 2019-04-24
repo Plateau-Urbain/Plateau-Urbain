@@ -26,8 +26,8 @@ class Builder implements ContainerAwareInterface
         if ($isLogged) {
             $menu->addChild('Rechercher', array('route' => 'search_index'));
 
-            $context = $this->container->get('security.context');
-            $user = $context->getToken()->getUser();
+            $user = $this->container->get('security.token_storage')->getToken()->getUser();
+            $context = $this->container->get('security.authorization_checker');
 
             if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
                 $menu->addChild('Proposer', array('route' => 'space_manager_add'));
