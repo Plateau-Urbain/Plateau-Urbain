@@ -40,7 +40,8 @@ class SpaceType extends AbstractType
             ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control')))
             ->add(
                 'limitAvailability',
-                'date',
+                //'date',
+                'Symfony\Component\Form\Extension\Core\Type\DateType',
                 array(
                     'label' => 'Date limite de candidature',
                     'widget' => 'single_text',
@@ -58,24 +59,31 @@ class SpaceType extends AbstractType
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
-            ->add('tags', 'collection', array(
-                'type' => new SpaceAttributeType(),
+            ->add('tags',
+               //'collection',
+                  'Symfony\Component\Form\Extension\Core\Type\CollectionType',
+                 array(
+                //'type' => new SpaceAttributeType(),
+                'entry_type' => SpaceAttributeType::class,
                 'label' => false,
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false
             ))
-            ->add('newImage', new ImageType(), array(
+            ->add('newImage', ImageType::class,
+                array(
                 'label' => 'Ajouter une photo',
                 'mapped' => false,
                 'required' => false
             ))
-            ->add('newParcel', new ParcelType(), array(
+            ->add('newParcel', ParcelType::class,
+                array(
                 'label'     => 'Ajouter un lot',
                 'mapped' => false,
                 'required' => false
             ))
-            ->add('newDocument', new SpaceDocumentType(), array(
+            ->add('newDocument', SpaceDocumentType::class,
+                array(
                 'label'     => 'Ajouter un document',
                 'mapped' => false,
                 'required' => false

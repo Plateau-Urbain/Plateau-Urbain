@@ -37,7 +37,7 @@ class RegistrationFormType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'intention'  => 'registration',
+            //'intention'  => 'registration',
             'validation_groups' => array("register", 'Default')
         ));
     }

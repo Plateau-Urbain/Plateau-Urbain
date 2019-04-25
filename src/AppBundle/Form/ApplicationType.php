@@ -42,7 +42,10 @@ class ApplicationType extends AbstractType
                 'attr' => array('class' => 'textarea-box', 'rows'=> 6),
                 //'help' => 'En cochant cette case vous acceptez d’intégrer une association de gestion des locaux avec d’autres porteurs de projet'
             ))
-            ->add('startOccupation', 'date', array(
+            // date => "Symfony\Component\Form\Extension\Core\Type\DateType"
+            ->add('startOccupation',
+                'Symfony\Component\Form\Extension\Core\Type\DateType',
+                array(
                     'label'=>"Date d'entrée souhaitée",
                     'input'  => 'datetime', // 'datetime' is the default !
                     'widget'=>'single_text',

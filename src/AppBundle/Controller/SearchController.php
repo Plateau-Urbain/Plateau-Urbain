@@ -1,4 +1,5 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Controller;
 
@@ -24,7 +25,7 @@ class SearchController extends Controller
      */
     public function indexAction()
     {
-        $form = $this->createForm(new SearchType());
+        $form = $this->createForm(SearchType::class);
 
         $params = array(
             'orderBy'           => 'created',

@@ -14,9 +14,12 @@ class ApplicationFileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // file => Symfony\Component\Form\Extension\Core\Type\FileType
         $builder
-          ->add('file', 'file', array(
-              'label' => false
+            ->add('file',
+                  'Symfony\Component\Form\Extension\Core\Type\FileType',
+                array(
+                    'label' => false
           ))
         ;
     }

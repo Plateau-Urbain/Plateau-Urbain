@@ -15,8 +15,13 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //  Accessing type "file" by its string name is deprecated since
+        //  Symfony 2.8 and will be removed in 3.0.
+        //  Use the fully-qualified type class name
+        //  "Symfony\Component\Form\Extension\Core\Type\FileType
         $builder
-            ->add('file', 'file', array(
+            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType',
+                array(
                 'label' => false
             ))
         ;

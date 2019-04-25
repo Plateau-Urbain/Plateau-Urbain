@@ -8,6 +8,7 @@ use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
 use AppBundle\Entity\SpaceDocument;
+use AppBundle\Form\SpaceType;
 use Exporter\Handler;
 use Exporter\Source\DoctrineORMQuerySourceIterator;
 use Exporter\Writer\CsvWriter;
@@ -496,13 +497,21 @@ class SpaceManagementController extends Controller
     {
         $options['attr']['novalidate'] = true;
 
-        $form = $this->createForm('appbundle_space', $data, $options);
+        //$form = $this->createForm('appbundle_space', $data, $options);
+        $form = $this->createForm(SpaceType::class,
+                                  $data, $options);
 
-        $form->add('publish', 'submit', array(
+        $form->add('publish',
+            'Symfony\Component\Form\Extension\Core\Type\SubmitType',
+            //'submit',
+            array(
             'label' => 'Publier'
         ));
 
-        $form->add('preview', 'submit', array(
+        $form->add('preview',
+            'Symfony\Component\Form\Extension\Core\Type\SubmitType',
+            //'submit',
+            array(
             'label' => 'Prévisualiser'
         ));
 
@@ -557,14 +566,18 @@ class SpaceManagementController extends Controller
             'csrf_protection' => false
         ));
 
-        $builder->add('sort_field', 'choice', array(
+        $builder->add('sort_field',
+            //'choice',
+            'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+            array(
             'required' => false,
-            'choices' => array(
+            'choices' => array_flip(array(
                 'wishedSize' => 'Surface recherchée',
                 'startOccupation' => 'Date d\'entrée souhaitée',
                 'lengthOccupation' => 'Durée d\'occupation',
                 'created' => 'Date de candidature'
-            ),
+            )),
+            'choices_as_values' => true,
             'placeholder' => 'Trier par',
             'empty_data' => 'created'
         ));

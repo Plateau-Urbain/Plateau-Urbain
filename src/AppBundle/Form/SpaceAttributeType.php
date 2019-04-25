@@ -17,13 +17,17 @@ class SpaceAttributeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('availability', 'choice', array(
+            ->add('availability',
+                  //'choice',
+                  'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                  array(
                     'label' => 'Disponibilité' ,
-                    'choices' => array(
+                    'choices' => array_flip(array(
                         SpaceAttribute::STATUS_INCLUDED => 'Inclus',
                         SpaceAttribute::STATUS_EXPECTED => 'A prevoir',
                         SpaceAttribute::STATUS_NO => 'non'
-                    ),
+                    )),
+                    'choices_as_values' => true,
                     'expanded' => true,
                 )
             )

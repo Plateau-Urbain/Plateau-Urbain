@@ -19,12 +19,24 @@ class ProjectOwnerType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $user = $options['data'];
 
+        // Accessing type "choice" by its string name is deprecated since
+        // Symfony 2.8 and will be removed in 3.0. Use the fully-qualified
+        // type class name "Symfony\Component\Form\Extension\Core\Type\ChoiceType" instead.
         $builder
                 // add your custom field
-                ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'expanded' => true, 'label' => "Civilité", 'attr' => array('class' => 'pu-radios')))
+                ->add('civility', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                    array('choices' => array_flip(User::getAllCivilities()),
+                          'choices_as_values' => true,
+                          'expanded' => true,
+                          'label' => "Civilité",
+                          'attr' => array('class' => 'pu-radios')))
                 ->add('firstname', null, array('label' => "Prénom", 'attr' => array('class' => 'form-control')))
                 ->add('lastname', null, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
-                ->add('birthday', 'birthday',
+                // Accessing type "birthday" by its string name is deprecated
+                // since Symfony 2.8 and will be removed in 3.0. Use the
+                // fully-qualified type class name
+                // "Symfony\Component\Form\Extension\Core\Type\BirthdayType" instead
+                ->add('birthday', 'Symfony\Component\Form\Extension\Core\Type\BirthdayType',
                     array(
                       'label' => "Date de naissance",
                       'input'  => 'datetime',
@@ -35,12 +47,21 @@ class ProjectOwnerType extends AbstractType {
                     ))
                 ->add('phone', null, array('label' => "Téléphone", 'attr' => array('class' => 'form-control')))
                 ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control')))
-                ->add('password', 'password', array('required' => false, 'label' => "Mot de passe", 'attr' => array('class' => 'form-control')))
+                // Accessing type "password" by its string name is deprecated
+                // since Symfony 2.8 and will be removed
+                ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                    array('required' => false,
+                          'label' => "Mot de passe",
+                          'attr' => array('class' => 'form-control')))
                 ->add('description', null, array('label' => "Une courte description de moi", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('newsletter', null, array('label' => "J'accepte de recevoir la newsletter de Plateau Urbain", 'attr' => array()))
                 ->add('company', null, array('label' => "Nom de ma structure", 'attr' => array('class' => 'form-control')))
-                ->add('companyStatus', 'choice', array('choices' => User::getAllCompanyStatut(), 'label' => "Statut", 'attr' => array('class' => 'form-control')))
-                ->add('companyCreationDate', 'birthday',
+                ->add('companyStatus', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                    array('choices' => array_flip(User::getAllCompanyStatut()),
+                          'choices_as_values' => true,
+                          'label' => "Statut",
+                          'attr' => array('class' => 'form-control')))
+                ->add('companyCreationDate', 'Symfony\Component\Form\Extension\Core\Type\BirthdayType',
                     array(
                       'label' => "Date de création",
                       'input'  => 'datetime',
@@ -64,7 +85,11 @@ class ProjectOwnerType extends AbstractType {
                 ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
                 ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
                 ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
-                ->add('usageDate', 'date',
+                // Accessing type "date" by its string name is deprecated
+                // since Symfony 2.8 and will be removed in 3.0.
+                // Use the fully-qualified type class name
+                // "Symfony\Component\Form\Extension\Core\Type\DateType" instead.
+                ->add('usageDate', 'Symfony\Component\Form\Extension\Core\Type\DateType',
                     array(
                         'label' => 'Date de disponibilité',
                         'widget' => 'single_text',
@@ -76,7 +101,11 @@ class ProjectOwnerType extends AbstractType {
                         )
                     ))
                 ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control', 'min' => 0)))
-                ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(),  'label' => "Durée d'occupation", 'attr' => array('class' => 'form-control')))
+                ->add('lengthTypeOccupation', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                    array('choices' => array_flip(Application::getAllLengthType()),
+                          'choices_as_values' => true,
+                          'label' => "Durée d'occupation",
+                          'attr' => array('class' => 'form-control')))
                 ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
                 ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))
                 ->add('instagramUrl', null, array('label' => "Instagram", 'attr' => array('class' => 'form-control')))
@@ -85,19 +114,19 @@ class ProjectOwnerType extends AbstractType {
                 ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
                 ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
 
-                ->add('kbis', new UserDocumentType(), array(
+                ->add('kbis', UserDocumentType::class, array(
                     'label' => 'Kbis',
                     'mapped' => false,
                     'error_bubbling' => false,
                 ))
 
-                ->add('idcard', new UserDocumentType(), array(
+                ->add('idcard', UserDocumentType::class, array(
                     'label' => 'Carte d\'identité',
                     'mapped' => false,
                     'error_bubbling' => false
                 ))
 
-                ->add('newDocument', new UserDocumentType(), array(
+                ->add('newDocument', UserDocumentType::class, array(
                     'label' => false,
                     'mapped' => false,
                     'required' => false

@@ -64,10 +64,14 @@ class SecurityController extends Controller
 
         $logger->debug('profilAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
         if ($this->getUser()->isProprio()) {
-            $form = $this->createForm(new SpaceOwnerType(), $user);
+            // Passing type instances to FormBuilder::add(), Form::add()
+            // or the FormFactory is deprecated since Symfony 2.8 and
+            // will not be supported in 3.0.
+            // Use the fully-qualified type class name instead
+            $form = $this->createForm(SpaceOwnerType::class, $user);
             $template = 'AppBundle:Security:profilProprio.html.twig';
         } else {
-            $form = $this->createForm(new ProjectOwnerType(), $user);
+            $form = $this->createForm(ProjectOwnerType::class, $user);
             $template = 'AppBundle:Security:profil.html.twig';
         }
         $session = $this->get('session');
@@ -215,45 +219,60 @@ class SecurityController extends Controller
      */
     protected function handleApplicationsFilterForm(Request $request, $data)
     {
+      // Accessing type "form" by its string name is deprecated since
+      // Symfony 2.8 and will be removed in 3.0. Use the
+      // fully-qualified type class name
+      // "Symfony\Component\Form\Extension\Core\Type\FormType" instead
+      $builder = $this->get('form.factory')->createNamedBuilder('filter',
+            'Symfony\Component\Form\Extension\Core\Type\FormType',//'form',
+            $data, array(
+                'action' => $this->generateUrl('my_applications_list'),
+                'method' => 'get',
+                'csrf_protection' => false
+            ));
 
-      $builder = $this->get('form.factory')->createNamedBuilder('filter', 'form', $data, array(
-          'action' => $this->generateUrl('my_applications_list'),
-          'method' => 'get',
-          'csrf_protection' => false
-      ));
-
-      $builder->add('sort_field', 'choice', array(
+      // Accessing type "choice" by its string name is deprecated since
+      // Symfony 2.8 and will be removed in 3.0. Use the fully-qualified
+      // type class name
+      // "Symfony\Component\Form\Extension\Core\Type\ChoiceType" instead.
+      $builder->add('sort_field', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+         array(
           'required' => false,
-          'choices' => array(
+          'choices' => array_flip(array(
               'type' => 'Type de local',
               'limitAvailability' => 'Date de clôture',
               'city' => 'Localité',
               'name' => 'Nom du bâtiment'
-          ),
+          )),
+          'choices_as_values' => true,
           'placeholder' => 'Trier par',
           'empty_data' => ''
       ));
 
-      $builder->add('status_filter', 'choice', array(
+      $builder->add('status_filter', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+         array(
           'required' => false,
-          'choices' => array(
+          'choices' => array_flip(array(
               'draft' => 'À compléter',
               'sent'  => 'Envoyées',
               'accepted' => 'Acceptées',
               'rejected'  => 'Refusées',
-          ),
+          )),
+          'choices_as_values' => true,
           'placeholder' => 'Filtrer par',
           'empty_data' => ''
       ));
 
-      $builder->add('sort_order', 'choice', array(
+      $builder->add('sort_order', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+         array(
           'required' => false,
           'expanded' => true,
           'placeholder' => false,
-          'choices' => array(
+          'choices' => array_flip(array(
               'asc' => 'Trier par ordre croissant',
               'desc' => 'Trier par ordre décroissant'
-          ),
+          )),
+          'choices_as_values' => true,
           'empty_data' => 'desc'
       ));
 
