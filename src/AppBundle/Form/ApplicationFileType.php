@@ -31,10 +31,16 @@ class ApplicationFileType extends AbstractType
         ));
     }
 
+    // The FormTypeInterface::getName()
+    // method is deprecated since Symfony 2.8 and will be removed in 3.0.
+    // Remove it from your classes. Use getBlockPrefix() if you want
+    // to customize the template block prefix.
+    // This method will be added to the FormTypeInterface with Symfony 3.0
     /**
      * @return string
      */
-    public function getName()
+    //public function getName()
+    public function getBlockPrefix()
     {
         return 'application_file';
     }
