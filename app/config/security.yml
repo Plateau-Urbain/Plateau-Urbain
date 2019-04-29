@@ -44,22 +44,6 @@ security:
                 #failure_path:   null
                 default_target_path: homepage
 
-            oauth:
-                provider: fos_userbundle
-
-                login_path: /
-                check_path: /connect_check
-                login_path: security_login_error
-                default_target_path: homepage
-
-                resource_owners:
-                    facebook: "/connect/check-facebook"
-                    google: "/connect/check-google"
-                    linkedin: "/connect/check-linkedin"
-
-                oauth_user_provider:
-                  service: app.provider.oauth
-
             logout:
                 path: fos_user_security_logout
                 target: homepage
