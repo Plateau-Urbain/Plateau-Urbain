@@ -21,7 +21,6 @@
         "doctrine/doctrine-bundle": "~1.4",
 	"doctrine/migrations": "^1.1",
         "doctrine/doctrine-migrations-bundle": "~1.2.1",
-        "doctrine/doctrine-fixtures-bundle": "~2.2.0",
         "twig/extensions": "~1.2",
         "symfony/assetic-bundle": "~2.8",
         "symfony/swiftmailer-bundle": "2.5.5",
