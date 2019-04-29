@@ -65,7 +65,8 @@ doctrine:
         #   3. Uncomment next line:
         #     path:     "%database_path%"
         types:
-            json: Sonata\Doctrine\Types\JsonType
+            json: Doctrine\DBAL\Types\JsonType
+            #json: Sonata\Doctrine\Types\JsonType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
