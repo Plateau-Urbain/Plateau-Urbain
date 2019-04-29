@@ -10,7 +10,8 @@ security:
             - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
     providers:
         fos_userbundle:
-            id: fos_user.user_manager
+            id: fos_user.user_provider.username
+            #id: fos_user.user_manager # pour fos_userbundle 1.3.x
 
 
     firewalls:
