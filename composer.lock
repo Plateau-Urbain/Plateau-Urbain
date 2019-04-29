@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "318b2a09e758fda051e12cf580c82f3f",
-    "content-hash": "60bc101ac040e2dde3f9cc286bbcfe85",
+    "hash": "6411f037df4e63a91948a21b82d560ae",
+    "content-hash": "9895833e3f22f5da06e632e743ec3afe",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2670,59 +2670,6 @@
                 "service proxies"
             ],
             "time": "2018-09-27 13:45:01"
-        },
-        {
-            "name": "ornicar/apc-bundle",
-            "version": "1.0.4",
-            "target-dir": "Ornicar/ApcBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ornicar/ApcBundle.git",
-                "reference": "d7119284726d14d23d2a2345871689fd2437612b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ornicar/ApcBundle/zipball/d7119284726d14d23d2a2345871689fd2437612b",
-                "reference": "d7119284726d14d23d2a2345871689fd2437612b",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/framework-bundle": ">=2.1,<3.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.0": "1.0.x-dev",
-                    "dev-master": "1.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Ornicar\\ApcBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Thibault Duplessis",
-                    "homepage": "https://github.com/ornicar"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/ornicar/ApcBundle/contributors"
-                }
-            ],
-            "description": "Provides a command line task to clear APC cache from the console",
-            "homepage": "https://github.com/ornicar/ApcBundle",
-            "keywords": [
-                "apc",
-                "task"
-            ],
-            "abandoned": "smart-core/accelerator-cache-bundle",
-            "time": "2014-11-03 12:21:20"
         },
         {
             "name": "paragonie/random_compat",

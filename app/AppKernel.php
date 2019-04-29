@@ -36,7 +36,6 @@ class AppKernel extends Kernel
             //image
 
             new Liip\ImagineBundle\LiipImagineBundle(),
-            new Ornicar\ApcBundle\OrnicarApcBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
