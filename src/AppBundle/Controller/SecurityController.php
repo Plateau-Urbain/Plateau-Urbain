@@ -27,13 +27,14 @@ class SecurityController extends Controller
 
         $session = $request->getSession();
 
-        $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
+        // use now csrf_token('authenticate')
+        //$csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
 
         // last username entered by the user
         $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
 
         return array(
-            'csrf_token' => $csrfToken,
+            //'csrf_token' => $csrfToken,
             'last_username' => $lastUsername,
         );
    }

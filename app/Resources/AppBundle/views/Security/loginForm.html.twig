@@ -8,7 +8,7 @@
     {% endif %}
 
     <form action="{{ path("fos_user_security_check") }}" method="post">
-      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
       <div class="form-group">
         <div class="input-group">

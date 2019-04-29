@@ -46,7 +46,7 @@ file that was distributed with this source code.
 
                     <form action="{{ path("fos_user_security_check") }}" method="post" role="form"
                           class="form-horizontal">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
 
                         <div class="form-group">
                             <label for="username"
