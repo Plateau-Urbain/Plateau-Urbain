@@ -1,13 +1,27 @@
 <?php
+// vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
 {
-    public function registerAction()
+    public function __construct()
+    {
+        // extendin FOS\UserBundle\Controller\RegistrationController should be
+        // avoided.
+        parent::__construct(
+            $this->get('event_dispatcher'),
+            $this->get('fos_user.registration.form.factory'),
+            $this->get('fos_user.user_manager'),//UserManagerInterface
+            $this->get('security.token_storage')//TokenStorageInterface
+            );
+    }
+
+    public function registerAction(Request $request)
     {
         $form = $this->container->get('fos_user.registration.form');
         $formHandler = $this->container->get('fos_user.registration.form.handler');
