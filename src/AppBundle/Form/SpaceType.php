@@ -137,9 +137,13 @@ class SpaceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        // The "cascade_validation" option is deprecated since Symfony 2.8 and
+        // will be removed in 3.0. Use "constraints" with a Valid constraint
+        // instead.
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Space',
-            'cascade_validation' => true,
+            //'cascade_validation' => true,
+            'constraints' => new \Symfony\Component\Validator\Constraints\Valid(),
             'validation_groups' => function(FormInterface $form) {
                 if ($form->get('publish')->isClicked()) {
                   return 'save';
