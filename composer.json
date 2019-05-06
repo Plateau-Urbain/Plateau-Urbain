@@ -33,7 +33,7 @@
         "sonata-project/doctrine-orm-admin-bundle": "~3.0",
         "sonata-project/easy-extends-bundle": "~2.2",
         "sonata-project/user-bundle": "~4.0",
-        "hautelook/alice-bundle": "0.2",
+        "hautelook/alice-bundle": "^1.0",
         "liip/imagine-bundle": "1.9.1",
         "vich/uploader-bundle": "1.7.1",
         "knplabs/knp-gaufrette-bundle": "0.5.3",
