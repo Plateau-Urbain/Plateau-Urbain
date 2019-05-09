@@ -22,8 +22,8 @@ class SecurityController extends Controller
      * @Route("/security_login", name="security_login")
      * @Template()
      */
-    public function loginFormAction() {
-        $request = $this->container->get('request');
+    public function loginFormAction(Request $request) {
+        //$request = $this->container->get('request');
 
         $session = $request->getSession();
 
