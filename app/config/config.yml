@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }  # desactivation des traductions
+    translator:      { fallbacks: ["%locale%"] }  # desactivation des traductions
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -135,16 +135,16 @@ knp_gaufrette:
     adapters:
         space_file_adapter :
             local:
-                directory: %kernel.root_dir%/../web/uploads/space
+                directory: "%kernel.root_dir%/../web/uploads/space"
         actuality_adapter :
             local:
-                directory: %kernel.root_dir%/../web/uploads/actuality
+                directory: "%kernel.root_dir%/../web/uploads/actuality"
         user_documents_adapter :
             local:
-                directory: %kernel.root_dir%/../web/uploads/user_documents
+                directory: "%kernel.root_dir%/../web/uploads/user_documents"
         application_files_adapter :
             local:
-                directory: %kernel.root_dir%/../web/uploads/application_files
+                directory: "%kernel.root_dir%/../web/uploads/application_files"
     filesystems:
         space_cover_fs:
             adapter:    space_file_adapter
