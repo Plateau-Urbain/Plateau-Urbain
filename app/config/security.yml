@@ -19,6 +19,7 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
         admin:
+            logout_on_user_change: true
             pattern:      /admin/
             form_login:
                 provider:       fos_userbundle
@@ -50,6 +51,7 @@ security:
                 target: homepage
 
             anonymous:    true
+            logout_on_user_change: true
 
 
     access_control:

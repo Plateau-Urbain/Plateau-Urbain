@@ -180,7 +180,7 @@ services:
 
     project_holder_user_registration:
          class: AppBundle\Form\RegistrationFormType
-         arguments: [%fos_user.model.user.class%]
+         arguments: ["%fos_user.model.user.class%"]
          tags:
              - { name: form.type, alias: project_holder_user_registration }
 

@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle(),
 
             //image
 
