@@ -3,14 +3,14 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\UserDocument;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * SpaceImage admin.
  */
-class UserDocumentAdmin extends Admin
+class UserDocumentAdmin extends AbstractAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper

@@ -2,13 +2,13 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use AppBundle\Entity\User;
 
-class OwnerAdmin extends Admin
+class OwnerAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'owner';
     protected $baseRoutePattern = 'owner';

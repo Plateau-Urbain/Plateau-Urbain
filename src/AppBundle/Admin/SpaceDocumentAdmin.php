@@ -2,14 +2,14 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * SpaceDocument admin.
  */
-class SpaceDocumentAdmin extends Admin
+class SpaceDocumentAdmin extends AbstractAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper

@@ -3,14 +3,14 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationFile;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 
 /**
  * ApplicationFile admin.
  */
-class ApplicationFileAdmin extends Admin
+class ApplicationFileAdmin extends AbstractAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper

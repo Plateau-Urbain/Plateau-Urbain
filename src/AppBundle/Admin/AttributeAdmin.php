@@ -2,12 +2,12 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class AttributeAdmin extends Admin
+class AttributeAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'attribute';
     protected $baseRoutePattern = 'attribute';

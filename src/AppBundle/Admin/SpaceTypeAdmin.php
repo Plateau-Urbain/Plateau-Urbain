@@ -2,12 +2,12 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class SpaceTypeAdmin extends Admin
+class SpaceTypeAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'spacetype';
     protected $baseRoutePattern = 'spacetype';

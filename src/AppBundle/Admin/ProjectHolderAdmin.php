@@ -4,13 +4,13 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\UserDocument;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use AppBundle\Entity\User;
 
-class ProjectHolderAdmin extends Admin
+class ProjectHolderAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'project-holder';
     protected $baseRoutePattern = 'project-holder';

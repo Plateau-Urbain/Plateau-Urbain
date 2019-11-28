@@ -2,12 +2,12 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class LocalTypeAdmin extends Admin
+class LocalTypeAdmin extends AbstractAdmin
 {
     protected $baseRouteName = 'localtype';
     protected $baseRoutePattern = 'localtype';

@@ -3,12 +3,12 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\SpaceAttribute;
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class SpaceAttributeAdmin extends Admin
+class SpaceAttributeAdmin extends AbstractAdmin
 {
     // setup the default sort column and order
     protected $datagridValues = array(

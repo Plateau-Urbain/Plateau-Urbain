@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use AppBundle\Form\ImageType;
@@ -10,7 +10,7 @@ use AppBundle\Form\ImageType;
 /**
  * SpaceImage admin.
  */
-class SpaceImageAdmin extends Admin
+class SpaceImageAdmin extends AbstractAdmin
 {
     /**
      * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
