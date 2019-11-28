@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use AppBundle\Form\ImageType;
 
 class ActualityAdmin extends Admin
 {
@@ -48,7 +49,7 @@ class ActualityAdmin extends Admin
             ->add('subtitle', null, array('label' => 'Sous-titre'))
             ->add('date', 'date')
             ->add('link', null, array('label' => 'Lien'))
-            ->add('image', 'image_admin_type', array('label' => 'Image'))
+            ->add('image', ImageType::class, array('label' => 'Image'))
             ->add('published', null, array('label' => 'Publié ?'))
 
             ->end()

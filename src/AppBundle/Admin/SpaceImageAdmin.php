@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use AppBundle\Form\ImageType;
 
 /**
  * SpaceImage admin.
@@ -32,7 +33,7 @@ class SpaceImageAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', 'image_admin_type', array(
+            ->add('file', ImageType::class, array(
                 'required' => false,
             ));
 

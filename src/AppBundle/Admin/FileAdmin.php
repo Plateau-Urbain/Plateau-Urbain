@@ -5,6 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use AppBundle\Form\ImageType;
 
 /**
  * SpaceImage admin.
@@ -32,9 +33,8 @@ class FileAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', 'image_admin_type', array(//image_admin_type vich_image
-                'required' => false,
-//                "template"=> "DeepinBlogBundle:Form:custom_admin_fields.html.twig"
+            ->add('file', ImageType::class, array(
+                'required' => false
             ));
 
         return $formMapper;
