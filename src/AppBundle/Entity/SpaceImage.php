@@ -2,20 +2,20 @@
 
 namespace AppBundle\Entity;
 
-//use Avocode\FormExtensionsBundle\Form\Model\UploadCollectionFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * SpaceImage.
+ * SpaceImage
  *
  * @ORM\Table(name="space_image")
  * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
  * @Vich\Uploadable
  */
-class SpaceImage /*implements UploadCollectionFileInterface*/
+class SpaceImage
 {
     /**
      * @var int
@@ -89,7 +89,7 @@ class SpaceImage /*implements UploadCollectionFileInterface*/
     /**
      * @param mixed $file
      */
-    public function setFile(\Symfony\Component\HttpFoundation\File\File $file = null)
+    public function setFile(File $file = null)
     {
         $this->file = $file;
 

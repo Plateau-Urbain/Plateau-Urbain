@@ -5,7 +5,7 @@ namespace AppBundle\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use AppBundle\Form\ImageType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * SpaceImage admin.
@@ -33,7 +33,7 @@ class SpaceImageAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', ImageType::class, array(
+            ->add('file', VichImageType::class, array(
                 'required' => false,
             ));
 

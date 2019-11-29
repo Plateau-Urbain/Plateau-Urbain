@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use AppBundle\Form\ImageType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ActualityAdmin extends AbstractAdmin
 {
@@ -49,8 +49,8 @@ class ActualityAdmin extends AbstractAdmin
             ->add('subtitle', null, array('label' => 'Sous-titre'))
             ->add('date', 'date')
             ->add('link', null, array('label' => 'Lien'))
-            ->add('image', ImageType::class, array('label' => 'Image'))
-            ->add('published', null, array('label' => 'Publié ?'))
+            ->add('image', VichImageType::class, array('label' => 'Image', 'required' => false))
+            ->add('published', 'choice', array('label' => 'Publié ?', 'choices' => ['Oui' => true, 'Non' => false]))
 
             ->end()
         ;

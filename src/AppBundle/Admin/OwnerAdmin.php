@@ -42,7 +42,7 @@ class OwnerAdmin extends AbstractAdmin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
                 'label'     => 'Mot de passe',
             ))
-            ->add('enabled', null, array('label' => 'Activé', 'required' => false))
+            ->add('enabled', 'choice', array('label' => 'Activé', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false]))
 
             ->end()
             ->with('Profile')
