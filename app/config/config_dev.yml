@@ -29,9 +29,3 @@ assetic:
 
 swiftmailer:
     delivery_address: ***REMOVED***
-
-hautelook_alice:
-    fixtures_path: 'AppBundle/DataFixtures/ORM'
-    root_dirs:
-        - '%kernel.root_dir%'
-        - '%kernel.project_dir%'

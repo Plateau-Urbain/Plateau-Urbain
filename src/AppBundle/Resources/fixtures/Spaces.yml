@@ -10,7 +10,7 @@ AppBundle\Entity\Space:
         availability: availability
         limitAvailability: <(new DateTime("2020-12-24"))>
         price: 15
-        owner: @ownner1
+        owner: '@ownner1'
         enabled: true
         zipCode: 75020
         city: Paris
