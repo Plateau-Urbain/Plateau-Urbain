@@ -16,3 +16,6 @@
 /web/assetic/
 /web/media
 !web/media/.gitkeep
+
+*~
+tags
