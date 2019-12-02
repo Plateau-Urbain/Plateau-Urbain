@@ -10,6 +10,7 @@
     },
     "require-dev":{
         "phpunit/phpunit":"*",
+        "hautelook/alice-bundle": "^2.5",
         "composer/composer":"*",
         "composer-plugin-api":"*"
     },
@@ -24,7 +25,6 @@
         "symfony/assetic-bundle": "^2.8",
         "sensio/framework-extra-bundle": "^3.0",
         "doctrine/doctrine-migrations-bundle": "^2.1",
-        "hautelook/alice-bundle": "^2.5",
         "friendsofsymfony/user-bundle": "~2.0.0",
         "paragonie/random_compat": "^2.0",
         "sonata-project/user-bundle": "^4.5",
