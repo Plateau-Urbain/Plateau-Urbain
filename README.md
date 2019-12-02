@@ -8,6 +8,8 @@ Installation of `symfony34` branch
 
     git checkout symfony34
     composer install
+    php app/console doctrine:database:create
+    php app/console doctrine:schema:create
     php app/console assets:install
     php app/console assetic:dump
 
