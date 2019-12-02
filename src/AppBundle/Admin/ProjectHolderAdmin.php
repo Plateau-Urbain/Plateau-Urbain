@@ -42,7 +42,7 @@ class ProjectHolderAdmin extends AbstractAdmin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
                 'label'     => 'Mot de passe',
             ))
-            ->add('enabled', null, array('label' => 'Activé'))
+            ->add('enabled', 'choice', array('label' => 'Activé', 'choices' => ['Oui' => true, 'Non' => false]))
             ->end()
             ->with('Profile')
             ->add('civility', 'choice', array('choices' => User::getAllCivilities(), 'required' => false, 'label' => 'Civilité'))
@@ -51,7 +51,7 @@ class ProjectHolderAdmin extends AbstractAdmin
             ->add('birthday', 'birthday', array('required' => false, 'label' => 'Date de naissance'))
             ->add('phone', null, array('required' => false, 'label' => 'Téléphone'))
             ->add('description', null, array('required' => false, 'label' => 'Description'))
-            ->add('newsletter', null, array('required' => false, 'label' => 'Souhaite recevoir la newsletter'))
+            ->add('newsletter', 'choice', array('required' => false, 'label' => 'Souhaite recevoir la newsletter', 'choices' => ['Oui' => true, 'Non' => false]))
 
             ->end()
             ->with('Structure')

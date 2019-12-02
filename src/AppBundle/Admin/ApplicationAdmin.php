@@ -35,7 +35,7 @@ class ApplicationAdmin extends AbstractAdmin
             ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(), 'label'=> 'Durée d\'occupation'))
             ->add('startOccupation', 'date', array('label'=>"Date d'entrée souhaitée"))
             ->add('description', null, array('label'=>"Description du projet"))
-            ->add('openToGlobalProject', null, array('label'=> "Ouvert à faire partie d'un projet collectif"))
+            ->add('openToGlobalProject', 'choice', array('label'=> "Ouvert à faire partie d'un projet collectif", 'choices' => ['Oui' => true, 'Non' => false]))
             ->add('contribution', null, array('label'=> "Contribution au projet global du propriétaire"))
 
 

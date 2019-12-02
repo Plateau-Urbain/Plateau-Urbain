@@ -114,8 +114,8 @@ class SpaceAdmin extends AbstractAdmin
             ->end()
 
             ->with('Publication')
-                ->add('enabled', null, array('label' => 'En ligne', 'required' => false))
-                ->add('closed', null, array('label' => 'Clotûré', 'required' => false))
+                ->add('enabled', 'choice', array('label' => 'En ligne', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false]))
+                ->add('closed', 'choice', array('label' => 'Clotûré', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false]))
             ->end()
 
 
