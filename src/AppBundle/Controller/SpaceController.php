@@ -6,6 +6,7 @@ use AppBundle\Entity\ApplicationFile;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
+use AppBundle\Form\ApplicationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,7 +51,7 @@ class SpaceController extends Controller
             $application->setSpace($space);
         }
 
-        $form = $this->createForm('appbundle_application', $application, array(
+        $form = $this->createForm(ApplicationType::class, $application, array(
             'action' => $this->generateUrl(
                 'space_show',
                 array(
@@ -107,7 +108,7 @@ class SpaceController extends Controller
         }
 
         // Check if the profile is completed
-        $errors = $this->container->get('validator')->validate($user, array('default', 'projectHolder'));
+        $errors = $this->container->get('validator')->validate($user, null, array('default', 'projectHolder'));
         $invalidProfile = (count($errors) > 0) && $user->isPorteur() ? true : false;
 
         return array(

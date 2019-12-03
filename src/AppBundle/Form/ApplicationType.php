@@ -4,6 +4,7 @@
 namespace AppBundle\Form;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\ApplicationFile;
+use AppBundle\Form\ApplicationFileType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -76,7 +77,7 @@ class ApplicationType extends AbstractType
                 'block_name' => 'size_calculator'
             ))
 
-            ->add('newDocument', new ApplicationFileType(), array(
+            ->add('newDocument', ApplicationFileType::class, array(
                 'label' => false,
                 'mapped' => false,
                 'required' => false
@@ -86,7 +87,7 @@ class ApplicationType extends AbstractType
 
         foreach ($application->getSpace()->getDocuments() as $field) {
           $builder->add('document_' . $field->getId(),
-            new ApplicationFileType(),
+            ApplicationFileType::class,
             array(
               'label' => false,
               'mapped' => false,
