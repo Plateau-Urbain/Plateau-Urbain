@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\UserDocument;
+use AppBundle\Form\DocAdminType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -34,7 +35,7 @@ class UserDocumentAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('type')
-            ->add('file', 'doc_admin_type', array(
+            ->add('file', DocAdminType::class, array(
                 'label' => 'Document',
                 'required' => false,
             ));
