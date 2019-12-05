@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\ApplicationFile;
+use AppBundle\Form\DocAdminType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -33,7 +34,7 @@ class ApplicationFileAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('file', 'doc_admin_type', array(
+            ->add('file', DocAdminType::class, array(
                 'label' => 'Document',
                 'required' => false,
             ));
