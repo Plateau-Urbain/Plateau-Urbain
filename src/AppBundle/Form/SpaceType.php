@@ -15,7 +15,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class SpaceType extends AbstractType
 {
@@ -71,7 +70,7 @@ class SpaceType extends AbstractType
                 'allow_delete' => false,
                 'by_reference' => false
             ))
-            ->add('newImage', VichImageType::class,
+            ->add('newImage', SpaceImageType::class,
                 array(
                 'label' => 'Ajouter une photo',
                 'mapped' => false,
