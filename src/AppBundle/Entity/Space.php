@@ -952,9 +952,9 @@ class Space
     public function validateNbParcels(ExecutionContextInterface $context)
     {
         if ($this->parcels->count() < 1) {
-            $context
-                ->addViolationAt("newParcel", 'Vous devez créer au moins un lot pour votre espace.')
-            ;
+            $context->buildViolation('Vous devez créer au moins un lot pour votre espace.')
+                    ->atPath('newParcel')
+                    ->addViolation();
         }
     }
 
@@ -964,9 +964,9 @@ class Space
     public function validatePicturesCount(ExecutionContextInterface $context)
     {
         if ($this->pics->count() > self::MAX_PICTURES_UPLOAD) {
-            $context
-                ->addViolationAt("newImage", sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD))
-            ;
+            $context->buildViolation(sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD))
+                    ->atPath('newImage')
+                    ->addViolation();
         }
     }
 

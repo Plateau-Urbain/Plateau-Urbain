@@ -7,14 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Application
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRepository")
- * @Assert\Callback({"validateContribution"})
+ * @Assert\Callback(callback="validateContribution")
  */
 class Application
 {
@@ -604,9 +604,9 @@ class Application
     {
         $contribution = $this->contribution;
         if ($this->openToGlobalProject && empty($contribution)) {
-            $context
-                ->addViolationAt('contribution', 'Cette valeur ne doit pas être vide.')
-            ;
+            $context->buildViolation('Cette valeur ne doit pas être vide')
+                    ->atPath('contribution')
+                    ->addViolation();
         }
     }
 
