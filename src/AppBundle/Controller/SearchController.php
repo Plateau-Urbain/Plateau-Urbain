@@ -52,7 +52,7 @@ class SearchController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $search = $this->createForm(new SearchType());
+        $search = $this->createForm(SearchType::class);
         $search->handleRequest($request);
 
         if ($search->isValid())
