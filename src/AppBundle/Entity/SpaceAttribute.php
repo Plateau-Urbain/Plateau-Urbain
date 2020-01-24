@@ -160,7 +160,7 @@ class SpaceAttribute
         return array(
             self::STATUS_NO => 'Non inclus',
             self::STATUS_INCLUDED => 'Inclus',
-            self::STATUS_EXPECTED => 'A prévoir',
+            self::STATUS_EXPECTED => 'À prévoir',
         );
     }
 

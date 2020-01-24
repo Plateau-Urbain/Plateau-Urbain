@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use AppBundle\Entity\User;
+use AppBundle\Repository\UserRepository;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -48,7 +49,7 @@ class SpaceAdmin extends AbstractAdmin
             ->add('name', null, array('label' => "Nom de l'espace"))
             ->add('owner', null, array(
                 'label' => "Propriétaire de l'espace",
-                'query_builder' => function (\AppBundle\Repository\UserRepository $repository) {
+                'query_builder' => function (UserRepository $repository) {
                     return $repository->getByTypeQueryBuilder(User::PROPRIO);
                 },
             ))

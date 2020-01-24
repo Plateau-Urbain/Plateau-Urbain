@@ -21,7 +21,11 @@ class SpaceAttributeAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('attribute', null, array('label' => 'Nom'))
-            ->add('availability', 'choice', array('choices' => SpaceAttribute::getAllStatus(), 'required' => false, 'label' => 'Disponibilité'))
+	    ->add('availability', 'choice', [
+		    'choices' => array_flip(SpaceAttribute::getAllStatus()),
+		    'required' => true,
+		    'label' => 'Disponibilité'
+	    ])
             ->end();
     }
 

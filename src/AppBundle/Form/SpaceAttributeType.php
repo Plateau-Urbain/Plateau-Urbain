@@ -7,6 +7,7 @@ use AppBundle\Entity\SpaceAttribute;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SpaceAttributeType extends AbstractType
 {
@@ -19,15 +20,10 @@ class SpaceAttributeType extends AbstractType
         $builder
             ->add('availability',
                   //'choice',
-                  'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                  ChoiceType::class,
                   array(
-                    'label' => 'Disponibilité' ,
-                    'choices' => array_flip(array(
-                        SpaceAttribute::STATUS_INCLUDED => 'Inclus',
-                        SpaceAttribute::STATUS_EXPECTED => 'A prevoir',
-                        SpaceAttribute::STATUS_NO => 'non'
-                    )),
-                    'choices_as_values' => true,
+                    'label' => 'Disponibilité',
+                    'choices' => array_flip(SpaceAttribute::getAllStatus()),
                     'expanded' => true,
                 )
             )
@@ -40,7 +36,7 @@ class SpaceAttributeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\SpaceAttribute'
+            'data_class' => SpaceAttribute::class
         ));
     }
 
