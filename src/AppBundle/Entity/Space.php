@@ -17,7 +17,6 @@ use AppBundle\Entity\User;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
- * @Assert\Callback(callback={"validateNbParcels", "validatePicturesCount"}, groups={"save"})
  */
 class Space
 {
@@ -947,6 +946,7 @@ class Space
     }
 
     /**
+     * @Assert\Callback(groups="save")
      * @param ExecutionContextInterface $context
      */
     public function validateNbParcels(ExecutionContextInterface $context)
@@ -959,6 +959,7 @@ class Space
     }
 
     /**
+     * @Assert\Callback(groups="save")
      * @param ExecutionContextInterface $context
      */
     public function validatePicturesCount(ExecutionContextInterface $context)
