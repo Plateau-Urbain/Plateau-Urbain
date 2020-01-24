@@ -222,7 +222,7 @@ class SpaceManagementController extends Controller
                     $application->setStatus(Application::REJECT_STATUS);
                 }
 
-                $message = \Swift_Message::newInstance()
+                $message = (new \Swift_Message())
                     ->setSubject($action == 'accept' ? 'Candidature Acceptée' : 'Candidature rejetée')
                     ->setFrom($this->container->getParameter('mail_confirmation_from'))
                     ->setTo($application->getProjectHolder()->getEmail())
@@ -531,7 +531,7 @@ class SpaceManagementController extends Controller
 
         $this->get('doctrine.orm.entity_manager')->flush();
 
-        $message = \Swift_Message::newInstance()
+        $message = (new \Swift_Message())
             ->setSubject('Nouvelle propriété ! ')
             ->setFrom($this->container->getParameter('mail_confirmation_from'))
             ->setTo($this->container->getParameter('mail_confirmation_to'))
