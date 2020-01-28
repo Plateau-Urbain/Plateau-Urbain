@@ -23,8 +23,9 @@ class Builder implements ContainerAwareInterface
                 'class'             => 'nav navbar-nav',
         )));
 
+        $menu->addChild('Rechercher', array('route' => 'search_index'));
+
         if ($isLogged) {
-            $menu->addChild('Rechercher', array('route' => 'search_index'));
 
             $user = $this->container->get('security.token_storage')->getToken()->getUser();
             $context = $this->container->get('security.authorization_checker');
@@ -52,7 +53,6 @@ class Builder implements ContainerAwareInterface
             $loggedMenu->addChild('Déconnexion', array('route' => 'fos_user_security_logout', 'attributes' => array('class'=>'off-icon menu-icon')));
 
         } else {
-            $menu->addChild('Rechercher', array('uri' => '#inline_content', 'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild('Proposer', array('route' => 'proprietaire'));
             $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('S’inscrire', array('uri' => '#inline_register_content',  'linkAttributes' => array('class' => 'inline cboxElement')));
