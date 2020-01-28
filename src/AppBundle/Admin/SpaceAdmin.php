@@ -48,6 +48,7 @@ class SpaceAdmin extends AbstractAdmin
             ->with('General')
             ->add('name', null, array('label' => "Nom de l'espace"))
             ->add('owner', null, array(
+                'required' => true,
                 'label' => "Propriétaire de l'espace",
                 'query_builder' => function (UserRepository $repository) {
                     return $repository->getByTypeQueryBuilder(User::PROPRIO);

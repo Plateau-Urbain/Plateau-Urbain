@@ -160,6 +160,7 @@ class Space
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="spaces")
+     * @Assert\NotBlank(groups={"save"})
      */
     protected $owner;
 
