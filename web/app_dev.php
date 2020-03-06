@@ -12,41 +12,17 @@ use Symfony\Component\Debug\Debug;
 $ip = $_SERVER['REMOTE_ADDR'];
 if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
   $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-/* debug :
-  echo "<b>_SERVER</b><br>\n";
-  foreach($_SERVER as $k => $v) {
-    echo $k . ' = ' . $v;
-    echo "<br>\n";
-  }
-  echo "<b>_REQUEST</b><br>\n";
-  foreach($_REQUEST as $k => $v) {
-    echo $k . ' = ' . $v;
-    echo "<br>\n";
-  }
-  echo "<b>apache headers:</b><br>\n";
-  foreach(apache_request_headers() as $k => $v) {
-    echo "$k : $v<br>\n";
-  }
-*/
-/*
-if (isset($_SERVER['HTTP_CLIENT_IP'])
-    || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-    || !in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1'))
-) {
-*/
+
 if (!in_array($ip, array('127.0.0.1', 'fe80::1', '::1'))) {
     header('HTTP/1.0 403 Forbidden');
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.'.$ip);
 }
 
-//$loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 require __DIR__.'/../app/autoload.php';
 Debug::enable();
 
-//require_once __DIR__.'/../app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
-$kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

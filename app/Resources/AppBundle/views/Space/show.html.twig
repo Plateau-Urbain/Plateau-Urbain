@@ -7,7 +7,7 @@
 
 {% block body %}
 
-{% if not application.isDraft %}
+{% if application is defined and not application.isDraft %}
   <div class="alert alert-warning">
     {% if application.space.isClosed %}
       <p class="center">Ce projet est désormais clôturé.</p>
@@ -23,7 +23,7 @@
   </div>
 {% endif %}
 
-{% if invalidProfile and application.isDraft %}
+{% if invalidProfile is defined and invalidProfile and application.isDraft %}
   <div class="alert alert-warning">
     <p class="center">
       Veuillez compléter votre profil afin de proposer votre candidature.
@@ -126,7 +126,7 @@
         {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
       </p>
       <p class="center">
-        {% if application.isDraft and not invalidProfile %}
+        {% if application is defined and application.isDraft and not invalidProfile %}
           {% if not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
             <a href="#candidate" class="btn btn-fullcolor btn-large apply">
               {{ 'Candidater !' | upper }}
@@ -134,7 +134,7 @@
           {% endif %}
         {% endif %}
 
-        {% if not application.isDraft %}
+        {% if application is defined and not application.isDraft %}
           <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-large apply">
             {{ 'Voir votre candidature !' | upper }}
           </a>
@@ -251,7 +251,7 @@
 </div>
 
 <a id="candidate">&nbsp;</a>
-{% if application.isDraft and not invalidProfile and app.user.typeUser != 1 %}
+{% if application is defined and application.isDraft and not invalidProfile and app.user.typeUser != 1 %}
     {% include '@App/Space/Partials/_application_form.html.twig' %}
 {% endif %}
 
@@ -272,7 +272,7 @@
                 Votre candidature est désormais clôturée et sera transmise au bailleur.<br /> Ce dossier de candidature est disponible dans votre compte,<br /> vous pourrez donc revenir le consulter et l'imprimer.
             </p>
             <p>
-                {% if application and application.id != '' %}
+                {% if application is defined and application and application.id != '' %}
                     <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor">Voir ma candidature</a>
                 {% endif %}
             </p>

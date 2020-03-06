@@ -3,7 +3,7 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block prebody %}
-    {% include "AppBundle:Search:_search_form.html.twig" with {'form' : 'form' } %}
+    {{ include("AppBundle:Search:_search_form.html.twig") }}
 {% endblock %}
 
 

@@ -47,7 +47,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/resultats", name="search_action")
+     * @Route("/resultats", name="search_action", methods={"POST"})
      * @Template()
      */
     public function searchAction(Request $request)

@@ -6,14 +6,14 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
-use Faker\Provider\DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use AppBundle\Entity\User;
+use AppBundle\Entity\SpaceImage;
 
 /**
- * Space.
+ * Space
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SpaceRepository")
@@ -966,9 +966,8 @@ class Space
     public function validatePicturesCount(ExecutionContextInterface $context)
     {
         if ($this->pics->count() > self::MAX_PICTURES_UPLOAD) {
-            $context->buildViolation(sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD))
-                    ->atPath('newImage')
-                    ->addViolation();
+            $context
+                ->addViolationAt("pics", sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD));
         }
     }
 

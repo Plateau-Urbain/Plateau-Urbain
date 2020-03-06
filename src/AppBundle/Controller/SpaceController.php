@@ -31,6 +31,13 @@ class SpaceController extends Controller
          * @var User $user
          */
         $user = $this->getUser();
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        if ($user === null) {
+            return [
+                'space' => $space
+            ];
+        }
 
         if (!$space->isEnabled() && !$space->isOwner($user)
             || $space->isClosed() && !$space->isOwner($user)
@@ -38,8 +45,7 @@ class SpaceController extends Controller
             throw new AccessDeniedException();
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
-        $application = $em->getRepository('AppBundle:Application')->findOneBy(
+        $application = $em->getRepository(Application::class)->findOneBy(
             array(
                 'projectHolder' => $user->getId(),
                 'space' => $space->getId()
