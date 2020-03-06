@@ -70,7 +70,7 @@ class SpaceType extends AbstractType
                 'allow_delete' => false,
                 'by_reference' => false
             ))
-            ->add('newImage', SpaceImageType::class,
+            ->add('pics', SpaceImageType::class,
                 array(
                 'label' => 'Ajouter une photo',
                 'mapped' => false,

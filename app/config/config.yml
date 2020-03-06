@@ -35,7 +35,7 @@ twig:
 assetic:
     debug:          true
     use_controller: false
-    bundles:       [ AppBundle, FOSUserBundle ]
+    bundles:       [ AppBundle, FOSUserBundle, SonataUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
