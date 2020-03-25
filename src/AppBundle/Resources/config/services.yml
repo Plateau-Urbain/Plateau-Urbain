@@ -165,6 +165,8 @@ services:
 
     app.form.type.application:
         class: AppBundle\Form\ApplicationType
+        arguments:
+            - "@security.token_storage"
         tags:
             - { name: form.type, alias: appbundle_application }
 

@@ -27,27 +27,27 @@ class SearchType extends AbstractType
                 'choice_label' => 'name',
                 'required'  => false,
                 'attr'      => array(
-                'data-placeholder'=>"Type de local")) ) //liste déroulante)
+                'data-placeholder'=>"Type de local"))) //liste déroulante)
             // Accessing type "choice" by its string name is deprecated since
             // Symfony 2.8 and will be removed in 3.0. Use the fully-qualified
             // type class name "Symfony\Component\Form\Extension\Core\Type\ChoiceType" instead
             ->add('minimumPrice', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',//'choice',
                   array(
-                    'choices'   => array_combine(range(0,1000,10), range(0,1000,10)),
+                    'choices'   => array_combine(range(0, 1000, 10), range(0, 1000, 10)),
                     'choices_as_values' => true,
                     'required'  => false,
                     'attr'      => array(
-                        'data-placeholder'=>"Prix min/m²/mois")) )
+                        'data-placeholder'=>"Prix min/m²/mois")))
             ->add('maximumPrice', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',//'choice',
                array(
-                'choices'   => array_combine(range(10,1000,10), range(10,1000,10)),
+                'choices'   => array_combine(range(10, 1000, 10), range(10, 1000, 10)),
                 'choices_as_values' => true,
                 'required'  => false,
                 'attr'      => array(
-                    'data-placeholder'=>"Prix max/m²/mois")) )
+                    'data-placeholder'=>"Prix max/m²/mois")))
             ->add('minimumSurface', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',//'choice',
                array(
-                'choices'   => array_combine(range(0,1000,5), range(0,1000,5)),
+                'choices'   => array_combine(range(0, 1000, 5), range(0, 1000, 5)),
                 'choices_as_values' => true,
                 'required'  => false,
                 'attr'      => array(
@@ -55,7 +55,7 @@ class SearchType extends AbstractType
             ))
             ->add('maximumSurface', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',//'choice',
                array(
-                'choices'   => array_combine(range(5,1000,5), range(5,1000,5)),
+                'choices'   => array_combine(range(5, 1000, 5), range(5, 1000, 5)),
                 'choices_as_values' => true,
                 'required'  => false,
                 'attr'      => array(
@@ -68,10 +68,16 @@ class SearchType extends AbstractType
             // Accessing type "text" by its string name is deprecated since
             // Symfony 2.8 and will be removed in 3.0. Use the fully-qualified
             // type class name "Symfony\Component\Form\Extension\Core\Type\TextType" instead.
-            ->add('orderBy', 'Symfony\Component\Form\Extension\Core\Type\TextType',
-                array('data' => 'name'))
-            ->add('sort', 'Symfony\Component\Form\Extension\Core\Type\TextType',
-                array('data' => 'ASC'))
+            ->add(
+                'orderBy',
+                'Symfony\Component\Form\Extension\Core\Type\TextType',
+                array('data' => 'name')
+            )
+            ->add(
+                'sort',
+                'Symfony\Component\Form\Extension\Core\Type\TextType',
+                array('data' => 'ASC')
+            )
 
         ;
     }

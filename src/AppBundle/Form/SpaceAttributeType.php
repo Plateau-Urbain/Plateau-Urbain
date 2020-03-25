@@ -18,10 +18,11 @@ class SpaceAttributeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('availability',
+            ->add(
+                'availability',
                   //'choice',
                   ChoiceType::class,
-                  array(
+                array(
                     'label' => 'Disponibilité',
                     'choices' => array_flip(SpaceAttribute::getAllStatus()),
                     'expanded' => true,

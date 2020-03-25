@@ -3,135 +3,87 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\UserDocument;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
+use AppBundle\Entity\UserDocument;
+use AppBundle\Form\UserType;
+use AppBundle\Form\CompanyType;
 
-class ProjectOwnerType extends AbstractType {
-
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        $user = $options['data'];
-
-        // Accessing type "choice" by its string name is deprecated since
-        // Symfony 2.8 and will be removed in 3.0. Use the fully-qualified
-        // type class name "Symfony\Component\Form\Extension\Core\Type\ChoiceType" instead.
+class ProjectOwnerType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
-                // add your custom field
-                ->add('civility', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-                    array('choices' => array_flip(User::getAllCivilities()),
-                          'choices_as_values' => true,
-                          'expanded' => true,
-                          'label' => "Civilité",
-                          'attr' => array('class' => 'pu-radios')))
-                ->add('firstname', null, array('label' => "Prénom", 'attr' => array('class' => 'form-control')))
-                ->add('lastname', null, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
-                // Accessing type "birthday" by its string name is deprecated
-                // since Symfony 2.8 and will be removed in 3.0. Use the
-                // fully-qualified type class name
-                // "Symfony\Component\Form\Extension\Core\Type\BirthdayType" instead
-                ->add('birthday', 'Symfony\Component\Form\Extension\Core\Type\BirthdayType',
-                    array(
-                      'label' => "Date de naissance",
-                      'input'  => 'datetime',
-                      'widget' => 'choice',
-                      'attr' => array(
-                          'class' => 'oneline-date'
-                      )
-                    ))
-                ->add('phone', null, array('label' => "Téléphone", 'attr' => array('class' => 'form-control')))
-                ->add('email', null, array('label' => "Email", 'attr' => array('class' => 'form-control')))
-                // Accessing type "password" by its string name is deprecated
-                // since Symfony 2.8 and will be removed
-                ->add('password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
-                    array('required' => false,
-                          'label' => "Mot de passe",
-                          'attr' => array('class' => 'form-control')))
-                ->add('description', null, array('label' => "Une courte description de moi", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-                ->add('newsletter', null, array('label' => "J'accepte de recevoir la newsletter de Plateau Urbain", 'attr' => array()))
-                ->add('company', null, array('label' => "Nom de ma structure", 'attr' => array('class' => 'form-control')))
-                ->add('companyStatus', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-                    array('choices' => array_flip(User::getAllCompanyStatut()),
-                          'choices_as_values' => true,
-                          'label' => "Statut",
-                          'attr' => array('class' => 'form-control')))
-                ->add('companyCreationDate', 'Symfony\Component\Form\Extension\Core\Type\BirthdayType',
-                    array(
-                      'label' => "Date de création",
-                      'input'  => 'datetime',
-                      'widget' => 'choice',
-                      'years' => range(date('Y') - 100, date('Y') + 5),
-                      'attr' => array(
-                          'class' => 'oneline-date'
-                      )
-                    ))
-                ->add('siret', null, array('label' => "SIRET", 'attr' => array('class' => 'form-control')))
-                ->add('address', null, array('label' => "Adresse de la structure", 'attr' => array('class' => 'form-control')))
-                ->add('addressSuite', null, array('label' => "Adresse (suite)", 'attr' => array('class' => 'form-control')))
-                ->add('zipcode', null, array('label' => "Code postal", 'attr' => array('class' => 'form-control')))
-                ->add('city', null, array('label' => "Ville", 'attr' => array('class' => 'form-control')))
-                ->add('companyPhone', null, array('label' => "Téléphone fixe", 'attr' => array('class' => 'form-control')))
-                ->add('companyMobile', null, array('label' => "Téléphone mobile", 'attr' => array('class' => 'form-control')))
-                ->add('companyDescription', null, array('label' => "Présentation de la structure", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-                ->add('companyEffective', null, array('label' => "Nombre de personnes dans la structure", 'attr' => array('class' => 'form-control', 'min' => 0)))
-                ->add('companyStructures', null, array('label' => "Structure(s) d'accompagnement", 'attr' => array('class' => 'form-control')))
-                ->add('companySite', null, array('label' => "Site web", 'attr' => array('class' => 'form-control')))
-                ->add('companyBlog', null, array('label' => "Blog", 'attr' => array('class' => 'form-control')))
-                ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
-                ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
-                // Accessing type "date" by its string name is deprecated
-                // since Symfony 2.8 and will be removed in 3.0.
-                // Use the fully-qualified type class name
-                // "Symfony\Component\Form\Extension\Core\Type\DateType" instead.
-                ->add('usageDate', 'Symfony\Component\Form\Extension\Core\Type\DateType',
-                    array(
-                        'label' => 'Date de disponibilité',
-                        'widget' => 'single_text',
-                        //'format' => 'dd/MM/yyyy',
-                        'years' => range(date('Y') - 5, date('Y') + 5),
-                        'attr' => array(
-                            'class' => 'form-control',
-                            //'data-provide' => 'datepicker'
-                        )
-                    ))
-                ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control', 'min' => 0)))
-                ->add('lengthTypeOccupation', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
-                    array('choices' => array_flip(Application::getAllLengthType()),
-                          'choices_as_values' => true,
-                          'label' => "Durée d'occupation",
-                          'attr' => array('class' => 'form-control')))
-                ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-                ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))
-                ->add('instagramUrl', null, array('label' => "Instagram", 'attr' => array('class' => 'form-control')))
-                ->add('twitterUrl', null, array('label' => "Twitter", 'attr' => array('class' => 'form-control')))
-                ->add('googleUrl', null, array('label' => "Google+", 'attr' => array('class' => 'form-control')))
-                ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
-                ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
+            ->add('userInfo', UserType::class, ['data_class' => ProjectOwnerType::class])
+            ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => ProjectOwnerType::class])
+            ->add('password', PasswordType::class,
+                array('required' => false,
+                    'label' => "Mot de passe",
+                    'attr' => array('class' => 'form-control')
+            ))
+            ->add('newsletter', CheckboxType::class, array('label' => "J'accepte de recevoir la newsletter de Plateau Urbain", 'attr' => array()))
+            ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
+            ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
+            ->add(
+                'usageDate',
+                DateType::class,
+                array(
+                    'label' => 'Date de disponibilité',
+                    'widget' => 'single_text',
+                    //'format' => 'dd/MM/yyyy',
+                    'years' => range(date('Y') - 5, date('Y') + 5),
+                    'attr' => array(
+                        'class' => 'form-control',
+                        //'data-provide' => 'datepicker'
+                    )
+                )
+            )
+            ->add('usageDuration', null, array('label' => "Durée d'occupation", 'attr' => array('class' => 'form-control', 'min' => 0)))
+            ->add(
+                'lengthTypeOccupation',
+                'Symfony\Component\Form\Extension\Core\Type\ChoiceType',
+                array('choices' => array_flip(Application::getAllLengthType()),
+                'choices_as_values' => true,
+                'label' => "Durée d'occupation",
+                'attr' => array('class' => 'form-control'))
+            )
+            ->add('projectDescription', null, array('label' => "Présentation de mon projet", 'attr' => array('class' => 'form-control', 'rows' => 5)))
+            ->add('facebookUrl', null, array('label' => "Facebook", 'attr' => array('class' => 'form-control')))
+            ->add('instagramUrl', null, array('label' => "Instagram", 'attr' => array('class' => 'form-control')))
+            ->add('twitterUrl', null, array('label' => "Twitter", 'attr' => array('class' => 'form-control')))
+            ->add('googleUrl', null, array('label' => "Google+", 'attr' => array('class' => 'form-control')))
+            ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
+            ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
 
-                ->add('kbis', UserDocumentType::class, array(
-                    'label' => 'Kbis',
-                    'mapped' => false,
-                    'error_bubbling' => false,
-                ))
+            ->add('kbis', UserDocumentType::class, array(
+                'label' => 'Kbis',
+                'mapped' => false,
+                'error_bubbling' => false,
+            ))
 
-                ->add('idcard', UserDocumentType::class, array(
-                    'label' => 'Carte d\'identité',
-                    'mapped' => false,
-                    'error_bubbling' => false
-                ))
+            ->add('idcard', UserDocumentType::class, array(
+                'label' => 'Carte d\'identité',
+                'mapped' => false,
+                'error_bubbling' => false
+            ))
 
-                ->add('newDocument', UserDocumentType::class, array(
-                    'label' => false,
-                    'mapped' => false,
-                    'required' => false
-                ))
-        ;
+            ->add('newDocument', UserDocumentType::class, array(
+                'label' => false,
+                'mapped' => false,
+                'required' => false
+            ))
+            ;
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $projectHolder = $event->getData();
@@ -143,18 +95,18 @@ class ProjectOwnerType extends AbstractType {
                 $kbis->setType(UserDocument::KBIS_TYPE);
 
                 if ($projectHolder->hasDocuments(UserDocument::KBIS_TYPE)) {
-                  $currentKbis = $projectHolder->getDocumentsType(UserDocument::KBIS_TYPE)[0];
-                  $currentKbis->setFile($kbis->getFile());
-                  $currentKbis->setFileName($kbis->getFileName());
+                    $currentKbis = $projectHolder->getDocumentsType(UserDocument::KBIS_TYPE)[0];
+                    $currentKbis->setFile($kbis->getFile());
+                    $currentKbis->setFileName($kbis->getFileName());
                 } else {
-                  if($kbis->getFile()){
-                    $projectHolder->addDocument($kbis);
-                  }
+                    if ($kbis->getFile()) {
+                        $projectHolder->addDocument($kbis);
+                    }
                 }
             } else {
-              if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE) && $projectHolder->getCompanyStatus() != 'Association') {
-                $event->getForm()->get('kbis')->addError(new FormError('Cette valeur ne doit pas être vide.'));
-              }
+                if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE) && $projectHolder->getCompanyStatus() != 'Association') {
+                    $event->getForm()->get('kbis')->addError(new FormError('Cette valeur ne doit pas être vide.'));
+                }
             }
 
             // Handles ID card
@@ -164,18 +116,18 @@ class ProjectOwnerType extends AbstractType {
                 $idcard->setType(UserDocument::ID_TYPE);
 
                 if ($projectHolder->hasDocuments(UserDocument::ID_TYPE)) {
-                  $currentIdcard = $projectHolder->getDocumentsType(UserDocument::ID_TYPE)[0];
-                  $currentIdcard->setFile($idcard->getFile());
-                  $currentIdcard->setFileName($idcard->getFileName());
+                    $currentIdcard = $projectHolder->getDocumentsType(UserDocument::ID_TYPE)[0];
+                    $currentIdcard->setFile($idcard->getFile());
+                    $currentIdcard->setFileName($idcard->getFileName());
                 } else {
-                  if($idcard->getFile()){
-                    $projectHolder->addDocument($idcard);
-                  }
+                    if ($idcard->getFile()) {
+                        $projectHolder->addDocument($idcard);
+                    }
                 }
             } else {
-              if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE) && $projectHolder->getCompanyStatus() == 'Association') {
-                $event->getForm()->get('idcard')->addError(new FormError('Cette valeur ne doit pas être vide.'));
-              }
+                if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE) && $projectHolder->getCompanyStatus() == 'Association') {
+                    $event->getForm()->get('idcard')->addError(new FormError('Cette valeur ne doit pas être vide.'));
+                }
             }
 
             // Handles others
@@ -187,26 +139,23 @@ class ProjectOwnerType extends AbstractType {
             }
         });
 
+        $builder->get('companyInfo')->remove('companyFunction');
         $builder->remove('username');
     }
 
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
             'validation_groups' => array('projectHolder', 'Default')
         ));
     }
 
-    // AppBundle\Form\ProjectOwnerType: The FormTypeInterface::getName()
-    // method is deprecated since Symfony 2.8 and will be removed in 3.0.
-    // Remove it from your classes. Use getBlockPrefix() if you want
-    // to customize the template block prefix.
-    //public function getName() {
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'project_owner';
     }
-
 }

@@ -4,55 +4,41 @@
 
     <h4>Inscription</h4>
 
-    <p>Pour vous inscrire, merci de renseigner la nature de votre projet, ainsi que la surface idéale dont vous auriez besoin.</p>
+    {{ form_start(form, {'action': path('fos_user_registration_register'), 'attr': {'class':'fos_user_registration_register'}}) }}
 
-{#   form_enctype() is deprecated. Use form_start() instead
-    <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-#}
-{{ form_start(form, {'attr': {'class':'fos_user_registration_register'}}) }}
+    {% for msg in app.session.flashbag.get('error_sign')  %}
+        <p style="color: red;">{{ msg }}</p>
+    {% endfor %}
 
-        <div class="form-group inline-field">
-          {{ form_label(form.wishedSize) }}
-          {{ form_widget(form.wishedSize) }}
-        </div>
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+        {{ form_widget(form.email) }}
+      </div>
+    </div>
 
-        {{ form_widget(form.useType) }}
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        {{ form_widget(form.plainPassword.first) }}
+      </div>
+    </div>
 
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-            {{ form_widget(form.email) }}
-          </div>
-        </div>
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+        {{ form_widget(form.plainPassword.second) }}
+      </div>
+    </div>
 
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-            {{ form_widget(form.plainPassword.first) }}
-          </div>
-        </div>
+    {{ form_rest(form) }}
 
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-            {{ form_widget(form.plainPassword.second) }}
-          </div>
-        </div>
+    <p>
+      Vous allez recevoir un email de confirmation.
+      Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
+    </p>
 
-        {{ form_rest(form) }}
+    <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
 
-        {% for msg in app.session.flashbag.get('error_sign')  %}
-            <p style="color: red;">{{ msg }}</p>
-        {% endfor %}
-
-        <input type="submit" value="M'INSCRIRE" class='btn btn-fullcolor'/>
-
-        <p>
-          Vous allez recevoir un email de confirmation.
-          Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
-        </p>
-{#
-    </form>
-#}
-{{ form_end(form) }}
+    {{ form_end(form) }}
 </div>

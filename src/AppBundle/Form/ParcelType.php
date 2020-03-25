@@ -20,7 +20,8 @@ class ParcelType extends AbstractType
             ->add('type', null, array('label' => 'Type de locaux', 'placeholder' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
             ->add('surface', null, array('label' => 'Surface', 'attr' => array('class' => 'form-control')))
             // date => Symfony\Component\Form\Extension\Core\Type\DateType
-            ->add('disponibility',
+            ->add(
+                'disponibility',
                 'Symfony\Component\Form\Extension\Core\Type\DateType',
                 array(
                 'label' => 'Disponibilité',
@@ -30,7 +31,8 @@ class ParcelType extends AbstractType
                     'class' => 'form-control',
                     //'data-provide' => 'datepicker'
                 )
-            ))
+            )
+            )
         ;
     }
 

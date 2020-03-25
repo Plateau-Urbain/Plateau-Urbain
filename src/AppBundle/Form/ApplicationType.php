@@ -2,8 +2,11 @@
 // vim:expandtab:sw=4 softtabstop=4:
 
 namespace AppBundle\Form;
+
 use AppBundle\Entity\Application;
 use AppBundle\Entity\ApplicationFile;
+use AppBundle\Entity\User;
+use AppBundle\Form\ProjectOwnerType;
 use AppBundle\Form\ApplicationFileType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,6 +15,11 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * Class ApplicationType
@@ -20,6 +28,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ApplicationType extends AbstractType
 {
+    protected $tokenStorage;
+
+    /**
+     * @param TokenStorage $tokenStorage
+     */
+    public function __construct(TokenStorage $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -27,10 +45,16 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $application = $builder->getData();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $builder
-            ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')) )
-            ->add('description', null, array(
+
+            // Embed project owner form
+            ->add('projectHolder', ProjectOwnerType::class, ['data' => $user])
+
+            // Candidature
+            ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')))
+            ->add('description', TextareaType::class, array(
                 'label'=>"Description du projet",
                 'attr' => array(
                     'class'=>'textarea-box',
@@ -41,22 +65,21 @@ class ApplicationType extends AbstractType
                 'required' => false,
                 'label'=>"Quelle serait votre contribution au projet global du propriétaire ?",
                 'attr' => array('class' => 'textarea-box', 'rows'=> 6),
-                //'help' => 'En cochant cette case vous acceptez d’intégrer une association de gestion des locaux avec d’autres porteurs de projet'
             ))
-            // date => "Symfony\Component\Form\Extension\Core\Type\DateType"
-            ->add('startOccupation',
+            ->add(
+                'startOccupation',
                 'Symfony\Component\Form\Extension\Core\Type\DateType',
                 array(
                     'label'=>"Date d'entrée souhaitée",
                     'input'  => 'datetime', // 'datetime' is the default !
                     'widget'=>'single_text',
-                    //'format' => 'd/M/y',
-                    'attr' => array(
-                        //'data-provide' => 'datepicker'
-                    )
+                    'attr' => array()
                 )
             )
-            ->add('lengthOccupation', null, array(
+            ->add(
+                'lengthOccupation',
+                null,
+                array(
                     'label'=>"Durée d'occupation",
                     'attr' => array()
                 )
@@ -76,7 +99,6 @@ class ApplicationType extends AbstractType
                 'attr' => array('class' => 'input-box'),
                 'block_name' => 'size_calculator'
             ))
-
             ->add('newDocument', ApplicationFileType::class, array(
                 'label' => false,
                 'mapped' => false,
@@ -84,17 +106,37 @@ class ApplicationType extends AbstractType
             ))
         ;
 
+        $projectHolderForm = $builder->get('projectHolder');
+        $projectHolderForm->remove('wishedSize')
+                          ->remove('useType')
+                          ->remove('usageDate')
+                          ->remove('usageDuration')
+                          ->remove('lengthTypeOccupation')
+                          ->remove('projectDescription')
+                          ->remove('newsletter')
+                          ->remove('password');
 
         foreach ($application->getSpace()->getDocuments() as $field) {
-          $builder->add('document_' . $field->getId(),
-            ApplicationFileType::class,
-            array(
+            $builder->add(
+              'document_' . $field->getId(),
+              ApplicationFileType::class,
+              array(
               'label' => false,
               'mapped' => false,
               'required' => ($application->hasFileType($field->getId()) ? false : true)
             )
           );
         }
+
+        $builder->add('save', 'submit', array(
+            'label' => 'Enregistrer pour plus tard',
+            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+        ));
+
+        $builder->add('submit', 'submit', array(
+            'label' => 'Clôturer ma candidature',
+            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+        ));
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
@@ -108,7 +150,7 @@ class ApplicationType extends AbstractType
 
 
             foreach ($application->getSpace()->getDocuments() as $field) {
-              $document = $event->getForm()->get('document_' . $field->getId())->getData();
+                $document = $event->getForm()->get('document_' . $field->getId())->getData();
 
                 if (($document instanceof ApplicationFile) == false && !$application->hasFileType($field->getId()) || ($document instanceof ApplicationFile && $document->getFile() == null && $event->getForm()->get('submit')->isClicked())) {
                     $event->getForm()->get('document_' . $field->getId())->addError(new FormError('Le document ' . $field->getName() . ' est obligatoire'));
@@ -126,7 +168,7 @@ class ApplicationType extends AbstractType
                                 $application->addFile($document);
                             }
                         }
-                   }
+                    }
                 }
             }
         });
@@ -139,10 +181,9 @@ class ApplicationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
-            'validation_groups' => function(FormInterface $form) {
-
+            'validation_groups' => function (FormInterface $form) {
                 if ($form->get('save')->isClicked()) {
-                  return "default";
+                    return "default";
                 }
 
                 return "submit";

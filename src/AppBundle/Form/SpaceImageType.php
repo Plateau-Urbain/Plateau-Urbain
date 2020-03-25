@@ -31,6 +31,4 @@ class SpaceImageType extends AbstractType
     {
         return 'appbundle_spaceimage';
     }
-
-
 }

@@ -7,10 +7,12 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\User;
 use AppBundle\Form\ApplicationType;
+use AppBundle\Form\ProjectOwnerType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -22,21 +24,21 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class SpaceController extends Controller
 {
     /**
+     * Fiche d'un espace
+     *
      * @Route("/fiche/{id}", name="space_show", methods={"get", "post"})
      * @Template()
      */
     public function showAction(Space $space, Request $request)
     {
-        /**
-         * @var User $user
-         */
         $user = $this->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
 
         if ($user === null) {
-            return [
-                'space' => $space
-            ];
+            if ($space->isClosed() || ! $space->isEnabled()) {
+                throw new AccessDeniedException();
+            }
+            return ['space' => $space];
         }
 
         if (!$space->isEnabled() && !$space->isOwner($user)
@@ -52,77 +54,90 @@ class SpaceController extends Controller
             )
         );
 
-        if (!$application instanceof Application) {
+        return array(
+            'space'          => $space,
+            'application'    => $application
+        );
+    }
+
+    /**
+     * Formulaire de candidature d'un espace.
+     * Nécessite d'être connecté
+     *
+     * @Route("/apply/{space}", name="space_apply")
+     *
+     * @param Space $space L'objet espace dont l'ID corresponds dans l'URL
+     * @param Request $request La requête
+     * @Template()
+     */
+    public function applyAction(Space $space, Request $request)
+    {
+        $user = $this->getUser();
+        $em = $this->get('doctrine.orm.entity_manager');
+
+        if ($user === null) { // Non authentifié
+            $this->redirect($this->generateUrl('fos_user_security_login'));
+        }
+
+        if (!$space->isEnabled() || $space->isClosed()) {
+            throw new AccessDeniedException();
+        }
+
+        if ($user !== null && $space->isOwner($user)) {
+            throw new AccessDeniedException();
+        }
+
+        $application = $em->getRepository(Application::class)->findOneBy([
+            'projectHolder' => $user->getId(),
+            'space' => $space->getId()
+        ]);
+
+        if (! $application instanceof Application) {
+            $application = new Application();
             $application = Application::createFromUser($user);
             $application->setSpace($space);
         }
 
-        $form = $this->createForm(ApplicationType::class, $application, array(
-            'action' => $this->generateUrl(
-                'space_show',
-                array(
-                    'id' => $space->getId()
-                )
-            ),
-            'attr' => array(
-              'novalidate' => true
-            )
-        ));
-
-        $form->add('save', 'submit', array(
-            'label' => 'Enregistrer',
-            'attr' => array('class' => 'btn btn-fullcolor submit_form')
-        ));
-
-        $form->add('save_file', 'submit', array(
-            'label' => 'Ajouter le fichier',
-            'attr' => array('class' => 'btn btn-fullcolor submit_form')
-        ));
-
-        $form->add('submit', 'submit', array(
-            'label' => 'Clôturer ma candidature',
-            'attr' => array('class' => 'btn btn-fullcolor submit_form')
-        ));
+        $form = $this->createForm(
+            ApplicationType::class,
+            $application,
+            [ 'action' => $this->generateUrl('space_apply', ['space' => $space->getId()]) ]
+        );
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('submit')->isClicked()) {
-              $application->setStatus(Application::UNREAD_STATUS);
+                $application->setStatus(Application::UNREAD_STATUS);
             }
 
             $em->persist($application);
             $em->flush();
 
             if($application->getStatus() == Application::DRAFT_STATUS){
-              return new RedirectResponse(
-                  $this->generateUrl(
-                      'space_show',
-                      array(
-                          'id' => $space->getId()
-                      )
-                  ) . "#espace_sauvegarde"
-              );
+                return new RedirectResponse(
+                    $this->generateUrl(
+                        'space_show',
+                        array(
+                            'id' => $space->getId()
+                        )
+                    ) . "#espace_sauvegarde"
+                );
             } else {
-              return new RedirectResponse(
-                  $this->generateUrl(
-                      'space_show',
-                      array(
-                          'id' => $space->getId()
-                      )
-                  ) . "#espace_confirmation"
-              );
+                return new RedirectResponse(
+                    $this->generateUrl(
+                        'space_show',
+                        array(
+                            'id' => $space->getId()
+                        )
+                    ) . "#espace_confirmation"
+                );
             }
         }
 
-        // Check if the profile is completed
-        $errors = $this->container->get('validator')->validate($user, null, array('default', 'projectHolder'));
-        $invalidProfile = (count($errors) > 0) && $user->isPorteur() ? true : false;
-
-        return array(
-            'space'          => $space,
-            'form'           => $form->createView(),
-            'invalidProfile' => $invalidProfile,
-            'application'    => $application
-        );
+        return [
+            'application' => $application,
+            'space' => $space,
+            'form' => $form->createView(),
+        ];
     }
 
     /**

@@ -59,35 +59,46 @@ class SpaceType extends AbstractType
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
-            ->add('tags',
+            ->add(
+                'tags',
                //'collection',
                   'Symfony\Component\Form\Extension\Core\Type\CollectionType',
-                 array(
+                array(
                 //'type' => new SpaceAttributeType(),
                 'entry_type' => SpaceAttributeType::class,
                 'label' => false,
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false
-            ))
-            ->add('pics', SpaceImageType::class,
+            )
+            )
+            ->add(
+                'pics',
+                SpaceImageType::class,
                 array(
                 'label' => 'Ajouter une photo',
                 'mapped' => false,
                 'required' => false
-            ))
-            ->add('newParcel', ParcelType::class,
+            )
+            )
+            ->add(
+                'newParcel',
+                ParcelType::class,
                 array(
                 'label'     => 'Ajouter un lot',
                 'mapped' => false,
                 'required' => false
-            ))
-            ->add('newDocument', SpaceDocumentType::class,
+            )
+            )
+            ->add(
+                'newDocument',
+                SpaceDocumentType::class,
                 array(
                 'label'     => 'Ajouter un document',
                 'mapped' => false,
                 'required' => false
-            ))
+            )
+            )
         ;
 
         $attributes = $this->getAttributes();
@@ -144,9 +155,9 @@ class SpaceType extends AbstractType
             'data_class' => 'AppBundle\Entity\Space',
             //'cascade_validation' => true,
             'constraints' => new \Symfony\Component\Validator\Constraints\Valid(),
-            'validation_groups' => function(FormInterface $form) {
+            'validation_groups' => function (FormInterface $form) {
                 if ($form->get('publish')->isClicked()) {
-                  return 'save';
+                    return 'save';
                 }
 
                 return 'draft';

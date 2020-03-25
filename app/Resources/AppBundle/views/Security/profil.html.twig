@@ -12,13 +12,7 @@
     <div class="main col-sm-8 col-sm-offset-2">
         <h1 class="section-title">Mon profil</h1>
         <center>
-            <p>
-                Vous pouvez dès à présent rechercher une offre, mais nous vous invitons à compléter votre profil.
-                <br />
-                Un profil complet est indispensable pour pouvoir répondre à une offre.
-                <br />
-                Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
-            </p>
+            <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p>
         </center>
     </div>
 
@@ -36,30 +30,30 @@
             <div class="form-contener">
                 <div class="row">
                     <div class="col-sm-6 inline-controls form-group civility-group">
-                        {{ form_label(form.civility) }}
-                        {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                        {{ form_errors(form.civility) }}
+                        {{ form_label(form.userInfo.civility) }}
+                        {{ form_widget(form.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                        {{ form_errors(form.userInfo.civility) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.firstname) }}
+                        {{ form_row(form.userInfo.firstname) }}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.lastname) }}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 form-group">
-                        {{ form_row(form.birthday) }}
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        {{ form_row(form.phone) }}
+                        {{ form_row(form.userInfo.lastname) }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.email) }}
+                        {{ form_row(form.userInfo.birthday) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.userInfo.phone) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.userInfo.email) }}
                     </div>
                     <div class="col-sm-6 form-group">
                         {{ form_row(form.password) }}
@@ -67,7 +61,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12 form-group">
-                        {{ form_row(form.description) }}
+                        {{ form_row(form.userInfo.description) }}
                     </div>
                 </div>
                 <div class="row form-group form-group">
@@ -90,70 +84,70 @@
             <div class="form-contener">
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.company) }}
+                        {{ form_row(form.companyInfo.company) }}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyStatus) }}
+                        {{ form_row(form.companyInfo.companyStatus) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-6  form-group">
-                        {{ form_row(form.companyCreationDate) }}
+                        {{ form_row(form.companyInfo.companyCreationDate) }}
                     </div>
                     <div class="col-sm-6  form-group">
-                        {{ form_row(form.siret)}}
+                        {{ form_row(form.companyInfo.siret)}}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.address)}}
+                        {{ form_row(form.companyInfo.address)}}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.addressSuite) }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6 form-group">
-                        {{ form_row(form.zipcode) }}
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        {{ form_row(form.city)}}
+                        {{ form_row(form.companyInfo.addressSuite) }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyPhone)}}
+                        {{ form_row(form.companyInfo.zipcode) }}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyMobile) }}
+                        {{ form_row(form.companyInfo.city)}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyInfo.companyPhone)}}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.companyInfo.companyMobile) }}
                     </div>
                 </div>
 
                 <div class="row">
                    <div class="col-sm-12 form-group">
-                        {{ form_row(form.companyDescription)}}
+                        {{ form_row(form.companyInfo.companyDescription)}}
                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyEffective)}}
+                        {{ form_row(form.companyInfo.companyEffective)}}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyStructures)}}
+                        {{ form_row(form.companyInfo.companyStructures)}}
                     </div>
                 </div>
 
                 <div class="row form-group" >
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companySite)}}
+                        {{ form_row(form.companyInfo.companySite)}}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.companyBlog)}}
+                        {{ form_row(form.companyInfo.companyBlog)}}
                     </div>
                 </div>
 

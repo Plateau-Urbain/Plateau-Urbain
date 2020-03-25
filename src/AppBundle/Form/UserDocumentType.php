@@ -19,12 +19,15 @@ class UserDocumentType extends AbstractType
         // Accessing type "file" by its string name is deprecated since
         // Symfony 2.8 and will be removed in 3.0.
         // Use the fully-qualified type class name
-        // "Symfony\Component\Form\Extension\Core\Type\FileType" instead. 
+        // "Symfony\Component\Form\Extension\Core\Type\FileType" instead.
         $builder
-            ->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType',
+            ->add(
+                'file',
+                'Symfony\Component\Form\Extension\Core\Type\FileType',
                 array(
                     'label' => false
-                ))
+                )
+            )
         ;
     }
 
