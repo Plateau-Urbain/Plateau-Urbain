@@ -80,7 +80,8 @@ class SpaceController extends Controller
         $user = $this->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
 
-        if (!$space->isEnabled() || $space->isClosed() || $space->isOwner($user)) {
+        if (!$space->isEnabled() || $space->isClosed()
+            || $space->isOwner($user) || $user->isProprio()) {
             throw new AccessDeniedException();
         }
 
