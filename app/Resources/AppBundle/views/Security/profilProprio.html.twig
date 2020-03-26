@@ -36,24 +36,24 @@
 
             <div class="form-contener">
                 <div class="row">
-                  <div class="col-sm-6 inline-controls form-group {% if form.civility.vars.errors|length %}has-error{% endif %}">
-                      {{ form_label(form.civility) }}
-                      {{ form_widget(form.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                      {{ form_errors(form.civility) }}
+                  <div class="col-sm-6 inline-controls form-group {% if form.userInfo.civility.vars.errors|length %}has-error{% endif %}">
+                      {{ form_label(form.userInfo.civility) }}
+                      {{ form_widget(form.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                      {{ form_errors(form.userInfo.civility) }}
                   </div>
                 </div>
                 <div class="row">
 
                   <div class="col-sm-6">
-                    {{ form_row(form.firstname) }}
-                    {{ form_row(form.email) }}
-                    {{ form_row(form.companyPhone) }}
+                    {{ form_row(form.userInfo.firstname) }}
+                    {{ form_row(form.userInfo.email) }}
+                    {{ form_row(form.companyInfo.companyPhone) }}
                   </div>
 
                   <div class="col-sm-6">
-                    {{ form_row(form.lastname) }}
-                    {{ form_row(form.companyFunction) }}
-                    {{ form_row(form.companyMobile) }}
+                    {{ form_row(form.userInfo.lastname) }}
+                    {{ form_row(form.companyInfo.companyFunction) }}
+                    {{ form_row(form.companyInfo.companyMobile) }}
                   </div>
                 </div>
 
@@ -73,15 +73,17 @@
 
               <div class="row">
                 <div class="col-sm-6">
-                  {{ form_row(form.company) }}
-                  {{ form_row(form.address) }}
-                  {{ form_row(form.zipcode) }}
-                  {{ form_row(form.companySite) }}
+                  {{ form_row(form.companyInfo.company) }}
+                  {{ form_row(form.companyInfo.address) }}
+                  {{ form_row(form.companyInfo.zipcode) }}
+                  {{ form_row(form.companyInfo.siret) }}
+                  {{ form_row(form.companyInfo.companySite) }}
                 </div>
                 <div class="col-sm-6">
-                  {{ form_row(form.companyStatus) }}
-                  {{ form_row(form.addressSuite) }}
-                  {{ form_row(form.city) }}
+                  {{ form_row(form.companyInfo.companyStatus) }}
+                  {{ form_row(form.companyInfo.addressSuite) }}
+                  {{ form_row(form.companyInfo.city) }}
+                  {{ form_row(form.companyInfo.companyCreationDate) }}
                 </div>
               </div>
 

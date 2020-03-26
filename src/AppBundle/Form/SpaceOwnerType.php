@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
+use AppBundle\Form\CompanyType;
+use AppBundle\Form\UserType;
 
 class SpaceOwnerType extends AbstractType
 {
@@ -15,21 +17,30 @@ class SpaceOwnerType extends AbstractType
     {
         $builder
             ->add('userInfo', UserType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
-                ->add('companyFunction', null, array('label' => "Fonction", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-                ->add('oldPassword', 'password', array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
-                ->add(
-                    'password',
-                    'repeated',
-                    array('type' => PasswordType::class,
-                          'required' => false,
-                          'invalid_message' => 'Erreur dans la répétition du mot de passe.',
-                          'first_options'  => array('label' => 'Nouveau mot de passe', 'attr' => array('class' => 'form-control')),
-                          'second_options' => array('label' => 'Répéter nouveau mot de passe', 'attr' => array('class' => 'form-control')))
-                )
+            ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
+            ->add('oldPassword', 'password', array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
+            ->add(
+                'password',
+                'repeated',
+                array('type' => PasswordType::class,
+                'required' => false,
+                'invalid_message' => 'Erreur dans la répétition du mot de passe.',
+                'first_options'  => array('label' => 'Nouveau mot de passe', 'attr' => array('class' => 'form-control')),
+                'second_options' => array('label' => 'Répéter nouveau mot de passe', 'attr' => array('class' => 'form-control')))
+            )
         ;
 
 
         $builder->remove('username');
+        $userInfoForm = $builder->get('userInfo');
+        $userInfoForm->remove('phone')
+                     ->remove('birthday')
+                     ->remove('description');
+        $companyForm = $builder->get('companyInfo');
+        $companyForm->remove('companyDescription')
+                    ->remove('companyEffective')
+                    ->remove('companyStructures')
+                    ->remove('companyBlog');
     }
 
     /**
