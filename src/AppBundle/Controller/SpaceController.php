@@ -64,7 +64,7 @@ class SpaceController extends Controller
      * Formulaire de candidature d'un espace.
      * Nécessite d'être connecté
      *
-     * @Route("/apply/{space}", name="space_apply")
+     * @Route("/fiche/{space}/apply", name="space_apply")
      *
      * @param Space $space L'objet espace dont l'ID corresponds dans l'URL
      * @param Request $request La requête
