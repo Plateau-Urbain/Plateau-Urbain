@@ -72,18 +72,15 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, Request $request)
     {
+        // Si l'utilisateur n'est pas connecté, on le redirige vers la page d'auth
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
         $user = $this->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
 
-        if ($user === null) { // Non authentifié
-            $this->redirect($this->generateUrl('fos_user_security_login'));
-        }
-
-        if (!$space->isEnabled() || $space->isClosed()) {
-            throw new AccessDeniedException();
-        }
-
-        if ($user !== null && $space->isOwner($user)) {
+        if (!$space->isEnabled() || $space->isClosed() || $space->isOwner($user)) {
             throw new AccessDeniedException();
         }
 

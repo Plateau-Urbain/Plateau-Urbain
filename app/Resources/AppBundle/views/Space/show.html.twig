@@ -117,6 +117,10 @@
           <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-large apply">
             {{ 'Voir votre candidature !' | upper }}
           </a>
+        {% elseif not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+          <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-fullcolor btn-large apply">
+            {{ 'Se connecter pour candidater !' | upper }}
+          </a>
         {% elseif not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
           <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-fullcolor btn-large apply">
             {{ 'Candidater !' | upper }}
