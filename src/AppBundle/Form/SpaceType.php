@@ -14,6 +14,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SpaceType extends AbstractType
@@ -38,43 +40,28 @@ class SpaceType extends AbstractType
             ->add('name', null, array('label' => 'Nom de l\'espace' , 'attr' => array('class' => 'form-control')))
             ->add('zipCode', null, array('label' => 'Code postal' , 'attr' => array('class' => 'form-control')))
             ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control')))
-            ->add(
-                'limitAvailability',
-                //'date',
-                'Symfony\Component\Form\Extension\Core\Type\DateType',
-                array(
+            ->add('limitAvailability', DateType::class, [
                     'label' => 'Date limite de candidature',
                     'widget' => 'single_text',
-                    // format for html5 is yyyy-MM-dd
-                    //'format' => 'dd/MM/yyyy',
                     'attr' => array(
                         'class' => 'form-control',
-                        //'class' => 'js-datepicker'
-                        //'data-provide' => 'datepicker'
                     )
-                )
+                ]
             )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
             ->add('price', null, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
-            ->add(
-                'tags',
-               //'collection',
-                  'Symfony\Component\Form\Extension\Core\Type\CollectionType',
-                array(
+            ->add('tags', CollectionType::class, [
                 //'type' => new SpaceAttributeType(),
                 'entry_type' => SpaceAttributeType::class,
                 'label' => false,
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false
-            )
-            )
-            ->add(
-                'pics',
-                SpaceImageType::class,
+            ])
+            ->add('pics', SpaceImageType::class,
                 array(
                 'label' => 'Ajouter une photo',
                 'mapped' => false,
@@ -129,7 +116,7 @@ class SpaceType extends AbstractType
             }
 
             // Handles new image
-            $newImage = $event->getForm()->get('newImage')->getData();
+            $newImage = $event->getForm()->get('pics')->getData();
             if ($newImage instanceof SpaceImage) {
                 $event->getData()->addPic($newImage);
             }

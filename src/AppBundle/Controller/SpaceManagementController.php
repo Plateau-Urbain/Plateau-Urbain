@@ -389,7 +389,7 @@ class SpaceManagementController extends Controller
         }
 
         // Check csrfToken
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove_image', $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid('remove_image', $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid token');
         }
 
@@ -418,7 +418,7 @@ class SpaceManagementController extends Controller
         }
 
         // Check csrfToken
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('move_image', $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid('move_image', $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid token');
         }
 
@@ -472,7 +472,7 @@ class SpaceManagementController extends Controller
         }
 
         // Check csrfToken
-        if (!$this->get('form.csrf_provider')->isCsrfTokenValid('remove_parcel', $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid('remove_parcel', $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid token');
         }
 
