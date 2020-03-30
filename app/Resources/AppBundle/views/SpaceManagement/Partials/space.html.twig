@@ -98,6 +98,8 @@
             <div class="col-sm-4">
               {% if space.isEnabled and not space.isClosed %}
                 <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-status btn-yellow" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+              {% elseif not space.isEnabled %}
+                <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-status btn-draft" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');">Supprimer</a>
               {% endif %}
             </div>
           </div>

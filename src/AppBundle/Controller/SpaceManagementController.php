@@ -444,6 +444,31 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * @Route("/supprimer/{id}", name="space_manager_delete")
+     *
+     * @param Space $space
+     */
+    public function removeAction(Space $space)
+    {
+        if (!$space->isOwner($this->getUser())) {
+            throw new AccessDeniedException();
+        }
+
+        if ($space->isPublished()) {
+            $this->get('session')->getFlashBag()->set('error', 'L\'espace n\'a pas été supprimé.');
+            return $this->redirectToRoute('space_manager_list');
+        }
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($space);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'L\'espace a été supprimé.');
+
+        return $this->redirectToRoute('space_manager_list');
+    }
+
+    /**
      * @Route("/document/{id}/delete", name="space_manager_removedocument")
      *
      * @param Request $request
