@@ -95,6 +95,15 @@ class SpaceManagementController extends Controller
     public function addAction(Request $request)
     {
         $space = new Space();
+        $space->setOwner($this->getUser());
+        $space->isClosed(false);
+        $space->setLimitAvailability((new \DateTime('today'))->modify('+1 month'));
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->persist($space);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
 
         $form = $this->createSpaceForm($space, array(
             'action' => $this->generateUrl('space_manager_add'),

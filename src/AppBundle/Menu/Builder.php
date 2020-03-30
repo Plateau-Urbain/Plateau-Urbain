@@ -31,7 +31,7 @@ class Builder implements ContainerAwareInterface
             $context = $this->container->get('security.authorization_checker');
 
             if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
-                $menu->addChild('Proposer', array('route' => 'space_manager_add'));
+                $menu->addChild('Proposer un espace', array('route' => 'space_manager_add'));
             }
 
             $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
