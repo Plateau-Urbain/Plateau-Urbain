@@ -45,8 +45,12 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $application = $builder->getData();
-        $user = $this->tokenStorage->getToken()->getUser();
+        // TODO : Meilleure méthode pour avoir l'utilisateur
+        $user = ($this->tokenStorage->getToken()->getUser() === 'anon.')
+            ? new User()
+            : $this->tokenStorage->getToken()->getUser();
 
+        /* echo '<pre>'.print_r($user, 1);exit; */
         $builder
 
             // Embed project owner form

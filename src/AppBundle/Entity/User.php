@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User.
@@ -653,7 +654,8 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->groups = new ArrayCollection();
+        $this->documents = new ArrayCollection();
         $this->typeUser = self::PORTEUR;
     }
 
