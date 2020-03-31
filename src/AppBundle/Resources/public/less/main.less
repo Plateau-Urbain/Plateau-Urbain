@@ -634,3 +634,23 @@ h4.add-file{
     }
   }
 }
+
+.fake-tabs {
+  background-color: #f1e9e2;
+  border-bottom: 1px solid #CFC1B6;
+  text-align: center;
+  font-weight: bold;
+  display: flex;
+
+  .fake-tabs__tabs {
+    flex: auto;
+    cursor: auto;
+    padding: 10px 30px;
+    border-bottom: 5px solid transparent;
+  }
+  .fake-tabs__tabs-selected {
+    cursor: default;
+    color: @red;
+    border-bottom: 5px solid @red;
+  }
+}

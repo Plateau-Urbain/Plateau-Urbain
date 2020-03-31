@@ -19,9 +19,11 @@
           <i class="icon medium icon-inline bkg list-red-bold"></i>
           {{ 'Vous êtes candidat' | upper }}
         </h3>
-        <small>
-          <i class="fa fa-info-circle"></i> Certaines informations ont été mises à jour via les informations de votre <a href="{{ path('security_profil') }}">profil</a>.
-        </small>
+        {% if app.user %}
+          <small>
+            <i class="fa fa-info-circle"></i> Certaines informations ont été mises à jour via les informations de votre <a href="{{ path('security_profil') }}">profil</a>.
+          </small>
+          {% endif %}
 
         <div class="pu-col-container content-block">
           <div class="row">
@@ -34,6 +36,12 @@
                   Mes informations
                 </h1>
 
+                <div class="fake-tabs">
+                  <div class="fake-tabs__tabs fake-tabs__tabs-selected">Création de compte</div>
+                  <div class="fake-tabs__tabs">
+                    <p><a href="#inline_register">J'ai déjà un compte</a></p>
+                  </div>
+                </div>
                 <div class="form-contener">
                     <div class="row">
                         <div class="col-sm-6 inline-controls form-group civility-group">
