@@ -72,27 +72,35 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, Request $request)
     {
-        // Si l'utilisateur n'est pas connecté, on le redirige vers la page d'auth
-        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return $this->redirectToRoute('fos_user_security_login');
-        }
-
-        $user = $this->getUser();
+        $logged = false;
+        $user = false;
+        $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
 
-        if (!$space->isEnabled() || $space->isClosed()
-            || $space->isOwner($user) || $user->isProprio()) {
-            throw new AccessDeniedException();
+        // Si l'utilisateur est connecté
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $logged = true;
+            $user = $this->getUser();
         }
 
-        $application = $em->getRepository(Application::class)->findOneBy([
-            'projectHolder' => $user->getId(),
-            'space' => $space->getId()
-        ]);
+        if (!$space->isEnabled() || $space->isClosed()) {
+            throw new AccessDeniedException("L'espace est inacessible");
+        }
+
+        if ($user && ($space->isOwner($user) || $user->isProprio())) {
+            throw new AccessDeniedException("Vous n'avez pas le droit de candidater");
+        }
+
+        if ($logged === true) {
+            $application = $em->getRepository(Application::class)->findOneBy([
+                'projectHolder' => $user->getId(),
+                'space' => $space->getId()
+            ]);
+        }
 
         if (! $application instanceof Application) {
-            $application = new Application();
-            $application = Application::createFromUser($user);
+            $application = ($logged === false) ? new Application()
+                                               : Application::createFromUser($user);
             $application->setSpace($space);
         }
 
