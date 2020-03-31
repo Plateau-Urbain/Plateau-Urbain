@@ -129,7 +129,7 @@ class ApplicationType extends AbstractType
         }
 
         $builder->add('submit', 'submit', array(
-            'label' => 'Clôturer ma candidature',
+            'label' => 'Soumettre ma candidature',
             'attr' => array('class' => 'btn btn-fullcolor submit_form')
         ));
 
