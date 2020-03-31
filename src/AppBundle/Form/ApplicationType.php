@@ -128,11 +128,6 @@ class ApplicationType extends AbstractType
           );
         }
 
-        $builder->add('save', 'submit', array(
-            'label' => 'Enregistrer pour plus tard',
-            'attr' => array('class' => 'btn btn-fullcolor submit_form')
-        ));
-
         $builder->add('submit', 'submit', array(
             'label' => 'Clôturer ma candidature',
             'attr' => array('class' => 'btn btn-fullcolor submit_form')
