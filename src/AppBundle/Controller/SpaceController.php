@@ -83,7 +83,7 @@ class SpaceController extends Controller
             $user = $this->getUser();
         }
 
-        if (!$space->isEnabled() || $space->isClosed()) {
+        if (! $space->isEnabled() || $space->isClosed()) {
             throw new AccessDeniedException("L'espace est inacessible");
         }
 
@@ -107,7 +107,7 @@ class SpaceController extends Controller
         $form = $this->createForm(
             ApplicationType::class,
             $application,
-            [ 'action' => $this->generateUrl('space_apply', ['space' => $space->getId()]) ]
+            ['action' => $this->generateUrl('space_apply', ['space' => $space->getId()])]
         );
 
         if ($form->handleRequest($request)->isValid()) {
