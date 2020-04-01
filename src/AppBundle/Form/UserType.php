@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
 
@@ -33,6 +35,13 @@ class UserType extends AbstractType
                 'widget' => 'choice', 'attr' => ['class' => 'oneline-date']
             ])
             ->add('description', null, array('label' => "Une courte description de moi", 'attr' => array('class' => 'form-control', 'rows' => 5)))
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les deux champs doivent être identique',
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Répéter le mot de passe'],
+                'attr' => ['class' => 'form-control']
+            ])
         ;
     }
 
