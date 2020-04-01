@@ -424,7 +424,9 @@
                       </div>
                     {% endfor %}
 
-                    <label class="control-label">Joindre de nouveaux fichiers</label>
+                    <label class="control-label">Joindre des fichiers à cette candidature</label>
+
+                    {% if form.vars.data.getFilesType(null) | length > 0 %}
                     <dl class="dl-horizontal dl-with-fa-icon info-block">
                       <dt><i class="fa fa-info-circle"></i></dt>
                       <dd>
@@ -434,6 +436,7 @@
                         dans la section "Documents".
                       </dd>
                     </dl>
+                    {% endif %}
 
                     {% if form.vars.data.getFilesType(null) | length > 0 %}
                     <div class="row">
