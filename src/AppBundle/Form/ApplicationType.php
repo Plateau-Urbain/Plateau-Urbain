@@ -50,7 +50,6 @@ class ApplicationType extends AbstractType
             ? new User()
             : $this->tokenStorage->getToken()->getUser();
 
-        /* echo '<pre>'.print_r($user, 1);exit; */
         $builder
 
             // Embed project owner form
@@ -117,8 +116,11 @@ class ApplicationType extends AbstractType
                           ->remove('usageDuration')
                           ->remove('lengthTypeOccupation')
                           ->remove('projectDescription')
-                          ->remove('newsletter')
-                          ->remove('password');
+                          ->remove('newsletter');
+
+        if ($user->getId()) {
+            $projectHolderForm->get('userInfo')->remove('password');
+        }
 
         foreach ($application->getSpace()->getDocuments() as $field) {
             $builder->add(

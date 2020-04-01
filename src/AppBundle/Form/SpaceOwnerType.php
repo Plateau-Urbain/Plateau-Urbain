@@ -18,16 +18,7 @@ class SpaceOwnerType extends AbstractType
         $builder
             ->add('userInfo', UserType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
             ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
-            ->add('oldPassword', 'password', array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
-            ->add(
-                'password',
-                'repeated',
-                array('type' => PasswordType::class,
-                'required' => false,
-                'invalid_message' => 'Erreur dans la répétition du mot de passe.',
-                'first_options'  => array('label' => 'Nouveau mot de passe', 'attr' => array('class' => 'form-control')),
-                'second_options' => array('label' => 'Répéter nouveau mot de passe', 'attr' => array('class' => 'form-control')))
-            )
+            ->add('oldPassword', PasswordType::class, array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
         ;
 
 
