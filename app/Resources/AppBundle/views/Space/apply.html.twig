@@ -342,7 +342,6 @@
                 </h1>
                 <div class="form-contener">
                     <div class="row">
-                    <div class="col-md-8">
                         <div class="col-sm-12">
                           {{ form_row(form.name) }}
                         </div>
@@ -399,9 +398,7 @@
                         <div class="col-sm-12" id="toggle_{{ form.contribution.vars.id }}">
                           {{ form_row(form.contribution) }}
                         </div>
-                    </div>
-
-                    <div class="col-md-4 files">
+                        <div class="col-md-12 files">
 
                     {% if space.getDocuments() | length > 0 %}
                       <h4>{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature *</h4>
@@ -427,72 +424,18 @@
                       </div>
                     {% endfor %}
 
-
-                    <label class="control-label">Fichiers déjà enregistrés dans votre compte, et qui seront joints à votre fichier de candidature</label>
-                    <dl class="dl-horizontal dl-with-fa-icon tip">
-                      <dt><i class="fa fa-info-circle"></i></dt>
-                      <dd>
-                        Pour ajouter ou supprimer des fichiers de cette liste,
-                        rendez-vous dans la section "Documents à fournir" de
-                        votre profil
-                      </dd>
-                    </dl>
-
-                    <div class="row">
-                      <div class="files col-sm-12">
-
-                        {% if app.user and app.user.getCompanyStatus() == 'Association' %}
-
-                          {% if app.user and app.user.getDocumentsType('id') is not empty %}
-                            {% set idcard = app.user.getDocumentsType('id')[0]%}
-
-                            <div class="kbis-file file-infos">
-                              <span>Pièce d'identité</span>
-                              <div class="pull-right actions">
-                                <a target="_blank" href="{{ asset(vich_uploader_asset(idcard, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                              </div>
-                            </div>
-                          {% endif %}
-
-                        {% else %}
-
-                          {% if app.user and app.user.getDocumentsType('kbis') is not empty %}
-                            {% set kbis = app.user.getDocumentsType('kbis')[0] %}
-                            <div class="kbis-file file-infos">
-                              <span>Document justifiant la création de la structure</span>
-                              <div class="pull-right actions">
-                                <a target="_blank" href="{{ asset(vich_uploader_asset(kbis, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                              </div>
-                            </div>
-                          {% endif %}
-
-                        {% endif %}
-
-                        {% if app.user %}
-                        {% for doc in app.user.getDocumentsType('') %}
-                            <div class="file-infos">
-                              <span>{{doc.fileName | slice(14, 100)}}</span>
-                              <div class="pull-right actions">
-                                  <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                              </div>
-                            </div>
-                        {% endfor %}
-                        {% endif %}
-
-                      </div>
-                    </div>
-
                     <label class="control-label">Joindre de nouveaux fichiers</label>
-                    <dl class="dl-horizontal dl-with-fa-icon tip">
+                    <dl class="dl-horizontal dl-with-fa-icon info-block">
                       <dt><i class="fa fa-info-circle"></i></dt>
                       <dd>
                         Les documents suivants seront seulement attachés à la
                         candidature de cet espace. Les fichiers qui peuvent être
                         joints dans toutes vos candidatures doivent être téléchargés
-                        dans la section "Documents à fournir" de votre profil.
+                        dans la section "Documents".
                       </dd>
                     </dl>
 
+                    {% if form.vars.data.getFilesType(null) | length > 0 %}
                     <div class="row">
                       <div class="files col-sm-12">
 
@@ -509,15 +452,18 @@
                         {% endfor %}
                       </div>
                     </div>
+                    {% endif %}
 
                     <div class="row">
                       <div class="add-file col-xs-12">
+                          {% if form.vars.data.getFilesType(null) | length > 0 %}
                         <h4>
                           <i class="icon small icon-inline add-red"></i>
                           Ajouter un fichier
                         </h4>
+                          {% endif %}
 
-                        <dl class="dl-horizontal dl-with-fa-icon tip">
+                        <dl class="dl-horizontal dl-with-fa-icon info-block">
                           <dt><i class="fa fa-info-circle"></i></dt>
                           <dd>
                             Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
