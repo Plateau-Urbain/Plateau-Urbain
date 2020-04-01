@@ -9,13 +9,13 @@ Installation of `symfony34` branch
     git checkout symfony34_24eme
     composer install
     # Si composer install échoue, supprimer le fichier composer.lock et recommencer
-    # Si la base de données existe déjà, passer les étapes de doctrine
+    # Si la base de données existe déjà, aller aux étapes d'assets
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console hautelook:fixtures:load --purge-with-truncate -b AppBundle
     php app/console assets:install
-    php app/console assetic:dump
     make
+    php app/console assetic:dump
 
 
 User admin

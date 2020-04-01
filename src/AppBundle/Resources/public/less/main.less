@@ -645,12 +645,22 @@ h4.add-file{
   .fake-tabs__tabs {
     flex: auto;
     cursor: auto;
-    padding: 10px 30px;
-    border-bottom: 5px solid transparent;
+    margin-top: 2px;
+
+    a, span {
+      padding: 10px 30px;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      color: #74777c;
+      &:hover, &:focus {
+        text-decoration: none;
+      }
+    }
   }
-  .fake-tabs__tabs-selected {
+  .fake-tabs__tabs-selected span {
     cursor: default;
     color: @red;
-    border-bottom: 5px solid @red;
+    border-bottom: 2px solid @red;
   }
 }
