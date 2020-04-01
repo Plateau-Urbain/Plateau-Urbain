@@ -56,7 +56,15 @@
                         {{ form_row(form.userInfo.email) }}
                     </div>
                     <div class="col-sm-6 form-group">
-                        {{ form_row(form.password) }}
+                        {{ form_row(form.userInfo.oldPassword) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.userInfo.password.first) }}
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        {{ form_row(form.userInfo.password.second) }}
                     </div>
                 </div>
                 <div class="row">
