@@ -9,7 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
 
@@ -39,11 +41,11 @@ class CompanyType extends AbstractType
                 'label' => "Fonction",
                 'attr' => ['class' => 'form-control', 'rows' => 5]
             ])
-            ->add('companyDescription', null, [
+            ->add('companyDescription', TextareaType::class, [
                 'label' => "Présentation de la structure",
                 'attr' => ['class' => 'form-control', 'rows' => 5]
             ])
-            ->add('companyEffective', null, [
+            ->add('companyEffective', NumberType::class, [
                 'label' => "Nombre de personnes dans la structure",
                 'attr' => ['class' => 'form-control', 'min' => 0]
             ])
@@ -65,6 +67,7 @@ class CompanyType extends AbstractType
             ])
             ->add('companyMobile', TextType::class, [
                 'label' => "Téléphone mobile",
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('address', TextType::class, [
@@ -73,6 +76,7 @@ class CompanyType extends AbstractType
             ])
             ->add('addressSuite', TextType::class, [
                 'label' => "Adresse (suite)",
+                'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
             ->add('zipcode', TextType::class, [
