@@ -163,6 +163,9 @@ services:
         tags:
             - { name: form.type, alias: appbundle_space }
 
+    AppBundle\Controller\SpaceController:
+        tags: ['controller.service_arguments']
+
     app.form.type.application:
         class: AppBundle\Form\ApplicationType
         arguments:

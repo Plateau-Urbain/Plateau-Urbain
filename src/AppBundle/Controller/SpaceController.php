@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Space controller.
@@ -67,10 +68,11 @@ class SpaceController extends Controller
      * @Route("/fiche/{space}/apply", name="space_apply")
      *
      * @param Space $space L'objet espace dont l'ID corresponds dans l'URL
+     * @param UserPasswordEncoderInterface $encoder Le hasheur de mot de passe
      * @param Request $request La requête
      * @Template()
      */
-    public function applyAction(Space $space, Request $request)
+    public function applyAction(Space $space, UserPasswordEncoderInterface $encoder, Request $request)
     {
         $logged = false;
         $user = false;
@@ -115,8 +117,12 @@ class SpaceController extends Controller
                 $application->setStatus(Application::UNREAD_STATUS);
             }
 
+            $newUser = $form->get('projectHolder')->getData();
+            $encoded_password = $encoder->encodePassword($newUser, $newUser->getPassword());
+            $newUser->setPassword($encoded_password);
+
             $em->persist($application);
-            $em->persist($form->get('projectHolder')->getData());
+            $em->persist($newUser);
             $em->flush();
 
             if($application->getStatus() == Application::DRAFT_STATUS){
