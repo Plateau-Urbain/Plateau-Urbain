@@ -184,13 +184,14 @@ class ApplicationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
-            'validation_groups' => function (FormInterface $form) {
-                if ($form->get('save')->isClicked()) {
-                    return "default";
-                }
+            /* 'validation_groups' => function (FormInterface $form) { */
+            /*     if ($form->get('save')->isClicked()) { */
+            /*         return "default"; */
+            /*     } */
 
-                return "submit";
-            }
+            /*     return "submit"; */
+            /* } */
+            'validation_groups' => 'submit'
         ));
     }
 

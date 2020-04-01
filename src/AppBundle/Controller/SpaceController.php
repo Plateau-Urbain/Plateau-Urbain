@@ -116,6 +116,7 @@ class SpaceController extends Controller
             }
 
             $em->persist($application);
+            $em->persist($form->get('projectHolder')->getData());
             $em->flush();
 
             if($application->getStatus() == Application::DRAFT_STATUS){
