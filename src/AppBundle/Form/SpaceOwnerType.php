@@ -18,7 +18,6 @@ class SpaceOwnerType extends AbstractType
         $builder
             ->add('userInfo', UserType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
             ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => SpaceOwnerType::class])
-            ->add('oldPassword', PasswordType::class, array('mapped' => false, 'required' => false, 'label' => "Mot de passe actuel", 'attr' => array('class' => 'form-control')))
         ;
 
 
