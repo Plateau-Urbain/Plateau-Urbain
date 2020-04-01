@@ -77,6 +77,16 @@
                             {{ form_row(form.projectHolder.userInfo.email) }}
                         </div>
                     </div>
+                    {% if not app.user %}
+                      <div class="row">
+                          <div class="col-sm-6 form-group">
+                              {{ form_row(form.projectHolder.userInfo.password.first) }}
+                          </div>
+                          <div class="col-sm-6 form-group">
+                              {{ form_row(form.projectHolder.userInfo.password.second) }}
+                          </div>
+                      </div>
+                    {% endif %}
                     <div class="row">
                         <div class="col-sm-12 form-group">
                             {{ form_row(form.projectHolder.userInfo.description) }}
