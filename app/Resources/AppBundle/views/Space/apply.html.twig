@@ -36,12 +36,18 @@
                   Mes informations
                 </h1>
 
-                <div class="fake-tabs">
-                  <div class="fake-tabs__tabs fake-tabs__tabs-selected">Création de compte</div>
-                  <div class="fake-tabs__tabs">
-                    <p><a href="#inline_register">J'ai déjà un compte</a></p>
+                {% if not app.user %}
+                  <div class="fake-tabs">
+                    <div class="fake-tabs__tabs fake-tabs__tabs-selected">
+                      <span>Création de compte</span>
+                    </div>
+                    <div class="fake-tabs__tabs">
+                      <a href="#inline_content" class="inline cboxElement">
+                        J'ai déjà un compte
+                      </a>
+                    </div>
                   </div>
-                </div>
+                {% endif %}
                 <div class="form-contener">
                     <div class="row">
                         <div class="col-sm-6 inline-controls form-group civility-group">
