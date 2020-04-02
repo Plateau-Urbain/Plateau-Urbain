@@ -102,6 +102,9 @@ class SpaceController extends Controller
         if (! $application instanceof Application) {
             $application = Application::createFromUser($user);
             $application->setSpace($space);
+        } elseif ($application->getStatus() === Application::UNREAD_STATUS) {
+            // Pour l'instant on empeche les gens de refaire une candidature
+            return $this->redirectToRoute('my_application_show', ['id' => $application->getId()]);
         }
 
         $form = $this->createForm(ApplicationType::class, $application, [
