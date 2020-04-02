@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
  * Space controller.
@@ -75,6 +77,7 @@ class SpaceController extends Controller
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
         $userManager = $this->get('fos_user.user_manager');
+        $connect_after_application = false;
 
         // Si l'utilisateur est connecté
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -82,6 +85,7 @@ class SpaceController extends Controller
         } else {
             $user = $userManager->createUser();
             $user->setEnabled(true);
+            $connect_after_application = true;
         }
 
         if (! $space->isEnabled() || $space->isClosed()) {
@@ -138,6 +142,15 @@ class SpaceController extends Controller
             $em->persist($application);
             $em->persist($user);
             $em->flush();
+
+            if ($connect_after_application) {
+                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                $this->get('security.token_storage')->setToken($token);
+                $this->get('session')->migrate();
+                $this->get('session')->set('_security_main', serialize($token));
+                $event = new InteractiveLoginEvent($request, $token);
+                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+            }
 
             if($application->getStatus() == Application::DRAFT_STATUS){
                 return $this->redirectToRoute('space_show', [
