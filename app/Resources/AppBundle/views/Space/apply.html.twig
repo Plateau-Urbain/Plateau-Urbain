@@ -80,10 +80,10 @@
                     {% if not app.user %}
                       <div class="row">
                           <div class="col-sm-6 form-group">
-                              {{ form_row(form.projectHolder.userInfo.password.first) }}
+                              {{ form_row(form.projectHolder.userInfo.plainPassword.first) }}
                           </div>
                           <div class="col-sm-6 form-group">
-                              {{ form_row(form.projectHolder.userInfo.password.second) }}
+                              {{ form_row(form.projectHolder.userInfo.plainPassword.second) }}
                           </div>
                       </div>
                     {% endif %}

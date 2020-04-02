@@ -36,7 +36,7 @@ class UserType extends AbstractType
                 'widget' => 'choice', 'attr' => ['class' => 'oneline-date']
             ])
             ->add('description', TextareaType::class, array('label' => "Une courte description de moi", 'attr' => array('class' => 'form-control', 'rows' => 5)))
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux champs doivent être identique',
                 'first_options' => ['label' => 'Mot de passe'],

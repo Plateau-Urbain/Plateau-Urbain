@@ -130,6 +130,10 @@ class SpaceController extends Controller
 
             $userManager->updateUser($user);
 
+            if ($user->getId() === null) {
+                $userManager->updatePassword($user);
+            }
+
             $em->persist($application);
             $em->persist($user);
             $em->flush();
