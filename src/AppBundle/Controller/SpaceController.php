@@ -142,23 +142,13 @@ class SpaceController extends Controller
             $em->flush();
 
             if($application->getStatus() == Application::DRAFT_STATUS){
-                return new RedirectResponse(
-                    $this->generateUrl(
-                        'space_show',
-                        array(
-                            'id' => $space->getId()
-                        )
-                    ) . "#espace_sauvegarde"
-                );
+                return $this->redirectToRoute('space_show', [
+                    'id' => $space->getId().'#espace_sauvegarde'
+                ]);
             } else {
-                return new RedirectResponse(
-                    $this->generateUrl(
-                        'space_show',
-                        array(
-                            'id' => $space->getId()
-                        )
-                    ) . "#espace_confirmation"
-                );
+                return $this->redirectToRoute('my_application_show', [
+                    'id' => $application->getId()
+                ]);
             }
         }
 
