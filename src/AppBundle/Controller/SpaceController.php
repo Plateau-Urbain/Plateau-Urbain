@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Space controller.
@@ -68,11 +67,10 @@ class SpaceController extends Controller
      * @Route("/fiche/{space}/apply", name="space_apply")
      *
      * @param Space $space L'objet espace dont l'ID corresponds dans l'URL
-     * @param UserPasswordEncoderInterface $encoder Le hasheur de mot de passe
      * @param Request $request La requête
      * @Template()
      */
-    public function applyAction(Space $space, UserPasswordEncoderInterface $encoder, Request $request)
+    public function applyAction(Space $space, Request $request)
     {
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
