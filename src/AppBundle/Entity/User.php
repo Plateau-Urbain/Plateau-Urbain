@@ -373,6 +373,11 @@ class User extends BaseUser
         $this->zipcode = $zipcode;
     }
 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function setEmail($email)
     {
         $this->email = $email;

@@ -74,55 +74,64 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, UserPasswordEncoderInterface $encoder, Request $request)
     {
-        $logged = false;
-        $user = false;
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
+        $userManager = $this->get('fos_user.user_manager');
 
         // Si l'utilisateur est connecté
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $logged = true;
             $user = $this->getUser();
+        } else {
+            $user = $userManager->createUser();
+            $user->setEnabled(true);
         }
 
         if (! $space->isEnabled() || $space->isClosed()) {
             throw new AccessDeniedException("L'espace est inacessible");
         }
 
-        if ($user && ($space->isOwner($user) || $user->isProprio())) {
+        if ($user->getId() && ($space->isOwner($user) || $user->isProprio())) {
             throw new AccessDeniedException("Vous n'avez pas le droit de candidater");
         }
 
-        if ($logged === true) {
-            $application = $em->getRepository(Application::class)->findOneBy([
-                'projectHolder' => $user->getId(),
-                'space' => $space->getId()
-            ]);
-        }
+        $application = $em->getRepository(Application::class)->findOneBy([
+            'projectHolder' => $user->getId(),
+            'space' => $space->getId()
+        ]);
 
         if (! $application instanceof Application) {
-            $application = ($logged === false) ? new Application()
-                                               : Application::createFromUser($user);
+            $application = Application::createFromUser($user);
             $application->setSpace($space);
         }
 
-        $form = $this->createForm(
-            ApplicationType::class,
-            $application,
-            ['action' => $this->generateUrl('space_apply', ['space' => $space->getId()])]
-        );
+        $form = $this->createForm(ApplicationType::class, $application, [
+            'action' => $this->generateUrl('space_apply', ['space' => $space->getId()]),
+            'user' => $user
+        ]);
 
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+
+        // On vérifie qu'un compte n'existe pas avec la même adresse email
+        if ($form->isSubmitted() && $user->getId() === null) {
+            $exists = $userManager->findUserByEmail($form->get('projectHolder')->get('userInfo')->getData()->getEmail());
+
+            if ($exists) {
+                $this->addFlash('error_sign', 'Cette adresse email est déjà utilisée.');
+                $url = $this->container->get('router')->generate("homepage");
+                $response = new RedirectResponse($url);
+                return $response;
+            }
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $application->setStatus(Application::UNREAD_STATUS);
             }
 
-            $newUser = $form->get('projectHolder')->getData();
-            $encoded_password = $encoder->encodePassword($newUser, $newUser->getPassword());
-            $newUser->setPassword($encoded_password);
+            $userManager->updateUser($user);
 
             $em->persist($application);
-            $em->persist($newUser);
+            $em->persist($user);
             $em->flush();
 
             if($application->getStatus() == Application::DRAFT_STATUS){

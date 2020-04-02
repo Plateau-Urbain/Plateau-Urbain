@@ -45,10 +45,7 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $application = $builder->getData();
-        // TODO : Meilleure méthode pour avoir l'utilisateur
-        $user = ($this->tokenStorage->getToken()->getUser() === 'anon.')
-            ? new User()
-            : $this->tokenStorage->getToken()->getUser();
+        $user = $options['user'];
 
         $builder
 
@@ -191,7 +188,8 @@ class ApplicationType extends AbstractType
 
             /*     return "submit"; */
             /* } */
-            'validation_groups' => 'submit'
+            'validation_groups' => 'submit',
+            'user' => 'AppBundle\Entity\User'
         ));
     }
 
