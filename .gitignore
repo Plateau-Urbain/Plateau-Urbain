@@ -19,3 +19,5 @@
 
 *~
 tags
+/src/AppBundle/Resources/public/css/main.css
+/web/uploads
