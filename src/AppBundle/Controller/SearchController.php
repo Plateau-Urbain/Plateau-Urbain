@@ -41,7 +41,7 @@ class SearchController extends Controller
 
         return array(
             'form'         => $form->createView(),
-            'latest'       => array_slice($all, 0, 6),
+            'latest'       => $all,
             'departements' => $departements,
         );
     }
