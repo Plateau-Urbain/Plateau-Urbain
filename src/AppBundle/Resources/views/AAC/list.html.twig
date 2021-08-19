@@ -1,0 +1,45 @@
+{% extends "::base.html.twig" %}
+
+{% block breadcrumb_items %}
+    <li>
+        <span>Liste des appels à candidature</span>
+    </li>
+{% endblock %}
+
+{% block title %}Liste des appels à candidature{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="main col-sm-12">
+            <h1 class="section-title left-title">Liste des espaces</h1>
+            <hr />
+        </div>
+    </div>
+
+    <div id="listing-header" class="clearfix">
+        <div class="row">
+            <div class="col-sm-6 results-numbers">
+                <h4>
+                    {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'appels à candidature' } %}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    {% if pagination | length == 0 %}
+        <div class="no-results">
+            <p>Vous n'avez aucun espace à gérer</p>
+        </div>
+    {% else %}
+        <div id="property-listing" class="list-style clearfix management-list">
+            <div class="row">
+                {% for space in pagination %}
+                    {% include 'AppBundle:SpaceManagement/Partials:space.html.twig' with {'space' : space, 'context' : 'manage_list' } %}
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ knp_pagination_render(pagination) }}
+    {% endif %}
+{% endblock %}
