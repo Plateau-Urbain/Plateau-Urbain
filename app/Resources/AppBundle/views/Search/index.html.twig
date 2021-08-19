@@ -8,7 +8,7 @@
 
 {% block prebody %}
 {#    {% include "AppBundle:Search:_map.html.twig" with {'form' : form } %} #}
-{% include "AppBundle:Search:_search_form.html.twig" with {'form' : form } %}
+    {% include "AppBundle:Search:_search_form.html.twig" with {'form' : form } %}
 {% endblock %}
 
 
@@ -19,7 +19,7 @@
     <div class="row last-space" id="js-results">
 
 
-        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les derniers espaces disponibles</h2>
+        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces disponibles</h2>
 
         {% for space in latest %}
             <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
