@@ -952,7 +952,7 @@ class Space
      */
     public function validateNbParcels(ExecutionContextInterface $context)
     {
-        if ($this->parcels->count() < 1) {
+        if ($this->parcels->count() < 0) {
             $context->buildViolation('Vous devez créer au moins un lot pour votre espace.')
                     ->atPath('newParcel')
                     ->addViolation();
