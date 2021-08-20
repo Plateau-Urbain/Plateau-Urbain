@@ -187,6 +187,11 @@ class SpaceManagementController extends Controller
      */
     public function closeAction(Space $space)
     {
+        if (! in_array("ROLE_ADMIN", $this->getUser()->getRoles()) && ! $space->isOwner($this->getUser())) {
+            var_dump( $this->getUser()->getRoles() );
+            throw new AccessDeniedException();
+        }
+
         $space->setClosed(true);
 
         $em = $this->getDoctrine()->getManager();
