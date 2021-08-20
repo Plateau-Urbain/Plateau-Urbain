@@ -65,11 +65,15 @@
 
       <p class="pu-label">BAILLEUR</p>
       <p class="pu-value">
+      {% if space.owner %}
         {% if space.owner.website %}
           <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
         {% else %}
           {{ space.owner.company }}
         {% endif %}
+      {% else %}
+          Sans bailleur
+      {% endif %}
       </p>
     </div>
 
