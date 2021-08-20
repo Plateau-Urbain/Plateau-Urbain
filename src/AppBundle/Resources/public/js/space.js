@@ -45,7 +45,16 @@ $(document).ready(function() {
 
 
     function initFormListener() {
-        $('button[type="submit"]:not(.no-ajax), input[type="submit"]:not(.no-ajax)').click(function(){
+        var name = document.getElementById('appbundle_space_name');
+
+        $('button[type="submit"]:not(.no-ajax), input[type="submit"]:not(.no-ajax)').click(function(e){
+            if (name.checkValidity() == false) {
+                window.scroll(name.scrollTop, name.scrollLeft)
+                name.focus()
+                name.parentElement.classList.add('has-error')
+                e.preventDefault()
+                return false
+            }
 
             var saving = false;
 
