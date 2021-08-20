@@ -27,7 +27,8 @@ class AACController extends Controller
         ];
 
         $params = [
-            'enabled' => true
+            'enabled' => true,
+            'closed' => false
         ];
 
         $query = $this->getDoctrine()->getManager()
