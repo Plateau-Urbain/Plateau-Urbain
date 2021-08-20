@@ -123,7 +123,7 @@
                                         <dt><i class="icon small building-brown"></i></dt>
                                         <dd>
                                             <span class="dd-title">Bailleur</span><br/>
-                                            {{ space.owner.company }}
+                                            {{ (space.owner) ? space.owner.company : "Sans bailleur" }}
                                         </dd>
                                     </dl>
                                 </div>
