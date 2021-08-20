@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SpaceType extends AbstractType
@@ -49,12 +50,11 @@ class SpaceType extends AbstractType
                 ]
             )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
-            ->add('price', null, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
-            ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control')))
+            ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
+            ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…")))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
             ->add('tags', CollectionType::class, [
-                //'type' => new SpaceAttributeType(),
                 'entry_type' => SpaceAttributeType::class,
                 'label' => false,
                 'allow_add' => false,

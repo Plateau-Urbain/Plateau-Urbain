@@ -1,7 +1,7 @@
 <div class="row">
     <!-- BEGIN MAIN CONTENT -->
     <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">Ajouter un espace</h1>
+        <h1 class="section-title">Editer mon espace</h1>
         <p class="center">
             Pour ajouter une offre sur la plate-forme Plateau urbain, il vous suffit de remplir le formulaire ci-dessus.<br /> A tout moment, vous pouvez enregistrer le formulaire et reprendre son édition ultérieurement. Une fois complet, procédez à sa validation : un administrateur du site interviendra pour s’assurer qu’elle est complète et procéder à sa mise en ligne.
         </p>
@@ -64,12 +64,6 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 col-sm-offset-4">
-                <button type="submit" class="btn btn-fullcolor form-control save">
-                    Enregistrer
-                </button>
-            </div>
-
             <div style="clear: both"></div>
         </div>
 
@@ -121,7 +115,7 @@
         <p>&nbsp;</p>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-2">
+            <div class="col-sm-4">
                 {{ form_widget(
                     form.preview, {
                         'attr': {
@@ -129,6 +123,9 @@
                         }
                     })
                 }}
+            </div>
+            <div class="col-sm-4">
+                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control save">
             </div>
             <div class="col-sm-4">
                 {{ form_widget(
