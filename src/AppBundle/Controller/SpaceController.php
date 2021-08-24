@@ -43,8 +43,8 @@ class SpaceController extends Controller
             return ['space' => $space];
         }
 
-        if (!$space->isEnabled() && !$space->isOwner($user)
-            || $space->isClosed() && !$space->isOwner($user)
+        if (!$space->isEnabled() && (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))
+            || $space->isClosed() && (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))
         ) {
             throw new AccessDeniedException();
         }
