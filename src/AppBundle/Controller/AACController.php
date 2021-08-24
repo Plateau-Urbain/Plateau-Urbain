@@ -27,8 +27,8 @@ class AACController extends Controller
         ];
 
         $params = [
-            'enabled' => true,
-            'closed' => false
+            'closed' => false,
+            'limitAvailability' => new \DateTime('today')
         ];
 
         $query = $this->getDoctrine()->getManager()
