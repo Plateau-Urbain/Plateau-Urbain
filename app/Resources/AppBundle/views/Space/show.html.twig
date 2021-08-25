@@ -117,7 +117,12 @@
         {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
       </p>
       <p class="center">
-        {% if application is defined and application is not null and not application.isDraft %}
+        {% if not space.isEnabled() %}
+          <a href="#" class="btn btn-fullcolor btn-large apply">
+            {{ "Activer l'espace" | upper }}
+          </a>
+        {% elseif space.isClosed() %}
+        {% elseif application is defined and application is not null and not application.isDraft %}
           <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-fullcolor btn-large apply">
             {{ 'Voir votre candidature !' | upper }}
           </a>
