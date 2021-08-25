@@ -47,9 +47,7 @@ class Builder implements ContainerAwareInterface
               $loggedMenu->addChild('Mes espaces', array('route' => 'space_manager_list', 'attributes' => array('class'=>'spaces-icon menu-icon')));
               $loggedMenu->addChild('Ajouter un espace', array('route' => 'space_manager_add', 'attributes' => array('class'=>'add-icon menu-icon')));
 
-              if ($context->isGranted('ROLE_ADMIN')) {
-                $loggedMenu->addChild('Liste des AACs', ['route' => 'aac_list', 'attributes' => ['class' => 'bulb-icon menu-icon']]);
-              }
+              $loggedMenu->addChild('Liste des AACs', ['route' => 'aac_list', 'attributes' => ['class' => 'bulb-icon menu-icon']]);
             } else if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
               $loggedMenu->addChild('Mes candidatures', array('route' => 'my_applications_list', 'attributes' => array('class'=>'bulb-icon menu-icon')));
             }
