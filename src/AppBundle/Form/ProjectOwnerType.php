@@ -119,13 +119,6 @@ class ProjectOwnerType extends AbstractType
                 }
             }
 
-            // Handles others
-            $doc = $event->getForm()->get('newDocument')->getData();
-            if ($doc instanceof UserDocument) {
-                $doc->setProjectHolder($projectHolder);
-                $doc->setType(UserDocument::NO_TYPE);
-                $projectHolder->addDocument($doc);
-            }
         });
 
         $builder->get('companyInfo')->remove('companyFunction');
