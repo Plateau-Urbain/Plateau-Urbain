@@ -34,7 +34,7 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild('Proposer un espace', array('route' => 'space_manager_add'));
             }
 
-            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
+            $menu->addChild('Comment ça marche', array('uri' => 'https://drive.google.com/file/d/0B8cjA2J8XWEDSkZ5N1FfSW5FWHc/view', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('Contact', array('uri' => '#footer'));
             $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
                 'safe_label' => true
@@ -56,7 +56,7 @@ class Builder implements ContainerAwareInterface
 
         } else {
             $menu->addChild('Proposer', array('route' => 'proprietaire'));
-            $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
+            $menu->addChild('Comment ça marche', array('uri' => 'https://drive.google.com/file/d/0B8cjA2J8XWEDSkZ5N1FfSW5FWHc/view', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('Contact', array('uri' => '#footer'));
             $menu->addChild("Se connecter", array('uri' => '#inline_content', 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));
         }

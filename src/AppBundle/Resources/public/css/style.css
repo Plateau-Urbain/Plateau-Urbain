@@ -211,8 +211,10 @@ iframe[src="about:blank"] {
     background-color: #41f100;
 }
 
-
-
+.nopuce {
+    list-style:none;
+    text-indent:-15px;
+}
 
 .btn {
   font-size: 13px;

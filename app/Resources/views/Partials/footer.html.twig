@@ -21,10 +21,10 @@
             <h3>Plateau Urbain est soutenu par</h3>
             <ul class="list-inline">
               <li>
-                <a href="http://www.fondation-macif.org/" target="_blank"><img src="{{ asset('/public/images/new-macif.png') }}" alt="" /></a>
+                <a href="https://www.fondation-macif.org/" target="_blank"><img src="{{ asset('/public/images/new-macif.png') }}" alt="" /></a>
               </li>
               <li>
-                <a href="http://www.atelier-idf.org/" target="_blank"><img src="{{ asset('/public/images/atelier_logo.png') }}" alt="" /></a>
+                <a href="https://paris.fr" target="_blank"><img src="{{ asset('/public/images/Paris_blanc_web_120.png') }}" alt="" /></a>
               </li>
             </ul>
           </div>
@@ -39,7 +39,7 @@
           <div class="block col-sm-12">
             <h3>Développer vos projets</h3>
             <ul class="footer-links">
-              <li><a href="https://www.plateau-urbain.com/" target="_blank">Comment ça marche ?</a></li>
+            <li><a href="https://drive.google.com/file/d/0B8cjA2J8XWEDSkZ5N1FfSW5FWHc/view" target="_blank">Comment ça marche ?</a></li>
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
                 <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
@@ -71,7 +71,11 @@
           <div class="block col-sm-12">
             <a href="https://www.plateau-urbain.com" target="_blank"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
             <ul class="list-unstyled infos">
-              <li><i class="fa fa-home"></i>5 rue Laromiguière - 75005 PARIS</li>
+               <li><i class="fa fa-home"></i>16 bld Saint-Germain</li>
+               <ul>
+                    <li class="nopuce">CS 70514</li>
+                    <li class="nopuce">75237 Paris Cedex 05</li>
+               </ul>
               <li><i class="fa fa-envelope"></i>contact@plateau-urbain.com</li>
               <li><i class="fa fa-phone"></i>01 79 75 66 57</li>
             </ul>
@@ -100,9 +104,8 @@
           <ul class="list-inline">
             <li>&copy; {{ "now"| date("Y") }} Plateau Urbain</li>
             <li><a href="{{path('cgu')}}">Conditions générales d'utilisation et Mentions légales</a></li>
-            <li><a class="normal" href="http://www.widop.com/">Développement Wid'op</a></li>
-            <li><a class="normal" href="http://www.sosowide.com/">Web & UX Design So So Wide</a></li>
-	    <li><a class="normal" href="https://libre-a-toi.org/">Maintenance & Hébergement Libre à Toi</a></li>
+            <li><a class="normal" href="https://github.com/Plateau-Urbain/Plateau-Urbain">Développement</a></li>
+	        <li>Maintenance & Hébergement : <a class="normal" href="https://asso.libratoi.org/">Libre à Toi</a> - <a href="https://24eme.fr/">24eme</a></li>
           </ul>
         </div>
       </div>
