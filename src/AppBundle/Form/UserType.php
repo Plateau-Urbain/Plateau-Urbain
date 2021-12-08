@@ -42,13 +42,7 @@ class UserType extends AbstractType
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Répéter le mot de passe'],
                 'attr' => ['class' => 'form-control']
-            ])
-            ->add('oldPassword', PasswordType::class, [
-                'mapped' => false, 'required' => false,
-                'label' => "Mot de passe actuel",
-                'attr' => array('class' => 'form-control')
-            ])
-        ;
+            ])        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
