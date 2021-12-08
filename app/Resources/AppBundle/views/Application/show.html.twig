@@ -57,7 +57,7 @@
             {% endif %}
           </div>
           <div class="image-wrapper">
-            <img src="{% if space.pics.0 is not null %}{{ vich_uploader_asset(space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
+            <img src="{% if space.pics.0 is not null %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
           </div>
         </div>
       </div>
@@ -313,7 +313,7 @@
         Ajouter à ma sélection
       {% endif %}
     </a>
-    
+
   </div>
   {% if application.status == constant('AppBundle\\Entity\\Application::WAIT_STATUS') %}
     <div class="col-sm-3">

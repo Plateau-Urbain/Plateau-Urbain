@@ -62,7 +62,7 @@
                             </div>
                             <div class="image-wrapper">
                                 {% if space.pics.first %}
-                                    <img src="{{ vich_uploader_asset(space.pics.first, 'file')|imagine_filter('product_thumb') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
+                                    <img src="{{ vich_uploader_asset(space.pics.first, 'file') }}" alt="{{ space.pics.first.fileName }}" class="img-responsive">
                                 {% endif %}
                             </div>
                         </div>
