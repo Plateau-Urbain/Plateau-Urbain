@@ -138,6 +138,24 @@ class SpaceController extends Controller
             $em->persist($user);
             $em->flush();
 
+	    $message = (new \Swift_Message())
+            	    ->setSubject('Confirmation de candidature')
+                    ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                    ->setTo($application->getProjectHolder()->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'AppBundle:Email:candidacy_confirmation.html.twig',
+                            array(
+                                'space' => $space
+                            )
+                        ),
+                        'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
+
+
+
             if ($connect_after_application) {
                 $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
                 $this->get('security.token_storage')->setToken($token);
