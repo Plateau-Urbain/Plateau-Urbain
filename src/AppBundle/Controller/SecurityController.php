@@ -82,6 +82,39 @@ class SecurityController extends Controller
 
         if ($form->handleRequest($request)->isSubmitted()) {
 
+
+            $old_pwd = $this->getUser()->isProprio() ? $form->get('oldPassword')->getData() : '';
+            $new_pwd = $this->getUser()->isProprio() ? $form->get('plainPassword')->getData() : '';
+
+            if (!empty($old_pwd) || !empty($new_pwd)) {
+
+                $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
+
+                if($current_ppassword != $old_pwd_encoded) {
+                    $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
+                } else {
+                    $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
+                    $user->setPassword($new_pwd_encoded);
+                    $em->persist($user);
+                    $em->flush();
+
+                    if (!$form->isValid()) {
+                        return $this->render($template, array(
+                            'form' => $form->createView()
+                        ));
+                    }
+
+                    return $this->redirect($this->generateUrl('security_profil'));
+                }
+            } else {
+                $new_pwd = $form->get('plainPassword')->getData();
+
+                if (!empty($new_pwd)) {
+                    $user->setPassword($encoder->encodePassword($new_pwd, $user->getSalt()));
+                } else {
+                    $user->setPassword($current_ppassword);
+                }
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->getUser());
                 $em->flush();
@@ -93,6 +126,7 @@ class SecurityController extends Controller
                 }
 
                 return $this->redirect($this->generateUrl('security_profil'));
+            }
         }
 
         return $this->render($template, array(
