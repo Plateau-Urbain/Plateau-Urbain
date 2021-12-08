@@ -42,18 +42,29 @@
             <h2>Résorber la <br /> vacance, servir<br /> la création</h2>
         </div>
         <div class='col-sm-6'>
-            <p>Plateau urbain est une coopérative<br /> engagée pour mettre en relation et<br /> accompagner les propriétaires de<br /> locaux vacants et les porteurs de<br /> projets citoyens, économiques ou<br /> culturels.</p>
+            <p>Plateau urbain est une coopérative engagée pour mettre en relation et accompagner les propriétaires de locaux vacants et les porteurs de projets citoyens, économiques ou culturels.</p>
             <br />
             <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-fullcolor'>EN SAVOIR PLUS</a>
         </div>
     </div>
     <div class='col-sm-6'>
-        <div class='col-sm-6'>
-            <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' class="mt35"/>
+            <div class='col-sm-6'>
+            <h2>Comment s'inscrire <br /> sur la plateforme<br /> et candidater.</h2>
         </div>
+        <div class='col-sm-6'>
+        {# Insert vidéo tuto #}
+          <video controls width="300">
+             <source src='{{ asset('/bundles/app/images/BANZAI.mp4') }}' alt='tuto web' class="mt35" type="video/mp4">
+                       Sorry, your browser doesn't support embedded videos.
+           </video>
+        {# Fin video tuto #}
+            {# <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' class="mt35"/> #}
+        </div>
+        {#
         <div class='col-sm-6'>
             <p class="ml65 mt15 pu-size"><strong>4 000 000 m²</strong><br /> de bureaux vacants</p>
         </div>
+        #}
 
     </div>
 </div>
