@@ -58,7 +58,6 @@ class Builder implements ContainerAwareInterface
             $menu->addChild('Proposer', array('route' => 'proprietaire'));
             $menu->addChild('Comment ça marche', array('uri' => 'http://www.plateau-urbain.com/#!plate-forme/eqbhd', 'linkAttributes' => array('target' => '_blank')));
             $menu->addChild('Contact', array('uri' => '#footer'));
-            $menu->addChild('S’inscrire', array('uri' => '#inline_register_content',  'linkAttributes' => array('class' => 'inline cboxElement')));
             $menu->addChild("Se connecter", array('uri' => '#inline_content', 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));
         }
 
