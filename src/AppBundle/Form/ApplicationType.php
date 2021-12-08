@@ -114,8 +114,6 @@ class ApplicationType extends AbstractType
                           ->remove('lengthTypeOccupation')
                           ->remove('projectDescription')
                           ->remove('newsletter');
-        $projectHolderForm->get('userInfo')->remove('oldPassword');
-
 
         if ($user->getId()) {
             $projectHolderForm->get('userInfo')->remove('plainPassword');

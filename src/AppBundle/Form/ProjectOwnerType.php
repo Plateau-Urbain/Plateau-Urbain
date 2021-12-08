@@ -130,6 +130,9 @@ class ProjectOwnerType extends AbstractType
 
         $builder->get('companyInfo')->remove('companyFunction');
         $builder->remove('username');
+        if ($options['noPlainPassword']) {
+            $builder->get('userInfo')->remove('plainPassword');
+        }
     }
 
     /**
@@ -139,7 +142,8 @@ class ProjectOwnerType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
-            'validation_groups' => array('projectHolder', 'Default')
+            'validation_groups' => array('projectHolder', 'Default'),
+            'noPlainPassword' => false
         ));
     }
 

@@ -72,7 +72,8 @@ class SecurityController extends Controller
             $form = $this->createForm(SpaceOwnerType::class, $user);
             $template = 'AppBundle:Security:profilProprio.html.twig';
         } else {
-            $form = $this->createForm(ProjectOwnerType::class, $user);
+            $form = $this->createForm(ProjectOwnerType::class, $user, array('noPlainPassword' => true));
+
             $template = 'AppBundle:Security:profil.html.twig';
         }
         $session = $this->get('session');
