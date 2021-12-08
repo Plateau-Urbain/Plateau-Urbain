@@ -107,12 +107,14 @@ class SecurityController extends Controller
                     return $this->redirect($this->generateUrl('security_profil'));
                 }
             } else {
-                $new_pwd = $form->get('plainPassword')->getData();
+                if ($form->has('plainPassword')) {
+                    $new_pwd = $form->get('plainPassword')->getData();
 
-                if (!empty($new_pwd)) {
-                    $user->setPassword($encoder->encodePassword($new_pwd, $user->getSalt()));
-                } else {
-                    $user->setPassword($current_ppassword);
+                    if (!empty($new_pwd)) {
+                        $user->setPassword($encoder->encodePassword($new_pwd, $user->getSalt()));
+                    } else {
+                        $user->setPassword($current_ppassword);
+                    }
                 }
 
                 $em = $this->getDoctrine()->getManager();
