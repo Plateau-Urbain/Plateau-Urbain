@@ -72,12 +72,6 @@ class ProjectOwnerType extends AbstractType
                 'mapped' => false,
                 'error_bubbling' => false
             ))
-
-            ->add('newDocument', UserDocumentType::class, array(
-                'label' => false,
-                'mapped' => false,
-                'required' => false
-            ))
             ;
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {

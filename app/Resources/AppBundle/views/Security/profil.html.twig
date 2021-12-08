@@ -299,7 +299,7 @@
                     </label>
                     {% if app.user.hasDocuments('id') %}
                         {% set file =  app.user.getDocumentsType('id')[0] %}
-                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
                         <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
@@ -315,7 +315,7 @@
                     </label>
                     {% if app.user.hasDocuments('kbis') %}
                         {% set file =  app.user.getDocumentsType('kbis')[0] %}
-                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
                         <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                     {% endif %}
                   </div>
@@ -328,7 +328,7 @@
                     <div class="file-infos">
                       <span>{{doc.fileName | slice(14, 100)}}</span>
                       <div class="pull-right actions">
-                          <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                          <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
                           <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                       </div>
                     </div>
@@ -336,23 +336,6 @@
 
               </div>
 
-              <div class="add-file">
-                <h4>
-                  <i class="icon small icon-inline add-red"></i>
-                  Ajouter un fichier
-                </h4>
-
-                    <dl class="dl-horizontal info-block">
-                      <dt><i class="fa fa-info-circle"></i></dt>
-                      <dd>
-                        Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                        Chaque fichier ne doit pas excéder 10MO.
-                      </dd>
-                    </dl>
-
-                {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
-
-                </div>
               </div>
 
             </div>
