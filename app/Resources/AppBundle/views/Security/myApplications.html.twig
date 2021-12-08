@@ -68,7 +68,7 @@
                         {% endif %}
                       </div>
                       <div class="image-wrapper">
-                        <img src="{% if application.space.pics.0 is not null %}{{ vich_uploader_asset(application.space.pics.0, 'file') | imagine_filter('square')  }}{% endif %}" alt="" />
+                        <img src="{% if application.space.pics.0 is not null %}{{ vich_uploader_asset(application.space.pics.0, 'file') }}{% endif %}" alt="" />
                       </div>
                     </div>
                   </a>
