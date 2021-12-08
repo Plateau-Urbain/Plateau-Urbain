@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -36,17 +35,13 @@ class SpaceController extends Controller
         $user = $this->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
 
-        if ($user === null) {
-            if ($space->isClosed() || ! $space->isEnabled()) {
-                throw new AccessDeniedException();
-            }
-            return ['space' => $space];
-        }
+        if ( (!$space->isEnabled() && ($user === null || (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))))
+          || ($space->isClosed() && ($user === null || (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles())))) ) {
+              return $this->redirect($this->generateUrl('search_index'));
+          }
 
-        if (!$space->isEnabled() && (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))
-            || $space->isClosed() && (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))
-        ) {
-            throw new AccessDeniedException();
+        if ($user === null) {
+            return ['space' => $space];
         }
 
         $application = $em->getRepository(Application::class)->findOneBy(
@@ -89,11 +84,11 @@ class SpaceController extends Controller
         }
 
         if (! $space->isEnabled() || $space->isClosed()) {
-            throw new AccessDeniedException("L'espace est inacessible");
+            return $this->redirect($this->generateUrl('search_index'));
         }
 
         if ($user->getId() && ($space->isOwner($user) || $user->isProprio())) {
-            throw new AccessDeniedException("Vous n'avez pas le droit de candidater");
+            return $this->redirect($this->generateUrl('search_index'));
         }
 
         $application = $em->getRepository(Application::class)->findOneBy([
