@@ -10,8 +10,8 @@
             <li data-transition="fade" data-slotamount="7" class="slide1">
                 <img src="{{ asset('/bundles/app/images/ACCUEIL.png') }}" alt="Porteurs de projet" />
                 <div class="caption sfr slider-title pu-main-title" data-x="45" data-y="270" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Porteurs de projet' | upper }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="50" data-y="340" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">Vous êtes à la recherche d'espaces à prix abordable pour<br /> héberger votre projet ? La plate-forme Plateau Urbain<br /> vous aide à trouver l'endroit rêvé. Inscrivez-vous pour <br />découvrir les espaces.</div>
-                <a href="{% if app.user %}{{ path('security_profil') }}{% else %}#inline_register_content{% endif %}" class="caption sfb btn btn-fullcolor btn-lg {% if not app.user %}inline_register{% endif %}" data-x="50" data-y="470" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">S'INSCRIRE</a>
+                <div class="caption sfl slider-subtitle pu-sub-title" data-x="50" data-y="340" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">Vous êtes à la recherche d'espaces à prix abordable pour<br /> héberger votre projet ? La plate-forme Plateau Urbain<br /> vous aide à trouver l'endroit rêvé.</div>
+                <a href="{{ path('search_index') }}" class="caption sfb btn btn-fullcolor btn-lg" data-x="50" data-y="470" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">Découvrez les espaces disponibles</a>
             </li>
             <li data-transition="fade" data-slotamount="7" class="slide2">
                 <img src="{{ asset('/bundles/app/images/CREATION.png') }}" alt="Rechercher un espace" />
