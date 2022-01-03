@@ -135,7 +135,7 @@ $(function () {
   var idPresent = $('.required-files .idcard-file i')
   var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
   var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file')
-  var kbisText = 'Document justifiant la création de la structure'
+  var inputText = 'Document justifiant la création de la structure'
 
   var hasFileRequired = function (input) {
     switch (input) {
@@ -159,7 +159,7 @@ $(function () {
     } else {
       icon.removeClass('fa-check')
       icon.addClass('fa-times')
-      span.previousElementSibling.textContent = kbisText
+      span.previousElementSibling.textContent = inputText
     }
   }
 
