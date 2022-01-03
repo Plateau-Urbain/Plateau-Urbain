@@ -132,9 +132,10 @@ var toggleIdFiles = function(){
 
 $(function () {
   var kbisPresent = $('.required-files .kbis-file i')
-  var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
   var idPresent = $('.required-files .idcard-file i')
+  var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
   var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file')
+  var kbisText = 'Document justifiant la création de la structure'
 
   var hasFileRequired = function (input) {
     switch (input) {
@@ -146,12 +147,19 @@ $(function () {
         icon = kbisPresent
     }
 
+    var span = input.parentElement
+    while (span.previousElementSibling == null || span.previousElementSibling.tagName != "SPAN") {
+      span = span.parentElement
+    }
+
     if (input.files.length > 0) {
       icon.removeClass('fa-times')
       icon.addClass('fa-check')
+      span.previousElementSibling.textContent = input.files[0].name
     } else {
       icon.removeClass('fa-check')
       icon.addClass('fa-times')
+      span.previousElementSibling.textContent = kbisText
     }
   }
 
