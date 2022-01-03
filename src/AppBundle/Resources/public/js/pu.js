@@ -177,6 +177,15 @@ $(function () {
   })
   hasFileRequired(kbisFile)
   hasFileRequired(idFile)
+
+  idClearFile.addEventListener('click', function () {
+    idFile.files = new ClipboardEvent("").clipboardData.files || new DataTransfer().files
+    idFile.dispatchEvent(new Event('change'))
+  });
+  kbisClearFile.addEventListener('click', function () {
+    kbisFile.files = new ClipboardEvent("").clipboardData.files || new DataTransfer().files
+    kbisFile.dispatchEvent(new Event('change'))
+  });
 })
 
 $(function(){
