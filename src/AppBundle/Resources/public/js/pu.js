@@ -136,15 +136,19 @@ $(function () {
   var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
   var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file')
   var inputText = 'Document justifiant la création de la structure'
+  var kbisClearFile = document.getElementById('kbis_file_clear')
+  var idClearFile = document.getElementById('id_file_clear')
 
   var hasFileRequired = function (input) {
     switch (input) {
       case idFile:
         icon = idPresent
+        clear = idClearFile
         break
       case kbisFile:
       default:
         icon = kbisPresent
+        clear = kbisClearFile
     }
 
     var span = input.parentElement
@@ -156,10 +160,12 @@ $(function () {
       icon.removeClass('fa-times')
       icon.addClass('fa-check')
       span.previousElementSibling.textContent = input.files[0].name
+      clear.style.display = 'inline-block'
     } else {
       icon.removeClass('fa-check')
       icon.addClass('fa-times')
       span.previousElementSibling.textContent = inputText
+      clear.style.display = 'none'
     }
   }
 
