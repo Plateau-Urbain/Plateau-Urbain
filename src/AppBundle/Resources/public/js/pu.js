@@ -133,21 +133,36 @@ var toggleIdFiles = function(){
 $(function () {
   var kbisPresent = $('.required-files .kbis-file i')
   var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
+  var idPresent = $('.required-files .idcard-file i')
+  var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file')
 
   var hasFileRequired = function (input) {
+    switch (input) {
+      case idFile:
+        icon = idPresent
+        break
+      case kbisFile:
+      default:
+        icon = kbisPresent
+    }
+
     if (input.files.length > 0) {
-      kbisPresent.removeClass('fa-times')
-      kbisPresent.addClass('fa-check')
+      icon.removeClass('fa-times')
+      icon.addClass('fa-check')
     } else {
-      kbisPresent.removeClass('fa-check')
-      kbisPresent.addClass('fa-times')
+      icon.removeClass('fa-check')
+      icon.addClass('fa-times')
     }
   }
 
   kbisFile.addEventListener('change', function() {
     hasFileRequired(this)
   })
+  idFile.addEventListener('change', function() {
+    hasFileRequired(this)
+  })
   hasFileRequired(kbisFile)
+  hasFileRequired(idFile)
 })
 
 $(function(){
