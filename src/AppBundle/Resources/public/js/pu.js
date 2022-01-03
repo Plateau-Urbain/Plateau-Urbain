@@ -130,19 +130,24 @@ var toggleIdFiles = function(){
     }
 };
 
-var kbisPresent = $('.required-files .kbis-file i')
-var kbisFile = $('#appbundle_application_projectHolder_kbis_file')
-
 $(function () {
-  kbisFile.change(function () {
-    if (this.files.length > 0) {
+  var kbisPresent = $('.required-files .kbis-file i')
+  var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
+
+  var hasFileRequired = function (input) {
+    if (input.files.length > 0) {
       kbisPresent.removeClass('fa-times')
       kbisPresent.addClass('fa-check')
     } else {
       kbisPresent.removeClass('fa-check')
       kbisPresent.addClass('fa-times')
     }
+  }
+
+  kbisFile.addEventListener('change', function() {
+    hasFileRequired(this)
   })
+  hasFileRequired(kbisFile)
 })
 
 $(function(){
