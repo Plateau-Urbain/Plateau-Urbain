@@ -273,7 +273,7 @@
 
                   <div class="files">
                     {{ form_errors(form.projectHolder.idcard) }}
-                    <div class="idcard-file file-infos {% if not form.projectHolder.idcard.vars.valid %}has-error{% endif %}">
+                    <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
                       <span>Pièce d'identité</span>
                       <div class="pull-right actions">
                         <label class="custom-file-input btn btn-accepted">
@@ -290,7 +290,7 @@
                       {{ form_errors(form.projectHolder.idcard) }}
                     </div>
 
-                    <div class="kbis-file file-infos {% if not form.projectHolder.kbis.vars.valid %}has-error{% endif %}">
+                    <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
                       <span>Document justifiant la création de la structure</span>
                       <div class="pull-right actions">
                         <label class="custom-file-input btn btn-accepted">
