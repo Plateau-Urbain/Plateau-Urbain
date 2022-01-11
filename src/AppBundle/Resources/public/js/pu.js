@@ -139,11 +139,22 @@ $(function () {
   var kbisClearFile = document.getElementById('kbis_file_clear')
   var idClearFile = document.getElementById('id_file_clear')
 
+  hasKbisFileStored = (typeof hasKbisFileStored !== undefined) ? true : false
+  hasIdFileStored = (typeof hasIdFileStored !== undefined) ? true : false
+
   if (! kbisFile || ! idFile) {
     return false
   }
 
   var hasFileRequired = function (input) {
+    if (input == idFile && hasIdFileStored) {
+      return false
+    }
+
+    if (input == kbisFile && hasKbisFileStored) {
+      return false
+    }
+
     switch (input) {
       case idFile:
         icon = idPresent
@@ -174,9 +185,11 @@ $(function () {
   }
 
   kbisFile.addEventListener('change', function() {
+    hasKbisFileStored = false
     hasFileRequired(this)
   })
   idFile.addEventListener('change', function() {
+    hasIdFileStored = false
     hasFileRequired(this)
   })
   hasFileRequired(kbisFile)
