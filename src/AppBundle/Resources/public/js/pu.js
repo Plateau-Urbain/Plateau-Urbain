@@ -133,11 +133,15 @@ var toggleIdFiles = function(){
 $(function () {
   var kbisPresent = $('.required-files .kbis-file i')
   var idPresent = $('.required-files .idcard-file i')
-  var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file')
-  var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file')
+  var kbisFile = document.getElementById('appbundle_application_projectHolder_kbis_file') || document.getElementById('project_owner_kbis_file')
+  var idFile = document.getElementById('appbundle_application_projectHolder_idcard_file') || document.getElementById('project_owner_idcard_file')
   var inputText = 'Document justifiant la création de la structure'
   var kbisClearFile = document.getElementById('kbis_file_clear')
   var idClearFile = document.getElementById('id_file_clear')
+
+  if (! kbisFile || ! idFile) {
+    return false
+  }
 
   var hasFileRequired = function (input) {
     switch (input) {

@@ -297,6 +297,7 @@
                         {{ form_widget(form.idcard) }}
                         <i class="fa fa-upload"></i>
                     </label>
+                    <span id="id_file_clear" class="btn btn-delete"><i class="fa fa-remove"></i></span>
                     {% if app.user.hasDocuments('id') %}
                         {% set file =  app.user.getDocumentsType('id')[0] %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
@@ -313,6 +314,7 @@
                         {{ form_widget(form.kbis) }}
                         <i class="fa fa-upload"></i>
                     </label>
+                    <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove"></i></span>
                     {% if app.user.hasDocuments('kbis') %}
                         {% set file =  app.user.getDocumentsType('kbis')[0] %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
