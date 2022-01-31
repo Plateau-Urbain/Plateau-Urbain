@@ -11,6 +11,7 @@ use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Form\SpaceDocumentType;
 use AppBundle\Form\SpaceImageType;
+use AppBundle\Form\ParcelType;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -83,7 +84,10 @@ class SpaceAdmin extends AbstractAdmin
             ->end()
             ->with('Lots')
 
-            ->add('parcels', 'sonata_type_collection', array(
+            ->add('parcels', CollectionType::class, array(
+                'entry_type' => ParcelType::class,
+                'allow_delete' => false,
+                'allow_add' => false,
                 'by_reference' => false,
                 'label' => 'Lots',
             ), array(
