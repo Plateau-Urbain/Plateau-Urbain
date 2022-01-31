@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Form\SpaceDocumentType;
+use AppBundle\Form\SpaceImageType;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -93,9 +94,11 @@ class SpaceAdmin extends AbstractAdmin
             ->end()
             ->with('Photos')
 
-            ->add('pics', 'sonata_type_collection',
-                array('by_reference' => false,
-
+            ->add('pics', CollectionType::class, array(
+                    'entry_type' => SpaceImageType::class,
+                    'allow_delete' => true,
+                    'allow_add' => true,
+                    'by_reference' => false,
                     'label' => 'Photos',
                 ),
                 array(
