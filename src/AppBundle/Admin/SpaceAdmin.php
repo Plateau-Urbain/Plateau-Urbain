@@ -6,8 +6,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
+use AppBundle\Form\SpaceDocumentType;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -104,8 +106,11 @@ class SpaceAdmin extends AbstractAdmin
             ->end()
             ->with('Documents')
 
-            ->add('documents', 'sonata_type_collection',
-                array('by_reference' => false,
+            ->add('documents', CollectionType::class, array(
+                    'entry_type' => SpaceDocumentType::class,
+                    'by_reference' => false,
+                    'allow_delete' => true,
+                    'allow_add' => true,
                     'label' => false
                 ),
                 array(
