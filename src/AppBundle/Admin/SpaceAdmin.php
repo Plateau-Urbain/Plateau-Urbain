@@ -11,6 +11,7 @@ use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Form\SpaceDocumentType;
 use AppBundle\Form\SpaceImageType;
+use AppBundle\Form\SpaceAttributeAdminType;
 use AppBundle\Form\ParcelType;
 
 class SpaceAdmin extends AbstractAdmin
@@ -71,9 +72,11 @@ class SpaceAdmin extends AbstractAdmin
             ->end()
             ->with('Prestations et services')
 
-            ->add('tags', 'sonata_type_collection',
-                array('by_reference' => false,
-
+            ->add('tags', CollectionType::class, array(
+                    'entry_type' => SpaceAttributeAdminType::class,
+                    'allow_delete' => true,
+                    'allow_add' => true,
+                    'by_reference' => false,
                     'label' => 'Attributs',
                 ),
                 array(
