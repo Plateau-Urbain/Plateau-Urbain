@@ -89,8 +89,8 @@ class SpaceAdmin extends AbstractAdmin
 
             ->add('parcels', CollectionType::class, array(
                 'entry_type' => ParcelType::class,
-                'allow_delete' => false,
-                'allow_add' => false,
+                'allow_delete' => true,
+                'allow_add' => true,
                 'by_reference' => false,
                 'label' => 'Lots',
             ), array(
