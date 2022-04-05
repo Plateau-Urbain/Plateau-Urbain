@@ -147,12 +147,13 @@
 
         {% block prebody %} {% endblock %}
 
-		<div class="content">
-			<div class="container pb100">
-						{% block containerbkg %} {% endblock %}
-        		{% block body %}{% endblock %}
-			</div>
-		</div>
+        <div class="content">
+            <div class="container pb100">
+                {% block containerbkg %} {% endblock %}
+                {% block body %}{% endblock %}
+                {% block fos_user_content %}{% endblock %}
+            </div>
+        </div>
 
 		{% block actualities %}{% endblock %}
 
@@ -215,9 +216,6 @@
 			</div>
 			<div id="inline_register_content">
 				{{ render(controller("FOSUserBundle:Registration:register")) }}
-			</div>
-			<div id="inline_password_forgotten">
-				{{ render(controller("FOSUserBundle:Resetting:request")) }}
 			</div>
 		</div>
 
