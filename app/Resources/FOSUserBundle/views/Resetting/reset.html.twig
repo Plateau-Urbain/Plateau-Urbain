@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb_items %}
+    <li>Réinitialisation</li>
+{% endblock %}
+
+{% block fos_user_content %}
+{% include "@FOSUser/Resetting/reset_content.html.twig" %}
+{% endblock fos_user_content %}
