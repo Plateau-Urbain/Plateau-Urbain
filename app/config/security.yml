@@ -21,6 +21,12 @@ security:
         admin:
             logout_on_user_change: true
             pattern:      /admin/
+
+            # conf usurpation
+            context:      main_application
+            stateless:    false
+            switch_user:  true
+
             form_login:
                 provider:       fos_userbundle
                 login_path:     sonata_user_admin_security_login
@@ -36,6 +42,11 @@ security:
         # defaut login area for standard users
         main:
             pattern:            ^/
+
+            # conf usurpation
+            context:            main_application
+            stateless:          false
+            switch_user:        true
 
             form_login:
                 provider:       fos_userbundle
