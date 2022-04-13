@@ -111,11 +111,6 @@ sonata_user:
             controller: SonataAdminBundle:CRUD
             translation: SonataUserBundle
 
-sonata_doctrine_orm_admin:
-    templates:
-        form:
-            - AppBundle:Admin:my_form_admin_fields.html.twig
-
 sonata_block:
     default_contexts: [cms]
     blocks:
