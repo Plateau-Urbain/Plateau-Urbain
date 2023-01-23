@@ -54,7 +54,7 @@ security:
                 use_forward:    true
                 use_referer:    true
                 check_path:     fos_user_security_check
-                #failure_path:   null
+                failure_path:   security_login_error
                 default_target_path: homepage
 
             logout:

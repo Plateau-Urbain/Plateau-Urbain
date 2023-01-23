@@ -50,6 +50,11 @@ class SecurityController extends Controller
         if (!is_null($user)) {
             $logger->debug('loginAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
         }
+        else {
+            $logger->info('loginAction() utilisateur pas connecté');
+            // En vrai on peut arriver sur cette page directement sans que ce soit suite à un mauvais mot de passe. Mais cette page n'est pas visible publiquement.
+            $this->get('session')->getFlashBag()->set('error_msg', "Erreur dans le mot de passe ou le nom d'utilisateur");
+        }
         return array();
     }
 
