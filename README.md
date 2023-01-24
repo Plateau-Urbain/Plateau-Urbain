@@ -3,10 +3,9 @@ www
 
 A Symfony project created on June 2, 2015, 10:59 am.
 
-Installation of `symfony34` branch
-====================================
+Installation
+============
 
-    git checkout symfony34_24eme
     composer install
     # Si composer install échoue, supprimer le fichier composer.lock et recommencer
     # Si la base de données existe déjà, aller aux étapes d'assets
