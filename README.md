@@ -5,7 +5,9 @@ A Symfony project created on June 2, 2015, 10:59 am.
 
 Installation
 ============
-
+    À ce stade du code pour déployer il faut : 
+     - utiliser la version 2.2.9 de composer (problème avec sensio/distribution-bundle)
+     - ajouter composer require laminas/laminas-zendframework-bridge
     composer install
     # Si composer install échoue, supprimer le fichier composer.lock et recommencer
     # Si la base de données existe déjà, aller aux étapes d'assets
