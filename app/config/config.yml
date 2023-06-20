@@ -236,3 +236,12 @@ stof_doctrine_extensions:
             timestampable: true
             sortable: true
 
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            toolbar: standard
+
+sonata_admin:
+    templates:
+       layout: 'AppBundle:Admin:layout.html.twig'
