@@ -241,7 +241,3 @@ ivory_ck_editor:
     configs:
         default:
             toolbar: standard
-
-sonata_admin:
-    templates:
-       layout: 'AppBundle:Admin:layout.html.twig'
