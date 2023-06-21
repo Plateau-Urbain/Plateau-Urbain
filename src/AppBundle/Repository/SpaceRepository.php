@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Class SpaceRepository
@@ -90,6 +91,15 @@ class SpaceRepository extends EntityRepository
             $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
         } else {
             $qb->orderBy('s.name', 'ASC');
+        }
+
+
+        if (isset($params['pagination'])) {
+            $qb = $qb->getQuery();
+            $qb->setFirstResult(0)
+               ->setMaxResults($params['pagination']);
+
+            return new Paginator($qb, $fetchJoinCollection = true);
         }
 
         return $qb->getQuery()->getResult();
