@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Sonata\Doctrine\Bridge\Symfony\Bundle\SonataDoctrineBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
 
             //image
 

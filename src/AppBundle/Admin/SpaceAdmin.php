@@ -13,6 +13,7 @@ use AppBundle\Form\SpaceDocumentType;
 use AppBundle\Form\SpaceImageType;
 use AppBundle\Form\SpaceAttributeAdminType;
 use AppBundle\Form\ParcelType;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -64,7 +65,7 @@ class SpaceAdmin extends AbstractAdmin
             ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
             ->add('availability', null, array('label' => 'Période de disponibilité'))
             ->add('type', null, array('label' => "Type d'espace", 'required' => true))
-            ->add('description', null, array('label' => "Description de l'espace"))
+            ->add('description', CKEditorType::class, array('label' => "Description de l'espace"))
             ->add('activityDescription', null, array('label' => "Activités recherchées"))
             ->add('price', null, array('label' => 'Prix de la redevance au m² mensuel'))
             ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))

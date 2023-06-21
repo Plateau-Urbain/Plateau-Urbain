@@ -37,12 +37,15 @@ class SearchController extends Controller
 
         $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
+        $unavailableSpaces = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter(['orderBy' => 'created', 'sort' => 'DESC','unavailable' => true]);
+
         $departements = $this->buildDepartementsFromSpaces($all);
 
         return array(
-            'form'         => $form->createView(),
-            'latest'       => $all,
-            'departements' => $departements,
+            'form'              => $form->createView(),
+            'latest'            => $all,
+            'unavailableSpaces' => $unavailableSpaces,
+            'departements'      => $departements,
         );
     }
 

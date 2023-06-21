@@ -81,6 +81,11 @@ class SpaceRepository extends EntityRepository
             $qb->andWhere('p.surface <= :maximumSurface')->setParameter('maximumSurface',$params['maximumSurface'] );
         }
 
+        if (!empty($params['unavailable'])) {
+            $qb->andWhere('s.enabled = :enabled')->setParameter('enabled', true);
+            $qb->andWhere('s.closed = :closed OR s.limitAvailability < :limitAvailability')->setParameter('closed', true)->setParameter('limitAvailability', new \DateTime('today'));
+        }
+
         if (!empty($params['orderBy'])) {
             $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
         } else {

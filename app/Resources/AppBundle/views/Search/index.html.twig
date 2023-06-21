@@ -21,21 +21,43 @@
 
         <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces disponibles</h2>
 
-        {% for space in latest %}
-            <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
-                <a href="{{ path('space_show', {'id' : space.id}) }}" target="_blank">
-                    <div class="image">
-                        <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
-                    </div>
-                    <div class="price_contener">
-                        <span class="top">à partir de</span><br />
-                        <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span>
-                    </div>
-                    <div class="foot">
-                        <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
-                        <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
-                    </div>
-                </a>
+        {% if latest|length %}
+            {% for space in latest %}
+                <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
+                    <a href="{{ path('space_show', {'id' : space.id}) }}" target="_blank">
+                        <div class="image">
+                            <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
+                        </div>
+                        <div class="price_contener">
+                            <span class="top">à partir de</span><br />
+                            <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span>
+                        </div>
+                        <div class="foot">
+                            <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
+                            <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <em>Il n'y a aucun espace disponible actuellement</em>
+        {% endif %}
+
+        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces occupés</h2>
+
+        {% for space in unavailableSpaces %}
+            <div class="item col-sm-4 space_item space_item_unavailable">
+                <div class="image">
+                    <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
+                </div>
+                <div class="price_contener">
+                    <span class="top">à partir de</span><br />
+                    <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span>
+                </div>
+                <div class="foot">
+                    <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
+                    <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
+                </div>
             </div>
         {% endfor %}
 
