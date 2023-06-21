@@ -5,7 +5,7 @@ Prérequis
 ===
 
 * Lesscss (`npm install -g less`)
-* composer (`apt install composer` ou [getcomposer.org](https://getcomposer.org))
+* composer >= 2.2.9 (`apt install composer` ou [getcomposer.org](https://getcomposer.org))
 
 Installation
 ============
@@ -24,7 +24,6 @@ php app/console assets:install
 make # compilation less
 php app/console assetic:dump
 ```
-
 
 Création d'un user admin
 ========================
