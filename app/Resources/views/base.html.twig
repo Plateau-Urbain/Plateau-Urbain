@@ -115,7 +115,8 @@
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
 								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
-								{{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+                            <!-- Ajout de Label dans KPN -->
+								{{ knp_menu_render('AppBundle:Builder:mainMenu', {'allow_safe_labels': true}) | raw  }}
 							</nav>
 							<!-- END MAIN MENU -->
 

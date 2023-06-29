@@ -57,7 +57,24 @@
                 <div class="foot">
                     <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
                     <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
+ <!-- AJOUT OLIVIER -->
+                    <p class="pu-value">
+                        {% if space.owner %}
+                            {% if space.owner.website %}
+                                <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
+                            {% else %}
+                                {{ space.owner.company }}
+                            {% endif %}
+                        {% else %}
+                            Sans bailleur
+                        {% endif %}
+                    <dd>
+                        De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup><br/>
+                    </dd>
+                    </p>
+<!-- FIN AJOUT OLIVIER -->
                 </div>
+
             </div>
         {% endfor %}
 
