@@ -3,75 +3,38 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block prebody %}
-<!-- BEGIN HOME SLIDER SECTION -->
-<div class="revslider-container">
-    <div class="revslider" >
-        <ul>
-            <li data-transition="fade" data-slotamount="7" class="slide1">
-                <img src="{{ asset('/bundles/app/images/ACCUEIL.png') }}" alt="Porteurs de projet" />
-                <div class="caption sfr slider-title pu-main-title" data-x="45" data-y="270" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Porteurs de projet' | upper }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="50" data-y="340" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">Vous êtes à la recherche d'espaces à prix<br /> abordable pour héberger votre projet ?<br/> La plate-forme Plateau Urbain vous aide<br /> à trouver l'endroit rêvé.</div>
-                <a href="{{ path('search_index') }}" class="caption sfb btn btn-fullcolor btn-lg" data-x="50" data-y="470" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">Découvrez les espaces disponibles</a>
-            </li>
-            <li data-transition="fade" data-slotamount="7" class="slide2">
-                <img src="{{ asset('/bundles/app/images/CREATION.png') }}" alt="Rechercher un espace" />
-                <div class="caption sfr slider-title pu-main-title" data-x="90" data-y="210" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Soutenez<br/> la création' | upper | raw }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="95" data-y="340" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme de mise à disposition de<br /> locaux est un service gratuit pour les porteurs <br />de projets économiques, sociaux et culturels.<br /> Vos dons permettent de continuer à la<br /> développer, au service de la création sous <br />toutes ses formes.</div>
-                <a href="http://www.plateau-urbain.com/#!dons/y36xk" target="_blank" class="caption sfb btn btn-fullcolor btn-lg" data-x="95" data-y="525" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">FAIRE UN DON À PLATEAU URBAIN</a>
-            </li>
-            <li data-transition="fade" data-slotamount="7" class="slide3">
-                <img src="{{ asset('/bundles/app/images/PROPRIO.png') }}" alt="Propriétaires et gérants" />
-                <div class="caption sfr slider-title pu-main-title" data-x="120" data-y="220" data-speed="800" data-start="1300" data-easing="easeOutBack" data-endspeed="700" data-endeasing="easeInSine">{{ 'Propriétaires <br />et gérants' | upper | raw }}</div>
-                <div class="caption sfl slider-subtitle pu-sub-title" data-x="120" data-y="360" data-speed="800" data-start="1500" data-easing="easeOutBack" data-endspeed="500" data-endeasing="easeInSine">La plate-forme Plateau Urbain vous offre la <br />possibilité de valoriser votre patrimoine <br />inutilisé, en permettant à des projets venus<br /> de tout le Grand Paris de naître ou de se<br /> développer.</div>
-                <a href="{% if app.user and app.user.isProprio %}{{ path('space_manager_add') }}{% else %}{{ path('proprietaire') }}{% endif %}" class="caption sfb btn btn-fullcolor btn-lg" data-x="120" data-y="520" data-speed="800" data-easing="easeOutBack" data-start="1600" data-endspeed="500" data-endeasing="easeInSine">PROPOSER UN ESPACE</a>
-            </li>
-        </ul>
-    </div>
 
-    <div class="bottom"></div>
-</div>
-<!-- END HOME SLIDER SECTION -->
 {% endblock %}
 
 {% block body %}
 
-<div class='row pu-home-content'>
-
-    <div class='col-sm-6'>
-        <div class='col-sm-6'>
-            <h2>Résorber la <br /> vacance, servir<br /> la création</h2>
-        </div>
-        <div class='col-sm-6'>
-            <p>Plateau urbain est une coopérative engagée pour mettre en relation et accompagner les propriétaires de locaux vacants et les porteurs de projets citoyens, économiques ou culturels.</p>
-            <br />
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-fullcolor'>EN SAVOIR PLUS</a>
-        </div>
-    </div>
-    <div class='col-sm-6'>
-            <div class='col-sm-6'>
-            <h2>Comment s'inscrire <br /> sur la plateforme<br /> et candidater.</h2>
-        </div>
-        <div class='col-sm-6'>
-        {# Insert vidéo tuto #}
-          <video controls width="300">
-             <source src='/public/images/BANZAI.mp4' alt='tuto web' class="mt35" type="video/mp4">
-                       Sorry, your browser doesn't support embedded videos.
-           </video>
-        {# Fin video tuto #}
-            {# <img src='{{ asset('/bundles/app/images/ile-de-france.png') }}' alt='Ile de France' class="mt35"/> #}
-        </div>
-        {#
-        <div class='col-sm-6'>
-            <p class="ml65 mt15 pu-size"><strong>4 000 000 m²</strong><br /> de bureaux vacants</p>
-        </div>
-        #}
-
+<section class='row pu-home-content'>
+<div class='col-sm-12'>
+<div class="image-home"></div>
+    <h1 class="center">Vous cherchez un espace de travail abordable dans un lieu vivant et créatif</h1>
+    <h2>Consultez nos appels à candidatures en cours et inscrivez-vous pour être informé·es dès leurs lancements !</h2>
+<div class="center">
+    <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Je m'inscris</span></a>
+</div>
+</div>
+</section>
+<div class="separateur">
+    <div class='col-sm-12 center btn-center'>
+        <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'>Vous êtes propriétaire d'un batîment ?</a>
+        <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'>Vous avez des questions ? Consultez la FAQ</a>
     </div>
 </div>
+<section class='row pu-home-content'>
+<div class='col-sm-12 center '>
+<div class="candidature">
+        <h1>Les derniers appels à candidatures</h1>
+</div>
+</div>
+</section>
 
 {% endblock %}
 
-{% block actualities %}
+{# {% block actualities %}
   <div class="row pu-actualities white-top">
     <div class="top"></div>
     {{ render(controller('AppBundle:Actuality:show')) }}
@@ -84,4 +47,4 @@
             {% include '@App/Default/_partners.html.twig' %}
         </div>
     </div>
-{% endblock %}
+{% endblock %} #}
