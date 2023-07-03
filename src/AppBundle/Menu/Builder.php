@@ -20,9 +20,13 @@ class Builder implements ContainerAwareInterface
 
         $menu = $factory->createItem('root', array('childrenAttributes'=> array('class'=> 'nav navbar-nav',)));
 
-        $Menu = $menu->addChild('La Coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown menu-icon'), 'extras' => array(
+        // $Menu = $menu->addChild('La Coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown menu-icon'), 'extras' => array(
+        //    'safe_label' => true
+        // ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')));
+        $Menu = $menu->addChild('La Coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
-        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')));
+        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La Coopérative')->setExtra('safe_label',true);
+	//
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
         $Menu->addChild('Qui sommes-nous', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Devenir sociétaire", array('uri' => 'https://staging.plateau-urbain.com/devenir-societaire/', 'linkAttributes' => array('target' => '_top')));
@@ -31,7 +35,7 @@ class Builder implements ContainerAwareInterface
 ####
         $Menu = $menu->addChild('Notre offre', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
-        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')));
+       ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>Notre offre')->setExtra('safe_label',true);
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
         $Menu->addChild("Notre accompagnement", array('uri' => 'https://staging.plateau-urbain.com/notre-offre/', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Conseil et études", array('uri' => 'https://staging.plateau-urbain.com/conseil-et-etudes/', 'linkAttributes' => array('target' => '_blank')));
@@ -41,14 +45,14 @@ class Builder implements ContainerAwareInterface
         ####
         $Menu = $menu->addChild('Les tiers-lieux', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
-        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown', 'class'=>'subarrow')));
+        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>Les tiers-lieux')->setExtra('safe_label',true);
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
         $Menu->addChild("Nos projets", array('uri' => 'https://staging.plateau-urbain.com/nos-projets/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Actualités des lieux", array('uri' => 'https://staging.plateau-urbain.com/actualites-des-lieux/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Occupant·es", array('uri' => 'https://staging.plateau-urbain.com/occupant-es/', 'linkAttributes' => array('target' => '_top')));
         $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
             'class' => 'local',
-        )))->setLabel('<span class="sub-arrow">Trouver un local</span>')->setExtra('safe_label',true);
+        )))->setLabel('<span class="">Trouver un local</span>')->setExtra('safe_label',true);
         ####
         if ($isLogged) {
 
@@ -85,7 +89,7 @@ class Builder implements ContainerAwareInterface
             /*$menu->addChild('Trouver un local', array('route' => 'search_index', 'attributes' => array('class'=>'local')));*/
             $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
                 'class' => 'local',
-            )))->setLabel('<span class="sub-arrow">Trouver un local</span>')->setExtra('safe_label',true);
+            )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
             /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
             $menu->addChild("Se connecter", array('uri' => '#inline_content', 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));
         }

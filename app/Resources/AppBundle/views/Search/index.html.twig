@@ -28,12 +28,23 @@
             </div>
         </div>
     </section>
-    <div class="separateur">
-        <div class='col-sm-12 center btn-center'>
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'>Vous êtes propriétaire d'un batîment ?</a>
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'>Vous avez des questions ? Consultez la FAQ</a>
+                </div>
         </div>
     </div>
+</div>
+
+    <div class="separateur">
+        <div class='col-sm-12 center btn-center'>
+            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'><h3>Vous êtes propriétaire d'un batîment ?</h3></a>
+            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'><h3>Vous avez des questions ? Consultez la FAQ</h3></a>
+        </div>
+    </div>
+
+<div class="content white">
+        <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+
     <section class='row pu-home-content'>
         <div class='col-sm-12 center '>
             <div class="candidature">
@@ -42,79 +53,103 @@
         </div>
     </section>
 
+
+
 <!-- BEGIN PROPERTY LISTING -->
-    <div class="row last-space" id="js-results">
+    <div class="row last-space custom-gutter" id="js-results">
 
 
-        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces disponibles</h2>
+{#        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces disponibles</h2>#}
 
         {% if latest|length %}
             {% for space in latest %}
-                <div class="item col-sm-4 space_item"><!-- Set width to 4 columns for grid view mode only -->
+                <div class="item col-sm-4">
+                     <div class="space_item">
+                    <!-- Set width to 4 columns for grid view mode only -->
                     <a href="{{ path('space_show', {'id' : space.id}) }}" target="_blank">
                         <div class="image">
                             <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
                         </div>
-                        <div class="price_contener">
+{#                        <div class="price_contener">
                             <span class="top">à partir de</span><br />
                             <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span>
-                        </div>
+                        </div>#}
                         <div class="foot">
-                            <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
-                            <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
+                            <p class="ville">{{ space.city }} ({{ space.depCode }})</p>
+                            <h3>{{ space.name }}</h3>
+                            <ul>
+                            <li>{{ space.type }}</li>
+                            <!-- AJOUT OLIVIER -->
+                            <li>
+                                À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                            </li>
+                            <li>
+                                <strong>{{ space.parcels | length }}</strong> espaces de {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+                            </li>
+                        </ul>
+                        <div class="calendar"></div>
+                            <div class="apply-date">
+                            <p class="apply-date-p">Date limite de candidature</p>
+                            <p class="apply-date-b">
+                                {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+                            </p>
+                            </div>
+                            <!-- FIN AJOUT OLIVIER -->
                         </div>
                     </a>
+                </div>
                 </div>
             {% endfor %}
         {% else %}
             <em>Il n'y a aucun espace disponible actuellement</em>
         {% endif %}
 
-        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces occupés</h2>
+{#        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces occupés</h2>#}
 
         {% for space in unavailableSpaces %}
-            <div class="item col-sm-4 space_item space_item_unavailable">
+            <div class="item col-sm-4">
+                <div class="space_item space_item_unavailable">
                 <div class="image">
                     <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
                 </div>
-                <div class="price_contener">
+                {# <div class="price_contener">
                     <span class="top">à partir de</span><br />
                     <span class="price">{{ space.price }}€</span><span> /M<sup>2</sup>/MOIS</span>
-                </div>
-                <div class="foot">
-                    <p>{{ space.type }} à {{ space.city }} ({{ space.depCode }})</p>
-                    <h3>{{ space.name }} {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}</h3>
- <!-- AJOUT OLIVIER -->
-                    <p class="pu-value">
-                        {% if space.owner %}
-                            {% if space.owner.website %}
-                                <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
-                            {% else %}
-                                {{ space.owner.company }}
-                            {% endif %}
-                        {% else %}
-                            Sans bailleur
-                        {% endif %}
-                    <dd>
-                        De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup><br/>
-                    </dd>
-                    </p>
+                </div> #}
+                <div class="foot-unavailable">
+                    <p class="ville">{{ space.city }} ({{ space.depCode }})</p>
+                    <h3>{{ space.name }}</h3>
+                    <ul>
+                    <li>{{ space.type }}</li>
+                    <!-- AJOUT OLIVIER -->
+                    <li>
+                        À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                    </li>
+                    <li>
+                        <strong>{{ space.parcels | length }}</strong> espaces de {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+                    </li>
+                </ul>
+                <div class="calendar"></div>
+                            <div class="apply-date">
+                            <p class="apply-date-p">Date limite de candidature</p>
+                            <p class="apply-date-b">Terminé</p>
+                            </div>
 <!-- FIN AJOUT OLIVIER -->
                 </div>
-
+            </div>
             </div>
         {% endfor %}
 
     </div>
-    <section class='row pu-home-content'>
-        <div class='col-sm-12'>
-            <div class="col-sm-8 inscription">
+   <section class='row pu-home-content inscription'>
+       
+            <div class="col-sm-8 ">
                 <h2 class="bat">Inscrivez-vous pour recevoir en avant-première les nouveaux appels à projets</h2>
             </div>
             <div class="col-sm-4 btn-inscription">
                 <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Je m'inscris</span></a>
             </div>
-        </div>
+       
     </section>
 {% endblock %}
 
