@@ -80,7 +80,7 @@
             <div class="col-sm-12">
               <div class="space-description">
                 <p>
-                  {{ space.description }} ...
+                  {{ space.description | raw }} ...
                   <a href="{{ path('space_show', { 'id': space.id }) }}">Voir l'annonce</a>
                 </p>
               </div>

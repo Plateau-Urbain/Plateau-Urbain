@@ -11,7 +11,7 @@ Aperçu de la propriété :
 
 <ul>
     <li>Nom : {{ space.name }}</li>
-    <li>Description : {{ space.description }}</li>
+    <li>Description : {{ space.description | raw }}</li>
     <li>Description de l'emplacement : {{ space.locationDescription }}</li>
     <li>Surface : {{ space.surface }}</li>
     <li>Prix : {{ space.price }}</li>
