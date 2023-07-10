@@ -8,10 +8,7 @@
 /bin/
 /composer.phar
 /vendor/
-/web/bundles/ivoryckeditor
-/web/bundles/sonataadmin
-/web/bundles/sonatacore
-/web/bundles/sonatauser
+/web/bundles/
 /web/uploads/
 /web/js/
 /web/css/
