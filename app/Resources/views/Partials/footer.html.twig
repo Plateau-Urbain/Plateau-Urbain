@@ -5,39 +5,64 @@
   <div id="footer-top" class="container">
     <div class="row">
 
-      <div class="block col-sm-4">
+      <div class="block col-sm-6">
         <div class="row">
 
-          <div class="block col-sm-12">
-            <h3>Trouver un espace ou des porteurs de projets</h3>
+          <div class="block col-sm-10 logo">
+              <a href="https://www.plateau-urbain.com" target="_blank" class="logo-footer"><img src="{{ asset('/public/images/logo-footer.png') }}" alt="Plateau Urbain" height="58"/></a>
             <p>
-              Plateau Urbain est une coopérative dédiée à la mise en relation et
-              à l'accompagnement des propriétaires de locaux vacants et des
-              porteurs de projet.
+             Coopérative d’urbanisme temporaire et transitoire, Plateau Urbain propose des espaces de travail abordables, dans des lieux vivants et créatifs, et mène des activités de conseil et de prospective.
             </p>
+
+            <p>
+            ©️ Plateau Urbain 2023 · mentions légales
+            </p>
+
           </div>
 
-          <div class="block col-sm-12">
-            <h3>Plateau Urbain est soutenu par</h3>
-            <ul class="list-inline">
-              <li>
-                <a href="https://www.fondation-macif.org/" target="_blank"><img src="{{ asset('/public/images/new-macif.png') }}" alt="" /></a>
-              </li>
-              <li>
-                <a href="https://paris.fr" target="_blank"><img src="{{ asset('/public/images/Paris_blanc_web_120.png') }}" alt="" /></a>
-              </li>
-            </ul>
-          </div>
+         
 
         </div>
       </div>
 
 
+     
+
       <div class="block col-sm-4">
+
+        <div class="row">
+
+          <div class="block col-sm-8">
+
+            <ul class="list-unstyled infos">
+                <li>01 79 75 66 57</li>
+                <li>lu-ven 9h-13h / 14h-19h</li>
+                <li>contact@plateau-urbain.com</li>
+                </ul>
+             <ul class="list-unstyled infos">
+                <li>SCIC SA à Directoire</li
+                <li>16 bld Saint-Germain CS 7014</li>
+                <li>75237 PARIS Cedex 05</li>
+                </ul>
+          </div>
+
+          <div class="block col-sm-8">
+        
+            <ul class="list-inline">
+              <li><a href="https://www.facebook.com/plateau.urbain/" target="_blank" class="fb"></a></li>
+              <li><a href="https://twitter.com/plateauurbain" target="_blank" class="tw"></a></li>
+              <li><a href="https://www.linkedin.com/company/plateau-urbain" target="_blank" class="in"></a></li>
+              <li><a href="https://www.instagram.com/plateau.urbain/" target="_blank" class="insta"></a></li>
+            </ul>
+            <p><strong>Suivez la vie de la coopérative sur les réseaux</strong></p>
+          </div>
+        </div>
+      </div>
+
+       <div class="block col-sm-2">
         <div class="row">
 
           <div class="block col-sm-12">
-            <h3>Développer vos projets</h3>
             <ul class="footer-links">
             <li><a href="https://drive.google.com/file/d/0B8cjA2J8XWEDSkZ5N1FfSW5FWHc/view" target="_blank">Comment ça marche ?</a></li>
               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -50,53 +75,21 @@
                 <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
               {% endif %}
             </ul>
-            <hr />
+          
           </div>
 
 
-          <div class="block col-sm-12">
-            <h3>Plateau urbain</h3>
-            <ul class="footer-links">
-              <li><a href="http://www.plateau-urbain.com/" target="_blank">Nous connaître</a></li>
-              <li><a href="http://www.plateau-urbain.com/#!formulaire/c1v9l" target="_blank">Contact</a></li>
-            </ul>
-          </div>
+         
         </div>
       </div>
 
-      <div class="block col-sm-4">
 
-        <div class="row">
-
-          <div class="block col-sm-12">
-            <a href="https://www.plateau-urbain.com" target="_blank"><img src="{{ asset('/public/images/logo_footer.png') }}" alt="Plateau Urbain" /></a>
-            <ul class="list-unstyled infos">
-               <li><i class="fa fa-home"></i>16 bld Saint-Germain</li>
-               <ul>
-                    <li class="nopuce">CS 70514</li>
-                    <li class="nopuce">75237 Paris Cedex 05</li>
-               </ul>
-              <li><i class="fa fa-envelope"></i>contact@plateau-urbain.com</li>
-              <li><i class="fa fa-phone"></i>01 79 75 66 57</li>
-            </ul>
-          </div>
-
-          <div class="block col-sm-12">
-            <h3>Suivez-nous</h3>
-            <ul class="list-inline">
-              <li><a href="https://www.facebook.com/plateau.urbain/" target="_blank"><img src="{{ asset('/bundles/app/images/facebook_red.png') }}" /></a></li>
-              <li><a href="https://twitter.com/plateauurbain" target="_blank"><img src="{{ asset('/bundles/app/images/twitter_red.png') }}" /></a></li>
-              <li><a href="https://www.linkedin.com/company/plateau-urbain" target="_blank"><img src="{{ asset('/bundles/app/images/linkedin_red.png') }}" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
 
   <!-- BEGIN COPYRIGHT -->
-  <div id="copyright">
+{#   <div id="copyright">
     <div class="top"></div>
     <div class="container">
       <div class="row">
@@ -110,7 +103,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> #}
   <!-- END COPYRIGHT -->
 
 </footer>

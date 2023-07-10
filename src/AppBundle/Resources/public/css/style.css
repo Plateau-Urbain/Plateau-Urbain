@@ -55,13 +55,13 @@ h1 {
   color: #000;
 }
 h2 {
-  
+
   font-size: 30px;
   line-height:32px;
   color: #000;
 }
 h3 {
- 
+
   font-size: 21px;
   text-transform: none;
 }
@@ -6472,7 +6472,7 @@ a.tp-caption.btn-lg {
 ================================================== */
 #footer {
   background-color: #FFF;
- 
+
   z-index: 5000;
   position: relative;
 }
@@ -9001,7 +9001,7 @@ div.dark_square #pp_full_res .pp_inline {
 padding-bottom: 20px;
 padding-left: 20px;
     border-bottom:1px solid #000;
-  
+
 }
 .space_item ul li {
   font-size: 19px;
@@ -9017,7 +9017,7 @@ padding-left: 20px;
 
 .space_item .foot {
   padding: 20px 16px 25px 16px;
- 
+
  /* height: 100px;*/
   background:#F5F4F2;
   border-bottom-left-radius: 1rem;

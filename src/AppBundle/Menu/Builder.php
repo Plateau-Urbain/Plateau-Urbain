@@ -65,9 +65,9 @@ class Builder implements ContainerAwareInterface
 /*            if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
                 $menu->addChild('Trouver un local', array('route' => 'search_index'));
             }*/
-            $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
+            $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown pipe'), 'extras' => array(  
                 'safe_label' => true
-            ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')));
+            ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown','class' => 'connectMenured')));
             $loggedMenu->setChildrenAttribute('class', 'dropdown-menu');
 
             $loggedMenu->addChild('Mon profil', array('route' => 'security_profil', 'attributes' => array('class'=>'')));
@@ -91,7 +91,7 @@ class Builder implements ContainerAwareInterface
                 'class' => 'local',
             )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
             /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
-            $menu->addChild("Se connecter", array('uri' => '#inline_content', 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));
+            $menu->addChild("Se connecter", array('uri' => '#inline_content', 'attributes' => array('class'=>'pipe'), 'extras' => array('safe_label' => true), 'linkAttributes' => array('class' => 'inline cboxElement connectMenu')));
         }
 
        return $menu;
