@@ -163,7 +163,8 @@ var Cozy;
 
                 if (w <= 975 && !$tis.mobMenuFlag) {
 
-                    $('body').prepend('<nav class="nav-mobile"><i class="fa fa-times"></i><h2><i class="fa fa-bars"></i>' + $tis.mobileMenuTitle + '</h2><ul></ul></nav>');
+                  /* $('body').prepend('<nav class="nav-mobile"><i class="fa fa-times"></i><h2><i class="fa fa-bars"></i>' + $tis.mobileMenuTitle + '</h2><ul></ul></nav>');*/
+                     $('body').prepend('<nav class="nav-mobile"><a href="" class="nav-logo-mobile"><img src="/public/images/logo.png" alt="Plateau Urbain" /></a><i class="fa fa-times"></i><ul>fdg</ul></nav>');
 
                     $('.nav-mobile > ul').html($('.nav').html());
 
@@ -189,7 +190,7 @@ var Cozy;
 
                         $(document).bind(etype, function (e) {
                             if (!$(e.target).hasClass('nav-mobile') && !$(e.target).parents('.nav-mobile').length) {
-                                $wrapper.removeClass('open');
+                              $wrapper.removeClass('open');
                                 $navMobile.removeClass('open');
                                 $(document).unbind(etype);
                                 $.waypoints('enable');
