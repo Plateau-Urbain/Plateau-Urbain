@@ -10456,17 +10456,6 @@ margin-left: -5px;
   margin-top: -65px; /*same height as header*/ visibility: hidden;
 }
 
-.sticky {
-  position:sticky;
-  width: 25%;
-  height: 25vh; // experiment with this value, try changing to 110vh
-  min-height: 200px;
-  overflow: auto;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 5%;
-}
-
 .titre-page{
   text-align: left;
   padding-top: 110px;
