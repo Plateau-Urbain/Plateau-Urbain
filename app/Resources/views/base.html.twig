@@ -118,7 +118,8 @@
 
 							<!-- BEGIN MAIN MENU -->
 							<nav class="navbar">
-								<button id="nav-mobile-btn"><i class="fa fa-bars"></i></button>
+								<ul class="mobile"><li class="mobile-local"><a href=""><span>Trouver un local</span></a></li></ul>
+								<button id="nav-mobile-btn"></button>
                             <!-- Ajout de Label dans KPN -->
 								{{ knp_menu_render('AppBundle:Builder:mainMenu', {'allow_safe_labels': true}) | raw  }}
 							</nav>
@@ -131,28 +132,11 @@
 		</header>
 		<!-- END HEADER -->
 
-		<!-- BEGIN PAGE TITLE/BREADCRUMB -->
-        {% block breadcrumb %}
-            <div class="breadcrumb-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <ul class="breadcrumb">
-                                <li><a href="{{ path('homepage') }}">Accueil</a></li>
-                                {% block breadcrumb_items %}{% endblock %}
-                            </ul>
-                            <p class="clearfix"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endblock %}
-        <!-- END PAGE TITLE/BREADCRUMB -->
-
+	
         {% block prebody %} {% endblock %}
 
-        <div class="content">
-            <div class="container pb100">
+        <div class="content white">
+            <div class="container ">
                 {% block containerbkg %} {% endblock %}
                 {% block body %}{% endblock %}
                 {% block fos_user_content %}{% endblock %}

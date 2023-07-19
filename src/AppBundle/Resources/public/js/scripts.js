@@ -154,6 +154,7 @@ var Cozy;
 
                 var $tis = this,
                     $wrapper = $('#wrapper'),
+                    $btnMobile = $('#nav-mobile-btn'),
                     $navMobile,
                     etype = $.browser.mobile ? 'touchstart' : 'click';
 
@@ -161,10 +162,10 @@ var Cozy;
                     w = $(window).innerWidth();
                 }
 
-                if (w <= 975 && !$tis.mobMenuFlag) {
+                if (w <= 992 && !$tis.mobMenuFlag) {
 
                   /* $('body').prepend('<nav class="nav-mobile"><i class="fa fa-times"></i><h2><i class="fa fa-bars"></i>' + $tis.mobileMenuTitle + '</h2><ul></ul></nav>');*/
-                     $('body').prepend('<nav class="nav-mobile"><a href="" class="nav-logo-mobile"><img src="/public/images/logo.png" alt="Plateau Urbain" /></a><i class="fa fa-times"></i><ul>fdg</ul></nav>');
+                     $('body').prepend('<nav class="nav-mobile"><ul></ul></nav>');
 
                     $('.nav-mobile > ul').html($('.nav').html());
 
@@ -181,32 +182,37 @@ var Cozy;
                         e.preventDefault();
 
                         setTimeout(function () {
-                            $wrapper.addClass('open');
+                            /*$wrapper.addClass('open');*/
+                            $btnMobile.toggleClass('open');
                             $navMobile.addClass('open');
-                            $navMobile.getNiceScroll().show();
+                            $navMobile.slideToggle();
                         }, 25);
 
                         $.waypoints('disable');
 
                         $(document).bind(etype, function (e) {
                             if (!$(e.target).hasClass('nav-mobile') && !$(e.target).parents('.nav-mobile').length) {
-                              $wrapper.removeClass('open');
-                                $navMobile.removeClass('open');
+                              /*$wrapper.removeClass('open');*/
+                        
+                            $navMobile.addClass('open');
+                            $navMobile.slideToggle();
                                 $(document).unbind(etype);
                                 $.waypoints('enable');
                             }
                         });
 
-                        $('>i', $navMobile).bind(etype, function () {
-                            $navMobile.getNiceScroll().hide();
-                            $wrapper.removeClass('open');
+                      $('>i', $navMobile).bind(etype, function () {
+                            /*$navMobile.slideToggle().hide();*/
+                           /* $wrapper.removeClass('open');*/
+                         
                             $navMobile.removeClass('open');
+                            $navMobile.slideToggle().hide();
                             $(document).unbind(etype);
                             $.waypoints('enable');
                         });
                     });
 
-                    $navMobile.niceScroll({
+                 /*   $navMobile.niceScroll({
                         autohidemode: true,
                         cursorcolor: "#c2c2c2",
                         cursoropacitymax: "0.7",
@@ -216,7 +222,7 @@ var Cozy;
                         zindex: "1"
                     });
 
-                    $navMobile.getNiceScroll().hide();
+                    $navMobile.getNiceScroll().hide();*/
 
                     $tis.mobMenuFlag = true;
                 }
@@ -931,6 +937,8 @@ var Cozy;
                 }, { offset: -320 });
             },
 
+         
+
             resizeSidebar: function (w) {
 
                 if (w !== null) {
@@ -1178,3 +1186,17 @@ var Cozy;
         Cozy.init();
     });
     }(jQuery));
+
+$(document).ready(function() {
+
+    $("a[href*=#]").click(function(event){     
+        event.preventDefault();
+        $('html,body').animate({scrollTop:$(this.hash).offset().top}, 500);
+    });
+   
+   
+
+});
+
+
+
