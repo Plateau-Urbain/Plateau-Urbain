@@ -27,6 +27,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'AppBundle:Form:custom_front_fields.html.twig'
+        - '@IvoryCKEditor/Form/ckeditor_widget.html.twig'
 #    form:
 #        resources:
 #            - 'AppBundle:Form:custom_front_fields.html.twig'
@@ -238,6 +239,7 @@ stof_doctrine_extensions:
 
 ivory_ck_editor:
     default_config: default
+    input_sync: true
     configs:
         default:
             toolbar: standard
