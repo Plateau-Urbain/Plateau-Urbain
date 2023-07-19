@@ -164,68 +164,33 @@ var Cozy;
 
                 if (w <= 992 && !$tis.mobMenuFlag) {
 
-                  /* $('body').prepend('<nav class="nav-mobile"><i class="fa fa-times"></i><h2><i class="fa fa-bars"></i>' + $tis.mobileMenuTitle + '</h2><ul></ul></nav>');*/
-                     $('body').prepend('<nav class="nav-mobile"><ul></ul></nav>');
-
+                    $('body').prepend('<nav class="nav-mobile"><ul></ul></nav>');
                     $('.nav-mobile > ul').html($('.nav').html());
-
                     $('.nav-mobile b').remove();
-
                     $('.nav-mobile ul.dropdown-menu').removeClass().addClass("dropdown-mobile");
 
-                    //$('.nav-mobile').css({'min-height': ($('#wrapper').height() + 270) + 'px' });
-
                     $navMobile = $(".nav-mobile");
+                    $navMobile.slideToggle().hide();
 
                     $("#nav-mobile-btn").bind(etype, function (e) {
                         e.stopPropagation();
                         e.preventDefault();
-
-                        setTimeout(function () {
-                            /*$wrapper.addClass('open');*/
-                            $btnMobile.toggleClass('open');
+                        if (!$btnMobile.hasClass('open')) {
+                            $btnMobile.addClass('open');
                             $navMobile.addClass('open');
                             $navMobile.slideToggle();
-                        }, 25);
-
-                        $.waypoints('disable');
-
-                        $(document).bind(etype, function (e) {
-                            if (!$(e.target).hasClass('nav-mobile') && !$(e.target).parents('.nav-mobile').length) {
-                              /*$wrapper.removeClass('open');*/
-                        
-                            $navMobile.addClass('open');
-                            $navMobile.slideToggle();
-                                $(document).unbind(etype);
-                                $.waypoints('enable');
-                            }
-                        });
-
-                      $('>i', $navMobile).bind(etype, function () {
-                            /*$navMobile.slideToggle().hide();*/
-                           /* $wrapper.removeClass('open');*/
-                         
+                            $.waypoints('disable')
+                        }else{
+                            $btnMobile.removeClass('open');
                             $navMobile.removeClass('open');
                             $navMobile.slideToggle().hide();
-                            $(document).unbind(etype);
                             $.waypoints('enable');
-                        });
+                        }
                     });
-
-                 /*   $navMobile.niceScroll({
-                        autohidemode: true,
-                        cursorcolor: "#c2c2c2",
-                        cursoropacitymax: "0.7",
-                        cursorwidth: 10,
-                        cursorborder: "0px solid #000",
-                        horizrailenabled: false,
-                        zindex: "1"
-                    });
-
-                    $navMobile.getNiceScroll().hide();*/
-
-                    $tis.mobMenuFlag = true;
                 }
+
+                $tis.mobMenuFlag = true;
+
             },
 
             getLatestTweets: function () {
@@ -936,8 +901,6 @@ var Cozy;
                     }
                 }, { offset: -320 });
             },
-
-         
 
             resizeSidebar: function (w) {
 
