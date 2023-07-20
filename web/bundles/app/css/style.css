@@ -2423,7 +2423,7 @@ right: 0;
 top: 0;
 height: 30px;
 width: 30px;
-background-image: url('/bundles/app/images/Groupe-742.png');
+background-image: url('/bundles/app/images/Groupe-700.png');
 background-repeat: no-repeat;
 background-position: center;
 }
@@ -2442,19 +2442,19 @@ right: 0;
 top: 0;
 height: 30px;
 width: 30px;
-background-image: url('/bundles/app/images/Groupe-700.png');
+background-image: url('/bundles/app/images/Groupe-742.png');
 background-repeat: no-repeat;
 background-position: center;
 }
 
 #nav-mobile-btn:hover {
-  background-image: url('/bundles/app/images/Groupe-742-red.png');
+  background-image: url('/bundles/app/images/Groupe-700-red.png');
 background-repeat: no-repeat;
 background-position: center;
 }
 
 #nav-mobile-btn.open:hover {
-  background-image: url('/bundles/app/images/Groupe-700-red.png');
+  background-image: url('/bundles/app/images/Groupe-742-red.png');
 background-repeat: no-repeat;
 background-position: center;
 }
@@ -10525,9 +10525,13 @@ height: 150px;
 justify-content: center;
 }
 .lien-pdf{
-
-
   padding-left:20px;
+}
+@media (max-width: 992px){
+.sticky {
+  position: relative !important;
+top: unset !important;
+}
 }
 /* The sticky class is added to the navbar with JS when it reaches its scroll position */
 .sticky {
