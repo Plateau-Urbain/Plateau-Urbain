@@ -1,24 +1,54 @@
-<div class="row">
-    <!-- BEGIN MAIN CONTENT -->
-    <div class="main col-sm-8 col-sm-offset-2">
-        <h1 class="section-title">Editer mon espace</h1>
-        <p class="center">
+<div class="bkg-img"></div>
+     
+    <div class="row top-profil">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class=" col-sm-12">
+            <div class="titre-page">
+        <h1>
+          {{ 'Ajouter un espace' }}
+        </h1>
+         <div class="img-aac"><img src="{{ asset('/public/images/groupe_ajouter_espace.png') }}" alt="Plateau Urbain" /></div>
+         </div>
+            </div>
+            <div class="col-sm-8">
+            <p class="left">
             Pour ajouter une offre sur la plate-forme Plateau urbain, il vous suffit de remplir le formulaire ci-dessus.<br /> A tout moment, vous pouvez enregistrer le formulaire et reprendre son édition ultérieurement. Une fois complet, procédez à sa validation : un administrateur du site interviendra pour s’assurer qu’elle est complète et procéder à sa mise en ligne.
-        </p>
+            </p>     
     </div>
 </div>
 
+            <div class="row">
+        <div class=" col-xs-1 bkg ">
+            <ul>
+                <li>
+                    <a class="indicator active" href="http://localhost:8080/profil/#one"></a>
+                </li>
+                <li>
+                    <a class="indicator" href="http://localhost:8080/profil/#two"></a>
+                </li>
+                <li>
+                    <a class="indicator" href="http://localhost:8080/profil/#three"></a>
+                </li>
+                <li>
+                    <a class="indicator" href="http://localhost:8080/profil/#four"></a>
+                </li>
+                <li>
+                    <a class="indicator" href="http://localhost:8080/profil/#five"></a>
+                </li>
+            </ul>
+        </div>     
+
+
 {{ form_start(form) }}
-<div class="row">
-    <div class="main col-sm-8 col-sm-offset-2">
-        <h2 class="section-title">
-          <i class="icon place-red-bold"></i>
-          Votre espace
-        </h2>
+        <div class="main col-xs-10">
+            <div id="one" class="section">
+                <span class="section-title form-one"></span>
+                <div  class="form-contener bleu">
+                    <h3>Votre espace</h3>
 
         {{ form_errors(form) }}
 
-        <div class="form-contener">
+     
             <div class="row">
                 <div class="col-sm-12 form-group">
                     {{ form_row(form.name) }}
@@ -66,82 +96,107 @@
 
             <div style="clear: both"></div>
         </div>
+    </div>
 
-        <h2 class="section-title">
-          <i class="icon cog-red-bold2"></i>
-          Prestations et services
-        </h2>
-
-        <div class="form-contener">
+        <div id="two" class="section">
+                <span class="section-title form-two"></span>
+                <div class="form-contener bleu">
+                    <h3>Prestations et services</h3>
             <div class="row">
                 <div class="col-sm-12">
                     {% include '@App/SpaceManagement/Partials/_space_attributes_form.html.twig' with { 'form': form.tags } %}
                 </div>
             </div>
         </div>
+        </div>
 
-        <h2 class="section-title">
-          <i class="icon square-red-bold2"></i>
-          Répartition des surfaces
-        </h2>
-
-        <div class="form-contener">
+        <div id="three" class="section">
+                <span class="section-title form-three"></span>
+                <div class="form-contener bleu">
+                    <h3>Répartition des surfaces</h3>
           <div class="row">
             <div class="col-sm-12">
               {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
             </div>
           </div>
         </div>
+    </div>
 
-        <h2 class="section-title">
-          <i class="icon pin-red-bold"></i>
-          Pièces à joindre à la candidature
-        </h2>
-
-        <div class="form-contener">
-          <div class="row">
-            <div class="col-sm-12">
-              {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' with { 'documents': form.vars.data.documents,'form': form.newDocument } %}
-            </div>
-
+        <div id="four" class="section">
+                <span class="section-title form-four"></span>
+                <div class="form-contener bleu">
+                    <h3>
+          Photos du lieu 
+        </h3>
+        <div class="row">
             <div class="col-sm-12">
               {% include '@App/SpaceManagement/Partials/_space_images_form.html.twig' with { 'images': form.vars.data.pics,'form': form.pics } %}
             </div>
           </div>
         </div>
+        </div>
 
-        <p>&nbsp;</p>
-        <hr class="brown" />
-        <p>&nbsp;</p>
+        <div id="five" class="section">
+                <span class="section-title form-five"></span>
+                <div class="form-contener bleu">
+        <h3>
+          Pièce(s) demandée(s)
+        </h3>
+            <div class="row">
+                <div class="col-sm-12">
+                  {% include '@App/SpaceManagement/Partials/_space_documents_form.html.twig' with { 'documents': form.vars.data.documents,'form': form.newDocument } %}
+                </div>
+            </div>
+        </div>
+        </div>
 
-        <div class="row">
-            <div class="col-sm-4">
+
+
+        <div class="row btns">
+            <div class="col-sm-12">
                 {{ form_widget(
                     form.preview, {
                         'attr': {
-                            'class': 'btn btn-secondary form-control',
+                            'class': 'btn btn-line-s',
                         }
                     })
                 }}
-            </div>
-            <div class="col-sm-4">
-                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control save">
-            </div>
-            <div class="col-sm-4">
+        
+                <input type="submit" value="Enregistrer" class="btn btn-line-s">
+        
+            
                 {{ form_widget(
                     form.publish, {
                         'attr': {
-                            'class': 'btn btn-fullcolor form-control js-publish',
+                            'class': 'btn btn-line-s js-publish',
                             'onclick': "return confirm(\'Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?');"
                         }
                     })
                 }}
             </div>
-        </div>
+        </div> <!--end row btns-->
 
-        <p>&nbsp;</p>
-        <p>&nbsp;</p>
-    </div>
-</div>
+  
 <div style="display: none;">{{ form_rest(form) }}</div>
 {{ form_end(form) }}
+
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="content plusinfos margin">
+    <div class="container">
+        <div class="row pu-home-content info">
+            <div class="col-xs-12 col-md-8 col-lg-8">
+                <h4>Vous souhaitez obtenir plus d'informations</h4>
+            </div>
+            <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
+                <a href='http://www.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

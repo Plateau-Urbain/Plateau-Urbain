@@ -1,7 +1,6 @@
-<h4>
-  <i class="icon icon-inline small square-brown"></i>
+<h5>
   Lots
-</h4>
+</h5>
 
 <table class="lots table">
   <thead>
@@ -27,15 +26,15 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="4" class="center">Pas de lots</td>
+            <td colspan="4" class="center sans-lot">Pas de lots</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
-<h4 class="black">
-  {{ form.vars.label }}
-</h4>
+<h5>
+ <div class="ajouter"><span class="circle"><i class="fa fa-plus"></i></span></div> {{ form.vars.label }}
+</h5>
 
 {{ form_errors(form) }}
 
@@ -48,7 +47,7 @@
       <th class="col-sm-3">{{ form_label(form.disponibility) }}</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="choice">
     <tr>
       <td>
         {{ form_widget(form.floor) }}
@@ -69,7 +68,7 @@
 </table>
 
 <div class="col-sm-4 col-sm-offset-4">
-  <button type="submit" class="btn  btn-fullcolor form-control">
-      Ajouter
+  <button type="submit" class="btn  btn-block form-control">
+      <span>Ajouter</span>
   </button>
 </div>

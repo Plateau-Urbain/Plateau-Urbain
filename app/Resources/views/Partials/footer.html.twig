@@ -5,22 +5,20 @@
   <div id="footer-top" class="container">
     <div class="row">
 
-      <div class="block col-sm-6">
+      <div class="block col-xs-12 col-md-6 col-lg-6">
         <div class="row">
 
-          <div class="block col-sm-10 logo">
-              <a href="https://www.plateau-urbain.com" target="_blank" class="logo-footer"><img src="{{ asset('/public/images/logo-footer.png') }}" alt="Plateau Urbain" height="58"/></a>
-            <p>
+          <div class=" col-sm-10 logo">
+              <a href="https://www.plateau-urbain.com" target="_blank" class="logo-footer"><img src="{{ asset('/public/images/logo-footer.png') }}" alt="Plateau Urbain"/></a>
+            <p class="pu">
              Coopérative d’urbanisme temporaire et transitoire, Plateau Urbain propose des espaces de travail abordables, dans des lieux vivants et créatifs, et mène des activités de conseil et de prospective.
             </p>
 
-            <p>
-            ©️ Plateau Urbain 2023 · mentions légales
+            <p class="small">
+            <a href="http://localhost:8080/cgu">©️ Plateau Urbain 2023 · mentions légales</a>
             </p>
 
           </div>
-
-         
 
         </div>
       </div>
@@ -28,52 +26,50 @@
 
      
 
-      <div class="block col-sm-4">
+      <div class="block col-xs-12 col-md-4 col-lg-4 ">
 
-        <div class="row">
+        <div class="row row-contact">
 
-          <div class="block col-sm-8">
-
+          <div class=" col-xs-12 col-md-12 order-xs-2">
+         {#    <h6>Nous contacter</h6> #}
             <ul class="list-unstyled infos">
                 <li>01 79 75 66 57</li>
                 <li>lu-ven 9h-13h / 14h-19h</li>
-                <li>contact@plateau-urbain.com</li>
+                <li><a href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a></li>
                 </ul>
              <ul class="list-unstyled infos">
-                <li>SCIC SA à Directoire</li
+                <li>SCIC SA à Directoire</li>
                 <li>16 bld Saint-Germain CS 7014</li>
                 <li>75237 PARIS Cedex 05</li>
                 </ul>
           </div>
 
-          <div class="block col-sm-8">
-        
+          <div class=" col-xs-12 col-md-8 reseaux ">
+         <h5>Suivez la vie de la coopérative sur les réseaux</h5>
             <ul class="list-inline">
               <li><a href="https://www.facebook.com/plateau.urbain/" target="_blank" class="fb"></a></li>
               <li><a href="https://twitter.com/plateauurbain" target="_blank" class="tw"></a></li>
-              <li><a href="https://www.linkedin.com/company/plateau-urbain" target="_blank" class="in"></a></li>
+              <li><a href="https://www.linkedin.com/company/plateau-urbain" target="_blank" class="linkedin"></a></li>
               <li><a href="https://www.instagram.com/plateau.urbain/" target="_blank" class="insta"></a></li>
             </ul>
-            <p><strong>Suivez la vie de la coopérative sur les réseaux</strong></p>
+           
           </div>
         </div>
       </div>
 
-       <div class="block col-sm-2">
-        <div class="row">
+       <div class="block col-xs-12 col-md-2 col-lg-2">
+        <div class="row row-menu">
 
-          <div class="block col-sm-12">
+          <div class=" col-sm-12">
             <ul class="footer-links">
-            <li><a href="https://drive.google.com/file/d/0B8cjA2J8XWEDSkZ5N1FfSW5FWHc/view" target="_blank">Comment ça marche ?</a></li>
-              {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li><a href="{{path('search_index')}}">Rechercher un espace</a></li>
-                <li><a href="{{path('proprietaire')}}">Proposer un espace</a></li>
-                <li><a href="{{path('security_profil')}}">Mon compte</a></li>
-              {% else %}
-                <li><a href="#inline_content" class="inline cboxElement">Rechercher un espace</a></li>
-                <li><a href="{{ path('proprietaire') }}">Proposer un espace</a></li>
-                <li><a href="#inline_content" class="inline cboxElement">Mon compte</a></li>
-              {% endif %}
+            <li><a href="https://plateau-urbain.com/toutes-les-actualites/" >Actualités</a></li
+                <li><a href="https://plateau-urbain.com/notre-offre/">Notre offre</a></li>
+                <li><a href="https://plateau-urbain.com/nos-projets/">Les tiers-lieux</a></li>
+                <li><a href="https://plateau-urbain.com/nos-projets/">On parle de nous</a></li>
+                <li><a href="https://www.welcometothejungle.com/fr/companies/plateau-urbain" target="_blank">On recrute</a></li>
+                <li><a href="https://plateau-urbain.com/ressources/" class="inline cboxElement">Ressources</a></li>
+                 <li><a href="https://plateau-urbain.com/contactez-nous/" >Contact</a></li>
+        
             </ul>
           
           </div>

@@ -1,9 +1,7 @@
-<h4>
+<h6>
     Enregistrez jusqu'à 20 photos
-</h4>
-<p>
-    Pour une visualisation optimale, les fichiers doivent être au format .gif ou .jpeg ou .png. <br />La taille recommandée est de 765 x 570 pixels.
-</p>
+</h6>
+
 
 <div class="row photo-list">
     {% for image in images %}
@@ -35,13 +33,11 @@
   {% endfor %}
 </div>
 
-<h4 class="black">
-  Ajouter une image
-</h4>
+
 
 {{ form_errors(form) }}
 
-<p>&nbsp;</p>
+
 
 <div class="row">
   <div class="col-sm-7">
@@ -49,8 +45,12 @@
   </div>
 
   <div class="col-sm-5">
-    <button value="" type="submit" name="button" class="btn btn-block btn-fullcolor form-control">Ajouter</button>
+    <button value="" type="submit" name="button" class="btn btn-block form-control">Ajouter</button>
   </div>
-</div>
 
-<p>&nbsp;</p>
+
+<div class="col-sm-7">
+    Pour une visualisation optimale, les fichiers doivent être au format .gif ou .jpeg ou .png. La taille recommandée est de 765 x 570 pixels.
+
+</div>
+</div>

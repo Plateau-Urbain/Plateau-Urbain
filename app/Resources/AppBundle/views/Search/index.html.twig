@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb %}{% endblock %}
+{# {% block breadcrumb %}{% endblock %} #}
 
 {% block prebody %}
 
@@ -17,12 +17,16 @@
 
 
 {% block body %}
+    </div>
+</div>
 
+<div class="content beige">
+        <div class="container">
     <section class='row pu-home-content accroche'>
-        <div class='col-xs-12 col-md-offset-1 col-md-10 col-md-offset-1'>
+        <div class='col-sm-12 '>
             <div class="image-home"></div>
             <h2 class="center">Vous cherchez un espace de travail abordable dans un lieu vivant et créatif</h2>
-            <h4>Consultez nos appels à candidatures en cours et inscrivez-vous pour être informé·es dès leurs lancements !</h4>
+            <h4>Consultez nos appels à candidatures en cours et inscrivez-vous pour être informé·es <span class="nowrap">dès leurs lancements !</span></h4>
             <div class="center">
                 <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Je m'inscris</span></a>
             </div>
@@ -33,21 +37,27 @@
     </div>
 </div>
 
-    <div class="separateur">
-        <div class='col-sm-12 center btn-center'>
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'><h6>Vous êtes propriétaire d'un batîment ?</h6></a>
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-ancre'><h6>Vous avez des questions ? Consultez la FAQ</h6></a>
+<div class="content separateur">
+        <div class="container">
+                    <div class="row pu-home-content">
+                       
+        <div class='col-sm-12 left'>
+            <a href='http://localhost:8080/recherche/#proprio' target="_blank" class='btn btn-ancre'><h6>Vous êtes propriétaire d'un batîment ?</h6></a>
+            <a href='http://localhost:8080/recherche/#faq' target="_blank" class='btn btn-ancre'><h6>Vous avez des questions ? Consultez la FAQ</h6></a>
+        </div>
+</section>
         </div>
     </div>
-
+</div>
+<div class="aac"></div>
 <div class="content white">
         <div class="container">
                     <div class="row pu-home-content">
                         <div class="col-sm-12 center">
         <div class="candidature">
                 <h2>Les derniers appels à candidatures</h2>
-                        </div>
         </div>
+    </div>
 
 
 
@@ -60,10 +70,10 @@
 
         {% if latest|length %}
             {% for space in latest %}
-                <div class="item col-sm-4">
+                <div class="item col-xs-12 col-md-6 col-lg-4">
                      <div class="space_item">
                     <!-- Set width to 4 columns for grid view mode only -->
-                    <a href="{{ path('space_show', {'id' : space.id}) }}" target="_blank">
+                    <a href="{{ path('space_show', {'id' : space.id}) }}" >
                         <div class="image">
                             <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
                         </div>
@@ -98,13 +108,13 @@
                 </div>
             {% endfor %}
         {% else %}
-            <em>Il n'y a aucun espace disponible actuellement</em>
+            <h6>Il n'y a aucun espace disponible actuellement</h6>
         {% endif %}
 
 {#        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces occupés</h2>#}
 
         {% for space in unavailableSpaces %}
-            <div class="item col-sm-4">
+            <div class="item col-xs-12 col-md-6 col-lg-4">
                 <div class="space_item_unavailable">
                 <div class="image">
                     <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
@@ -132,55 +142,59 @@
                             <p class="apply-date-b">Terminé</p>
                             </div>
 <!-- FIN AJOUT OLIVIER -->
-                            <div id="overlay"></div>
+                           
                 </div>
-
+                 <div id="overlay"></div>
             </div>
             </div>
         {% endfor %}
 
     </div>
+
    <section class='row pu-home-content inscription '>
-       
-            <div class="col-sm-8 ">
-                <h4 class="bat">Inscrivez-vous pour recevoir en avant-première les nouveaux appels à projets</h4>
+       <div class="col-xs-12 col-md-2 col-lg-1 ">
+                <div class="bat"></div>
             </div>
-            <div class="col-sm-4 btn-inscription">
+            <div class="col-xs-12 col-md-6 col-lg-7 ">
+                <h4>Inscrivez-vous pour recevoir en avant-première les nouveaux appels à projets</h4>
+            </div>
+            <div class="col-xs-12 col-md-4 col-lg-4 btn-right">
                 <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Je m'inscris</span></a>
             </div>
        
     </section>
+
     </div>
 </div>
 </div>
 </div>
 
 
-
+    <div id="proprio"></div>
 <div class="content orange">
         <div class="container">
                     <div class="row pu-home-content espace ">
                        
-        <div class="col-sm-12 col-md-3 col-lg-3">        
-            <div class="img-espace"><img src="{{ asset('/public/images/Groupe-1050.png') }}" alt="Plateau Urbain" height="368"/></div>
+        <div class="col-sm-12 col-md-6 col-lg-4">        
+            <div class="img-espace"><img src="{{ asset('/public/images/Groupe-1050.png') }}" alt="Plateau Urbain" /></div>
         </div>
-        <div class="col-sm-12 col-md-9 col-lg-6">
+        <div class="col-sm-12 col-md-6 col-lg-5">
         <h2>Proposer un espace</h2>
-            <h5>Vous êtes PROPRIÉTAIRES ou GÉRANT.E.S et souhaitez redonner une utilité à un espace vacant ? Vous pouvez proposer la gestion de votre bâtiment à Plateau Urbain ou bien diffuser sur notre plateforme votre appel à candidatures auprès de 12 000 inscrit.e.s et ainsi valoriser votre patrimoine inutilisé tout en ayant un impact positif sur le plan sociétal !</h5>
+            <h5>Vous êtes PROPRIÉTAIRES ou GÉRANT•E•S et souhaitez redonner une utilité à un espace vacant ? Vous pouvez proposer la gestion de votre bâtiment à Plateau Urbain ou bien diffuser sur notre plateforme votre appel à candidatures auprès de 12 000 inscrit.e.s et ainsi valoriser votre patrimoine inutilisé tout en ayant un impact positif sur le plan sociétal&nbsp;!</h5>
         </div>
-        <div class="col-sm-12 col-md-offset-3 col-md-9 col-lg-offset-0 col-lg-3 espace btn-group">
-            <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Découvrir notre offre</span></a>
+        <div class="col-sm-12 col-md-offset-6 col-md-6 col-lg-offset-0 col-lg-3 espace btn-espace">
+            <a href='http://www.plateau-urbain.com/notre-offre/' class='btn btn-line-2'><span>Découvrir notre offre</span></a>
         </div>
                     </div>
         </div>
 </div>
-
+<div id="faq"></div>
 <div class="content beige">
     <div class="container">
         <div class="row pu-home-content faq">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-                <h3 class="titre">Candidater, comment ça marche ?</h3>
-
+            <h3 class="titre">Candidater, comment ça marche ?</h3>
+            <div class="col-xs-12 col-md-6 col-lg-6">
+                
                 <div class="un"></div>
                 <div class="faq-txt">
                     <h2>1 .</h2>
@@ -193,7 +207,8 @@
                     <h5 class="expliq">Je candidate en précisant mon projet, mes besoins</h5> 
                         <p>Après avoir candidaté, je reçois un mail de confirmation de dépôt de candidature (vérifier les spams)</p>
                 </div>
-
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6">
                 <div class="trois"></div>
                 <div class="faq-txt"><h2>3 .</h2>
                     <h5 class="expliq">Je prends rendez-vous pour une visite de site</p>
@@ -204,12 +219,10 @@
                         <h2>4 .</h2>
                         <h5 class="expliq">À l'issue de la visite, je confirme ma candidature et précise les lots visés</h5>
                 </div>
-
+            </div>
             </div>
 
-            <div class="col-sm-12 col-md-12 col-lg-6">
-
-                </div>
+        
          </div>
     </div>
 </div>
@@ -218,11 +231,11 @@
     <div class="container">
         <div class="row pu-home-content info">
 
-            <div class="col-sm-8 ">
+            <div class="col-xs-12 col-md-8 col-lg-8">
                 <h4>Vous souhaitez obtenir plus d'informations</h4>
             </div>
-            <div class="col-sm-4 btn-inscription">
-                <a href='http://www.plateau-urbain.com' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
+            <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
+                <a href='http://www.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
             </div>
 
     </div>

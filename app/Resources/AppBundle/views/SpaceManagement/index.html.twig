@@ -1,27 +1,30 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb_items %}
-    <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
+{#  {% block breadcrumb_items %}
+   <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
     <li>
-        <span>Liste de mes espaces</span>
+        <span>Mes espaces</span>
     </li>
-{% endblock %}
+{% endblock %} #}
 
 {% block body %}
 
-<div class="row">
-  <div class="main col-sm-12">
-    <h1 class="section-title left-title">Liste de mes espaces</h1>
-    <hr />
-  </div>
+ <div class="row top-profil">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class=" col-sm-12 ">
+
+            <div class="titre-page">
+        <h1>Mes espaces</h1>
+            </div>
+</div>
 </div>
 
 <div id="listing-header" class="clearfix">
   <div class="row">
     <div class="col-sm-6 results-numbers">
-      <h4>
+      <h6>
         {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'espaces' } %}
-      </h4>
+      </h6>
     </div>
 
     <div class="col-sm-6">
