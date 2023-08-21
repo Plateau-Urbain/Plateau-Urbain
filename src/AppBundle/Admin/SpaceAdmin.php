@@ -66,7 +66,7 @@ class SpaceAdmin extends AbstractAdmin
             ->add('availability', null, array('label' => 'Période de disponibilité'))
             ->add('type', null, array('label' => "Type d'espace", 'required' => true))
             ->add('description', CKEditorType::class, array('label' => "Description de l'espace"))
-            ->add('activityDescription', null, array('label' => "Activités recherchées"))
+            ->add('activityDescription', CKEditorType::class, array('label' => "Activités recherchées"))
             ->add('price', null, array('label' => 'Prix de la redevance au m² mensuel'))
             ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
 
