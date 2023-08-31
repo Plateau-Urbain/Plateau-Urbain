@@ -10,16 +10,20 @@
 
 {% block body %}
 
-    <div class="row">
-        <div class="main col-sm-12">
-            <h1 class="section-title left-title">Liste des appels à candidature</h1>
-            <hr />
+<div class="row top-profil">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class=" col-sm-12 ">
+
+            <div class="titre-page">
+        <h1>Liste des appels à candidature</h1>
+          
         </div>
     </div>
+</div>
 
     <div id="listing-header" class="clearfix">
         <div class="row">
-            <div class="col-sm-6 results-numbers">
+            <div class="col-sm-12 results-numbers">
                 <h4>
                     {% include 'AppBundle:SpaceManagement/Partials:results_numbers.html.twig' with {'pagination' : pagination, 'label' : 'appels à candidature' } %}
                 </h4>
@@ -42,4 +46,6 @@
 
         {{ knp_pagination_render(pagination) }}
     {% endif %}
+    
 {% endblock %}
+

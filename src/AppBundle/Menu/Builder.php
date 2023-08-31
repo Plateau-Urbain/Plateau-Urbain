@@ -23,9 +23,9 @@ class Builder implements ContainerAwareInterface
         // $Menu = $menu->addChild('La Coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown menu-icon'), 'extras' => array(
         //    'safe_label' => true
         // ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')));
-        $Menu = $menu->addChild('La Coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
+        $Menu = $menu->addChild('La coopérative', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
-        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La Coopérative')->setExtra('safe_label',true);
+        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La coopérative')->setExtra('safe_label',true);
 	//
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
         $Menu->addChild('Qui sommes-nous', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_blank')));

@@ -74,11 +74,11 @@ class CompanyType extends AbstractType
                 'label' => "Adresse de la structure",
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('addressSuite', TextType::class, [
+           /* ->add('addressSuite', TextType::class, [
                 'label' => "Adresse (suite)",
                 'required' => false,
                 'attr' => ['class' => 'form-control']
-            ])
+            ])*/
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
                 'attr' => ['class' => 'form-control']

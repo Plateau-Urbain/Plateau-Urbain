@@ -1,6 +1,24 @@
-<h4>
-  Pièce(s) demandée(s)
-</h4>
+
+
+
+
+<h6 >
+  Nom de la pièce à joindre à la candidature
+</h6>
+
+<p>&nbsp;</p>
+
+<div class="row">
+   <div class="col-sm-7">
+    {{form_widget(form.name, {'attr': {'placeholder': 'Nom de la pièce'}})}}
+  </div>
+
+  <div class="col-sm-5">
+    <button value="" type="submit" name="button" class="btn btn-block form-control">Ajouter</button>
+  </div>
+
+
+</div>
 
 <ul class="list-dotted">
   {% for document in documents %}
@@ -10,21 +28,3 @@
     </li>
   {% endfor %}
 </ul>
-
-<h4 class="black">
-  Nom de la pièce à joindre à la candidature
-</h4>
-
-<p>&nbsp;</p>
-
-<div class="row">
-  <div class="col-sm-7">
-    {{form_widget(form.name, {'attr': {'placeholder': 'Nom de la pièce'}})}}
-  </div>
-
-  <div class="col-sm-5">
-    <button value="" type="submit" name="button" class="btn btn-block btn-fullcolor form-control">Ajouter</button>
-  </div>
-</div>
-
-<p>&nbsp;</p>

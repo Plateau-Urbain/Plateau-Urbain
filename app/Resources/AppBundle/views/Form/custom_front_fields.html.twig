@@ -3,14 +3,14 @@
 {# Date widget #}
 {% block date_widget -%}
     {% if widget == 'single_text' %}
-        <div class="input-group date">
+        <div class="date">
             {{ block('form_widget_simple') }}
-            <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+           {#  <span class="input-group-addon">
+                <i class="fa fa-calendar fa-lg"></i>
+            </span> #}
         </div>
     {% else -%}
-        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline')|trim}) -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline input-group')|trim}) -%}
         {% if datetime is not defined or not datetime -%}
             <div {{ block('widget_container_attributes') -}}>
         {%- endif %}
@@ -39,18 +39,18 @@
         {{ form_label(form) }}
         <div class="row">
             <div class="col-sm-12">
-                <div class="box box-calculator clearfix">
-                    <div class="col-sm-offset-5 col-sm-3">
+                <div class=" box-calculator clearfix">
+                    
                         {{ form_widget(form) }}
                     </div>
-                    <div class="col-sm-4">
+                    {# <div class="col-sm-4">
                       <span class="calculator">
                         <strong>Environ <span class="price" data-model="monthPrice">-</span> &euro; / mois</strong>
                         <br>
                         Soit <span data-model="yearPrice">-</span> &euro; / an</span>
-                    </div>
-                </div>
-            </div>
+                    </div> #}
+               
+          </div>
             <div class="col-sm-12">
                 {{ form_errors(form) }}
             </div>

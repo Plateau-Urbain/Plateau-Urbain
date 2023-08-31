@@ -1,20 +1,23 @@
 {% extends "::base.html.twig" %}
 
-{% block breadcrumb_items %}
+{# {% block breadcrumb_items %}
   <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
   <li><span>Mes candidatures</span></li>
-{% endblock %}
+{% endblock %} #}
 
 {% block body %}
 
-  <div class="row">
-    <div class="main col-sm-12">
-      <h1 class="section-title left-title">Mes candidatures</h1>
-      <hr />
-    </div>
-  </div>
+   <div class="row top-profil">
+        <!-- BEGIN MAIN CONTENT -->
+        <div class=" col-sm-12">
+            <div class="titre-page">
+                <h1>Mes candidatures</h1>
+            </div>
 
-  <div id="listing-header" class="clearfix">
+        </div>
+      </div>
+
+   <div id="listing-header" class="clearfix">
     <div class="row">
       <div class="col-sm-6 results-numbers">
         <h4>
@@ -39,7 +42,7 @@
         {{ form_end(filterForm) }}
       </div>
     </div>
-  </div>
+  </div> 
 
   {% if applications | length == 0 %}
     <div class="no-results">
@@ -48,117 +51,124 @@
         <a href="{{ path('search_index') }}">Rechercher un espace</a>
       </p>
     </div>
+  </div>
   {% else %}
     <!-- BEGIN PROPERTY LISTING -->
-    <div id="property-listing" class="list-style clearfix">
-      <div class="row">
+    <div id="property-listing" class=" clearfix">
+      <div class="row last-space row-flex">
         {% for application in applications %}
-          <div class="col-sm-12">
-            <div class="item">
-              <div class="row">
-
-                <div class="col-sm-4">
+                 <div class="item col-xs-12 col-md-6 col-lg-4">
+                 
+                  {% if application.space.isClosed %}
+                            <div class="space_item_unavailable">
+                  {% else %}
+                           <div class="space_item">
+                  {% endif %}
                   <a href="{{ path('space_show', {'id': application.space.id}) }}">
                     <div class="image">
-                      <div class="overlay">
-                        {% if application.space.isClosed %}
-                          <img src="{{ asset('/bundles/app/images/closed.png')  }}" alt=""/>
-                        {% else %}
-                          <img src="{{ asset('/bundles/app/images/inprogress.png')  }}" alt=""/>
-                        {% endif %}
-                      </div>
                       <div class="image-wrapper">
                         <img src="{% if application.space.pics.0 is not null %}{{ vich_uploader_asset(application.space.pics.0, 'file') }}{% endif %}" alt="" />
                       </div>
                     </div>
                   </a>
-                </div>
-
-                <div class="col-sm-8">
-                  <div class="info">
-                    <div class="row">
-                      <div class="col-sm-7">
-                        <h3>
-                          <small>{{ application.space.zipCode }} {{ application.space.city }}</small>
-                          {{ application.space.name }}<br/>
-                          <a href="{{ path('space_show', {'id': application.space.id}) }}">Voir l'annonce</a>
-                        </h3>
+              
+                   {% if application.space.isClosed %}
+                            <div class="foot-unavailable">
+                  {% else %}
+                           <div class="foot">
+                  {% endif %}              
+                          <p class="ville">{{ application.space.zipCode }} {{ application.space.city }}</p>
+                          <div class="statut-aac">
+                        {% if application.space.isClosed %}
+                          <div class="clos"><span><i class="fa fa-times fa-lg"></i>Cloturé</span></div>
+                        {% else %}
+                          <div class="encours"><span><i class="fa fa-check fa-lg"></i>En cours</span></div>
+                        {% endif %}
                       </div>
-                      <div class="col-sm-5">
+                          <h5>{{ application.space.name }}</h5>
+                      
+                        {#   <a href="{{ path('space_show', {'id': application.space.id}) }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Voir l'annonce</a> #}
+                    
+                   
+                      <ul>
+                        <li>{{ application.space.parcels | length }}</strong> espaces
+                        </li>
+                        <li>À partir de {{ application.space.price * 12 }} € / m<sup>2</sup> / an
+                        </li>
+                        <li>Disponibilité: {{ application.space.availability }}
+                        </li>
+                        <li> Bailleur: {{ application.space.owner.company }}
+                        </li>
+                        </ul>
+                            <div class="calendar"></div>
+                            <div class="apply-date">
+                            <p class="apply-date-p">Date limite de candidature</p>
+                              {% if application.space.isClosed %}
+                            <p class="apply-date-b"> 
+                             Terminé
+                            </p>
+                                 {% else %}
+                            <p class="apply-date-b"> 
+                             {{ application.space.limitAvailability|localizeddate('long', 'none') }} à {{ application.space.limitAvailability|date('H') }}h
+                            </p>
+                                {% endif %}
+                          
                         {% if not application.space.isClosed %}
-                          <h4>Statut de votre candidature</h4>
+                        <p>Statut de votre candidature</p> 
                           {% if application.status == 'draft' %}
-                              <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-draft"><i class="fa fa-pencil"></i>à compléter</a>
+                              <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-line-19 btn-draft"> <i class="fa fa-pencil"></i>À compléter</span></a>
                           {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
-                            <a href="#" class="btn btn-status btn-awaiting"><i class="fa fa-hourglass-half"></i>envoyée</a>
+                            <a href="#" class="btn btn-line-19 btn-awaiting"><i class="fa fa-hourglass-half"></i>Envoyée</a>
                           {% elseif application.status == 'accepted'  %}
-                            <a href="#" class="btn btn-status btn-accepted"><i class="fa fa-check"></i>acceptée</a>
+                            <a href="#" class="btn btn-line-19 btn-accepted"><i class="fa fa-check"></i>Acceptée</a>
                           {% elseif application.status == 'rejected'  %}
-                            <a href="#" class="btn btn-status btn-refuse"><i class="fa fa-times"></i>refusée</a>
+                            <a href="#" class="btn btn-line-19 btn-refuse"><i class="fa fa-times"></i>Refusée</a>
                           {% endif %}
                         {% endif %}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-3 item-desc border-box">
-                        <dl class="dl-horizontal dl-with-icon">
-                          <dt><i class="icon small square-brown"></i></dt>
-                          <dd>
-                            <span class="dd-title"><strong>{{ application.space.parcels | length }}</strong> espaces</span><br/>
-                            À partir de {{ application.space.size }}m<sup>2</sup>
-                          </dd>
-                        </dl>
-                      </div>
-                      <div class="col-sm-4 item-desc border-box">
-                        <dl class="dl-horizontal dl-with-icon">
-                          <dt><i class="icon small cal-brown"></i></dt>
-                          <dd>
-                            <span class="dd-title">Disponibilité</span><br/>
-                            {{ application.space.availability }}
-                          </dd>
-                        </dl>
-                      </div>
-                      <div class="col-sm-5 item-desc">
-                        <dl class="dl-horizontal dl-with-icon">
-                          <dt><i class="icon small time-brown"></i></dt>
-                          <dd>
-                            <span class="dd-title">Date limite de candidature</span><br/>
-                            {{ application.space.limitAvailability|localizeddate('long', 'none') }} à {{ application.space.limitAvailability|date('H') }}h
-                          </dd>
-                        </dl>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-7">
-                        <dl class="dl-horizontal dl-with-icon">
-                          <dt><i class="icon small building-brown"></i></dt>
-                          <dd>
-                            <span class="dd-title">Bailleur</span><br/>
-                            {{ application.space.owner.company }}
-                          </dd>
-                        </dl>
-                      </div>
-                      <div class="col-sm-5">
+                    
                         {% if not application.space.isClosed %}
                           {% if application.status == 'draft' %}
-                            <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-status btn-grey">Compléter ma candidature</a>
+                            <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-line-19 btn-grey"><span>À compléter</span></a>
                           {% else %}
-                            <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-status btn-grey">Voir ma candidature</a>
+                            <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-line-19 btn-grey"> <i class="fa fa-eye fa-lg"></i></a>
                           {% endif %}
                         {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                       </div>
+                        
+                    
+                      
+                   
               </div>
+              {% if application.space.isClosed %}
+                           <div id="overlay"></div>
+              {% else %}
+                         
+              {% endif %}
             </div>
           </div>
         {% endfor %}
+
       </div>
     </div>
   </div>
+
   {{ knp_pagination_render(applications) }}
 {% endif %}
+
+<div class="content plusinfos">
+    <div class="container">
+        <div class="row pu-home-content info">
+
+            <div class="col-xs-12 col-md-8 col-lg-8">
+                <h4>Vous souhaitez obtenir plus d'informations ?</h4>
+            </div>
+            <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
+                <a href='http://www.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
+            </div>
+
+    </div>
+</div>
+</div>
 
 {% endblock %}
 
