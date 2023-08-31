@@ -20,10 +20,25 @@
         </h1>
             </div>
         {% if app.user %}
-          <H6>
-            <i class="fa-solid fa-chevron-right"></i> Certaines informations ont été mises à jour via les informations de votre <a href="{{ path('security_profil') }}" class="red">profil</a>.
-          </H6>
+          <h6>
+            <i class="fa-solid fa-chevron-right"></i> Certaines informations ont été mises à jour via les informations de votre <a href="{{ path('security_profil') }}" class="mailto">profil</a>.
+          </h6>
           {% endif %}
+           {% if not app.user %}
+            <h6>
+            <i class="fa-solid fa-chevron-right"></i> Si vous possédez déjà un compte, connectez-vous pour récupérer les informations de <a href="#inline_content" class="inline cboxElement mailto">votre profil</a>.
+          </h6>
+                  {# <div class="fake-tabs">
+                    <div class="fake-tabs__tabs fake-tabs__tabs-selected">
+                      <span>Création de compte</span>
+                    </div>
+                    <div class="fake-tabs__tabs">
+                      <a href="#inline_content" class="inline cboxElement">
+                        J'ai déjà un compte
+                      </a>
+                    </div>
+                  </div> #}
+                {% endif %}
 
         <div class="pu-col-container content-block">
           <div class="row">
@@ -36,19 +51,19 @@
      <div class=" col-xs-1 bkg ">
             <ul>
                 <li>
-                    <a class="indicator active" href="http://localhost:8080/profil/#one"></a>
+                    <a class="indicator active" href="#one"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#two"></a>
+                    <a class="indicator" href="#two"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http:localhost:8080/profil/#three"></a>
+                    <a class="indicator" href="#three"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#four"></a>
+                    <a class="indicator" href="#four"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#five"></a>
+                    <a class="indicator" href="#five"></a>
                 </li>
             </ul>
 </div>     
@@ -56,21 +71,10 @@
             <div class="main col-xs-10">
                  <div id="one" class="section">
                 <span class="section-title form-one"></span>
-                <div  class="form-contener orange">
+                <div  class="form-contener vert">
                     <h3>Mes informations</h3>
 
-                {% if not app.user %}
-                  <div class="fake-tabs">
-                    <div class="fake-tabs__tabs fake-tabs__tabs-selected">
-                      <span>Création de compte</span>
-                    </div>
-                    <div class="fake-tabs__tabs">
-                      <a href="#inline_content" class="inline cboxElement">
-                        J'ai déjà un compte
-                      </a>
-                    </div>
-                  </div>
-                {% endif %}
+               
                     <div class="row">
                         <div class="col-sm-6 inline-controls form-group civility-group">
                             {{ form_label(form.projectHolder.userInfo.civility) }}
@@ -119,7 +123,7 @@
 
                  <div id="two" class="section">
                 <span class="section-title form-two"></span>
-                <div class="form-contener orange">
+                <div class="form-contener vert">
                     <h3>Ma structure</h3>
 
                     <div class="row">
@@ -141,12 +145,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-12 form-group">
                             {{ form_row(form.projectHolder.companyInfo.address)}}
                         </div>
-                        <div class="col-sm-6 form-group">
+                        {# <div class="col-sm-6 form-group">
                             {{ form_row(form.projectHolder.companyInfo.addressSuite) }}
-                        </div>
+                        </div> #}
                     </div>
 
                     <div class="row">
@@ -195,7 +199,7 @@
 
                <div id="three" class="section">
                 <span class="section-title form-three"></span>
-                <div class="form-contener orange">
+                <div class="form-contener vert">
                     <h3>Réseaux sociaux</h3>
                      <div class="row" >
                         <div class="col-sm-6 form-group">
@@ -254,7 +258,7 @@
 
                   <div id="four" class="section">
                 <span class="section-title form-four"></span>
-                <div class="form-contener orange">
+                <div class="form-contener vert">
             <h3>Mes souhaits</h3>
                       <div class="row">
                         <div class="col-sm-6 form-group">
@@ -359,6 +363,7 @@
                       </dd>
                     </dl>
                      </div>
+                     </div>
                     {% endif %}
 
                     {% if form.vars.data.getFilesType(null) | length > 0 %}
@@ -408,9 +413,9 @@
                 </div>  
             </div>
 
-
-               <span id="five" class="section-title form-five"></span>
-            <div class="form-contener orange">
+            <div id="five" class="section">
+               <span class="section-title form-five"></span>
+            <div class="form-contener vert">
                 <h3>Mes documents</h3>
                  <div class="row">
             <div class="col-sm-12 required-files">
@@ -509,12 +514,13 @@
 </div>
    </div>     
      </div>   
-      </div>      
+      </div>  
+        </div>    
 
              <div class="col-sm-12">
                 <div class="save center">
             
-                  {{ form_widget(form.submit, {'attr': {'class': 'btn btn-line-s submit'}}) }}
+                  {{ form_widget(form.submit, {'attr': {'class': 'btn btn-line-form-end submit'}}) }}
                 </div>
               </div>
 

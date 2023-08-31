@@ -97,6 +97,7 @@
             <div style="clear: both"></div>
         </div>
     </div>
+    </div>
 
         <div id="two" class="section">
                 <span class="section-title form-two"></span>
@@ -165,14 +166,14 @@
                 <input type="submit" value="Enregistrer" class="btn btn-line-s">
         
             
-                {{ form_widget(
+               {#  {{ form_widget(
                     form.publish, {
                         'attr': {
                             'class': 'btn btn-line-s js-publish',
                             'onclick': "return confirm(\'Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?');"
                         }
                     })
-                }}
+                }} #}
             </div>
         </div> <!--end row btns-->
 

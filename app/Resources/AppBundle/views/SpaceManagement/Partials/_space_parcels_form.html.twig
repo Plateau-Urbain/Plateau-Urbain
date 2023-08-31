@@ -14,7 +14,7 @@
     <tbody>
     {% for parcel in parcels if parcel.id is not empty %}
         <tr>
-            <td>{{ parcel.floor }}</td>
+            <td >{{ parcel.floor }}</td>
             <td>{{ parcel.type }}</td>
             <td>{{ parcel.surface }}</td>
             <td>
@@ -38,37 +38,34 @@
 
 {{ form_errors(form) }}
 
-<table class="lots table">
-  <thead>
-    <tr>
-      <th class="col-sm-3">{{ form_label(form.floor) }}</th>
-      <th class="col-sm-3">{{ form_label(form.type) }}</th>
-      <th class="col-sm-3">{{ form_label(form.surface) }}</th>
-      <th class="col-sm-3">{{ form_label(form.disponibility) }}</th>
-    </tr>
-  </thead>
-  <tbody class="choice">
-    <tr>
-      <td>
-        {{ form_widget(form.floor) }}
-      </td>
-      <td>
-        {{ form_widget(form.type) }}
-      </td>
-      <td>
-        {{ form_widget(form.surface) }}
-        {{ form_errors(form.surface) }}
-      </td>
-      <td>
-        {{ form_widget(form.disponibility) }}
-      </td>
-    </tr>
+<div class="lots table">
 
-  </tbody>
-</table>
+      <div class="col-xs-12 col-md-3">
+        <div class="lots-title">{{ form_label(form.floor) }}</div>
+        <div class="lots-select">{{ form_widget(form.floor) }}</div>
+  </div>
+      <div class="col-xs-12 col-md-3">
+        <div class="lots-title">{{ form_label(form.type) }}</div>
+        <div class="lots-select">{{ form_widget(form.type) }}</div>
+      </div>
+      <div class="col-xs-12 col-md-3">
+        <div class="lots-title">{{ form_label(form.surface) }}</div>
+        <div class="lots-select">{{ form_widget(form.surface) }}
+        {{ form_errors(form.surface) }}</div>
+      </div>
+      <div class="col-xs-12 col-md-3 margin-10">
+        <div class="lots-title">{{ form_label(form.disponibility) }}</div>
+        <div class="lots-select">{{ form_widget(form.disponibility) }}</div>
+      </div>
+     
+        <button type="submit" class="btn btn-block form-control">
+        <span>Ajouter</span>
+     
+      </div>
 
-<div class="col-sm-4 col-sm-offset-4">
-  <button type="submit" class="btn  btn-block form-control">
-      <span>Ajouter</span>
-  </button>
-</div>
+
+
+
+  
+
+

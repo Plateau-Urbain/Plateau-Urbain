@@ -28,6 +28,12 @@
 {% endif %} #}
 
 
+
+ <div class="titre-page-hr">
+    <h1>{{ space.name }}</h1>
+    <div class="img-aac"><img src="{{ asset('/public/images/groupe_1051.png') }}" alt="Plateau Urbain" /></div>
+ </div>
+
 <div class="col-sm-12 ">
  <div class="titre-page-hr">
     <h1>{{ space.name }}</h1>
@@ -46,12 +52,12 @@
 
 <div class="row">
   
-    <div class="sidebar col-sm-4 sticky">
-       <a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a>
+    <div class="sidebar col-xs-12 col-md-4 sticky">
+       <h6><a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
     <div class="content ">
       <h6>en bref</h6>
       <p class="pu-label">Commune: {{ space.city }} ({{ space.zipCode|slice(0,2)}})</p>
-      <p class="pu-label">Type de locaux: {{ space.type | upper }}</p>
+      <p class="pu-label">Type de locaux: {{ space.type }}</p>
        <p class="pu-label">Bailleur: {% if space.owner %}
         {% if space.owner.website %}
           <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
@@ -89,8 +95,8 @@
       </h5>
       <p class="center">
         {% if not space.isEnabled() %}
-          <a href="#" class="btn btn-line-19">
-            {{ "Activer l'espace"}}
+          <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19">
+            {{ "Modifier l'espace"}}
           </a>
         {% elseif space.isClosed() %}
         {% elseif application is defined and application is not null and not application.isDraft %}
@@ -119,11 +125,11 @@
   </div>
 
 
-<div class="main show col-sm-8">
+<div class="main show col-xs-12 col-md-8">
     <div id="property-detail-wrapper" class="style1">
-      {% if space.isClosed %}
+     {#  {% if space.isClosed %}
         <img src="{{ asset('/bundles/app/images/closed.png') }}" alt="closed" class="closed" />
-      {% endif %}
+      {% endif %} #}
 
       <div id="property-detail-large" class="owl-carousel ">
 {#         {% for p in space.pics %}
@@ -167,16 +173,16 @@
     </h4>
     <div class="pu-col-container content-block ressources">
      
-        <div class="col-xs-12 ">
+     
           <div class="col-xs-12 col-md-6 grey">
             <div class="fd"><div class="pdf-appel"></div></div>     
-            <div class="lien-pdf red"><a class="red" href="">Télécharger l'appel à candidature</a></div>
+            <div class="lien-pdf red"><p><a class="red" href="">Télécharger l'appel à candidature</a></p></div>
           </div>
           <div class="col-xs-12 col-md-6 grey">
            <div class="fd"><span class="pdf-repartition"></span></div>    
-          <div class="lien-pdf red"><a class="red" href="">Répartition des espaces</a></div>
+          <div class="lien-pdf red"><p><a class="red" href="">Répartition des espaces</a></p></div>
         </div>
-       </div>
+    
      </div>
     </div>
 
@@ -275,7 +281,7 @@
                 <h4>Vous souhaitez obtenir plus d'informations</h4>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
-                <a href='http://www.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
+                <a href='https://staging.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
             </div>
 
     </div>

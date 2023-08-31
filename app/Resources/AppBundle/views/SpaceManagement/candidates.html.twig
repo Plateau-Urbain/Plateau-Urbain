@@ -23,7 +23,7 @@
       <h1 class="page-title">Liste des candidats ({{ pagination| length }})</h1>
     </div>  #}
     <div class="col-sm-4">
-     <a href="{{ path('aac_list', {'id': space.id}) }}"class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les espaces</a>  
+     <h6><a href="{{ path('aac_list', {'id': space.id}) }}"class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les espaces</a></h6>  
    </div>
   </div>
   
@@ -85,7 +85,7 @@
                 </p> #}
               </div> 
               <h2 class="stats-summary">
-        Cet espace compte <strong>{{ space.nbValidApplication }}</strong> candidatures<br>
+        Cet espace compte <strong>{{ space.nbValidApplication }}</strong> candidature(s)<br>
         représentant une demande totale de <strong>{{ space.totalWishedSize }} m<sup>2</sup></strong>
       </h2>
             {#  <div class="col-sm-6">
@@ -188,10 +188,10 @@
     </div>
   
 </div>
-  {# <p>&nbsp;</p>
+
 
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-sm-6">
       <div class="form-control-small">
         <select id="groupActionSelect" data-placeholder="Actions groupées">
           <option value=""> </option>
@@ -199,10 +199,12 @@
           <option value="refuse">Refuser</option>
         </select>
       </div>
-      <a href="#accept_content" class="btn btn-secondary btn-form" id="groupActionBtn">Appliquer</a>
+      <div class="btn-appli">
+      <a href="#accept_content" class="btn btn-line-19 btn-form" id="groupActionBtn">Appliquer</a>
+    </div>
     </div>
 
-    <div class="col-sm-7">
+    <div class="col-sm-6">
       {{ form_start(filterForm, { 'attr': { 'data-submit': true } } ) }}
       <div class="col-sm-4">
           {{ form_widget(filterForm.status_filter) }}
@@ -217,7 +219,7 @@
       {{ form_end(filterForm) }}
     </div>
   </div>
-</div>  #}
+
 
 <div class="application-list">
   {% for application in pagination %}
@@ -284,7 +286,7 @@
       </div>
   {% else %}
     <div class="no-results">
-      <p class="center">Il n'y a aucune candidature sur cette espace</p>
+      <p class="center">Il n'y a aucune candidature sur cet espace</p>
     </div>
   {% endfor %}
 </div>

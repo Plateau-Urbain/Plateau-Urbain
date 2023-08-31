@@ -10,7 +10,6 @@
    <div class="row top-profil">
         <!-- BEGIN MAIN CONTENT -->
         <div class=" col-sm-12">
-
             <div class="titre-page">
                 <h1>Mes candidatures</h1>
             </div>
@@ -18,7 +17,7 @@
         </div>
       </div>
 
- {#  <div id="listing-header" class="clearfix">
+   <div id="listing-header" class="clearfix">
     <div class="row">
       <div class="col-sm-6 results-numbers">
         <h4>
@@ -43,7 +42,7 @@
         {{ form_end(filterForm) }}
       </div>
     </div>
-  </div> #}
+  </div> 
 
   {% if applications | length == 0 %}
     <div class="no-results">
@@ -94,7 +93,7 @@
                       <ul>
                         <li>{{ application.space.parcels | length }}</strong> espaces
                         </li>
-                        <li>À partir de {{ application.space.size }}m<sup>2</sup>
+                        <li>À partir de {{ application.space.price * 12 }} € / m<sup>2</sup> / an
                         </li>
                         <li>Disponibilité: {{ application.space.availability }}
                         </li>

@@ -20,7 +20,7 @@
                 <br />
                 Enrichissez votre profil pour permettre aux autres usagers de la plate-forme de découvrir votre projet.
                 <br />
-                Voir les <a class="red" href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
+                Voir les <a class="mailto" href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
             </p>
       
     </div>
@@ -88,19 +88,32 @@
                     <h3>Ma structure</h3>
                     <div class="row">
                         <div class="col-sm-6 form-group">
-                  {{ form_row(form.companyInfo.company) }}
-                  {{ form_row(form.companyInfo.address) }}
-                  {{ form_row(form.companyInfo.zipcode) }}
-                  {{ form_row(form.companyInfo.siret) }}
-                  {{ form_row(form.companyInfo.companySite) }}
+                            {{ form_row(form.companyInfo.company) }}
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            {{ form_row(form.companyInfo.companyStatus) }}
+                        </div>
+
+                        <div class="col-sm-6 form-group">
+                             {{ form_row(form.companyInfo.companyCreationDate) }}
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            {{ form_row(form.companyInfo.siret) }}  
+                        </div>
+                        <div class="col-sm-12 form-group">
+                            {{ form_row(form.companyInfo.address)}}
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            {{ form_row(form.companyInfo.zipcode) }}
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            {{ form_row(form.companyInfo.city)}}
+                        </div>
+                         <div class="col-sm-6 form-group">
+                            {{ form_row(form.companyInfo.companySite)}}
+                        </div>
+            
                 </div>
-                <div class="col-sm-6">
-                  {{ form_row(form.companyInfo.companyStatus) }}
-                  {{ form_row(form.companyInfo.addressSuite) }}
-                  {{ form_row(form.companyInfo.city) }}
-                  {{ form_row(form.companyInfo.companyCreationDate) }}
-                </div>
-              </div>
 
                 <div class="row">
                     <div class="col-sm-4 col-sm-offset-4 center">
@@ -147,12 +160,18 @@
             </div>  
         </div>
    </div>
+                        {# {{ form_widget(form.password.second) }} #}
+                    </div>
+                </div>
+            </div>  
+        </div>
+   </div>
 
 
                 <div class="row">
                     <div class="col-xs-4 col-xs-offset-4 col-md-4 col-md-offset-4">
                         <div class="save ">
-                        <input type="submit" value="Enregistrer" class="btn btn-line-form-end ">
+                        <input type="submit" value="Enregistrer" class="btn btn-line-s ">
                         </div>
                     </div>
                 </div>

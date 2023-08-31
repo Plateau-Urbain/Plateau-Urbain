@@ -1,29 +1,32 @@
 {% extends "::base.html.twig" %}
 
 
-{% block breadcrumb_items %}
+{# {% block breadcrumb_items %}
     <li><span>Se connecter</span></li>
 {% endblock %}
 
-{% block breadcrumb_title %}Se connecter{% endblock %}
+{% block breadcrumb_title %}Se connecter{% endblock %} #}
 
 {% block body %}
     
-<div class="row">
+
 
     <!-- BEGIN MAIN CONTENT -->
-    <div class="main col-sm-6">
+   {#  <div class="main col-sm-6"> </div>    #}
 
 
 
-    </div>	
+   
     <!-- END MAIN CONTENT -->
 
     <!-- BEGIN SIDEBAR -->
-    <div class="sidebar col-sm-5 col-md-offset-1">
+  
 
         <div id="e404-side">
-            <h1>Se connecter</h1>
+           <div class="colorBox-content registration">
+  <img class="icon" src="{{ asset('/bundles/app/images/lock_icon.png') }}" />
+
+   <h4>Connexion</h4>
             <div class="alert alert-danger alert-error">{% for msg in app.session.flashbag.get('error_msg')  %}
                         {{ msg }}
                     {% endfor %}</div>
@@ -35,25 +38,25 @@
 
                     <div class="form-group has-error">
                         <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                         <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/user_login.png') }}" alt="user" class="closed" /></span>
                         <input type="text" placeholder="Votre email" id="username" name="_username" value="" required="required" class="form-control"/>
                         </div>
                     </div>
 
                     <div class="form-group has-error">
                         <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                         <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="mdp" class="closed"/></span>
                         <input type="password" placeholder="Votre mot de passe" id="password" name="_password" required="required" class="form-control"/>
                         </div>
                     </div>
 
-                    <input type="submit" id="_submit" name="_submit" value="ME CONNECTER" class="btn btn-fullcolor"/>
+                    <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>
 
                     <p class="forgotten"><a class="inline_registr boxElement" href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
 
                     </form>
 
-                    <hr />
+                   <hr class="black">
 
                     <div class="text-left">
                     <p>
@@ -68,6 +71,6 @@
     </div>
     <!-- END SIDEBAR -->
 
-</div>
+
     
 {% endblock %}

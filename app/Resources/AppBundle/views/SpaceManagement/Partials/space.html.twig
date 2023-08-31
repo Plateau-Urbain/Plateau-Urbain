@@ -8,12 +8,12 @@
             {% if space.isClosed %}
               <div class="clos"><p> Appel à candidature cloturé</p></div>
             {% elseif not space.isSubmitted and not space.isEnabled %}
-              <div class="encours"><p> En cours d'édition</p></div>
+              <div class="enedition"><p> En cours d'édition</p></div>
             {% elseif not space.isSubmitted and space.isEnabled %}
               <div class="encours"><p> Appel à candidature en cours </p></div>
             {% endif %}
-
           </div>
+
           <div class="image-wrapper">
             <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
           </div>
@@ -29,7 +29,7 @@
                  {% if space.size is not empty %}à partir de {{ space.size }}m<sup>2</sup>{% endif %}
             </div>
             <div class="col-sm-5 right">
-               <a href="{{ path('space_show', {'id': space.id}) }}"class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Voir l'annonce</a>              
+               <p><a href="{{ path('space_show', {'id': space.id}) }}"class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Voir l'annonce</a> </p>             
             </div>
           </div>
 
@@ -54,7 +54,7 @@
                   <i class="icon small user-brown"></i>
                     <h4>{{ space.nbValidApplication }}</h4> 
                   </div>
-                    <h6>candidatures</h6>   
+                    <h6>candidature(s)</h6>   
               </div>
                 
                   <div class="col-xs-12 col-md-6 status-cards">
@@ -74,7 +74,7 @@
                     </div>
                   </div>
                   <div class="col-xs-12 col-md-3 right">
-              <a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Voir les candidats</a>
+              <p><a href="{{ path('space_manager_candidates', {'id' : space.id}) }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Voir les candidats</a></p>
             </div>
                 </div>
                   </div>  

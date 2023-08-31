@@ -1,22 +1,23 @@
 {% extends "::base.html.twig" %}
 {# {% block breadcrumb_items %}
+{# {% block breadcrumb_items %}
     <li><span>Mon profil</span></li>
 {% endblock %} #}
 {% block body %}
-    <div class="bkg-img"></div>
-     
-    <div class="row top-profil">
-        <!-- BEGIN MAIN CONTENT -->
-        <div class=" col-sm-12 ">
 
-            <div class="titre-page">
-                <h1>Mon profil candidat</h1>
-            </div>
-            <a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a>
-            {# <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p> #}
-        </div>
+<div class="row">
+
+    <!-- BEGIN MAIN CONTENT -->
+    <div class="main col-sm-8 col-sm-offset-2">
+        <h1 class="section-title">Mon profil</h1>
+        <center>
+            <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p>
+        </center>
     </div>
-       
+
+</div>
+
+<div id="js-form-space">
     {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
   
 
@@ -27,19 +28,19 @@
      <div class=" col-xs-1 bkg ">
             <ul>
                 <li>
-                    <a class="indicator active" href="http://localhost:8080/profil/#one"></a>
+                    <a class="indicator active" href="#one"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#two"></a>
+                    <a class="indicator" href="#two"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#three"></a>
+                    <a class="indicator" href="#three"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#four"></a>
+                    <a class="indicator" href="#four"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#five"></a>
+                    <a class="indicator" href="#five"></a>
                 </li>
             </ul>
     </div>     
@@ -110,12 +111,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 form-group">
+                        <div class="col-sm-12 form-group">
                             {{ form_row(form.companyInfo.address)}}
                         </div>
-                        <div class="col-sm-6 form-group">
+                        {# <div class="col-sm-6 form-group">
                             {{ form_row(form.companyInfo.addressSuite) }}
-                        </div>
+                        </div> #}
                     </div>
                     <div class="row">
                         <div class="col-sm-6 form-group">
@@ -155,44 +156,47 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-            <div id="three" class="section">
-                <span class="section-title form-three"></span>
-                <div class="form-contener">
-                    <h3>Réseaux sociaux</h3>
-                    <div class="row" >
-                        <div class="col-sm-6 form-group">
-                            <div class="input-group social-group">
-                                <span class="input-group-addon"><i class="fa-brands fa-facebook-f fa-lg"></i></span>
-                                {{ form_widget(form.facebookUrl) }}
-                                {{ form_errors(form.facebookUrl) }}
-                            </div>
-                        </div>
-                         <div class="col-sm-6 form-group">
-                            <div class="input-group social-group">
-                                <span class="input-group-addon"><i class="fa-brands fa-twitter fa-lg"></i></span>
-                                {{ form_widget(form.twitterUrl) }}
-                                {{ form_errors(form.twitterUrl) }}
-                            </div>
-                        </div>
-                       
+
+            <h1 class="section-title">
+              <i class="icon soc-red-bold"></i>
+              Réseaux sociaux
+            </h1>
+            <div class="form-contener">
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                        {{ form_widget(form.facebookUrl) }}
+                        {{ form_errors(form.facebookUrl) }}
+                      </div>
                     </div>
-                    <div class="row" >
-                        <div class="col-sm-6 form-group">
-                           <div class="input-group social-group">
-                                <span class="input-group-addon"><i class="fa-brands fa-linkedin-in fa-lg"></i></span>
-                                {{ form_widget(form.linkedinUrl) }}
-                                {{ form_errors(form.linkedinUrl) }}
-                            </div>
-                        </div>
-                        <div class="col-sm-6 form-group">
-                             <div class="input-group social-group">
-                                <span class="input-group-addon"><i class="fa-brands fa-instagram fa-lg"></i></span>
-                                {{ form_widget(form.instagramUrl) }}
-                                {{ form_errors(form.instagramUrl) }}
-                            </div>
-                        </div>
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-google-plus"></i></span>
+                        {{ form_widget(form.googleUrl) }}
+                        {{ form_errors(form.googleUrl) }}
+                      </div>
                     </div>
+                </div>
+
+                <div class="row" >
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                        {{ form_widget(form.twitterUrl) }}
+                        {{ form_errors(form.twitterUrl) }}
+                      </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <div class="input-group social-group">
+                        <span class="input-group-addon"><i class="fa fa-linkedin"></i></span>
+                        {{ form_widget(form.linkedinUrl) }}
+                        {{ form_errors(form.linkedinUrl) }}
+                      </div>
+                    </div>
+                </div>
 
                     <div class="row" >
                          <div class="col-sm-6 form-group">
@@ -212,10 +216,10 @@
                         </div>
                     </div>
                 </div>
-        
-        <span id="four" class="section-title form-four"></span>
+        <span id="four" class="section"></span>
+        <span class="section-title form-four"></span>
             <div class="form-contener">
-                <h3>Mes documents</h3>
+
           <div class="row">
             <div class="col-sm-12 required-files">
                 <div class="col-sm-6">
@@ -225,8 +229,7 @@
                    
                     <dd>
                       Les documents suivants seront attachés à toutes vos candidatures.
-                      Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
-                      doivent être téléchargés à partir de chaque fiche projet.
+                      Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures doivent être téléchargés à partir de chaque fiche projet.
                     </dd>
                   </dl>
                 </div>
@@ -265,38 +268,38 @@
                   <div class="pull-right actions">
                     <label class="custom-file-input btn btn-accepted">
                         {{ form_widget(form.idcard) }}
-                        <i class="fa-solid fa-upload fa-lg"></i>
+                        <i class="fa fa-upload"></i>
                     </label>
-                    <span id="id_file_clear" class="btn btn-delete fa-lg"><i class="fa fa-remove"></i></span>
+                    <span id="id_file_clear" class="btn btn-delete"><i class="fa fa-remove"></i></span>
                     {% if app.user.hasDocuments('id') %}
                         {% set file =  app.user.getDocumentsType('id')[0] %}
-                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye fa-lg"></i></a>
-                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                         <script>var hasIdFileStored = true</script>
-                            {% endif %}
-                          </div>
-                          {{ form_errors(form.idcard) }}
-                        </div>
-
-                    <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
-                          <span>Parcourir</span>
-                    <div class="pull-right actions">
-                            <label class="custom-file-input btn btn-accepted">
-                                {{ form_widget(form.kbis) }}
-                                <i class="fa-solid fa-upload fa-lg"></i>
-                            </label>
-                    <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
-                            {% if app.user.hasDocuments('kbis') %}
-                                {% set file =  app.user.getDocumentsType('kbis')[0] %}
-                                <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye fa-lg"></i></a>
-                                <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
-                                <script>var hasKbisFileStored = true</script>
-                            {% endif %}
-                          </div>
-                          {{ form_errors(form.kbis) }}
+                    {% endif %}
+                  </div>
+                  {{ form_errors(form.idcard) }}
                 </div>
 
-                
+                <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
+                  <span>Document justifiant la création de la structure</span>
+                  <div class="pull-right actions">
+                    <label class="custom-file-input btn btn-accepted">
+                        {{ form_widget(form.kbis) }}
+                        <i class="fa fa-upload"></i>
+                    </label>
+                    <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove"></i></span>
+                    {% if app.user.hasDocuments('kbis') %}
+                        {% set file =  app.user.getDocumentsType('kbis')[0] %}
+                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                        <script>var hasKbisFileStored = true</script>
+                    {% endif %}
+                  </div>
+                  {{ form_errors(form.kbis) }}
+                </div>
+
+                <hr />
 
                 {% for doc in form.vars.data.getDocumentsType('') %}
                     <div class="file-infos">
@@ -306,42 +309,22 @@
                           <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                       </div>
                     </div>
-                    </div>
                 {% endfor %}
-                </div>
+
+              </div>
+
+              </div>
+
             </div>
         </div>
-    </div>
-</div>
-            <div id="five" class="section">
-                <span class="section-title form-five"></span>
-                <div class="form-contener">
-            <h3>Mon projet</h3>
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.wishedSize)}}
-                </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.useType)}}
-                </div>
+
+        <br /><br />
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <input type="submit" value="Enregistrer" class="btn btn-fullcolor form-control">
             </div>
-            <div class="row" >
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.usageDate)}}
-                </div>
-                <div class="col-sm-6 form-group {% if form.usageDuration.vars.errors|length %}has-error{% endif %}">
-                {{ form_label(form.usageDuration)}}<br />
-                <div class="row">
-                    <div class="col-sm-5">
-                        {{ form_widget(form.usageDuration) }}
-                    </div>
-                    <div class="col-sm-7">
-                        {{ form_widget(form.lengthTypeOccupation) }}
-                    </div>
-                </div>
-                {{ form_errors(form.usageDuration) }}
-            </div>
-                </div>
+        </div>
 
                 <div class="row form-group">
                     <div class="col-sm-12 form-group">
@@ -354,86 +337,102 @@
 </div>
 </div>
 <div class="row">
-      <div class="col-xs-4 col-xs-offset-4 col-md-4 col-md-offset-4">
+      <div class="col-sm-12">
       <div class="save">
-        <input type="submit" value="Enregistrer" class="btn btn-line-form-end">
+        <input type="submit" value="Enregistrer" class="btn btn-line-s">
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <center>
-        <p>
-            Vous souhaitez vous désinscrire ? Merci d’adresser votre demande à <br><a class="mailto" href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>
-        </p>
-        </center>
+        <div class="row">
+            <div class="main col-sm-8 col-sm-offset-2">
+                <center>
+                    <p>
+                        Vous souhaitez vous désinscrire ? Merci d’adresser votre demande à <a href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>
+                    </p>
+                </center>
+            </div>
+        </div>
+
+
+        </div>
     </div>
+    {{ form_end(form) }}
 </div>
 
-
-
-{{ form_end(form) }}
 {% endblock %}
 {% block javascript %}
+
 {# Thomas BERNARD datepicker supprime
 #}
-<script type="text/javascript">
-function initFormListener() {
-$('input[type="submit"]').click(function(){
-var form = $(this).closest('form');
-var action = form.attr('action');
-var formData = new FormData(form[0]);
-$.ajax({
-url: action,
-type: 'POST',
-data: formData,
-async: false,
-success: function (data) {
-successAjax(data);
-},
-cache: false,
-contentType: false,
-processData: false
-});
-return false;
-});
-}
-function successAjax(data) {
-$("#js-form-space").html($(data).find('#js-form-space').html()).find('form').addClass('submitted');
-initFormListener();
-/*$("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});*/
-$("select").attr("data-placeholder", "Sélectionnez une option");
-$("select").chosen();
-toggleIdFiles();
-if($('.form-group.has-error').length > 0 || $('.help-block').length > 0) {
-$.colorbox({html:$('#errorBox').html()});
-} else {
-$.colorbox({html:$('#confirmBox').html()});
-}
-}
-$(document).ready(function() {
-initFormListener();
-$(document).on('change', '.idcard-file input[type=file], .kbis-file input[type=file]', function(){
-$(this).parents('.form-contener').find('input[type="submit"]').trigger('click');
-});
-});
-</script>
-<div id="errorBox" style="display: none;">
-<div class="colorBox-content">
-<i class="fa fa-info-circle danger"></i>
-<p>Il manque des informations obligatoires pour enregistrer votre profil.</p>
-</div>
-</div>
-<div id="confirmBox" style="display: none;">
-<div class="colorBox-content">
-<i class="fa fa-check danger"></i>
-<p>Votre profil est enregistré.</p>
-</div>
-</div>
+
+    <script type="text/javascript">
+        function initFormListener() {
+            $('input[type="submit"]').click(function(){
+                var form = $(this).closest('form');
+                var action = form.attr('action');
+                var formData = new FormData(form[0]);
+
+                $.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function (data) {
+                        successAjax(data);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+                return false;
+            });
+        }
+
+        function successAjax(data) {
+            $("#js-form-space").html($(data).find('#js-form-space').html()).find('form').addClass('submitted');
+            initFormListener();
+            /*$("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});*/
+            $("select").attr("data-placeholder", "Sélectionnez une option");
+            $("select").chosen();
+            toggleIdFiles();
+
+            if($('.form-group.has-error').length > 0 || $('.help-block').length > 0) {
+              $.colorbox({html:$('#errorBox').html()});
+            } else {
+              $.colorbox({html:$('#confirmBox').html()});
+            }
+        }
+
+        $(document).ready(function() {
+            initFormListener();
+
+            $(document).on('change', '.idcard-file input[type=file], .kbis-file input[type=file]', function(){
+              $(this).parents('.form-contener').find('input[type="submit"]').trigger('click');
+            });
+        });
+    </script>
+
+    <div id="errorBox" style="display: none;">
+        <div class="colorBox-content">
+            <i class="fa fa-info-circle danger"></i>
+            <p>Il manque des informations obligatoires pour enregistrer votre profil.</p>
+        </div>
+    </div>
+
+    <div id="confirmBox" style="display: none;">
+        <div class="colorBox-content">
+            <i class="fa fa-check danger"></i>
+            <p>Votre profil est enregistré.</p>
+        </div>
+    </div>
+
 {% endblock %}
+
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
+
 {# Thomas BERNARD datepicker supprime
 #}
 {% endblock %}
