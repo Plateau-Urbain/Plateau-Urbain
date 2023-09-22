@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\SpaceImage;
+use AppBundle\Entity\SpaceRequiredDoc;
 
 /**
  * Space
@@ -157,6 +158,12 @@ class Space
     protected $pics;
 
     /**
+     * @ORM\OneToMany(targetEntity="SpaceRequiredDoc", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OrderBy({"position"="ASC"})
+     */
+    protected $requiredDocs;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="spaces")
@@ -254,6 +261,7 @@ class Space
     public function __construct()
     {
         $this->pics = new ArrayCollection();
+        $this->requiredDocs = new ArrayCollection();
         $this->parcels = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->documents = new ArrayCollection();
@@ -542,6 +550,42 @@ class Space
     public function removePic(SpaceImage $pics)
     {
         $this->pics->removeElement($pics);
+        $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * @return ArrayCollection|SpaceRequiredDoc[]
+     */
+    public function getRequiredDocs()
+    {
+        return $this->requiredDocs;
+    }
+
+    /**
+     * Add requiredDocs.
+     *
+     * @param SpaceRequiredDoc $doc
+     *
+     * @return Space
+     */
+    public function addRequiredDoc(SpaceRequiredDoc $doc)
+    {
+        $doc->setSpace($this);
+        $this->requiredDocs->add($doc);
+
+        $this->setUpdated(new \DateTime());
+
+        return $this;
+    }
+
+    /**
+     * Remove required doc.
+     *
+     * @param \AppBundle\Entity\SpaceRequiredDoc $docs
+     */
+    public function removeRequiredDoc(SpaceRequiredDoc $docs)
+    {
+        $this->requiredDocs->removeElement($docs);
         $this->setUpdated(new \DateTime());
     }
 
