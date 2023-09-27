@@ -10481,12 +10481,14 @@ a.btn-line-19:hover span{
   background-color: #F5F4F2;
   background-size: contain;
   width:100%;
-  padding-top:100px;
+}
+.first-content {
+  padding-top:49px;
 }
 .faq p.titre{
   text-align:left;
   padding-bottom:70px;
- 
+
 }
 .faq h3 {
   padding-bottom:70px;
