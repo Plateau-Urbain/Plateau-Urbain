@@ -13,13 +13,10 @@
 /web/bundles/sonataadmin
 /web/bundles/sonatauser
 /web/uploads/
-/web/js/
-/web/css/
 /components/
 /web/assetic/
 /web/media
 !web/media/.gitkeep
-
 *~
 tags
 /src/AppBundle/Resources/public/css/main.css
