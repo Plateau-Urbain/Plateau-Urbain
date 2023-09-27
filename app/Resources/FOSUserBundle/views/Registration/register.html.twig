@@ -1,15 +1,5 @@
-{% extends "@FOSUser/layout.html.twig" %}
-{# Old (before symfony 2.7) way to do it :
-{% extends "FOSUserBundle::layout.html.twig" %}
-#}
+{% extends "base.html.twig" %}
 
 {% block fos_user_content %}
 {% include "fosuser/register_content.html.twig" %}
-{# after the upgrade to 2.7, the following lead to the
-   SonataUserBundle/views/Registration/register_content.html.twig
-   template to be included instead.
-   However, now it is recommended to store all templates in
-   the app/Resources/views/ sub-directory.
-{% include "FOSUserBundle/views/Registration/register_content.html.twig" %}
-#}
 {% endblock fos_user_content %}

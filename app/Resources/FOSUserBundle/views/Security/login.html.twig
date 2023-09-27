@@ -57,7 +57,7 @@
 
                     <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>
 
-                    <p class="forgotten"><a class="inline_registr boxElement" href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
+                    <p class="forgotten"><a href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
 
                     </form>
 
@@ -67,7 +67,7 @@
                     <p>
                         Vous n'avez pas de compte Plateau Urbain?
                         <br />
-                        <a class="inline_register cboxElement" href="#inline_register_content">Inscription</a>
+                        <a href="{{ path('fos_user_registration_register') }}">Inscription</a>
                     </p>
                     </div>
                 </div>
