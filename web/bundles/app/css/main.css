@@ -16,13 +16,21 @@
 
 }
 li.off-icon.menu-icon.last:hover > a:before{
-      content: '';
       background: url('/bundles/app/images/menu-off-red.png') no-repeat top;
-      font-size: 16px;
-      line-height: 16px;
-      vertical-align: middle;
-      display: inline-block;
-      padding: 15px;
+}
+.user-icon a:before {
+    content: '';
+    background: url('/bundles/app/images/user.png') no-repeat top;
+    font-size: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+    display: inline-block;
+    padding: 15px;
+    margin-left: -5px;
+
+}
+li.user-icon.menu-icon.last:hover > a:before{
+      background: url('/bundles/app/images/user-red.png') no-repeat top;
 }
 .bulb-icon a:before {
   content: '\f0eb';
@@ -86,7 +94,7 @@ li.off-icon.menu-icon.last:hover > a:before{
   vertical-align: middle;
   display: inline-block;
   padding: 15px;
- 
+
 }
 
 #header #nav-section .connectMenu:hover:before,
@@ -100,7 +108,7 @@ li.off-icon.menu-icon.last:hover > a:before{
   vertical-align: middle;
   display: inline-block;
   padding: 15px;
- 
+
 }
 .dropdown:hover > a.connectMenured:before {
 
@@ -124,7 +132,7 @@ color:#E9473C;
 }
 #header #nav-section .dropdown:hover {
   background: #f5f4f2;
-  
+
 }
 #header #nav-section .dropdown:hover > a {
   background: #f5f4f2;
@@ -142,7 +150,7 @@ color:#E9473C;
   font-family: 'ginka', sans-serif;
 }
 #header #nav-section .dropdown:hover ul a:hover {
- 
+
   background: #f5f4f2;
   color: #e9473C;
   /*padding-left:8px;*/
@@ -574,7 +582,7 @@ height: 18px;
 }
 #cboxContent .registration .forgotten {
   text-align: left;
- 
+
 }
 #cboxContent .registration .forgotten a {
   color: #000;
@@ -769,8 +777,8 @@ height: 18px;
 
 }
 .sidebar .pu-label {
-  
- 
+
+
   color: #000;
 }
 .sidebar .pu-price-zone {
@@ -944,7 +952,7 @@ height: 18px;
 #property-listing .item h3,
 #space-card .item h3 {
   border: none;
- 
+
 }
 #property-listing .item h3 a,
 #space-card .item h3 a {
@@ -1042,7 +1050,7 @@ height: 18px;
 }
 #property-listing .item .dd-title,
 #space-card .item .dd-title {
-  
+
   /*font-size: 14px;*/
 }
 #property-listing .item .dd-title strong,
@@ -1455,7 +1463,7 @@ ul li.li-icon.check:before {
 .results-numbers h4 {
   color: #000000;
   line-height: 40px;
- 
+
 }
 .left-title {
   text-align: left;
@@ -1582,7 +1590,7 @@ dl.no-margin {
 }
 dl.dl-with-icon dt {
   width: 57px;
- 
+
 }
 dl.dl-with-icon dd {
  /* margin-left: 70px;
@@ -1599,7 +1607,7 @@ dl.dl-with-icon .dd-title {
 dl.dl-with-fa-icon dt {
   width: 12px;
   text-align: center;
- 
+
 }
 dl.dl-with-fa-icon dd {
   margin-left: 20px;
@@ -1638,7 +1646,7 @@ form .main .section-title:after {
   bottom: -38px;
   left: 0;
   right: 0;
-  margin: auto;  
+  margin: auto;
   font-size: 56px;
   line-height: 68px;
   background:#FFF;
@@ -1647,22 +1655,22 @@ form .main .section-title:after {
   height: 74px;
 }
 form .main .section-title.form-one:after {
-  content: '1';  
+  content: '1';
 }
 form .main .section-title.form-two:after {
-  content: '2';   
+  content: '2';
 }
 form .main .section-title.form-three:after {
-  content: '3';  
+  content: '3';
 }
 form .main .section-title.form-four:after {
-  content: '4';   
+  content: '4';
 }
 form .main .section-title.form-five:after {
-  content: '5';  
+  content: '5';
 }
 form .main .section-title.form-six:after {
-  content: '6';  
+  content: '6';
 }
 
 
@@ -2038,7 +2046,7 @@ li.dropdown.last > a:nth-child(1)::before {
 a.red {
   text-decoration: none;
   color:black !important;
- 
+
 }
 a.red:hover {
   text-decoration: none;

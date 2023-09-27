@@ -108,7 +108,7 @@
 	<!-- BEGIN WRAPPER -->
 	<div id="wrapper">
 
-		<!-- BEGIN HEADER --> 
+		<!-- BEGIN HEADER -->
 		<header id="header">
 			<div id="nav-section">
 				<div class="container">
@@ -194,34 +194,8 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/freewall/1.0.5/freewall.min.js"></script>
 
-
-		{% if app.session.flashbag.has('error_sign') %}
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$.colorbox({html:$('#inline_register_content').html(), width:"400px"});
-				});
-			</script>
-		{% endif %}
-
-		{% if app.request.get('confirm_inscription') %}
-			<script type="text/javascript">
-				$(document).ready(function() {
-					$.colorbox({html:"<div class='colorBox-content'><i class='fa fa-info-circle danger'></i><p>Vous allez recevoir un email de confirmation.<br /> Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.</p></div>", width:"400px"});
-				});
-			</script>
-		{% endif %}
-
 		{% block javascript %}
         {% endblock %}
-
-		<div style='display:none'>
-			<div id="inline_content">
-				{{ render(controller("AppBundle:Security:loginForm")) }}
-			</div>
-			<div id="inline_register_content">
-				{{ render(controller("FOSUserBundle:Registration:register")) }}
-			</div>
-		</div>
 
 	</body>
 </html>
