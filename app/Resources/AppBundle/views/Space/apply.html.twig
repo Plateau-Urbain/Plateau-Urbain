@@ -1,545 +1,539 @@
-{% extends "base.html.twig" %}
-
-{# {% block breadcrumb_items %}
-  <li><a href="{{ path('search_index') }}">Recherche</a></li>
-  <li><a href="{{ path('space_show', {'id': space.id}) }}">Fiche espace</a></li>
-  <li><span>Candidater</span></li>
-{% endblock %} #}
+{% extends "::base.html.twig" %}
 
 {% block body %}
 
 <div class="bkg-img"></div>
-     
-    <div class="row top-profil">
-        <!-- BEGIN MAIN CONTENT -->
-        <div class=" col-sm-12 ">
 
-            <div class="titre-page">
-        <h1>
-          {{ 'Déposer ma candidature' }}
-        </h1>
-            </div>
+<div class="row top-profil">
+    <!-- BEGIN MAIN CONTENT -->
+    <div class=" col-sm-12 ">
+
+        <div class="titre-page">
+            <h1>
+                {{ 'Déposer ma candidature' }}
+            </h1>
+        </div>
         {% if app.user %}
-          <h6>
+        <h6>
             <i class="fa-solid fa-chevron-right"></i> Certaines informations ont été mises à jour via les informations de votre <a href="{{ path('security_profil') }}" class="mailto">profil</a>.
-          </h6>
-          {% endif %}
-           {% if not app.user %}
-            <h6>
+        </h6>
+        {% endif %}
+        {% if not app.user %}
+        <h6>
             <i class="fa-solid fa-chevron-right"></i> Si vous possédez déjà un compte, connectez-vous pour récupérer les informations de <a href="#inline_content" class="inline cboxElement mailto">votre profil</a>.
-          </h6>
-                  {# <div class="fake-tabs">
-                    <div class="fake-tabs__tabs fake-tabs__tabs-selected">
-                      <span>Création de compte</span>
-                    </div>
-                    <div class="fake-tabs__tabs">
-                      <a href="#inline_content" class="inline cboxElement">
-                        J'ai déjà un compte
-                      </a>
-                    </div>
-                  </div> #}
-                {% endif %}
+        </h6>
+        {# <div class="fake-tabs">
+            <div class="fake-tabs__tabs fake-tabs__tabs-selected">
+                <span>Création de compte</span>
+            </div>
+            <div class="fake-tabs__tabs">
+                <a href="#inline_content" class="inline cboxElement">
+                    J'ai déjà un compte
+                </a>
+            </div>
+        </div> #}
+        {% endif %}
 
         <div class="pu-col-container content-block">
-          <div class="row">
-            {{ form_start(form, {'attr' : {'class' : 'col-md-12'} } ) }}
-            {{ form_errors(form) }}
-
-<div id="js-form-space">
-
             <div class="row">
-     <div class=" col-xs-1 bkg ">
-            <ul>
-                <li>
-                    <a class="indicator active" href="#one"></a>
-                </li>
-                <li>
-                    <a class="indicator" href="#two"></a>
-                </li>
-                <li>
-                    <a class="indicator" href="#three"></a>
-                </li>
-                <li>
-                    <a class="indicator" href="#four"></a>
-                </li>
-                <li>
-                    <a class="indicator" href="#five"></a>
-                </li>
-            </ul>
-</div>     
+                {{ form_start(form, {'attr' : {'class' : 'col-md-12'} } ) }}
+                {{ form_errors(form) }}
 
-            <div class="main col-xs-10">
-                 <div id="one" class="section">
-                <span class="section-title form-one"></span>
-                <div  class="form-contener vert">
-                    <h3>Mes informations</h3>
-
-               
-                    <div class="row">
-                        <div class="col-sm-6 inline-controls form-group civility-group">
-                            {{ form_label(form.projectHolder.userInfo.civility) }}
-                            {{ form_widget(form.projectHolder.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                            {{ form_errors(form.projectHolder.userInfo.civility) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.userInfo.firstname) }}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.userInfo.lastname) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.userInfo.birthday) }}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.userInfo.phone) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 form-group">
-                            {{ form_row(form.projectHolder.userInfo.email) }}
-                        </div>
-                    </div>
-                    {% if not app.user %}
-                      <div class="row">
-                          <div class="col-sm-6 form-group">
-                              {{ form_row(form.projectHolder.userInfo.plainPassword.first) }}
-                          </div>
-                          <div class="col-sm-6 form-group">
-                              {{ form_row(form.projectHolder.userInfo.plainPassword.second) }}
-                          </div>
-                      </div>
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-sm-12 form-group">
-                            {{ form_row(form.projectHolder.userInfo.description) }}
-                 </div>
-                    </div>
-                </div>
-            </div>
-
-                 <div id="two" class="section">
-                <span class="section-title form-two"></span>
-                <div class="form-contener vert">
-                    <h3>Ma structure</h3>
+                <div id="js-form-space">
 
                     <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.company) }}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyStatus) }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6  form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyCreationDate) }}
-                        </div>
-                        <div class="col-sm-6  form-group">
-                            {{ form_row(form.projectHolder.companyInfo.siret)}}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.address)}}
-                        </div>
-                        {# <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.addressSuite) }}
-                        </div> #}
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.zipcode) }}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.city)}}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyPhone)}}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyMobile) }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                       <div class="col-sm-12 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyDescription)}}
-                       </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyEffective)}}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyStructures)}}
-                        </div>
-                    </div>
-
-                    <div class="row" >
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companySite)}}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                            {{ form_row(form.projectHolder.companyInfo.companyBlog)}}
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-               <div id="three" class="section">
-                <span class="section-title form-three"></span>
-                <div class="form-contener vert">
-                    <h3>Réseaux sociaux</h3>
-                     <div class="row" >
-                        <div class="col-sm-6 form-group">
-                          <div class="input-group social-group">
-                            <span class="input-group-addon"><i class="fa-brands fa-facebook-f fa-lg"></i></span>
-                            {{ form_widget(form.projectHolder.facebookUrl) }}
-                            {{ form_errors(form.projectHolder.facebookUrl) }}
-                          </div>
+                        <div class=" col-xs-1 bkg ">
+                            <ul>
+                                <li>
+                                    <a class="indicator active" href="#one"></a>
+                                </li>
+                                <li>
+                                    <a class="indicator" href="#two"></a>
+                                </li>
+                                <li>
+                                    <a class="indicator" href="#three"></a>
+                                </li>
+                                <li>
+                                    <a class="indicator" href="#four"></a>
+                                </li>
+                                <li>
+                                    <a class="indicator" href="#five"></a>
+                                </li>
+                            </ul>
                         </div>
 
-                        <div class="col-sm-6 form-group">
-                           <div class="input-group social-group">
-                            <span class="input-group-addon"><i class="fa-brands fa-twitter fa-lg"></i></span>
-                            {{ form_widget(form.projectHolder.twitterUrl) }}
-                            {{ form_errors(form.projectHolder.twitterUrl) }}
-                          </div>
-                        </div>
-                   </div>
+                        <div class="main col-xs-10">
+                            <div id="one" class="section">
+                                <span class="section-title form-one"></span>
+                                <div  class="form-contener vert">
+                                    <h3>Mes informations</h3>
 
-                    <div class="row" >
-                        <div class="col-sm-6 form-group">
-                           <div class="input-group social-group">
-                            <span class="input-group-addon"><i class="fa-brands fa-linkedin-in fa-lg"></i></span>
-                            {{ form_widget(form.projectHolder.linkedinUrl) }}
-                            {{ form_errors(form.projectHolder.linkedinUrl) }}
-                          </div>
-                        </div>
 
-                        <div class="col-sm-6 form-group">
-                         <div class="input-group social-group">
-                            <span class="input-group-addon"><i class="fa-brands fa-instagram fa-lg"></i></span>
-                              {{ form_widget(form.projectHolder.instagramUrl) }}
-                              {{ form_errors(form.projectHolder.instagramUrl) }}
-                          </div>
-                        </div>
-                    </div>
-                   
-                     <div class="row" >
-                         <div class="col-sm-6 form-group">
-                            <div class="input-group social-group">
-                           <span class="input-group-addon"><i class="fa-brands fa-youtube fa-lg"></i></span>
-                              {{ form_widget(form.projectHolder.googleUrl) }}
-                              {{ form_errors(form.projectHolder.googleUrl) }}
-                             </div>
-                        </div>
-
-                        <div class="col-sm-6 form-group">
-                            <div class="input-group social-group">
-                                <span class="input-group-addon"><i class="fa-brands fa-tiktok fa-lg"></i></span>
-                                  {{ form_widget(form.projectHolder.otherUrl) }}
-                                  {{ form_errors(form.projectHolder.otherUrl) }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                  <div id="four" class="section">
-                <span class="section-title form-four"></span>
-                <div class="form-contener vert">
-            <h3>Mes souhaits</h3>
-                      <div class="row">
-                        <div class="col-sm-6 form-group">
-                         
-                          {{ form_row(form.name) }}
-                        </div>
-                        <div class="col-sm-6 form-group">
-                              {{ form_label(form.category, null, {'label_attr' : {'class' : 'inline-label'}}) }}
-                        
-                            {{ form.category.vars.errors|length ? 'has-error' : '' }}
-                              {{ form_widget(form.category) }}
-                              {{ form_errors(form.category) }}
-                         </div>
-
-                     </div>
-
-                     <div class="row">
-                        <div class="col-sm-6 form-group">
-                          {{ form_row(form.wishedSize) }}
-                        </div>
-
-                        <div class="col-sm-6 ">
-                        
-                              {{ form_label(form.lengthOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
-                            </div>
-                         
-                        
-                   
-                            <div class="col-sm-3 {{ form.lengthOccupation.vars.errors|length ? 'has-error' : '' }}">
-                              {{ form_widget(form.lengthOccupation) }}
-                              {{ form_errors(form.lengthOccupation) }}
+                                    <div class="row">
+                                        <div class="col-sm-6 inline-controls form-group civility-group">
+                                            {{ form_label(form.projectHolder.userInfo.civility) }}
+                                            {{ form_widget(form.projectHolder.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
+                                            {{ form_errors(form.projectHolder.userInfo.civility) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.firstname) }}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.lastname) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.birthday) }}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.phone) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.email) }}
+                                        </div>
+                                    </div>
+                                    {% if not app.user %}
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.plainPassword.first) }}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.plainPassword.second) }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            {{ form_row(form.projectHolder.userInfo.description) }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-sm-3 form-group{{ form.lengthTypeOccupation.vars.errors|length ? 'has-error' : '' }}">
-                              {{ form_widget(form.lengthTypeOccupation) }}
-                              {{ form_errors(form.lengthTypeOccupation) }}
+                            <div id="two" class="section">
+                                <span class="section-title form-two"></span>
+                                <div class="form-contener vert">
+                                    <h3>Ma structure</h3>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.company) }}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyStatus) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6  form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyCreationDate) }}
+                                        </div>
+                                        <div class="col-sm-6  form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.siret)}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.address)}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.zipcode) }}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.city)}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyPhone)}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyMobile) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyDescription)}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyEffective)}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyStructures)}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row" >
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companySite)}}
+                                        </div>
+                                        <div class="col-sm-6 form-group">
+                                            {{ form_row(form.projectHolder.companyInfo.companyBlog)}}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                      
 
-            
-                          <div class="row">
-                            <div class="col-sm-6 form-group">
-                              {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
-                        
-                        {{ form.startOccupation.vars.errors|length ? 'has-error' : '' }}
-                              {{ form_widget(form.startOccupation) }}
-                              {{ form_errors(form.startOccupation) }}
+                            <div id="three" class="section">
+                                <span class="section-title form-three"></span>
+                                <div class="form-contener vert">
+                                    <h3>Réseaux sociaux</h3>
+                                    <div class="row" >
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-facebook-f fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.facebookUrl) }}
+                                                {{ form_errors(form.projectHolder.facebookUrl) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-twitter fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.twitterUrl) }}
+                                                {{ form_errors(form.projectHolder.twitterUrl) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" >
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-linkedin-in fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.linkedinUrl) }}
+                                                {{ form_errors(form.projectHolder.linkedinUrl) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-instagram fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.instagramUrl) }}
+                                                {{ form_errors(form.projectHolder.instagramUrl) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" >
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-youtube fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.googleUrl) }}
+                                                {{ form_errors(form.projectHolder.googleUrl) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6 form-group">
+                                            <div class="input-group social-group">
+                                                <span class="input-group-addon"><i class="fa-brands fa-tiktok fa-lg"></i></span>
+                                                {{ form_widget(form.projectHolder.otherUrl) }}
+                                                {{ form_errors(form.projectHolder.otherUrl) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="four" class="section">
+                                    <span class="section-title form-four"></span>
+                                    <div class="form-contener vert">
+                                        <h3>Mes souhaits</h3>
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+
+                                                {{ form_row(form.name) }}
+                                            </div>
+                                            <div class="col-sm-6 form-group">
+                                                {{ form_label(form.category, null, {'label_attr' : {'class' : 'inline-label'}}) }}
+
+                                                {{ form.category.vars.errors|length ? 'has-error' : '' }}
+                                                {{ form_widget(form.category) }}
+                                                {{ form_errors(form.category) }}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                {{ form_row(form.wishedSize) }}
+                                            </div>
+
+                                            <div class="col-sm-6 ">
+
+                                                {{ form_label(form.lengthOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
+                                            </div>
+
+
+
+                                            <div class="col-sm-3 {{ form.lengthOccupation.vars.errors|length ? 'has-error' : '' }}">
+                                                {{ form_widget(form.lengthOccupation) }}
+                                                {{ form_errors(form.lengthOccupation) }}
+                                            </div>
+
+                                            <div class="col-sm-3 form-group{{ form.lengthTypeOccupation.vars.errors|length ? 'has-error' : '' }}">
+                                                {{ form_widget(form.lengthTypeOccupation) }}
+                                                {{ form_errors(form.lengthTypeOccupation) }}
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="row">
+                                            <div class="col-sm-6 form-group">
+                                                {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
+
+                                                {{ form.startOccupation.vars.errors|length ? 'has-error' : '' }}
+                                                {{ form_widget(form.startOccupation) }}
+                                                {{ form_errors(form.startOccupation) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 form-group">
+                                                {{ form_row(form.description) }}
+                                            </div>
+                                            <div class="col-sm-12 form-group">
+                                                {{ form_row(form.openToGlobalProject, { 'attr': { 'data-checkbox-toggle': '#toggle_' ~ form.contribution.vars.id } }) }}
+                                            </div>
+                                            <div class="col-sm-12 form-group" id="toggle_{{ form.contribution.vars.id }}">
+                                                {{ form_row(form.contribution) }}
+                                            </div>
+
+                                            <div class=" files">
+                                                <div class="col-sm-12 form-group">
+
+                                                    {% if space.getDocuments() | length > 0 %}
+                                                    <h6 class="docs"><span class="img-docs"></span>{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature <span class="red">*</span></h6>
+                                                    {% endif %}
+                                                </div>
+                                                <ul class="list-unstyled files-list"></ul>
+
+                                                {% for document in space.documents %}
+                                                <div class="col-sm-6 form-group">
+                                                    <div class="file-infos">
+                                                        <span>{{document.name}}</span>
+                                                        <div class="pull-right actions">
+                                                            <label class="custom-file-input btn btn-accepted">
+                                                                {{ form_widget(attribute(form, "document_#{document.id}")) }}
+                                                                {{ form_errors(attribute(form, "document_#{document.id}")) }}
+                                                                <i class="fa fa-upload"></i>
+                                                            </label>
+                                                            {% if form.vars.data.getFilesType(document.id) %}
+                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                                                            <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                                <div class="col-sm-12 ">
+                                                    <label class="control-label">Joindre des fichiers supplémentaires à cette candidature</label>
+
+
+                                                    {% if form.vars.data.getFilesType(null) | length > 0 %}
+                                                    <dl class="dl-horizontal  info-block">
+
+                                                        <dd>
+                                                        Les documents suivants seront seulement attachés à la
+                                                        candidature de cet espace. Les fichiers qui peuvent être
+                                                        joints dans toutes vos candidatures doivent être téléchargés
+                                                        dans la section "Documents".
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            {% if form.vars.data.getFilesType(null) | length > 0 %}
+                                            <div class="row">
+                                                <div class="files col-sm-6">
+
+                                                    {% for file in form.vars.data.getFilesType(null) %}
+                                                    <div class="file-infos">
+
+                                                        <div class="pull-right actions">
+                                                            <span>{{file.fileName | slice(14, 100)}}</span>
+
+                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                                                            {% if file.id is not empty %}
+                                                            <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+
+                                            <div class="row">
+                                                <div class="add-file col-xs-12">
+                                                    {% if form.vars.data.getFilesType(null) | length > 0 %}
+                                                    <h4>
+                                                        <i class="icon small icon-inline add-red"></i>
+                                                        Ajouter un fichier
+                                                    </h4>
+                                                    {% endif %}
+
+                                                    <dl class="dl-horizontal info-block">
+
+                                                        <dd>
+                                                        Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
+                                                        Chaque fichier ne doit pas excéder 10Mo.
+                                                        </dd>
+                                                    </dl>
+
+                                                    {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                        
-                        <div class="row">
-                        <div class="col-sm-12 form-group">
-                          {{ form_row(form.description) }}
-                        </div>
-                        <div class="col-sm-12 form-group">
-                          {{ form_row(form.openToGlobalProject, { 'attr': { 'data-checkbox-toggle': '#toggle_' ~ form.contribution.vars.id } }) }}
-                        </div>
-                        <div class="col-sm-12 form-group" id="toggle_{{ form.contribution.vars.id }}">
-                          {{ form_row(form.contribution) }}
-                        </div>
 
-                        <div class=" files">
-                            <div class="col-sm-12 form-group"> 
+                            <div id="five" class="section">
+                                <span class="section-title form-five"></span>
+                                <div class="form-contener vert">
+                                    <h3>Mes documents</h3>
+                                    <div class="row">
+                                        <div class="col-sm-12 required-files">
+                                            <div class="col-sm-6">
+                                                <label class="control-label ">Mes téléchargements</label>
 
-                    {% if space.getDocuments() | length > 0 %}
-                      <h6 class="docs"><span class="img-docs"></span>{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature <span class="red">*</span></h6>
-                    {% endif %}
-                </div>
-                    <ul class="list-unstyled files-list"></ul>
-  
-                    {% for document in space.documents %}
-                            <div class="col-sm-6 form-group">
-                      <div class="file-infos">
-                          <span>{{document.name}}</span>
-                        <div class="pull-right actions">  
-                          <label class="custom-file-input btn btn-accepted">
-                            {{ form_widget(attribute(form, "document_#{document.id}")) }}
-                            {{ form_errors(attribute(form, "document_#{document.id}")) }}
-                            <i class="fa fa-upload"></i>
-                          </label>
-                          {% if form.vars.data.getFilesType(document.id) %}
-                            <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                            <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
-                          {% endif %}
-                      </div>
-                        </div>
-                      </div>
-                    {% endfor %}
-                    <div class="col-sm-12 "> 
-                    <label class="control-label">Joindre des fichiers supplémentaires à cette candidature</label>
-               
-                
-                    {% if form.vars.data.getFilesType(null) | length > 0 %}
-                    <dl class="dl-horizontal  info-block">
-                    
-                      <dd>
-                        Les documents suivants seront seulement attachés à la
-                        candidature de cet espace. Les fichiers qui peuvent être
-                        joints dans toutes vos candidatures doivent être téléchargés
-                        dans la section "Documents".
-                      </dd>
-                    </dl>
-                     </div>
-                     </div>
-                    {% endif %}
+                                                <dl class="dl-horizontal info-block">
 
-                    {% if form.vars.data.getFilesType(null) | length > 0 %}
-                    <div class="row">
-                      <div class="files col-sm-6">
+                                                    <dd>
+                                                    Les documents suivants seront attachés à toutes vos candidatures.
+                                                    Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
+                                                    doivent être téléchargés à partir de chaque fiche projet.
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-6 required-files">
+                                                <ul class="list-unstyled">
+                                                    <li class="idcard-file">
+                                                        {% if app.user and app.user.hasDocuments('id') %}
+                                                        <i class="fa fa-check"></i>
+                                                        {% else %}
+                                                        <i class="fa fa-times"></i>
+                                                        {% endif %}
+                                                        <label class="required">Pièce d'identité</label>
+                                                    </li>
 
-                        {% for file in form.vars.data.getFilesType(null) %}
-                            <div class="file-infos">
-                             
-                              <div class="pull-right actions">
-                                <span>{{file.fileName | slice(14, 100)}}</span>
-                                 
-                                  <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                                  {% if file.id is not empty %}
-                                    <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
-                                  {% endif %}
-                              </div>
+                                                    <li class="kbis-file">
+                                                        {% if app.user and app.user.hasDocuments('kbis') %}
+
+                                                        <i class="fa fa-check fa-lg"></i>
+                                                        {% else %}
+                                                        <i class="fa fa-times fa-lg"></i>
+                                                        {% endif %}
+                                                        <label class="required">Kbis ou autre</label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-sm-6">
+
+                                                <div class="files">
+                                                    {{ form_errors(form.projectHolder.idcard) }}
+                                                    <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
+                                                        <span>Pièce d'identité</span>
+                                                        <div class="pull-right actions">
+                                                            <label class="custom-file-input btn btn-accepted">
+                                                                {{ form_widget(form.projectHolder.idcard) }}
+                                                                <i class="fa fa-upload fa-lg"></i>
+                                                            </label>
+                                                            <span id="id_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
+                                                            {% if app.user and app.user.hasDocuments('id') %}
+                                                            {% set file =  app.user.getDocumentsType('id')[0] %}
+                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye fa-lg"></i></a>
+                                                            <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
+                                                            {% endif %}
+                                                        </div>
+                                                        {{ form_errors(form.projectHolder.idcard) }}
+                                                    </div>
+
+                                                    <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
+                                                        {% if app.user and app.user.hasDocuments('kbis') %}
+                                                        {% set file =  app.user.getDocumentsType('kbis')[0] %}
+                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show ">Voir mon document</a>
+                                                        {% else %}
+                                                        <span>Parcourir</span>
+                                                        <div class="pull-right actions">
+                                                            <label class="custom-file-input btn btn-accepted">
+                                                                {{ form_widget(form.projectHolder.kbis) }}
+                                                                <i class="fa fa-upload fa-lg"></i>
+                                                            </label>
+                                                            <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
+                                                        </div>
+                                                        {% endif %}
+
+                                                        {{ form_errors(form.projectHolder.kbis) }}
+                                                    </div>
+
+
+
+                                                    {% for doc in form.projectHolder.vars.data.getDocumentsType('') %}
+                                                    <div class="file-infos">
+                                                        <span>{{doc.fileName | slice(14, 100)}}</span>
+                                                        <div class="pull-right actions">
+                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
+                                                            <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        {% endfor %}
-                      </div>
-                    </div>
-                    {% endif %}
-
-                    <div class="row">
-                      <div class="add-file col-xs-12">
-                          {% if form.vars.data.getFilesType(null) | length > 0 %}
-                        <h4>
-                          <i class="icon small icon-inline add-red"></i>
-                          Ajouter un fichier
-                        </h4>
-                          {% endif %}
-
-                        <dl class="dl-horizontal info-block">
-                         
-                          <dd>
-                            Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
-                            Chaque fichier ne doit pas excéder 10Mo.
-                          </dd>
-                        </dl>
-
-                        {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
-                      </div>
-                    </div>
-
-                    </div>
-                    </div>
-                </div>  
-            </div>
-
-            <div id="five" class="section">
-               <span class="section-title form-five"></span>
-            <div class="form-contener vert">
-                <h3>Mes documents</h3>
-                 <div class="row">
-            <div class="col-sm-12 required-files">
-                <div class="col-sm-6">
-                    <label class="control-label ">Mes téléchargements</label>
-
-                  <dl class="dl-horizontal info-block">
-                   
-                    <dd>
-                      Les documents suivants seront attachés à toutes vos candidatures.
-                      Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures
-                      doivent être téléchargés à partir de chaque fiche projet.
-                    </dd>
-                  </dl>
-                </div>
-            </div>
-                   <div class="col-sm-12">
-                        <div class="col-sm-6 required-files">
-                      <ul class="list-unstyled">
-                        <li class="idcard-file">
-                          {% if app.user and app.user.hasDocuments('id') %}
-                              <i class="fa fa-check"></i>
-                          {% else %}
-                              <i class="fa fa-times"></i>
-                          {% endif %}
-                          <label class="required">Pièce d'identité</label>
-                        </li>
-
-                        <li class="kbis-file">
-                          {% if app.user and app.user.hasDocuments('kbis') %}
-
-                              <i class="fa fa-check fa-lg"></i>
-                          {% else %}
-                              <i class="fa fa-times fa-lg"></i>
-                          {% endif %}
-                          <label class="required">Kbis ou autre</label>
-                        </li>
-                      </ul>
-                    </div>
-
-                     <div class="col-sm-6">
-
-                  <div class="files">
-                    {{ form_errors(form.projectHolder.idcard) }}
-                    <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
-                      <span>Pièce d'identité</span>
-                      <div class="pull-right actions">
-                        <label class="custom-file-input btn btn-accepted">
-                            {{ form_widget(form.projectHolder.idcard) }}
-                            <i class="fa fa-upload fa-lg"></i>
-                        </label>
-                        <span id="id_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
-                        {% if app.user and app.user.hasDocuments('id') %}
-                            {% set file =  app.user.getDocumentsType('id')[0] %}
-                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye fa-lg"></i></a>
-                            <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
-                        {% endif %}
-                      </div>
-                      {{ form_errors(form.projectHolder.idcard) }}
-                    </div>
-
-                    <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
-                      <span>Parcourir</span>
-                      <div class="pull-right actions">
-                        <label class="custom-file-input btn btn-accepted">
-                            {{ form_widget(form.projectHolder.kbis) }}
-                            <i class="fa fa-upload fa-lg"></i>
-                        </label>
-                        <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
-                        {% if app.user and app.user.hasDocuments('kbis') %}
-                            {% set file =  app.user.getDocumentsType('kbis')[0] %}
-                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show "><i class="fa fa-eye fa-lg"></i></a>
-                            <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
-                        {% endif %}
-                      </div>
-                      {{ form_errors(form.projectHolder.kbis) }}
-                    </div>
-
-                 
-
-                    {% for doc in form.projectHolder.vars.data.getDocumentsType('') %}
-                        <div class="file-infos">
-                          <span>{{doc.fileName | slice(14, 100)}}</span>
-                          <div class="pull-right actions">
-                              <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                              <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
-                          </div>
-                    </div>
-                    </div>
-                {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-   </div>     
-     </div>   
-      </div>  
-        </div>    
 
-             <div class="col-sm-12">
-                <div class="save center">
-            
-                  {{ form_widget(form.submit, {'attr': {'class': 'btn btn-line-form-end submit'}}) }}
-                </div>
-              </div>
+        <div class="col-sm-12">
+            <div class="save center">
 
-                    <!--<div class="col-sm-12">
-                    <p class="tip text-center">
-                      Il vous manque une pièce ? Cliquez sur "Enregistrer" : votre
-                      formulaire sera<br/> sauvegardé en l'état, et vous pourrez reprendre
-                      la constitution plus tard.<br/>
-                      Cliquez sur "Clôturer ma candidature" quand votre dossier est
-                      prêt<br/> à être envoyé au propriétaire.
-                    </p>
-                </div>-->
-                     
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-line-form-end submit'}}) }}
+            </div>
+        </div>
+
+        <!--<div class="col-sm-12">
+            <p class="tip text-center">
+            Il vous manque une pièce ? Cliquez sur "Enregistrer" : votre
+            formulaire sera<br/> sauvegardé en l'état, et vous pourrez reprendre
+            la constitution plus tard.<br/>
+            Cliquez sur "Clôturer ma candidature" quand votre dossier est
+            prêt<br/> à être envoyé au propriétaire.
+            </p>
+            </div>-->
+
 
             {{ form_end(form) }}
-                  
-   
-  </div>
-</div>
+
+
+    </div>
 </div>
 
+</div>
 {% endblock body %}
