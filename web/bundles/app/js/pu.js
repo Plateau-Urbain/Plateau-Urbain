@@ -220,12 +220,3 @@ $(function(){
     $(this).parents('.form-group.has-error').removeClass('has-error').find('.help-block').detach();
   });
 });
-
-$(function(){
-  $(document).on('change', 'label.custom-file-input input[type="file"]', function(){
-     var filename = $(this)[0].files.length ? $(this)[0].files[0].name : "";
-     if (filename) {
-       $(this).parents('label.custom-file-input').before('<span>'+filename+'</span>');
-     }
-  });
-});
