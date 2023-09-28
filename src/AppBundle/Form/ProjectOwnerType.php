@@ -27,7 +27,11 @@ class ProjectOwnerType extends AbstractType
         $builder
             ->add('userInfo', UserType::class, ['data_class' => ProjectOwnerType::class])
             ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => ProjectOwnerType::class])
-            ->add('newsletter', CheckboxType::class, array('label' => "J'accepte de recevoir la newsletter de Plateau Urbain", 'attr' => array()))
+            ->add('newsletter', CheckboxType::class, [
+                'label' => "J'accepte de recevoir la newsletter de Plateau Urbain",
+                'attr' => [],
+                'required' => false
+            ])
             ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
             ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
             ->add(
