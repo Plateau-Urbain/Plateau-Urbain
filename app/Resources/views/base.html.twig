@@ -24,15 +24,10 @@
     <![endif]-->
 
     <!-- Google-Fonts Embeded -->
-    <!-- Raleway -->
-    {% stylesheets  'bundles/app/css/Raleway.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}?family=Raleway:300,500,900%7COpen+Sans:400,700,400italic" media="all" />
-    {% endstylesheets  %}
-    <!-- Roboto -->
     {% stylesheets  'bundles/app/css/Roboto.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}?family=Roboto:300,400,500,700" media="all" />
+        <link rel="stylesheet" href="{{ asset_url }}?family=Roboto:300,400,500,700" media="all" />
     {% endstylesheets  %}
-    {% stylesheets  'bundles/app/css/Ginka.css' %}
+     {% stylesheets  'bundles/app/css/Ginka.css' %}
     <link rel="stylesheet" href="{{ asset_url }}?family=ginka:300,400,500,600,700" media="all" />
     {% endstylesheets  %}
 
@@ -40,7 +35,7 @@
     <!-- Template CSS -->
     {% stylesheets  'bundles/app/css/bootstrap.min.css'
     'bundles/app/css/icons.css'
-
+    'bundles/app/css/font-awesome_6.4.0_all.min.css'
     'bundles/app/css/cozy-real-estate-font.css'
     'bundles/app/css/owl.transitions.css'
     'bundles/app/css/colorbox.css'
@@ -51,7 +46,6 @@
 
     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" media="all" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="all" />
     {% endstylesheets  %}
 
 
