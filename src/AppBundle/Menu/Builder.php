@@ -65,12 +65,15 @@ class Builder implements ContainerAwareInterface
 /*            if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
                 $menu->addChild('Trouver un local', array('route' => 'search_index'));
             }*/
-            $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown pipe'), 'extras' => array(  
+            $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown pipe'), 'extras' => array(
                 'safe_label' => true
             ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown','class' => 'connectMenured')));
             $loggedMenu->setChildrenAttribute('class', 'dropdown-menu');
 
-            $loggedMenu->addChild('Mon profil', array('route' => 'security_profil', 'attributes' => array('class'=>'')));
+            $role = ($user->isProprio() || $context->isGranted('ROLE_OWNER')) ? "propriétaire" : "candidat";
+            $role = $context->isGranted('ROLE_ADMIN') ? 'admin' : $role;
+
+            $loggedMenu->addChild('Mon profil '.$role, array('route' => 'security_profil', 'attributes' => array('class'=>'')));
 
             if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
               $loggedMenu->addChild('Mes espaces', array('route' => 'space_manager_list', 'attributes' => array('class'=>'')));
