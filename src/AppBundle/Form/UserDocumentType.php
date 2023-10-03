@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Vich\UploaderBundle\Form\Type\VichFileType;
+
 class UserDocumentType extends AbstractType
 {
     /**
@@ -20,12 +22,9 @@ class UserDocumentType extends AbstractType
         // Symfony 2.8 and will be removed in 3.0.
         // Use the fully-qualified type class name
         // "Symfony\Component\Form\Extension\Core\Type\FileType" instead.
-        $builder
-            ->add(
-                'file',
-                'Symfony\Component\Form\Extension\Core\Type\FileType',
-                array(
-                    'label' => false
+        $builder->add('file', VichFileType::class, array(
+            'label' => false,
+            'download_label' => true
                 )
             )
         ;

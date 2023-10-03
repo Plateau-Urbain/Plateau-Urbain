@@ -63,20 +63,27 @@ class ProjectOwnerType extends AbstractType
             ->add('twitterUrl', null, array('label' => "Twitter", 'attr' => array('class' => 'form-control')))
             ->add('googleUrl', null, array('label' => "Google+", 'attr' => array('class' => 'form-control')))
             ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
-            ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')))
+            ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')));
 
-            ->add('kbis', UserDocumentType::class, array(
-                'label' => 'Kbis',
-                'mapped' => false,
-                'error_bubbling' => false,
-            ))
+            if (! $builder->getForm()->getData()->hasDocuments('kbis')) {
+                $builder
+                ->add('kbis', UserDocumentType::class, array(
+                    'label' => 'Kbis',
+                    'mapped' => false,
+                    'error_bubbling' => false,
+                ));
+            }
 
-            ->add('idcard', UserDocumentType::class, array(
-                'label' => 'Carte d\'identité',
-                'mapped' => false,
-                'error_bubbling' => false
-            ))
-            ;
+            if (! $builder->getForm()->getData()->hasDocuments('idcard')) {
+                $builder
+                ->add('idcard', UserDocumentType::class, array(
+                    'label' => 'Carte d\'identité',
+                    'mapped' => false,
+                    'error_bubbling' => false
+                ))
+                ;
+            }
+
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $projectHolder = $event->getData();
@@ -140,7 +147,8 @@ class ProjectOwnerType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
             'validation_groups' => array('projectHolder', 'Default'),
-            'noPlainPassword' => false
+            'noPlainPassword' => false,
+            "allow_extra_fields" => true
         ));
     }
 

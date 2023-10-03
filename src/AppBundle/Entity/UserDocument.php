@@ -221,4 +221,9 @@ class UserDocument
     {
         return $this->type;
     }
+
+    public function getOriginalname()
+    {
+        return preg_replace('/^[^_]*_/', '', $this->fileName);
+    }
 }
