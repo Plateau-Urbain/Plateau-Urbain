@@ -537,3 +537,13 @@
 
 </div>
 {% endblock body %}
+
+{% block javascript %}
+    <script>
+        if (document.querySelector('.help-block')) {
+            setTimeout(function() {
+                document.querySelector('.help-block').closest('.form-contener').scrollIntoView(true);
+            }, 500);
+        }
+    </script>
+{% endblock %}
