@@ -125,7 +125,9 @@ padding: 15px;
 color:#E9473C;
 }
 
-
+nav.nav-mobile.open div.dropdown-backdrop {
+  display: none;
+}
 
 #header #nav-section.shrink .connectMenu {
   margin-top: 19px;
