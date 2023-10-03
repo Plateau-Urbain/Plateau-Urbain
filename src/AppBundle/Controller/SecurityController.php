@@ -10,6 +10,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\UserDocument;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use AppBundle\Form\ProjectOwnerType;
 use AppBundle\Form\SpaceOwnerType;
 
@@ -62,6 +63,15 @@ class SecurityController extends Controller
      * @Route("/profil", name="security_profil")
      * @Route("/inscription/confirmation", name="fos_user_registration_confirmed")
      */
+    public function inscriptionConfirmationAction(Request $request)
+    {
+        $user = $this->getUser();
+        return $this->redirect($this->generateUrl('security_profil_role', array('role' => $user->isProprio() ? 'proprio' : 'candidat')));
+    }
+
+    /**
+     * @Route("/profil/{role}", name="security_profil_role")
+     */
     public function profilAction(Request $request)
     {
         $logger = $this->get('logger');
@@ -69,17 +79,19 @@ class SecurityController extends Controller
         $em   = $this->getDoctrine()->getManager();
 
         $logger->debug('profilAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
-        if ($this->getUser()->isProprio()) {
+        if ($this->getUser()->isProprio() && $request->get('role') == 'proprio') {
             // Passing type instances to FormBuilder::add(), Form::add()
             // or the FormFactory is deprecated since Symfony 2.8 and
             // will not be supported in 3.0.
             // Use the fully-qualified type class name instead
             $form = $this->createForm(SpaceOwnerType::class, $user);
             $template = 'AppBundle:Security:profilProprio.html.twig';
-        } else {
+        } elseif( $request->get('role') == 'candidat') {
             $form = $this->createForm(ProjectOwnerType::class, $user, array('noPlainPassword' => true));
 
             $template = 'AppBundle:Security:profil.html.twig';
+        } else {
+            throw new AccessDeniedException();
         }
         $session = $this->get('session');
         $current_ppassword = $user->getPassword();
