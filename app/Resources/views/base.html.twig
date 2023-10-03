@@ -127,20 +127,9 @@
         </header>
         <!-- END HEADER -->
 
-
         {% block prebody %} {% endblock %}
 
-        <div class="content white first-content">
-            <div class="container ">
-                {% block containerbkg %} {% endblock %}
-                {% block body %}{% endblock %}
-                {% block fos_user_content %}{% endblock %}
-            </div>
-        </div>
-
-        {% block actualities %}{% endblock %}
-
-        {% block partners %}{% endblock %}
+        {% block body %}{% endblock %}
 
         {% block footer %}
         {% include '/Partials/footer.html.twig' %}

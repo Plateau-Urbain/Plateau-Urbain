@@ -1,81 +1,58 @@
-{% extends "::base.html.twig" %}
+{% extends "@FOSUser/layout.html.twig" %}
 
+{% block fos_user_content %}
+    <div id="e404-side">
+        <div class="colorBox-content registration">
+            <img class="icon" src="{{ asset('/bundles/app/images/lock_icon.png') }}" />
 
-{# {% block breadcrumb_items %}
-    <li><span>Se connecter</span></li>
-{% endblock %}
-
-{% block breadcrumb_title %}Se connecter{% endblock %} #}
-
-{% block body %}
-    
-
-
-    <!-- BEGIN MAIN CONTENT -->
-   {#  <div class="main col-sm-6"> </div>    #}
-
-
-
-   
-    <!-- END MAIN CONTENT -->
-
-    <!-- BEGIN SIDEBAR -->
-  
-
-        <div id="e404-side">
-           <div class="colorBox-content registration">
-  <img class="icon" src="{{ asset('/bundles/app/images/lock_icon.png') }}" />
-
-   <h4>Connexion</h4>
-            <div class="alert alert-danger alert-error">{% for msg in app.session.flashbag.get('error_msg')  %}
-                        {{ msg }}
-                    {% endfor %}</div>
-{% if error is defined and error%}
+            <h4>Connexion</h4>
             <div class="alert alert-danger alert-error">
-                Login ou mot de passe incorrect
+                {% for msg in app.session.flashbag.get('error_msg')  %}
+                    {{ msg }}
+                {% endfor %}
             </div>
-{% endif %}
+            {% if error is defined and error%}
+                <div class="alert alert-danger alert-error">
+                    Login ou mot de passe incorrect
+                </div>
+            {% endif %}
             <div id="cboxContent" style="background: transparent;">
                 <div class="colorBox-content registration">
 
                     <form action="{{ path("fos_user_security_check") }}" method="post">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
-                    <div class="form-group">
-                        <div class="input-group">
-                         <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/user_login.png') }}" alt="user" class="closed" /></span>
-                        <input type="text" placeholder="Votre email" id="username" name="_username" value="" required="required" class="form-control"/>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/user_login.png') }}" alt="user" class="closed" /></span>
+                                <input type="text" placeholder="Votre email" id="username" name="_username" value="" required="required" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="input-group">
-                         <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="mdp" class="closed"/></span>
-                        <input type="password" placeholder="Votre mot de passe" id="password" name="_password" required="required" class="form-control"/>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="mdp" class="closed"/></span>
+                                <input type="password" placeholder="Votre mot de passe" id="password" name="_password" required="required" class="form-control"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>
+                        <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>
 
-                    <p class="forgotten"><a href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
+                        <p class="forgotten"><a href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
 
                     </form>
 
-                   <hr class="black">
+                    <hr class="black"/>
 
                     <div class="text-left">
-                    <p>
-                        Vous n'avez pas de compte Plateau Urbain?
-                        <br />
-                        <a href="{{ path('fos_user_registration_register') }}">Inscription</a>
-                    </p>
+                        <p>
+                            Vous n'avez pas de compte Plateau Urbain?
+                            <br />
+                            <a href="{{ path('fos_user_registration_register') }}">Inscription</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- END SIDEBAR -->
-
-
-    
 {% endblock %}
