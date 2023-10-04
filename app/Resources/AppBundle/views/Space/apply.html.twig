@@ -452,43 +452,49 @@
                                             <div class="col-sm-6">
 
                                                 <div class="files">
-                                                    {{ form_errors(form.projectHolder.idcard) }}
-                                                    <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
-                                                        <span>Pièce d'identité</span>
-                                                        <div class="pull-right actions">
-                                                            <label class="custom-file-input btn btn-accepted">
-                                                                {{ form_widget(form.projectHolder.idcard) }}
-                                                                <i class="fa fa-upload fa-lg"></i>
-                                                            </label>
-                                                            <span id="id_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
-                                                            {% if app.user and app.user.hasDocuments('id') %}
-                                                            {% set file =  app.user.getDocumentsType('id')[0] %}
-                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-eye fa-lg"></i></a>
-                                                            <a href="{{ path('profile_removedocument', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash fa-lg"></i></a>
-                                                            {% endif %}
+                                                    {% if app.user and app.user.hasDocuments('id') %}
+                                                        <div class="idcard-file file-infos clearfix">
+                                                            <div class="clearfix actions">
+                                                                {% set file =  app.user.getDocumentsType('id')[0] %}
+                                                                <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
+                                                                <div style="display:inline-block" class="pull-right">
+                                                                    <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}">Voir</a>
+                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id }) }}">Supprimer</a>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        {{ form_errors(form.projectHolder.idcard) }}
-                                                    </div>
-
-                                                    <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
-                                                        {% if app.user and app.user.hasDocuments('kbis') %}
-                                                        {% set file =  app.user.getDocumentsType('kbis')[0] %}
-                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show ">Voir mon document</a>
-                                                        {% else %}
-                                                        <span>Parcourir</span>
-                                                        <div class="pull-right actions">
-                                                            <label class="custom-file-input btn btn-accepted">
-                                                                {{ form_widget(form.projectHolder.kbis) }}
-                                                                <i class="fa fa-upload fa-lg"></i>
-                                                            </label>
-                                                            <span id="kbis_file_clear" class="btn btn-delete"><i class="fa fa-remove fa-lg"></i></span>
+                                                    {% else %}
+                                                        <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
+                                                            <div class=" actions">
+                                                                <label class="btn btn-accepted">
+                                                                    {{ form_widget(form.projectHolder.idcard) }}
+                                                                </label>
+                                                            </div>
+                                                            {{ form_errors(form.projectHolder.idcard) }}
                                                         </div>
-                                                        {% endif %}
+                                                    {% endif %}
 
-                                                        {{ form_errors(form.projectHolder.kbis) }}
-                                                    </div>
-
-
+                                                    {% if app.user and app.user.hasDocuments('kbis') %}
+                                                        <div class="kbis-file file-infos clearfix">
+                                                            <div class="clearfix actions">
+                                                                {% set file =  app.user.getDocumentsType('kbis')[0] %}
+                                                                <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
+                                                                <div style="display:inline-block" class="pull-right">
+                                                                    <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}">Voir</a>
+                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id }) }}">Supprimer</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
+                                                            <div class=" actions">
+                                                                <label class="btn btn-accepted">
+                                                                    {{ form_widget(form.projectHolder.kbis) }}
+                                                                </label>
+                                                            </div>
+                                                            {{ form_errors(form.projectHolder.kbis) }}
+                                                        </div>
+                                                    {% endif %}
 
                                                     {% for doc in form.projectHolder.vars.data.getDocumentsType('') %}
                                                     <div class="file-infos">

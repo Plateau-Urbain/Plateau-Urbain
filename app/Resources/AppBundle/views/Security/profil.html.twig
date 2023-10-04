@@ -235,7 +235,7 @@
                                 <div class="col-sm-6 required-files">
                                     <ul class="list-unstyled">
                                         <li class="idcard-file">
-                                            {% if app.user.hasDocuments('id') %}
+                                            {% if app.user.hasDocuments('idcard') %}
                                                 <i class="fa fa-check fa-lg"></i>
                                             {% else %}
                                                 <i class="fa fa-times fa-lg"></i>
@@ -258,10 +258,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="files">
-                                        {% if app.user.hasDocuments('idcard') %}
+                                        {% if app.user.hasDocuments('id') %}
                                             <div class="idcard-file file-infos clearfix">
                                                 <div class="clearfix actions">
-                                                    {% set file =  app.user.getDocumentsType('idcard')[0] %}
+                                                    {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
                                                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}">Voir</a>
