@@ -86,18 +86,24 @@ class SpaceType extends AbstractType
                 'mapped' => false,
                 'required' => false
             )
-            )
-            ->add('doc_aac', SpaceImageType::class, [
+            );
+
+        if (empty($builder->getForm()->getData()->getDocs(SpaceImage::FILETYPE_DOCUMENT_AAC))) {
+            $builder->add('doc_aac', SpaceImageType::class, [
                     'label' => "Document d'appel à candidature",
                     'mapped' => false,
                     'required' => true,
-                ])
-            ->add('doc_plan', SpaceImageType::class, [
-                    'label' => "Document d'appel à candidature",
+                ]);
+        }
+
+        if (empty($builder->getForm()->getData()->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN))) {
+            $builder->add('doc_plan', SpaceImageType::class, [
+                    'label' => "Répartition des espaces",
                     'mapped' => false,
                     'required' => true,
-                ])
-        ;
+            ]);
+        }
+
 
         $attributes = $this->getAttributes();
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($attributes) {
@@ -140,12 +146,18 @@ class SpaceType extends AbstractType
             }
 
             // Handles new required doc
-            $newDocAAC = $event->getForm()->get('doc_aac')->getData();
+            $newDocAAC = null;
+            if ($event->getForm()->has('doc_aac')) {
+                $newDocAAC = $event->getForm()->get('doc_aac')->getData();
+            }
             if ($newDocAAC instanceof SpaceImage && $newDocAAC->getFile() !== null) {
                 $event->getData()->addDoc($newDocAAC, SpaceImage::FILETYPE_DOCUMENT_AAC);
             }
 
-            $newDocPlan = $event->getForm()->get('doc_plan')->getData();
+            $newDocPlan = null;
+            if ($event->getForm()->has('doc_plan')) {
+                $newDocPlan = $event->getForm()->get('doc_plan')->getData();
+            }
             if ($newDocPlan instanceof SpaceImage && $newDocPlan->getFile() !== null) {
                 $event->getData()->addDoc($newDocPlan, SpaceImage::FILETYPE_DOCUMENT_PLAN);
             }

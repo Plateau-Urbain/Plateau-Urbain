@@ -89,7 +89,10 @@ class ProjectOwnerType extends AbstractType
             $projectHolder = $event->getData();
 
             // Handles kbis
-            $kbis = $event->getForm()->get('kbis')->getData();
+            $kbis = null;
+            if ($event->getForm()->has('kbis')) {
+                $kbis = $event->getForm()->get('kbis')->getData();
+            }
             if ($kbis instanceof UserDocument) {
                 $kbis->setProjectHolder($projectHolder);
                 $kbis->setType(UserDocument::KBIS_TYPE);

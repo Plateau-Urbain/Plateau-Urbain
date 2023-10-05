@@ -1,16 +1,32 @@
-{{ form_errors(form.doc_aac) }}
-{{ form_errors(form.doc_plan) }}
+{% if space.getDocs('document_aac') | length == 0 %}
+    {{ form_errors(form.doc_aac) }}
+{% endif %}
+{% if space.getDocs('document_plan') | length == 0 %}
+    {{ form_errors(form.doc_plan) }}
+{% endif %}
 
 <p>Vous pouvez téléverser ici les documents ressources nécessaires au lieu</p>
 
 <div class="row">
   <div class="col-sm-6">
     <h5>Appel à candidature</h5>
-    {{ form_widget(form.doc_aac, {'attr': {'class': 'form-control'}}) }}
+    {% if space.getDocs('document_aac') | length %}
+        {% set fileaac =  space.getDocs('document_aac')[0] %}
+        <a target="_blank" href="{{ asset(vich_uploader_asset(fileaac, 'file')) }}">Voir</a>
+        <a href="{{ path('space_manager_removepicture', { 'id': fileaac.id, 'token': csrf_token('remove_image') }) }}">Supprimer</a>
+    {% else %}
+        {{ form_widget(form.doc_aac, {'attr': {'class': 'form-control'}}) }}
+    {% endif %}
   </div>
 
   <div class="col-sm-6">
     <h5>Répartition des espaces</h5>
-    {{ form_widget(form.doc_plan, {'attr': {'class': 'form-control'}}) }}
+    {% if space.getDocs('document_plan') | length %}
+        {% set fileplan =  space.getDocs('document_plan')[0] %}
+        <a target="_blank" href="{{ asset(vich_uploader_asset(fileplan, 'file')) }}">Voir</a>
+        <a href="{{ path('space_manager_removepicture', { 'id': fileplan.id, 'token': csrf_token('remove_image') }) }}">Supprimer</a>
+    {% else %}
+        {{ form_widget(form.doc_plan, {'attr': {'class': 'form-control'}}) }}
+    {% endif %}
   </div>
 </div>

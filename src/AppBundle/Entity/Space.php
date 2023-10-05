@@ -529,7 +529,7 @@ class Space
     /**
      * @return ArrayCollection|SpaceImage[]
      */
-    public function getDocs()
+    public function getDocs($type = null)
     {
         $docs = [];
 
@@ -537,6 +537,12 @@ class Space
             if ($p->getFileType() !== SpaceImage::FILETYPE_IMAGE) {
                 $docs[] = $p;
             }
+        }
+
+        if ($type) {
+            $docs = array_values(array_filter($docs, function ($doc) use ($type) {
+                return $doc->getFileType() === $type;
+            }));
         }
 
         return $docs;
