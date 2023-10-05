@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class SpaceImage
 {
+    const FILETYPE_DOCUMENT = 'document';
+    const FILETYPE_IMAGE = 'image';
+
     /**
      * @var int
      *
@@ -27,7 +30,7 @@ class SpaceImage
     private $id;
 
     /**
-     * @Assert\Image(
+     * @Assert\File(
      *     maxSize="20M"
      * )
      * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
@@ -38,6 +41,13 @@ class SpaceImage
      * @ORM\Column(name="file_name", type="string", nullable=true)
      */
     protected $fileName;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="file_type", type="string")
+     */
+    protected $fileType;
 
     /**
      * @ORM\ManyToOne(targetEntity="Space", inversedBy="pics")
@@ -96,6 +106,22 @@ class SpaceImage
         if ($file) {
             $this->updatedAt = new \DateTime('now');
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileType()
+    {
+        return ($this->fileType) ?: self::FILETYPE_IMAGE;
+    }
+
+    /**
+     * @param mixed $fileType
+     */
+    public function setFileType($fileType)
+    {
+        $this->fileType = $fileType;
     }
 
     /**

@@ -89,7 +89,7 @@ class SpaceType extends AbstractType
             )
             ->add(
                 'requiredDocs',
-                SpaceRequiredDocsType::class,
+                SpaceImageType::class,
                 [
                     'label' => "Document d'appel à candidature",
                     'mapped' => false,
@@ -140,8 +140,8 @@ class SpaceType extends AbstractType
 
             // Handles new required doc
             $newRDoc = $event->getForm()->get('requiredDocs')->getData();
-            if ($newRDoc instanceof SpaceRequiredDoc) {
-                $event->getData()->addRequiredDoc($newRDoc);
+            if ($newRDoc instanceof SpaceImage && $newRDoc->getFile() !== null) {
+                $event->getData()->addDoc($newRDoc);
             }
         });
     }

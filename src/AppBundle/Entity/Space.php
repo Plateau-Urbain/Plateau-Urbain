@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\SpaceImage;
-use AppBundle\Entity\SpaceRequiredDoc;
 
 /**
  * Space
@@ -156,12 +155,6 @@ class Space
      * @ORM\OrderBy({"position"="ASC"})
      */
     protected $pics;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SpaceRequiredDoc", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"position"="ASC"})
-     */
-    protected $requiredDocs;
 
     /**
      * @var User
@@ -522,7 +515,31 @@ class Space
      */
     public function getPics()
     {
-        return $this->pics;
+        $pics = [];
+
+        foreach ($this->pics as $p) {
+            if ($p->getFileType() !== SpaceImage::FILETYPE_DOCUMENT) {
+                $pics[] = $p;
+            }
+        }
+
+        return $pics;
+    }
+
+    /**
+     * @return ArrayCollection|SpaceImage[]
+     */
+    public function getDocs()
+    {
+        $docs = [];
+
+        foreach ($this->pics as $p) {
+            if ($p->getFileType() === SpaceImage::FILETYPE_DOCUMENT) {
+                $docs[] = $p;
+            }
+        }
+
+        return $docs;
     }
 
     /**
@@ -535,7 +552,26 @@ class Space
     public function addPic(SpaceImage $pic)
     {
         $pic->setSpace($this);
+        $pic->setFileType(SpaceImage::FILETYPE_IMAGE);
         $this->pics->add($pic);
+
+        $this->setUpdated(new \DateTime());
+
+        return $this;
+    }
+
+    /**
+     * Add doc.
+     *
+     * @param SpaceImage $doc
+     *
+     * @return Space
+     */
+    public function addDoc(SpaceImage $doc)
+    {
+        $doc->setSpace($this);
+        $doc->setFileType(SpaceImage::FILETYPE_DOCUMENT);
+        $this->pics->add($doc);
 
         $this->setUpdated(new \DateTime());
 
@@ -554,38 +590,13 @@ class Space
     }
 
     /**
-     * @return ArrayCollection|SpaceRequiredDoc[]
-     */
-    public function getRequiredDocs()
-    {
-        return $this->requiredDocs;
-    }
-
-    /**
-     * Add requiredDocs.
+     * Remove docs.
      *
-     * @param SpaceRequiredDoc $doc
-     *
-     * @return Space
+     * @param \AppBundle\Entity\SpaceImage $docs
      */
-    public function addRequiredDoc(SpaceRequiredDoc $doc)
+    public function removeDoc(SpaceImage $docs)
     {
-        $doc->setSpace($this);
-        $this->requiredDocs->add($doc);
-
-        $this->setUpdated(new \DateTime());
-
-        return $this;
-    }
-
-    /**
-     * Remove required doc.
-     *
-     * @param \AppBundle\Entity\SpaceRequiredDoc $docs
-     */
-    public function removeRequiredDoc(SpaceRequiredDoc $docs)
-    {
-        $this->requiredDocs->removeElement($docs);
+        $this->pics->removeElement($docs);
         $this->setUpdated(new \DateTime());
     }
 
