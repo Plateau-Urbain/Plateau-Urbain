@@ -87,15 +87,16 @@ class SpaceType extends AbstractType
                 'required' => false
             )
             )
-            ->add(
-                'requiredDocs',
-                SpaceImageType::class,
-                [
+            ->add('doc_aac', SpaceImageType::class, [
                     'label' => "Document d'appel à candidature",
                     'mapped' => false,
                     'required' => true,
-                ]
-            )
+                ])
+            ->add('doc_plan', SpaceImageType::class, [
+                    'label' => "Document d'appel à candidature",
+                    'mapped' => false,
+                    'required' => true,
+                ])
         ;
 
         $attributes = $this->getAttributes();
@@ -139,9 +140,14 @@ class SpaceType extends AbstractType
             }
 
             // Handles new required doc
-            $newRDoc = $event->getForm()->get('requiredDocs')->getData();
-            if ($newRDoc instanceof SpaceImage && $newRDoc->getFile() !== null) {
-                $event->getData()->addDoc($newRDoc);
+            $newDocAAC = $event->getForm()->get('doc_aac')->getData();
+            if ($newDocAAC instanceof SpaceImage && $newDocAAC->getFile() !== null) {
+                $event->getData()->addDoc($newDocAAC, SpaceImage::FILETYPE_DOCUMENT_AAC);
+            }
+
+            $newDocPlan = $event->getForm()->get('doc_plan')->getData();
+            if ($newDocPlan instanceof SpaceImage && $newDocPlan->getFile() !== null) {
+                $event->getData()->addDoc($newDocPlan, SpaceImage::FILETYPE_DOCUMENT_PLAN);
             }
         });
     }

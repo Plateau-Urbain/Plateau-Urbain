@@ -518,7 +518,7 @@ class Space
         $pics = [];
 
         foreach ($this->pics as $p) {
-            if ($p->getFileType() !== SpaceImage::FILETYPE_DOCUMENT) {
+            if ($p->getFileType() === SpaceImage::FILETYPE_IMAGE || $p->getFileType() === null) {
                 $pics[] = $p;
             }
         }
@@ -534,7 +534,7 @@ class Space
         $docs = [];
 
         foreach ($this->pics as $p) {
-            if ($p->getFileType() === SpaceImage::FILETYPE_DOCUMENT) {
+            if ($p->getFileType() !== SpaceImage::FILETYPE_IMAGE) {
                 $docs[] = $p;
             }
         }
@@ -567,10 +567,10 @@ class Space
      *
      * @return Space
      */
-    public function addDoc(SpaceImage $doc)
+    public function addDoc(SpaceImage $doc, $type)
     {
         $doc->setSpace($this);
-        $doc->setFileType(SpaceImage::FILETYPE_DOCUMENT);
+        $doc->setFileType($type);
         $this->pics->add($doc);
 
         $this->setUpdated(new \DateTime());

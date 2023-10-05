@@ -1,12 +1,16 @@
-{{ form_errors(form) }}
+{{ form_errors(form.doc_aac) }}
+{{ form_errors(form.doc_plan) }}
+
+<p>Vous pouvez téléverser ici les documents ressources nécessaires au lieu</p>
 
 <div class="row">
-  <div class="col-sm-7">
-    {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+  <div class="col-sm-6">
+    <h5>Appel à candidature</h5>
+    {{ form_widget(form.doc_aac, {'attr': {'class': 'form-control'}}) }}
   </div>
 
-  <div class="col-sm-5">
-    <button value="" type="submit" name="button" class="btn btn-block form-control">Ajouter</button>
+  <div class="col-sm-6">
+    <h5>Répartition des espaces</h5>
+    {{ form_widget(form.doc_plan, {'attr': {'class': 'form-control'}}) }}
   </div>
-
 </div>

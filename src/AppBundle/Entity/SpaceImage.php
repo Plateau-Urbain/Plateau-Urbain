@@ -17,7 +17,8 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class SpaceImage
 {
-    const FILETYPE_DOCUMENT = 'document';
+    const FILETYPE_DOCUMENT_PLAN = 'document_aac';
+    const FILETYPE_DOCUMENT_AAC = 'document_plan';
     const FILETYPE_IMAGE = 'image';
 
     /**
