@@ -624,13 +624,13 @@ class SpaceManagementController extends Controller
 
         $builder->add('status_filter', 'choice', array(
             'required' => false,
-            'choices' => array(
+            'choices' => array_flip([
                 Application::UNREAD_STATUS => 'Non lue',
                 Application::WAIT_STATUS => 'En attente',
                 Application::ACCEPT_STATUS => 'Accepté',
                 Application::REJECT_STATUS => 'Refusé',
                 'selected' => 'Sélectionnés'
-            ),
+            ]),
             'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));
@@ -639,10 +639,10 @@ class SpaceManagementController extends Controller
             'required' => false,
             'expanded' => true,
             'placeholder' => false,
-            'choices' => array(
+            'choices' => array_flip([
                 'asc' => 'Trier par ordre croissant',
                 'desc' => 'Trier par ordre décroissant'
-            ),
+            ]),
             'empty_data' => 'desc'
         ));
 
