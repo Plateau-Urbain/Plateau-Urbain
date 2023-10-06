@@ -668,22 +668,22 @@ class SpaceManagementController extends Controller
 
         $builder->add('sort_field', 'choice', array(
             'required' => false,
-            'choices' => array(
+            'choices' => array_flip([
                 'type' => 'Type de local',
                 'limitAvailability' => 'Date de clôture',
                 'city' => 'Localité',
                 'name' => 'Nom du bâtiment'
-            ),
+            ]),
             'placeholder' => 'Trier par',
             'empty_data' => ''
         ));
 
         $builder->add('status_filter', 'choice', array(
             'required' => false,
-            'choices' => array(
+            'choices' => array_flip([
                 'enabled' => 'Projets en cours',
                 'closed'  => 'Projets clôturés',
-            ),
+            ]),
             'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));
@@ -692,10 +692,10 @@ class SpaceManagementController extends Controller
             'required' => false,
             'expanded' => true,
             'placeholder' => false,
-            'choices' => array(
+            'choices' => array_flip([
                 'asc' => 'Trier par ordre croissant',
                 'desc' => 'Trier par ordre décroissant'
-            ),
+            ]),
             'empty_data' => 'desc'
         ));
 
