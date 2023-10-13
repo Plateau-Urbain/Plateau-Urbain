@@ -21,8 +21,8 @@ php app/console hautelook:fixtures:load --purge-with-truncate -b AppBundle
 
 ## Assets
 php app/console ckeditor:install --clear=drop
+make # compilation main.less
 php app/console assets:install
-make # compilation less
 php app/console assetic:dump
 ```
 
