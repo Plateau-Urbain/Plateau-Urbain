@@ -94,7 +94,7 @@ class Builder implements ContainerAwareInterface
                 'class' => 'local',
             )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
             /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
-            $menu->addChild('Se connecter', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'user-icon menu-icon')));
+            $menu->addChild('Se connecter', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
         }
 
        return $menu;

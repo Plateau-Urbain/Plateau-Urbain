@@ -1,11 +1,14 @@
 {% extends "@FOSUser/layout.html.twig" %}
 
 {% block fos_user_content %}
-    <div class="colorBox-content registration">
+  <div class="row-flex">
+<div class="login-page col-xs-12 col-md-6">  
+<div id="cboxContent" style="background: transparent;">
+<div  class="colorBox-content registration">
 
-        <img class="icon" src="{{ asset('/bundles/app/images/user_icon.png') }}" />
+    <img class="icon" src="{{ asset('/bundles/app/images/user_icon.png') }}" />
 
-        <h4>Inscription</h4>
+    <h4>Inscription</h4>
 
         <div class="alert alert-danger alert-error">
             {% for msg in app.session.flashbag.get('error_sign')  %}
@@ -48,5 +51,26 @@
             <input type="submit" id="_submit" value="Je m'inscris" class='btn btn-line-login'/>
 
             {{ form_end(form) }}
-        </div>
+         </div>
+  </div>
+</div>
+</div>
+<div class=" col-xs-12 col-md-6 sans-marge">
+     <img src="/bundles/app/images/" id="image" />
+</div>  
+</div>  
+</div>
+
+<script type="text/javascript">
+function randomImg(){
+   var tabImg = new Array();
+   tabImg[0]  = "village-reille.jpg";
+   tabImg[1]  = "asnieres.jpg";
+   tabImg[2]  = "opale.jpg";
+   tabImg[3]  = "opale-1.jpg";
+
+ 
+   document.getElementById('image').src += tabImg[Math.round(Math.random()*3)];
+}
+</script>
 {% endblock fos_user_content %}

@@ -1,25 +1,25 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-    <div class="row">
-
+<div class="white"> 
+        <div class="container"> 
+   <div class="bkg-img"></div>
+     
+    <div class="row top-profil">
         <!-- BEGIN MAIN CONTENT -->
-        <div class="main col-sm-8 col-sm-offset-2">
-            <h1 class="section-title">Mon profil candidat</h1>
-            <center>
-                <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p>
-            </center>
-        </div>
+        <div class=" col-sm-12 ">
 
+            <div class="titre-page">
+                <h1>Mon profil candidat</h1>
+            </div>
+           <h6> <a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
+            {# <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p> #}
+        </div>
     </div>
 
     <div id="js-form-space">
+    
         {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
-
-
-        <div id="js-form-space">
-
-
             <div class="row">
                 <div class=" col-xs-1 bkg ">
                     <ul>
@@ -264,8 +264,8 @@
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
-                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}">Voir</a>
-                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}">Supprimer</a>
+                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,8 +286,8 @@
                                                     {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
-                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}">Voir</a>
-                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}">Supprimer</a>
+                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
+                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -386,6 +386,8 @@
 
 
     {{ form_end(form) }}
+</div>
+</div>
 
 {% endblock %}
 
@@ -397,6 +399,8 @@
             }, 500);
         }
     </script>
+    
+    
 {% endblock %}
 
 {% block stylesheets %}

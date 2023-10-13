@@ -1,7 +1,7 @@
 {% extends "::base.html.twig" %}
 
 {% block prebody %}
-        <div class="pb100"></div>
+        <div class=""></div>
         {% if app.request.hasPreviousSession %}
         {% for type, messages in app.session.flashbag.all() %}
         {% for message in messages %}
@@ -14,8 +14,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container white">
+    
         {% block fos_user_content %}
         {% endblock fos_user_content %}
-    </div>
+        
 {% endblock %}

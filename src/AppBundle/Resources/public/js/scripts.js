@@ -154,6 +154,7 @@ var Cozy;
 
                 var $tis = this,
                     $wrapper = $('#wrapper'),
+                    $btnMobile = $('#nav-mobile-btn'),
                     $navMobile,
                     etype = $.browser.mobile ? 'touchstart' : 'click';
 
@@ -161,65 +162,35 @@ var Cozy;
                     w = $(window).innerWidth();
                 }
 
-                if (w <= 975 && !$tis.mobMenuFlag) {
+                if (w <= 992 && !$tis.mobMenuFlag) {
 
-                  /* $('body').prepend('<nav class="nav-mobile"><i class="fa fa-times"></i><h2><i class="fa fa-bars"></i>' + $tis.mobileMenuTitle + '</h2><ul></ul></nav>');*/
-                     $('body').prepend('<nav class="nav-mobile"><a href="" class="nav-logo-mobile"><img src="/public/images/logo.png" alt="Plateau Urbain" /></a><i class="fa fa-times"></i><ul>fdg</ul></nav>');
-
+                    $('body').prepend('<nav class="nav-mobile"><ul></ul></nav>');
                     $('.nav-mobile > ul').html($('.nav').html());
-
                     $('.nav-mobile b').remove();
-
                     $('.nav-mobile ul.dropdown-menu').removeClass().addClass("dropdown-mobile");
 
-                    //$('.nav-mobile').css({'min-height': ($('#wrapper').height() + 270) + 'px' });
-
                     $navMobile = $(".nav-mobile");
+                    $navMobile.slideToggle().hide();
 
                     $("#nav-mobile-btn").bind(etype, function (e) {
                         e.stopPropagation();
                         e.preventDefault();
-
-                        setTimeout(function () {
-                            $wrapper.addClass('open');
+                        if (!$btnMobile.hasClass('open')) {
+                            $btnMobile.addClass('open');
                             $navMobile.addClass('open');
-                            $navMobile.getNiceScroll().show();
-                        }, 25);
-
-                        $.waypoints('disable');
-
-                        $(document).bind(etype, function (e) {
-                            if (!$(e.target).hasClass('nav-mobile') && !$(e.target).parents('.nav-mobile').length) {
-                              $wrapper.removeClass('open');
-                                $navMobile.removeClass('open');
-                                $(document).unbind(etype);
-                                $.waypoints('enable');
-                            }
-                        });
-
-                        $('>i', $navMobile).bind(etype, function () {
-                            $navMobile.getNiceScroll().hide();
-                            $wrapper.removeClass('open');
+                            $navMobile.slideToggle();
+                            $.waypoints('disable')
+                        }else{
+                            $btnMobile.removeClass('open');
                             $navMobile.removeClass('open');
-                            $(document).unbind(etype);
+                            $navMobile.slideToggle();
                             $.waypoints('enable');
-                        });
+                        }
                     });
-
-                    $navMobile.niceScroll({
-                        autohidemode: true,
-                        cursorcolor: "#c2c2c2",
-                        cursoropacitymax: "0.7",
-                        cursorwidth: 10,
-                        cursorborder: "0px solid #000",
-                        horizrailenabled: false,
-                        zindex: "1"
-                    });
-
-                    $navMobile.getNiceScroll().hide();
-
-                    $tis.mobMenuFlag = true;
                 }
+
+                $tis.mobMenuFlag = true;
+
             },
 
             getLatestTweets: function () {
@@ -1178,3 +1149,143 @@ var Cozy;
         Cozy.init();
     });
     }(jQuery));
+
+$(document).ready(function() {
+
+    $("a[href*=#]").click(function(event){     
+        event.preventDefault();
+        $('html,body').animate({scrollTop:$(this.hash).offset().top}, 500);
+    });
+   
+/*-------------SCROLL SPY-------------*/
+
+{
+    'use strict';
+
+    const sectionsIDs = Array.from(document.querySelectorAll(".section"));
+    let sectionsOffsets = [];
+
+    sectionsIDs.forEach(e => sectionsOffsets[e.id] = e.offsetTop);
+
+
+    window.addEventListener("scroll", function () {
+        var scrollPosition = document.documentElement.scrollTop || document.body.scrollTop;
+
+        for (const cur of sectionsIDs) {
+            if (sectionsOffsets[cur.id] <= scrollPosition + 50) {
+                Array.from(document.querySelectorAll('.active')).forEach(e => e.classList.remove('active'));
+                Array.from(document.querySelectorAll(`a[href*= ${cur.id}]`)).forEach(e => e.classList.add('active'));
+            }
+        }
+
+    });
+
+}
+
+
+/*-------------SMOOTH SCROLL-------------*/
+
+{
+    'use strict';
+
+    function scrollIt(destination, duration = 200, easing = 'linear', callback) {
+
+        const easings = {
+            linear(t) {
+                return t;
+            },
+            easeInQuad(t) {
+                return t * t;
+            },
+            easeOutQuad(t) {
+                return t * (2 - t);
+            },
+            easeInOutQuad(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            },
+            easeInCubic(t) {
+                return t * t * t;
+            },
+            easeOutCubic(t) {
+                return (--t) * t * t + 1;
+            },
+            easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+            },
+            easeInQuart(t) {
+                return t * t * t * t;
+            },
+            easeOutQuart(t) {
+                return 1 - (--t) * t * t * t;
+            },
+            easeInOutQuart(t) {
+                return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+            },
+            easeInQuint(t) {
+                return t * t * t * t * t;
+            },
+            easeOutQuint(t) {
+                return 1 + (--t) * t * t * t * t;
+            },
+            easeInOutQuint(t) {
+                return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
+            }
+        };
+
+        const start = window.pageYOffset;
+        const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+
+        const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+        const destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop;
+        const destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
+
+
+        if ('requestAnimationFrame' in window === false) {
+            window.scroll(0, destinationOffsetToScroll);
+            if (callback) {
+                callback();
+            }
+            return;
+        }
+
+
+        function scroll() {
+            const now = 'now' in window.performance ? performance.now() : new Date().getTime();
+            const time = Math.min(1, ((now - startTime) / duration));
+            const timeFunction = easings[easing](time);
+            window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
+
+            if (window.pageYOffset === destinationOffsetToScroll) {
+                if (callback) {
+                    callback();
+                }
+                return;
+            }
+
+            requestAnimationFrame(scroll);
+        }
+
+
+        scroll();
+    }
+
+
+    Array.from(document.querySelectorAll(".scroll")).forEach(e => {
+
+        e.addEventListener('click', () => {
+            scrollIt(
+                document.querySelector(`#${e.href.split('#')[1]}`),
+                300,
+                'easeInOutQuint'
+            );
+        });
+
+    });
+
+}
+
+});
+
+
+

@@ -1,7 +1,9 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<div class="row">
-    <div class="main col-sm-offset-3 col-sm-6">
+ <div class="row-flex">
+<div class="connexion-page  col-xs-12 col-md-6"> 
+<div class="colorBox-content registration">
+  <img class="icon" src="{{ asset('/bundles/app/images/lock_icon.png') }}" />   
         <div class="alert alert-info" role='alert'>
             <p>Veuillez rentrer votre nom d'utilisateur ou votre email afin de réinitialiser votre mot de passe.</p>
             <p>Un email vous sera envoyé. Regardez dans le dossier de spam si vous ne recevez rien.</p>
@@ -15,6 +17,21 @@
                 <input type="submit" class="btn btn-line-login" value="{{ 'resetting.request.submit'|trans }}" />
             </div>
         </form>
-
+      </div>
     </div>
+    <div class=" col-xs-12 col-md-6 sans-marge">
+       <img src="/bundles/app/images/" id="image" />
+    </div>  
 </div>
+<script type="text/javascript">
+function randomImg(){
+   var tabImg = new Array();
+   tabImg[0]  = "village-reille.jpg";
+   tabImg[1]  = "asnieres.jpg";
+   tabImg[2]  = "opale.jpg";
+   tabImg[3]  = "opale-1.jpg";
+
+ 
+   document.getElementById('image').src += tabImg[Math.round(Math.random()*3)];
+}
+</script>
