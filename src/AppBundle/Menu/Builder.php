@@ -28,7 +28,7 @@ class Builder implements ContainerAwareInterface
         ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La coopérative')->setExtra('safe_label',true);
 	//
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild('Qui sommes-nous', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_blank')));
+        $Menu->addChild('Qui sommes-nous ?', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Devenir sociétaire", array('uri' => 'https://staging.plateau-urbain.com/devenir-societaire/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Les équipes", array('uri' => 'https://staging.plateau-urbain.com/les-equipes/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Ressources", array('uri' => 'https://staging.plateau-urbain.com/ressources/', 'linkAttributes' => array('target' => '_top')));
@@ -94,7 +94,7 @@ class Builder implements ContainerAwareInterface
                 'class' => 'local',
             )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
             /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
-            $menu->addChild('Se connecter', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
+            $menu->addChild('Mon compte', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
         }
 
        return $menu;
