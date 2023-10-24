@@ -8,6 +8,7 @@
 /bin/
 /composer.phar
 /vendor/
+/web/bundles/app
 /web/bundles/ivoryckeditor
 /web/bundles/sonatacore
 /web/bundles/sonataadmin
@@ -17,6 +18,8 @@
 /web/assetic/
 /web/media
 !web/media/.gitkeep
+/web/css
+/web/js
 *~
 tags
 /src/AppBundle/Resources/public/css/main.css
