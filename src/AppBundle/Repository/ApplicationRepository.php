@@ -91,8 +91,8 @@ class ApplicationRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a')
             ->select('a');
 
-        $qb->andWhere('a.status != :status');
-        $qb->setParameter('status', 'draft');
+        $qb->andWhere('a.status != :status_draft');
+        $qb->setParameter('status_draft', 'draft');
 
         if (!empty($params['space'])) {
             $qb->andWhere('a.space = :space')->setParameter('space', $params['space']);
