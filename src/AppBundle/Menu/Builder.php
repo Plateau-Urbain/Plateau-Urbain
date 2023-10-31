@@ -71,7 +71,7 @@ class Builder implements ContainerAwareInterface
             $loggedMenu->setChildrenAttribute('class', 'dropdown-menu');
 
             $role = ($user->isProprio() || $context->isGranted('ROLE_OWNER')) ? "propriétaire" : "candidat";
-            $role = $context->isGranted('ROLE_ADMIN') ? 'admin' : $role;
+            $role = $context->isGranted('ROLE_ADMIN') ? 'propriétaire' : $role;
 
             $loggedMenu->addChild('Mon profil '.$role, array('route' => 'security_profil', 'attributes' => array('class'=>'')));
 
