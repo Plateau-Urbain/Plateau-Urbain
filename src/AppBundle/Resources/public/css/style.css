@@ -2909,6 +2909,9 @@ cursor: pointer;
 }
 }
 
+.nav-mobile .dropdown-backdrop {
+  display: none !important;
+}
 
 /* #Home
 ================================================== */
