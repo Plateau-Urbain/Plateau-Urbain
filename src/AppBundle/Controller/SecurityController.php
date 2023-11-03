@@ -98,60 +98,46 @@ class SecurityController extends Controller
 
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
 
-        if ($form->handleRequest($request)->isSubmitted()) {
-
-
-            $old_pwd = $this->getUser()->isProprio() && $form->has('oldPassword') ? $form->get('oldPassword')->getData() : '';
-            $new_pwd = $this->getUser()->isProprio() && $form->has('plainPassword') ? $form->get('plainPassword')->getData() : '';
-
-            if (!empty($old_pwd) || !empty($new_pwd)) {
-
-                $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
-
-                if($current_ppassword != $old_pwd_encoded) {
-                    $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
-                } else {
-                    $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
-                    $user->setPassword($new_pwd_encoded);
-                    $em->persist($user);
-                    $em->flush();
-
-                    if (!$form->isValid()) {
-                        return $this->render($template, array(
-                            'form' => $form->createView()
-                        ));
-                    }
-
-                    return $this->redirect($this->generateUrl('security_profil'));
-                }
-            } else {
-                if ($form->has('plainPassword')) {
-                    $new_pwd = $form->get('plainPassword')->getData();
-
-                    if (!empty($new_pwd)) {
-                        $user->setPassword($encoder->encodePassword($new_pwd, $user->getSalt()));
-                    } else {
-                        $user->setPassword($current_ppassword);
-                    }
-                }
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($this->getUser());
-                $em->flush();
-
-                if (!$form->isValid()) {
-                    return $this->render($template, array(
-                        'form' => $form->createView()
-                    ));
-                }
-
-                return $this->redirect($this->generateUrl('security_profil'));
-            }
+        if (! $form->handleRequest($request)->isSubmitted()) {
+            return $this->render($template, [
+                'form' => $form->createView()
+            ]);
         }
 
-        return $this->render($template, array(
-            'form' => $form->createView()
-        ));
+        if (! $form->isValid()) {
+            return $this->render($template, [
+                'form' => $form->createView()
+            ]);
+        }
+
+        $old_pwd = $this->getUser()->isProprio() && $form->get('userInfo')->has('oldPassword') ? $form->get('userInfo')->get('oldPassword')->getData() : '';
+        $new_pwd = $this->getUser()->isProprio() && $form->get('userInfo')->has('plainPassword') ? $form->get('userInfo')->get('plainPassword')->getData() : '';
+
+        // si pas de changement de mot de passe
+        if (empty($old_pwd) || empty($new_pwd)) {
+            $em->persist($user);
+            $em->flush();
+
+            return $this->render($template, [
+                'form' => $form->createView()
+            ]);
+        }
+
+        $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
+
+        if($current_ppassword != $old_pwd_encoded) {
+            $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
+            return $this->render($template, [
+                'form' => $form->createView()
+            ]);
+        }
+
+        $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
+        $user->setPassword($new_pwd_encoded);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('security_profil'));
     }
 
     /**

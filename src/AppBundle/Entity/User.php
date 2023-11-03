@@ -71,6 +71,7 @@ class User extends BaseUser
 
     /**
      * @var string
+     * @Assert\Email(groups={"projectHolder", "owner"})
      * @Assert\NotBlank(groups={"projectHolder", "owner"})
      */
     protected $email;
