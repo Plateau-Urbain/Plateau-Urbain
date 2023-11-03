@@ -101,8 +101,8 @@ class SecurityController extends Controller
         if ($form->handleRequest($request)->isSubmitted()) {
 
 
-            $old_pwd = $this->getUser()->isProprio() ? $form->get('oldPassword')->getData() : '';
-            $new_pwd = $this->getUser()->isProprio() ? $form->get('plainPassword')->getData() : '';
+            $old_pwd = $this->getUser()->isProprio() && $form->has('oldPassword') ? $form->get('oldPassword')->getData() : '';
+            $new_pwd = $this->getUser()->isProprio() && $form->has('plainPassword') ? $form->get('plainPassword')->getData() : '';
 
             if (!empty($old_pwd) || !empty($new_pwd)) {
 
