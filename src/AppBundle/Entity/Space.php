@@ -35,7 +35,7 @@ class Space
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
-     * @Assert\NotBlank(groups={"save", "draft"})
+     * @Assert\NotBlank(groups={"save"})
      * @Assert\Length(max=255)
      */
     private $name;
@@ -138,7 +138,7 @@ class Space
      * @var \DateTime
      *
      * @ORM\Column(name="limitAvailability", type="date", nullable=true)
-     * @Assert\NotBlank(groups={"save", "draft"})
+     * @Assert\NotBlank(groups={"save"})
      */
     private $limitAvailability;
 

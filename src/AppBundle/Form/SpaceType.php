@@ -40,27 +40,29 @@ class SpaceType extends AbstractType
     {
         $builder
             ->add('name', null, array('label' => 'Nom de l\'espace' , 'attr' => array('class' => 'form-control')))
-            ->add('zipCode', null, array('label' => 'Code postal' , 'attr' => array('class' => 'form-control')))
-            ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control')))
+            ->add('zipCode', null, array('label' => 'Code postal' , 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('city', null, array('label' => 'Ville' , 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('limitAvailability', DateType::class, [
                     'label' => 'Date limite de candidature',
                     'widget' => 'single_text',
                     'attr' => array(
-                        'class' => 'form-control',
-                    )
+                        'class' => 'form-control'
+                    ),
+                    'required' => false
                 ]
             )
-            ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
-            ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control')))
-            ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…")))
-            ->add('description', CKEditorType::class, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5)))
-            ->add('activityDescription', CKEditorType::class, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5)))
+            ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…"), 'required' => false))
+            ->add('description', CKEditorType::class, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5), 'required' => false))
+            ->add('activityDescription', CKEditorType::class, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5), 'required' => false))
             ->add('tags', CollectionType::class, [
                 'entry_type' => SpaceAttributeType::class,
                 'label' => false,
                 'allow_add' => false,
                 'allow_delete' => false,
-                'by_reference' => false
+                'by_reference' => false,
+                'required' => false
             ])
             ->add('pics', SpaceImageType::class,
                 array(
@@ -92,7 +94,7 @@ class SpaceType extends AbstractType
             $builder->add('doc_aac', SpaceImageType::class, [
                     'label' => "Document d'appel à candidature",
                     'mapped' => false,
-                    'required' => true,
+                    'required' => false,
                 ]);
         }
 
@@ -100,7 +102,7 @@ class SpaceType extends AbstractType
             $builder->add('doc_plan', SpaceImageType::class, [
                     'label' => "Répartition des espaces",
                     'mapped' => false,
-                    'required' => true,
+                    'required' => false,
             ]);
         }
 
