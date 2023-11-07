@@ -269,7 +269,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% else %}
+                                        {% elseif form.idcard is defined %}
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
                                                 <div class=" actions">
                                                     <label class="btn btn-accepted">
@@ -291,7 +291,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% else %}
+                                        {% elseif form.kbis is defined %}
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
                                                 <div class=" actions">
                                                     <label class="btn btn-accepted">
