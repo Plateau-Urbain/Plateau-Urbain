@@ -113,7 +113,10 @@ class ProjectOwnerType extends AbstractType
             }
 
             // Handles ID card
-            $idcard = $event->getForm()->get('idcard')->getData();
+            $idcard = null;
+            if ($event->getForm()->has('idcard')) {
+                $idcard = $event->getForm()->get('idcard')->getData();
+            }
             if ($idcard instanceof UserDocument) {
                 $idcard->setProjectHolder($projectHolder);
                 $idcard->setType(UserDocument::ID_TYPE);
@@ -139,6 +142,7 @@ class ProjectOwnerType extends AbstractType
         $builder->remove('username');
         if ($options['noPlainPassword']) {
             $builder->get('userInfo')->remove('plainPassword');
+            $builder->get('userInfo')->remove('oldPassword');
         }
     }
 
