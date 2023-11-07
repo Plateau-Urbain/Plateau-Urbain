@@ -176,18 +176,18 @@
 
                 <input type="submit" value="Enregistrer" class="btn btn-line-s save" data-save='Vous pourrez compléter votre saisie depuis la rubrique "Mes espaces"'>
 
-               {#  {{ form_widget(
+               {{ form_widget(
                     form.publish, {
                         'attr': {
                             'class': 'btn btn-line-s js-publish',
                             'onclick': "return confirm(\'Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?');"
                         }
                     })
-                }} #}
+                }}
             </div>
         </div> <!--end row btns-->
 
-  
+
 <div style="display:none;">{{ form_rest(form) }}</div>
 {{ form_end(form) }}
 
