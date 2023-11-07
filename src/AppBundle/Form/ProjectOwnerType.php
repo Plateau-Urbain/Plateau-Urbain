@@ -65,7 +65,7 @@ class ProjectOwnerType extends AbstractType
             ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
             ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')));
 
-            if (! $builder->getForm()->getData()->hasDocuments('kbis')) {
+            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::KBIS_TYPE)) {
                 $builder
                 ->add('kbis', UserDocumentType::class, array(
                     'label' => 'Kbis',
@@ -74,7 +74,7 @@ class ProjectOwnerType extends AbstractType
                 ));
             }
 
-            if (! $builder->getForm()->getData()->hasDocuments('idcard')) {
+            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::ID_TYPE)) {
                 $builder
                 ->add('idcard', UserDocumentType::class, array(
                     'label' => 'Carte d\'identité',
