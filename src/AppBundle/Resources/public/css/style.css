@@ -2549,7 +2549,7 @@ color:#E9473C;
   padding-left:8px !important;
   background: #F5F4F2;
   line-height:26px !important;
-  border: 0.005em solid #000;
+  border: 0.05em solid #000;
   text-align: left;
   font-size:19px;
   font-weight: 500;
@@ -8169,7 +8169,7 @@ div.dark_square #pp_full_res .pp_inline {
   margin-left:17px;
 }
 #nav-section.shrink .nav-logo img {
-  height: 55px;
+  height: 49px;
   width: auto;
 }
 #home-advanced-search .container {
@@ -9938,7 +9938,7 @@ img {
 
 }
 #header #nav-section.shrink .navbar-nav > li:nth-child(4) a {
-  margin-top: 12px;
+  margin-top: 14px;
 }
 /*#header #nav-section a.connectMenu ,
 #header #nav-section a.connectMenured
