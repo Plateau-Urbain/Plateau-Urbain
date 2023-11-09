@@ -40,7 +40,7 @@ class Builder implements ContainerAwareInterface
         $Menu->addChild("Notre accompagnement", array('uri' => 'https://staging.plateau-urbain.com/notre-offre/', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Conseil et études", array('uri' => 'https://staging.plateau-urbain.com/conseil-et-etudes/', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Montage et gestion", array('uri' => 'https://staging.plateau-urbain.com/montage-et-gestion/', 'linkAttributes' => array('target' => '_blank')));
-        $Menu->addChild("Plateforme propriétaire", array('uri' => 'https://staging.plateau-urbain.com/plateforme/', 'linkAttributes' => array('target' => '_blank')));
+        $Menu->addChild("Plateforme propriétaire", array('uri' => 'https://staging.plateau-urbain.com/plateforme/#proprio', 'linkAttributes' => array('target' => '_blank')));
         $Menu->addChild("Privatisation", array('uri' => 'https://staging.plateau-urbain.com/privatisation/', 'linkAttributes' => array('target' => '_blank')));
         ####
         $Menu = $menu->addChild('Les tiers-lieux', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
