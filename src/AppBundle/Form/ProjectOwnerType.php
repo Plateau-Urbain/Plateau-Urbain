@@ -66,22 +66,20 @@ class ProjectOwnerType extends AbstractType
             ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')));
 
             if (! $builder->getForm()->getData()->hasDocuments(UserDocument::KBIS_TYPE) && $builder->getForm()->getData()->getCompanyStatus() !== 'Association') {
-                $builder
-                ->add('kbis', UserDocumentType::class, array(
+                $builder->add('kbis', UserDocumentType::class, [
                     'label' => 'Kbis',
                     'mapped' => false,
                     'error_bubbling' => false
-                ));
+                ]);
             }
 
             if (! $builder->getForm()->getData()->hasDocuments(UserDocument::ID_TYPE) && $builder->getForm()->getData()->getCompanyStatus() === 'Association') {
                 $builder
-                ->add('idcard', UserDocumentType::class, array(
+                ->add('idcard', UserDocumentType::class, [
                     'label' => 'Carte d\'identité',
                     'mapped' => false,
                     'error_bubbling' => false
-                ))
-                ;
+                ]);
             }
 
 
@@ -93,18 +91,13 @@ class ProjectOwnerType extends AbstractType
             if ($event->getForm()->has('kbis')) {
                 $kbis = $event->getForm()->get('kbis')->getData();
             }
+
             if ($kbis instanceof UserDocument) {
                 $kbis->setProjectHolder($projectHolder);
                 $kbis->setType(UserDocument::KBIS_TYPE);
 
-                if ($projectHolder->hasDocuments(UserDocument::KBIS_TYPE)) {
-                    $currentKbis = $projectHolder->getDocumentsType(UserDocument::KBIS_TYPE)[0];
-                    $currentKbis->setFile($kbis->getFile());
-                    $currentKbis->setFileName($kbis->getFileName());
-                } else {
-                    if ($kbis->getFile()) {
-                        $projectHolder->addDocument($kbis);
-                    }
+                if (! $projectHolder->hasDocuments(UserDocument::KBIS_TYPE)) {
+                    $projectHolder->addDocument($kbis);
                 }
             } else {
                 if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE) && $projectHolder->getCompanyStatus() != 'Association') {
@@ -117,25 +110,19 @@ class ProjectOwnerType extends AbstractType
             if ($event->getForm()->has('idcard')) {
                 $idcard = $event->getForm()->get('idcard')->getData();
             }
+
             if ($idcard instanceof UserDocument) {
                 $idcard->setProjectHolder($projectHolder);
                 $idcard->setType(UserDocument::ID_TYPE);
 
-                if ($projectHolder->hasDocuments(UserDocument::ID_TYPE)) {
-                    $currentIdcard = $projectHolder->getDocumentsType(UserDocument::ID_TYPE)[0];
-                    $currentIdcard->setFile($idcard->getFile());
-                    $currentIdcard->setFileName($idcard->getFileName());
-                } else {
-                    if ($idcard->getFile()) {
-                        $projectHolder->addDocument($idcard);
-                    }
+                if (! $projectHolder->hasDocuments(UserDocument::ID_TYPE)) {
+                    $projectHolder->addDocument($idcard);
                 }
             } else {
                 if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE) && $projectHolder->getCompanyStatus() == 'Association') {
                     $event->getForm()->get('idcard')->addError(new FormError('Cette valeur ne doit pas être vide.'));
                 }
             }
-
         });
 
         $builder->get('companyInfo')->remove('companyFunction');

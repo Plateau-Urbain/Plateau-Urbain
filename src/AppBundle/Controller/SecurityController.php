@@ -118,18 +118,15 @@ class SecurityController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->render($template, [
-                'form' => $form->createView()
-            ]);
+            $session->getFlashBag()->set('success_msg', "Profil mis à jour");
+            return $this->redirect($this->generateUrl('security_profil'));
         }
 
         $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
 
         if($current_ppassword != $old_pwd_encoded) {
             $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
-            return $this->render($template, [
-                'form' => $form->createView()
-            ]);
+            return $this->redirect($this->generateUrl('security_profil'));
         }
 
         $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
@@ -137,6 +134,7 @@ class SecurityController extends Controller
         $em->persist($user);
         $em->flush();
 
+        $session->getFlashBag()->set('success_msg', "Profil mis à jour");
         return $this->redirect($this->generateUrl('security_profil'));
     }
 

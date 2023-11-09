@@ -18,7 +18,17 @@
     </div>
 
     <div id="js-form-space">
-    
+        {% for message in  app.flashes('error_msg') %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in  app.flashes('success_msg') %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
             <div class="row">
                 <div class=" col-xs-1 bkg ">
@@ -234,6 +244,7 @@
                             <div class="col-sm-12">
                                 <div class="col-sm-6 required-files">
                                     <ul class="list-unstyled">
+                                        {% if form.idcard is defined or app.user.hasDocuments('id') %}
                                         <li class="idcard-file">
                                             {% if app.user.hasDocuments('id') %}
                                                 <i class="fa fa-check fa-lg"></i>
@@ -242,18 +253,18 @@
                                             {% endif %}
                                             <label class="required">Pièce d'identité</label>
                                         </li>
+                                        {% endif %}
 
+                                        {% if form.kbis is defined or app.user.hasDocuments('kbis') %}
                                         <li class="kbis-file">
                                             {% if app.user.hasDocuments('kbis') %}
                                                 <i class="fa fa-check fa-lg"></i>
-
                                             {% else %}
                                                 <i class="fa fa-times fa-lg"></i>
-
                                             {% endif %}
                                             <label class="required">Kbis ou autre</label>
-
                                         </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="col-sm-6">

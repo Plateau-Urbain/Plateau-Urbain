@@ -11387,7 +11387,7 @@ text-align:center;
   border:1px solid #FFF;
  }
  .alert {
-  padding:0;
+  /* padding:0; */
  }
  .alert-danger{
   color:#e9473c !important;
