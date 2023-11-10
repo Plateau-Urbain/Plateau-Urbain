@@ -1033,6 +1033,27 @@ class Space
     }
 
     /**
+     * @Assert\Callback(groups="save")
+     * @param ExecutionContextInterface $context
+     */
+    public function validateDocs(ExecutionContextInterface $context)
+    {
+        if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_AAC)) < 1) {
+            $context->buildViolation('Il manque le document de l\'appel à candidature')
+                    ->atPath('doc_aac')
+                    //->setParameter('{{ value }}', $invalidValue)
+                    ->addViolation();
+        }
+
+        if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN)) < 1) {
+            $context->buildViolation('Il manque le document de plan')
+                    ->atPath('doc_plan')
+                    //->setParameter('{{ value }}', $invalidValue)
+                    ->addViolation();
+        }
+    }
+
+    /**
      * Get enabled
      *
      * @return boolean
