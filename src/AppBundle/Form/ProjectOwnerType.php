@@ -65,7 +65,7 @@ class ProjectOwnerType extends AbstractType
             ->add('linkedinUrl', null, array('label' => "Linkedin", 'attr' => array('class' => 'form-control')))
             ->add('otherUrl', null, array('label' => "Viadeo", 'attr' => array('class' => 'form-control')));
 
-            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::KBIS_TYPE) && $builder->getForm()->getData()->getCompanyStatus() !== 'Association') {
+            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::KBIS_TYPE)) {
                 $builder->add('kbis', UserDocumentType::class, [
                     'label' => 'Kbis',
                     'mapped' => false,
@@ -73,7 +73,7 @@ class ProjectOwnerType extends AbstractType
                 ]);
             }
 
-            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::ID_TYPE) && $builder->getForm()->getData()->getCompanyStatus() === 'Association') {
+            if (! $builder->getForm()->getData()->hasDocuments(UserDocument::ID_TYPE)) {
                 $builder
                 ->add('idcard', UserDocumentType::class, [
                     'label' => 'Carte d\'identité',
@@ -100,7 +100,7 @@ class ProjectOwnerType extends AbstractType
                     $projectHolder->addDocument($kbis);
                 }
             } else {
-                if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE) && $projectHolder->getCompanyStatus() != 'Association') {
+                if (!$projectHolder->hasDocuments(UserDocument::KBIS_TYPE)) {
                     $event->getForm()->get('kbis')->addError(new FormError('Cette valeur ne doit pas être vide.'));
                 }
             }
@@ -119,7 +119,7 @@ class ProjectOwnerType extends AbstractType
                     $projectHolder->addDocument($idcard);
                 }
             } else {
-                if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE) && $projectHolder->getCompanyStatus() == 'Association') {
+                if (!$projectHolder->hasDocuments(UserDocument::ID_TYPE)) {
                     $event->getForm()->get('idcard')->addError(new FormError('Cette valeur ne doit pas être vide.'));
                 }
             }

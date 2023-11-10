@@ -117,6 +117,7 @@ class ApplicationType extends AbstractType
 
         if ($user->getId()) {
             $projectHolderForm->get('userInfo')->remove('plainPassword');
+            $projectHolderForm->get('userInfo')->remove('oldPassword');
         }
 
         foreach ($application->getSpace()->getDocuments() as $field) {
