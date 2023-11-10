@@ -16,7 +16,7 @@ $(document).ready(function() {
         $("select").chosen();
 
         if (saving && $("#js-form-space .has-error").length < 1) {
-            $.colorbox({html:$('#saveBox').html()});
+            $.colorbox({html:$('#saveBox').html().replace('%%savemsg%%', saving)});
         }
     }
 
@@ -63,7 +63,7 @@ $(document).ready(function() {
             }
 
             if ($(this).hasClass('save')) {
-                saving = true;
+                saving = $(this).data('save') ? $(this).data('save') : true;
             }
 
             var form = $(this).closest('form');
