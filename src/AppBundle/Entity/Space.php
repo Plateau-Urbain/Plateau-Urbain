@@ -1027,8 +1027,10 @@ class Space
     public function validatePicturesCount(ExecutionContextInterface $context)
     {
         if ($this->pics->count() > self::MAX_PICTURES_UPLOAD) {
-            $context
-                ->addViolationAt("pics", sprintf('Vous ne pouvez ajouter que %d photos maximum.', self::MAX_PICTURES_UPLOAD));
+            $context ->buildViolation('Vous ne pouvez ajouter que {{ nb }} photos maximum')
+                     ->atPath('pics')
+                     ->setParameter('{{ nb }}', self::MAX_PICTURES_UPLOAD)
+                     ->addViolation();
         }
     }
 
