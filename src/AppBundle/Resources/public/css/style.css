@@ -11668,3 +11668,19 @@ form .main .section-title.form-five:after {
 form .main .section-title.form-sixth:after {
   content: '6';
 }
+.form-contener.bleu h5{
+padding-bottom:10px;
+}
+
+/*ajout page profil */
+.kbis-file, .idcard-file {
+  padding: 8px 0;
+}
+
+/*page edit space*/
+.form-contener .alert-danger {
+  color: #FFF !important;
+  background: #e9473c  !important;
+  border: 0 solid #FFF !important;
+  padding-top: 8px;
+}

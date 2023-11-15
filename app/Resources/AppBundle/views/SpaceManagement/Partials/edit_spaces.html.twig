@@ -20,39 +20,39 @@
     </div>
 </div>
 
-            <div class="row">
+<div class="row">
         <div class=" col-xs-1 bkg ">
             <ul>
                 <li>
-                    <a class="indicator active" href="http://localhost:8080/profil/#one"></a>
+                    <a class="indicator active" href="#one"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#two"></a>
+                    <a class="indicator" href="#two"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#three"></a>
+                    <a class="indicator" href="#three"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#four"></a>
+                    <a class="indicator" href="#four"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#five"></a>
+                    <a class="indicator" href="#five"></a>
                 </li>
                 <li>
-                    <a class="indicator" href="http://localhost:8080/profil/#sixth"></a>
+                    <a class="indicator" href="#sixth"></a>
                 </li>
             </ul>
         </div>     
 
 
 {{ form_start(form) }}
-        <div class="main col-xs-10">
-            <div id="one" class="section">
-                <span class="section-title form-one"></span>
-                <div  class="form-contener bleu">
-                    <h3>Votre espace</h3>
+<div class="main col-xs-10">
+    <div id="one" class="section">
+        <span class="section-title form-one"></span>
+            <div  class="form-contener bleu">
+            <h3>Votre espace</h3>
 
-         {{ form_errors(form) }}
+         
 
      
             <div class="row">
@@ -99,12 +99,8 @@
                     {{ form_row(form.activityDescription) }}
                 </div>
             </div>
-
-            <div style="clear: both"></div>
         </div>
     </div>
-   
- 
 
     <div id="two" class="section">
                 <span class="section-title form-two"></span>
@@ -165,12 +161,11 @@
                 Documents ressources
             </h3>
             {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
+            {{ form_errors(form) }}
         </div>
     </div>
-</div>
-</div>
-</div>
 
+</div>
 
         <div class="row btns">
             <div class="col-sm-12">
@@ -200,6 +195,8 @@
 {{ form_end(form) }}
 
 
+</div>
+</div>
 
 
 

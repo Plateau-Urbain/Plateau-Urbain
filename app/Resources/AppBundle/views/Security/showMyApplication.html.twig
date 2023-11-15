@@ -207,7 +207,7 @@
       </h4>
         <div class="files">
 
-          {% if application.projectHolder.companyStatus == 'Association' %}
+  
             <div class="file-infos">
               <span>Pièce d'identité</span>
               <div class="pull-right actions">
@@ -217,7 +217,7 @@
                 {% endif %}
               </div>
             </div>
-          {% else %}
+          
             <div class="file-infos">
               <span>Document justifiant la création de la structure</span>
               <div class="pull-right actions">
@@ -227,7 +227,7 @@
                 {% endif %}
               </div>
             </div>
-          {% endif %}
+         
 
           {% for doc in application.projectHolder.getDocumentsType('') %}
               <div class="file-infos">

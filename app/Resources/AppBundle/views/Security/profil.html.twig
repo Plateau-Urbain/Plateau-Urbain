@@ -18,17 +18,20 @@
     </div>
 
     <div id="js-form-space">
+    
         {% for message in  app.flashes('error_msg') %}
             <div class="alert alert-danger" role="alert">
                 {{ message }}
             </div>
         {% endfor %}
+    
+    
         {% for message in  app.flashes('success_msg') %}
             <div class="alert alert-success" role="alert">
                 {{ message }}
             </div>
         {% endfor %}
-
+    
         {{ form_start(form, {'attr': {'class': 'has-crosses'}}) }}
             <div class="row">
                 <div class=" col-xs-1 bkg ">
@@ -275,7 +278,7 @@
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
-                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-trash"></i></a>
+                                                        <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
                                                         <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>

@@ -106,12 +106,22 @@ canvas {
 .pagination-wrapper, .icon  {
     display: none;
 }
-
+.application-header h3, .application-header h6, .application-header p {
+    text-align:left;
+}
+.application-header {
+    margin-bottom: 0px;
+    margin-top: 0px; 
+  }
 .box-information .box-title {
     margin-top: 0px;
-    font-size: 14px;
+    margin-bottom:0px;
+    font-size: 20px;
+    text-transform:uppercase;
 }
-
+.box-information {
+    margin-bottom: 0px;
+  }
 .toggle-star {
   display: none !important;
 }
