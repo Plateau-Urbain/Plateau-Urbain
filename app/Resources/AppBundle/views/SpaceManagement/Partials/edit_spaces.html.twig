@@ -38,6 +38,9 @@
                 <li>
                     <a class="indicator" href="http://localhost:8080/profil/#five"></a>
                 </li>
+                <li>
+                    <a class="indicator" href="http://localhost:8080/profil/#sixth"></a>
+                </li>
             </ul>
         </div>     
 
@@ -49,7 +52,7 @@
                 <div  class="form-contener bleu">
                     <h3>Votre espace</h3>
 
-        {{ form_errors(form) }}
+         {{ form_errors(form) }}
 
      
             <div class="row">
@@ -100,9 +103,10 @@
             <div style="clear: both"></div>
         </div>
     </div>
+   
  
 
-        <div id="two" class="section">
+    <div id="two" class="section">
                 <span class="section-title form-two"></span>
                 <div class="form-contener bleu">
                     <h3>Prestations et services</h3>
@@ -112,16 +116,16 @@
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
-        <div id="three" class="section">
+    <div id="three" class="section">
                 <span class="section-title form-three"></span>
                 <div class="form-contener bleu">
                     <h3>Répartition des surfaces</h3>
-          <div class="row">
-            <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
               {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-            </div>
+                </div>
           </div>
         </div>
     </div>
@@ -154,8 +158,8 @@
         </div>
     </div>
 
-    <div id="six" class="section">
-        <span class="section-title form-six"></span>
+    <div id="sixth" class="section">
+        <span class="section-title form-sixth"></span>
         <div class="form-contener bleu">
             <h3>
                 Documents ressources
@@ -163,6 +167,10 @@
             {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
         </div>
     </div>
+</div>
+</div>
+</div>
+
 
         <div class="row btns">
             <div class="col-sm-12">
@@ -192,10 +200,8 @@
 {{ form_end(form) }}
 
 
-</div>
-</div>
-</div>
-</div>
+
+
 
 <div class="content plusinfos margin">
     <div class="container">
