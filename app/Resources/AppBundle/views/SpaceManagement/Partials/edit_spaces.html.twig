@@ -51,7 +51,6 @@
         <span class="section-title form-one"></span>
             <div  class="form-contener bleu">
             <h3>Votre espace</h3>
-
          
 
      
@@ -104,7 +103,7 @@
 
     <div id="two" class="section">
                 <span class="section-title form-two"></span>
-                <div class="form-contener bleu">
+        <div class="form-contener bleu">
                     <h3>Prestations et services</h3>
             <div class="row">
                 <div class="col-sm-12">
@@ -116,13 +115,13 @@
 
     <div id="three" class="section">
                 <span class="section-title form-three"></span>
-                <div class="form-contener bleu">
+        <div class="form-contener bleu">
                     <h3>Répartition des surfaces</h3>
             <div class="row">
                 <div class="col-sm-12">
               {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
                 </div>
-          </div>
+            </div>
         </div>
     </div>
 
@@ -160,11 +159,17 @@
             <h3>
                 Documents ressources
             </h3>
-            {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
-            {{ form_errors(form) }}
+            <div class="row">
+                <div class="col-sm-12">
+                {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
+                {{ form_errors(form) }}
+                </div>
+            </div>
         </div>
     </div>
 
+</div>
+</div>
 </div>
 
         <div class="row btns">
@@ -195,11 +200,6 @@
 {{ form_end(form) }}
 
 
-</div>
-</div>
-
-
-
 <div class="content plusinfos margin">
     <div class="container">
         <div class="row pu-home-content info">
@@ -207,7 +207,7 @@
                 <h4>Vous souhaitez obtenir plus d'informations</h4>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
-                <a href='http://www.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
+                <a href='https://staging.plateau-urbain.com/contactez-nous/' target="_blank" class='btn btn-line'><span>Contactez-nous</span></a>
             </div>
         </div>
     </div>

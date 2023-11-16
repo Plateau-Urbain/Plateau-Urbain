@@ -10007,7 +10007,9 @@ img {
   display:block;
   font-family:"ginkamedium", Sans-serif;
   font-size: 21px;
-
+}
+.navbar-nav .pipe .dropdown-menu a{
+  min-width:190px;
 }
 
 #nav-section .navbar-nav > li.local span {
@@ -10185,8 +10187,8 @@ img {
 #header #nav-section .dropdown:hover ul a {
   font-size: 16px !important;
 }
-.sub-arrow::before{
-    font-size: 18px;  
+.navbar-nav .sub-arrow::before{
+    font-size: 16px !important; 
 }
 .navbar-nav .dropdown-menu > li > a {
   font-size: 16px;
@@ -10200,6 +10202,7 @@ img {
   left: -40px;
   z-index: 1000
 }
+
 }
 
 @media (min-width: 1170px) and (max-width: 1470px) {
@@ -10231,8 +10234,8 @@ img {
 #header #nav-section .dropdown:hover ul a {
   font-size: 21px !important
 }
-.sub-arrow::before{
-    font-size: 18px;
+.navbar-nav .sub-arrow::before{
+    font-size: 19px !important;
 }
 .navbar-nav .dropdown-menu > li > a {
   font-size: 19px;
@@ -10998,7 +11001,7 @@ top: unset !important;
 
 .bkg {
    position: sticky;
-  top: 80%;
+  top: 75%;
  /*transform: translate(-50%, -50%);*/
   z-index: 100;
 
