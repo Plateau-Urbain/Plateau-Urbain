@@ -11639,7 +11639,7 @@ font-size:16px;
 #cboxContent {
   height: auto !important;
   background-color: #F5F4F2;
-  padding-top: 10px;
+  /*padding-top: 10px;*/
 }
 
 form .main .section-title:after {
@@ -11689,4 +11689,16 @@ padding-bottom:10px;
   background: #e9473c  !important;
   border: 0 solid #FFF !important;
   padding-top: 8px;
+}
+#cboxContent {
+  height: auto !important;
+  background-color: #F5F4F2;
+  padding: 10px;
+  border-radius: 10px;
+}
+.danger {
+  color: #d7494a !important;
+}
+#cboxLoadedContent {
+  padding-top: 30px;
 }

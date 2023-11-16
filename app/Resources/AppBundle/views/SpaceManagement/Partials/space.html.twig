@@ -9,6 +9,8 @@
               <div class="clos"><p> Appel à candidature cloturé</p></div>
             {% elseif not space.isSubmitted and not space.isEnabled %}
               <div class="enedition"><p> En cours d'édition</p></div>
+            {% elseif space.isSubmitted and not space.isEnabled %}
+              <div class="enedition"><p> En attente de publication</p></div>
             {% elseif not space.isSubmitted and space.isEnabled %}
               <div class="encours"><p> Appel à candidature en cours </p></div>
             {% endif %}

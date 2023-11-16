@@ -35,12 +35,7 @@
                 <li>
                     <a class="indicator" href="#four"></a>
                 </li>
-                <li>
-                    <a class="indicator" href="#five"></a>
-                </li>
-                <li>
-                    <a class="indicator" href="#sixth"></a>
-                </li>
+                
             </ul>
         </div>     
 
@@ -101,32 +96,10 @@
         </div>
     </div>
 
+
+
     <div id="two" class="section">
-                <span class="section-title form-two"></span>
-        <div class="form-contener bleu">
-                    <h3>Prestations et services</h3>
-            <div class="row">
-                <div class="col-sm-12">
-                    {% include '@App/SpaceManagement/Partials/_space_attributes_form.html.twig' with { 'form': form.tags } %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="three" class="section">
-                <span class="section-title form-three"></span>
-        <div class="form-contener bleu">
-                    <h3>Répartition des surfaces</h3>
-            <div class="row">
-                <div class="col-sm-12">
-              {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="four" class="section">
-        <span class="section-title form-four"></span>
+        <span class="section-title form-two"></span>
         <div class="form-contener bleu">
             <h3>
                 Photos du lieu
@@ -139,8 +112,8 @@
         </div>
     </div>
 
-    <div id="five" class="section">
-        <span class="section-title form-five"></span>
+    <div id="three" class="section">
+        <span class="section-title form-three"></span>
         <div class="form-contener bleu">
             <h3>
                 Pièce(s) demandée(s)
@@ -153,8 +126,8 @@
         </div>
     </div>
 
-    <div id="sixth" class="section">
-        <span class="section-title form-sixth"></span>
+    <div id="four" class="section">
+        <span class="section-title form-four"></span>
         <div class="form-contener bleu">
             <h3>
                 Documents ressources
@@ -168,9 +141,7 @@
         </div>
     </div>
 
-</div>
-</div>
-</div>
+
 
         <div class="row btns">
             <div class="col-sm-12">
@@ -198,6 +169,12 @@
 
 <div style="display:none;">{{ form_rest(form) }}</div>
 {{ form_end(form) }}
+
+</div>
+</div>
+</div>
+
+
 
 
 <div class="content plusinfos margin">

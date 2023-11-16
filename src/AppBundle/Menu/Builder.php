@@ -28,7 +28,7 @@ class Builder implements ContainerAwareInterface
         ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La coopérative')->setExtra('safe_label',true);
 	//
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild('Qui sommes-nous ?', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_blank')));
+        $Menu->addChild('Qui sommes-nous ?', array('uri' => 'https://staging.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Devenir sociétaire", array('uri' => 'https://staging.plateau-urbain.com/devenir-societaire/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Les équipes", array('uri' => 'https://staging.plateau-urbain.com/les-equipes/', 'linkAttributes' => array('target' => '_top')));
         $Menu->addChild("Ressources", array('uri' => 'https://staging.plateau-urbain.com/ressources/', 'linkAttributes' => array('target' => '_top')));
@@ -37,11 +37,11 @@ class Builder implements ContainerAwareInterface
             'safe_label' => true
        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>Notre offre')->setExtra('safe_label',true);
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild("Notre accompagnement", array('uri' => 'https://staging.plateau-urbain.com/notre-offre/', 'linkAttributes' => array('target' => '_blank')));
-        $Menu->addChild("Conseil et études", array('uri' => 'https://staging.plateau-urbain.com/conseil-et-etudes/', 'linkAttributes' => array('target' => '_blank')));
-        $Menu->addChild("Montage et gestion", array('uri' => 'https://staging.plateau-urbain.com/montage-et-gestion/', 'linkAttributes' => array('target' => '_blank')));
-        $Menu->addChild("Plateforme propriétaire", array('uri' => 'https://staging.plateau-urbain.com/plateforme/#proprio', 'linkAttributes' => array('target' => '_blank')));
-        $Menu->addChild("Privatisation", array('uri' => 'https://staging.plateau-urbain.com/privatisation/', 'linkAttributes' => array('target' => '_blank')));
+        $Menu->addChild("Notre accompagnement", array('uri' => 'https://staging.plateau-urbain.com/notre-offre/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Conseil et études", array('uri' => 'https://staging.plateau-urbain.com/conseil-et-etudes/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Montage et gestion", array('uri' => 'https://staging.plateau-urbain.com/montage-et-gestion/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Plateforme propriétaire", array('uri' => 'https://staging.plateau-urbain.com/plateforme/#proprio', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Privatisation", array('uri' => 'https://staging.plateau-urbain.com/privatisation/', 'linkAttributes' => array('target' => '_top')));
         ####
         $Menu = $menu->addChild('Les tiers-lieux', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
