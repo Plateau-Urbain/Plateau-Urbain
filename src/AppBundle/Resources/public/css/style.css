@@ -2485,7 +2485,7 @@ color:#E9473C;
 .navbar-nav .pipe .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0px;
+  left: -30px;
   z-index: 1000
 }
 @media (min-width: 992px) and (max-width: 1170px) {
@@ -2512,7 +2512,7 @@ color:#E9473C;
 .navbar-nav .pipe .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: -20px;
+  left: -40px;
   z-index: 1000
 }
   }
@@ -10009,7 +10009,7 @@ img {
   font-size: 21px;
 }
 .navbar-nav .pipe .dropdown-menu a{
-  min-width:190px;
+  min-width:225px;
 }
 
 #nav-section .navbar-nav > li.local span {
@@ -10173,6 +10173,9 @@ img {
   border-left: 2px solid black;
   transition: all 0.3s
 }
+.navbar-nav .pipe .dropdown-menu a{
+  min-width:190px;
+}
 .navbar-nav > li.local a {
   line-height: initial;
   border-radius: 4px;
@@ -10272,7 +10275,7 @@ img {
   background-size: contain;
   z-index: 8;
   height:200px;
-  margin-top:75px;
+  margin-top:45px;
   margin-bottom:60px;
 }
 
