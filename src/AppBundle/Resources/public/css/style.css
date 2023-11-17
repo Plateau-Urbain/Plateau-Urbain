@@ -10420,7 +10420,7 @@ a.btn-line-19:hover span{
   padding: 8px 15px;
   font-family: "ginkamedium", sans-serif;
   height:54px;
-  margin-top:35px;
+  margin-top:15px;
   background:transparent;
 }
 .btn-line-login:hover {
@@ -11696,9 +11696,30 @@ padding-bottom:10px;
   padding: 10px;
   border-radius: 10px;
 }
+.login-page #cboxContent {
+
+  padding: 0px;
+  border-radius: 10px;
+}
 .danger {
   color: #d7494a !important;
 }
 #cboxLoadedContent {
   padding-top: 30px;
+}
+.fa-arrow-right {
+  padding-right:10px;
+}
+.login-page .alert {
+  padding-top: 10px;
+  margin:0;
+}
+.registration h4 {
+  color: #000;
+  margin-bottom: 20px;
+}
+.btn-awaiting, .btn-accepted, .btn-refuse {
+  pointer-events:none;
+  border:none;
+  padding-left: 0;
 }

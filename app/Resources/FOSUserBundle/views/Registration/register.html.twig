@@ -10,12 +10,6 @@
 
     <h4>Inscription</h4>
 
-        <div class="alert alert-danger alert-error">
-            {% for msg in app.session.flashbag.get('error_sign')  %}
-                <p>{{ msg }}</p>
-            {% endfor %}
-        </div>
-
         <div id="cboxContent white">
 
             {{ form_start(form, {'action': path('fos_user_registration_register'), 'attr': {'class':'fos_user_registration_register'}}) }}
@@ -40,20 +34,27 @@
                     {{ form_widget(form.plainPassword.second) }}
                 </div>
             </div>
-
-            {{ form_rest(form) }}
-
             <p class="forgotten">
                 Vous allez recevoir un email de confirmation.
                 Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
             </p>
+  
+            {{ form_rest(form) }}
+           <!-- <div class="alert alert-danger alert-error">
+            {% for msg in app.session.flashbag.get('error_sign')  %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>-->
+
+            
 
             <input type="submit" id="_submit" value="Je m'inscris" class='btn btn-line-login'/>
 <div class="text-left">
+<hr class="black">
                 <p>
                     Vous avez déjà un compte Plateau Urbain?
                     <br />
-                    <a href="{{ path('fos_user_security_login') }}">Connexion</a>
+                    <i class="fa-solid fa-arrow-right"></i> <a  href="{{ path('fos_user_security_login') }}">Connexion</a>
                 </p>
             </div>
             {{ form_end(form) }}
