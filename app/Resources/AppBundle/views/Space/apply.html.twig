@@ -326,19 +326,14 @@
 
                                                 {% for document in space.documents %}
                                                 <div class="col-sm-6 form-group">
-                                                    <div class="file-infos">
-                                                        <span>{{document.name}}</span>
-                                                        <div class="pull-right actions">
-                                                            <label class="custom-file-input btn btn-accepted">
+                                                    <label>{{document.name}}</label>
+                                                    <div class="file-infos clearfix" style="overflow: auto">
+                                                        <div class="actions">
+                                                            <label class="btn btn-accepted">
                                                                 {{ form_widget(attribute(form, "document_#{document.id}")) }}
-                                                                {{ form_errors(attribute(form, "document_#{document.id}")) }}
-                                                                <i class="fa fa-upload"></i>
                                                             </label>
-                                                            {% if form.vars.data.getFilesType(document.id) %}
-                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                                                            <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
-                                                            {% endif %}
                                                         </div>
+                                                        {{ form_errors(attribute(form, "document_#{document.id}")) }}
                                                     </div>
                                                 </div>
                                                 {% endfor %}
