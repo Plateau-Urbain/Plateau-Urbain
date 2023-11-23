@@ -11111,8 +11111,15 @@ input.btn-line-s:hover, button.btn-line-s:hover  {
   margin-bottom: 0;
 }
 .docs{
-  display: flex;
-  align-items: center;
+  display: inline-block;
+  vertical-align: bottom;
+}
+@media (max-width: 767px){
+.docs {
+  display: inline-block;
+  vertical-align: bottom;
+  width: 200px;
+}
 }
 .img-docs {
   background: url('/bundles/app/images/groupe_docs.png') no-repeat center;
@@ -11120,8 +11127,10 @@ input.btn-line-s:hover, button.btn-line-s:hover  {
   width:40px;
   background-size: contain;
   margin-right:15px;
-
+  display: inline-block;
+  vertical-align: top;
 }
+
 .info-candidature {
   margin: 25px 25px 15px 15px;
 }
@@ -11753,7 +11762,11 @@ padding-bottom:10px;
   color:#d7494a;
 }
 #appbundle_application_newDocument_file {
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight:600;
   margin-bottom:10px;
+  max-width:95%;
+}
+.overflow {
+  overflow:hidden;
 }

@@ -274,7 +274,7 @@
                                     <div class="files">
                                         {% if app.user.hasDocuments('id') %}
                                             <div class="idcard-file file-infos clearfix">
-                                                <div class="clearfix actions">
+                                                <div class="clearfix actions overflow">
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -285,7 +285,7 @@
                                             </div>
                                         {% elseif form.idcard is defined %}
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions">
+                                                <div class=" actions overflow">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.idcard) }}
                                                     </label>
@@ -296,7 +296,7 @@
 
                                         {% if app.user.hasDocuments('kbis') %}
                                             <div class="kbis-file file-infos clearfix">
-                                                <div class="clearfix actions">
+                                                <div class="clearfix actions overflow">
                                                     {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                     <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -307,7 +307,7 @@
                                             </div>
                                         {% elseif form.kbis is defined %}
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions">
+                                                <div class=" actions overflow">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.kbis) }}
                                                     </label>
@@ -321,7 +321,7 @@
                                         {% for doc in form.vars.data.getDocumentsType('') %}
                                             <div class="file-infos">
                                                 <span>{{doc.fileName | slice(14, 100)}}</span>
-                                                <div class="pull-right actions">
+                                                <div class="pull-right actions overflow">
                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
                                                     <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                                                 </div>
@@ -392,7 +392,7 @@
         <div class="main col-sm-8 col-sm-offset-2">
             <center>
                 <p>
-                    Vous souhaitez vous désinscrire ? Merci d’adresser votre demande à <a href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>
+                    Vous souhaitez vous désinscrire ? Merci d’adresser votre demande à <a class="mailto" href="mailto:contact@plateau-urbain.com">contact@plateau-urbain.com</a>
                 </p>
             </center>
         </div>

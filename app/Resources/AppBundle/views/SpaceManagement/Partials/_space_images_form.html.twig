@@ -7,7 +7,7 @@
     {% for image in images %}
         <div class="col-sm-4 photo-item">
             <div class="thumbnail">
-                <div class="image" style="background-image:url({{ vich_uploader_asset(image, 'file') }})"></div>
+                <div class="image"  style="background-image:url({{ vich_uploader_asset(image, 'file') }})"></div>
                 <!-- <img src="{{ vich_uploader_asset(image, 'file') }}" alt="{{ image.fileName }}"> -->
                 <div class="caption clearfix">
                     <span class="pull-right remove-picture">
@@ -41,7 +41,7 @@
 
 <div class="row">
   <div class="col-sm-7">
-    {{ form_widget(form, {'attr': {'class': 'form-control'}}) }}
+    {{ form_widget(form, {'attr': {'class': 'form-control overflow'}}) }}
   </div>
 
   <div class="col-sm-5">

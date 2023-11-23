@@ -15,7 +15,7 @@
         <a target="_blank" href="{{ asset(vich_uploader_asset(fileaac, 'file')) }}"><i class="fa fa-eye"></i></a>
         <a href="{{ path('space_manager_removepicture', { 'id': fileaac.id, 'token': csrf_token('remove_image') }) }}"><i class="fa fa-trash"></i></a>
     {% else %}
-        {{ form_widget(form.doc_aac, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.doc_aac, {'attr': {'class': 'form-control overflow'}}) }}
     {% endif %}
   </div>
 
@@ -26,7 +26,7 @@
         <a target="_blank" href="{{ asset(vich_uploader_asset(fileplan, 'file')) }}"><i class="fa fa-eye"></i></a>
         <a href="{{ path('space_manager_removepicture', { 'id': fileplan.id, 'token': csrf_token('remove_image') }) }}"><i class="fa fa-trash"></i></a>
     {% else %}
-        {{ form_widget(form.doc_plan, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.doc_plan, {'attr': {'class': 'form-control overflow'}}) }}
     {% endif %}
   </div>
 </div>

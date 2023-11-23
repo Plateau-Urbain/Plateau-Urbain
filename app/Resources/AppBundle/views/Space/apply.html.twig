@@ -317,18 +317,17 @@
 
                                             <div class=" files">
                                                 <div class="col-sm-12 form-group">
-
                                                     {% if space.getDocuments() | length > 0 %}
-                                                    <h6 class="docs"><span class="img-docs"></span>{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature <span class="red">*</span></h6>
+                                                   <span class="img-docs"></span> <h6 class="docs">{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature <span class="red">*</span></h6>
                                                     {% endif %}
                                                 </div>
                                                 <ul class="list-unstyled files-list"></ul>
 
                                                 {% for document in space.documents %}
                                                 <div class="col-sm-6 form-group">
-                                                    <label>{{document.name}}</label>
+                                                   <i class="fa fa-arrow-right fa-lg"></i>&nbsp;<label>{{document.name}}</label>
                                                     <div class="file-infos clearfix" >
-                                                        <div class="actions">
+                                                        <div class="actions overflow">
                                                             <label class="btn btn-accepted">
                                                                 {{ form_widget(attribute(form, "document_#{document.id}")) }}
                                                             </label>
@@ -362,7 +361,7 @@
                                                     {% for file in form.vars.data.getFilesType(null) %}
                                                     <div class="file-infos">
 
-                                                        <div class="pull-right actions">
+                                                        <div class="pull-right actions overflow">
                                                             <span>{{file.fileName | slice(14, 100)}}</span>
 
                                                             <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
@@ -393,7 +392,7 @@
                                                         </dd>
                                                     </dl>
 
-                                                    {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
+                                                    {{ form_widget(form.newDocument, {'attr': {'class': 'form-control overflow'}}) }}
                                                 </div>
                                             </div>
 
@@ -450,7 +449,7 @@
                                                 <div class="files">
                                                     {% if app.user and app.user.hasDocuments('id') %}
                                                         <div class="idcard-file file-infos clearfix">
-                                                            <div class="clearfix actions">
+                                                            <div class="clearfix actions overflow">
                                                                 {% set file =  app.user.getDocumentsType('id')[0] %}
                                                                 <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                                 <div style="display:inline-block" class="pull-right">
@@ -461,7 +460,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
-                                                            <div class=" actions">
+                                                            <div class=" actions overflow">
                                                                 <label class="btn btn-accepted">
                                                                     {{ form_widget(form.projectHolder.idcard) }}
                                                                 </label>
@@ -472,7 +471,7 @@
 
                                                     {% if app.user and app.user.hasDocuments('kbis') %}
                                                         <div class="kbis-file file-infos clearfix">
-                                                            <div class="clearfix actions">
+                                                            <div class="clearfix actions overflow">
                                                                 {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                                 <div style="display:inline-block; width:70%">{{ file.originalname }}</div>
                                                                 <div style="display:inline-block" class="pull-right">
@@ -483,7 +482,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
-                                                            <div class=" actions">
+                                                            <div class=" actions overflow">
                                                                 <label class="btn btn-accepted">
                                                                     {{ form_widget(form.projectHolder.kbis) }}
                                                                 </label>
@@ -495,7 +494,7 @@
                                                     {% for doc in form.projectHolder.vars.data.getDocumentsType('') %}
                                                     <div class="file-infos">
                                                         <span>{{doc.fileName | slice(14, 100)}}</span>
-                                                        <div class="pull-right actions">
+                                                        <div class="pull-right actions overflow">
                                                             <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                                                             <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                                                         </div>
