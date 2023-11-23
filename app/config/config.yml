@@ -92,7 +92,7 @@ fos_user:
         sender_name: Plateau Urbain
     registration:
         form:
-            validation_groups: [register, default]
+            # validation_groups: [register, default]
             type: AppBundle\Form\RegistrationFormType
 #            type: project_holder_user_registration     # for symfony < 2.8
 

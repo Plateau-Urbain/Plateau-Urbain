@@ -2,7 +2,7 @@
 
 {% block fos_user_content %}
   <div class="row-flex">
-<div class="login-page col-xs-12 col-md-6">  
+<div class="login-page col-xs-12 col-md-6">
 <div id="cboxContent" style="background: transparent;">
 <div  class="colorBox-content registration">
 
@@ -14,31 +14,34 @@
 
             {{ form_start(form, {'action': path('fos_user_registration_register'), 'attr': {'class':'fos_user_registration_register'}}) }}
 
-            <div class="form-group">
+            <div class="form-group{{ form.email.vars.errors | length ? ' has-error' : '' }}">
                 <div class="input-group">
                     <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/user_login.png') }}" alt="user" class="closed" /></span>
                     {{ form_widget(form.email) }}
                 </div>
+                {{ form_errors(form.email) }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group{{ form.plainPassword.first.vars.errors | length ? ' has-error' : '' }}">
                 <div class="input-group">
                     <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="user" class="closed" /></span>
                     {{ form_widget(form.plainPassword.first) }}
                 </div>
+                {{ form_errors(form.plainPassword.first) }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group{{ form.plainPassword.second.vars.errors | length ? ' has-error' : '' }}">
                 <div class="input-group">
                     <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="user" class="closed" /></span>
                     {{ form_widget(form.plainPassword.second) }}
                 </div>
+                {{ form_errors(form.plainPassword.second) }}
             </div>
             <p class="forgotten">
                 Vous allez recevoir un email de confirmation.
                 Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
             </p>
-  
+
             {{ form_rest(form) }}
            <!-- <div class="alert alert-danger alert-error">
             {% for msg in app.session.flashbag.get('error_sign')  %}
@@ -46,7 +49,7 @@
             {% endfor %}
         </div>-->
 
-            
+
 
             <input type="submit" id="_submit" value="Je m'inscris" class='btn btn-line-login'/>
 <div class="text-left">
@@ -64,8 +67,8 @@
 </div>
 <div class=" col-xs-12 col-md-6 sans-marge">
      <img src="/bundles/app/images/" id="image" />
-</div>  
-</div>  
+</div>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -76,7 +79,7 @@ function randomImg(){
    tabImg[2]  = "opale.jpg";
    tabImg[3]  = "opale-1.jpg";
 
- 
+
    document.getElementById('image').src += tabImg[Math.round(Math.random()*3)];
 }
 </script>
