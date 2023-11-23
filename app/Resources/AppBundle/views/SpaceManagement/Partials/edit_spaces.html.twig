@@ -47,7 +47,7 @@
             <div  class="form-contener bleu">
             <h3>Votre espace</h3>
          
-
+ {{ form_errors(form) }}
      
             <div class="row">
                 <div class="col-sm-12 form-group">
@@ -135,7 +135,7 @@
             <div class="row">
                 <div class="col-sm-12">
                 {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
-                {{ form_errors(form) }}
+               
                 </div>
             </div>
         </div>
