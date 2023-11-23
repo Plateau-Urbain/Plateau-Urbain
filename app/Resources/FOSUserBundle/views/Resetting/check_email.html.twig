@@ -2,12 +2,30 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-{% block breadcrumb_items %}
-    <li>Confirmation</li>
-{% endblock %}
 
 {% block fos_user_content %}
+<div class="row-flex">
+        <div class="login-page  col-xs-12 col-md-6"> 
+           <div class="colorBox-content registration">
+             <img class="icon" src="{{ asset('/bundles/app/images/lock_icon.png') }}" />
+<h4> Mot de passe oublié</h4>
 <p>
 {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
 </p>
+</div>
+    </div>
+    <div class=" col-xs-12 col-md-6 sans-marge">
+        <img src="/bundles/app/images/" id="image" />
+    </div>
+</div>  
+  <script type="text/javascript">
+        function randomImg(){
+        var tabImg = new Array();
+        tabImg[0]  = "village-reille.jpg";
+        tabImg[1]  = "asnieres.jpg";
+        tabImg[2]  = "opale.jpg";
+        tabImg[3]  = "opale-1.jpg";
+        document.getElementById('image').src += tabImg[Math.round(Math.random()*3)];
+        }
+        </script>
 {% endblock %}

@@ -327,7 +327,7 @@
                                                 {% for document in space.documents %}
                                                 <div class="col-sm-6 form-group">
                                                     <label>{{document.name}}</label>
-                                                    <div class="file-infos clearfix" style="overflow: auto">
+                                                    <div class="file-infos clearfix" >
                                                         <div class="actions">
                                                             <label class="btn btn-accepted">
                                                                 {{ form_widget(attribute(form, "document_#{document.id}")) }}

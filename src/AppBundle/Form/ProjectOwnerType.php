@@ -28,7 +28,7 @@ class ProjectOwnerType extends AbstractType
             ->add('userInfo', UserType::class, ['data_class' => ProjectOwnerType::class])
             ->add('companyInfo', CompanyType::class, ['mapped' => false, 'data_class' => ProjectOwnerType::class])
             ->add('newsletter', CheckboxType::class, [
-                'label' => "J'accepte de recevoir la newsletter de Plateau Urbain",
+                'label' => "J'accepte de recevoir les appels à candidatures",
                 'attr' => [],
                 'required' => false
             ])

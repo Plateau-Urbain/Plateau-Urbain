@@ -37,22 +37,19 @@
                 
                 {% endif %}
                 </div>
-                <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>
-                
+                <input type="submit" id="_submit" name="_submit" value="Je me connecte" class="btn btn-line-login"/>             
 
             </form>
-
-            <hr class="black"/>
 
             <div class="text-left">
                 <p class="forgotten"><a href="{{ path('fos_user_resetting_request') }}">Identifiant ou mot de passe oublié ?</a></p>
             </div>
-
+            <hr class="black"/>
             <div class="text-left">
-                <p>
-                    Vous n'avez pas de compte Plateau Urbain?
+                <p >
+                    <span class="connex">Vous n'avez pas de compte Plateau Urbain ?</span>
                     <br />
-                    <i class="fa-solid fa-arrow-right"></i><a href="{{ path('fos_user_registration_register') }}">Inscription</a>
+                    <i class="fa-solid fa-arrow-right"></i><a class="connex" href="{{ path('fos_user_registration_register') }}">Inscription</a>
                 </p>
             </div>
         </div>
