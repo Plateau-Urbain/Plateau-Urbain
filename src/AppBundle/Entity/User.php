@@ -13,7 +13,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message="Vous pouvez réinitialiser votre mot de passe depuis la page connexion."
+ * )
  */
 class User extends BaseUser
 {
