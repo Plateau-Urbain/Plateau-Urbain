@@ -209,8 +209,8 @@
 
   
             <div class="file-infos">
-              <span>Pièce d'identité</span>
-              <div class="pull-right actions">
+              <div style="display:inline-block; width:80%">Pièce d'identité</div>
+              <div style="display:inline-block" class="pull-right actions" >
                 {% if application.projectHolder.hasDocuments('id') %}
                 {% set file =  application.projectHolder.getDocumentsType('id')[0] %}
                 <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-eye fa-lg"></i></a>
@@ -219,8 +219,8 @@
             </div>
           
             <div class="file-infos">
-              <span>Document justifiant la création de la structure</span>
-              <div class="pull-right actions">
+              <div style="display:inline-block; width:80%">Document justifiant la création de la structure</div>
+              <div style="display:inline-block" class="pull-right actions" >
                 {% if application.projectHolder.hasDocuments('kbis') %}
                 {% set file =  application.projectHolder.getDocumentsType('kbis')[0] %}
                 <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-download"><i class="fa fa-eye fa-lg"></i></a>
@@ -231,8 +231,8 @@
 
           {% for doc in application.projectHolder.getDocumentsType('') %}
               <div class="file-infos">
-                <span>{{doc.fileName | slice(14, 100)}}</span>
-                <div class="pull-right actions">
+                <div style="display:inline-block; width:80%">{{doc.fileName | slice(14, 100)}}</div>
+                <div style="display:inline-block" class="pull-right actions" >
                     <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-eye fa-lg"></i></a>
                 </div>
               </div>
@@ -240,8 +240,8 @@
 
           {% for doc in application.files %}
               <div class="file-infos">
-                <span>{{doc.fileName | slice(14, 100)}}</span>
-                <div class="pull-right actions">
+                <div style="display:inline-block; width:80%">{{doc.fileName | slice(14, 100)}}</div>
+                <div style="display:inline-block" class="pull-right actions" >
                     <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-download"><i class="fa fa-eye fa-lg"></i></a>
                 </div>
               </div>

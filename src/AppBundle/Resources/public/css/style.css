@@ -2910,7 +2910,7 @@ margin-bottom: 30px;
 @media (max-width: 992px) {
 .nav-mobile.open {
   position: fixed;
-  top: 68px;
+  top: 65px;
   left: 0;
   visibility: visible;
   /*-webkit-transition: -webkit-transform 0.5s;*/
@@ -7062,6 +7062,7 @@ a.connex, a.connex:hover{
 #footer #footer-top .logo {
   display:flex;
   align-items: baseline;
+  width:300px;
 }
 #footer #footer-top .logo-footer  {
   width:89px;
@@ -11771,4 +11772,8 @@ padding-bottom:10px;
 .overflow {
   overflow:hidden;
   height:25px;
+}
+.form-contener.bleu .overflow {
+  overflow:hidden;
+  height:39px;
 }
