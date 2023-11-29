@@ -257,24 +257,13 @@
                                             <label class="required">Pièce d'identité</label>
                                         </li>
                                         {% endif %}
-
-                                        {% if form.kbis is defined or app.user.hasDocuments('kbis') %}
-                                        <li class="kbis-file">
-                                            {% if app.user.hasDocuments('kbis') %}
-                                                <i class="fa fa-check fa-lg"></i>
-                                            {% else %}
-                                                <i class="fa fa-times fa-lg"></i>
-                                            {% endif %}
-                                            <label class="required">Kbis ou autre</label>
-                                        </li>
-                                        {% endif %}
                                     </ul>
-                                </div>
-                                <div class="col-sm-6">
+                                     
+                                    
                                     <div class="files">
                                         {% if app.user.hasDocuments('id') %}
                                             <div class="idcard-file file-infos clearfix">
-                                                <div class="clearfix actions overflow">
+                                                <div class="clearfix actions ">
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -285,7 +274,7 @@
                                             </div>
                                         {% elseif form.idcard is defined %}
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions overflow">
+                                                <div class=" actions ">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.idcard) }}
                                                     </label>
@@ -293,10 +282,24 @@
                                                 {{ form_errors(form.idcard) }}
                                             </div>
                                         {% endif %}
-
+                                    </div>
+                                </div>
+                                    <div class="col-sm-6 required-files">
+                                        <ul class="list-unstyled">
+                                        {% if form.kbis is defined or app.user.hasDocuments('kbis') %}
+                                        <li class="kbis-file">
+                                            {% if app.user.hasDocuments('kbis') %}
+                                                <i class="fa fa-check fa-lg"></i>
+                                            {% else %}
+                                                <i class="fa fa-times fa-lg"></i>
+                                            {% endif %}
+                                            <label class="required">Kbis ou autre</label>
+                                        </li>
+                                        {% endif %}
+                                     </ul>
                                         {% if app.user.hasDocuments('kbis') %}
                                             <div class="kbis-file file-infos clearfix">
-                                                <div class="clearfix actions overflow">
+                                                <div class="clearfix actions ">
                                                     {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -307,7 +310,7 @@
                                             </div>
                                         {% elseif form.kbis is defined %}
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions overflow">
+                                                <div class=" actions ">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.kbis) }}
                                                     </label>
@@ -316,12 +319,11 @@
                                             </div>
                                         {% endif %}
 
-                                        <hr />
 
                                         {% for doc in form.vars.data.getDocumentsType('') %}
                                             <div class="file-infos">
                                                 <span>{{doc.fileName | slice(14, 100)}}</span>
-                                                <div class="pull-right actions overflow">
+                                                <div class="pull-right actions ">
                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
                                                     <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                                                 </div>
@@ -334,16 +336,8 @@
 
                             </div>
                         </div>
-
-                        <br /><br />
-
-                        <div class="row form-group">
-                            <div class="col-sm-12 form-group">
-                                {{ form_row(form.projectDescription)}}
-                            </div>
-                        </div>
-                    </div>
-
+                    
+            
                     <div id="five" class="section">
                         <span class="section-title form-five"></span>
                         <div class="form-contener">
@@ -371,6 +365,12 @@
                                         </div>
                                     </div>
                                     {{ form_errors(form.usageDuration) }}
+                                </div>
+                                
+                        </div>
+                        <div class="row form-group">
+                                     <div class="col-sm-12 form-group">
+                                     {{ form_row(form.projectDescription)}}
                                 </div>
                             </div>
                         </div>
