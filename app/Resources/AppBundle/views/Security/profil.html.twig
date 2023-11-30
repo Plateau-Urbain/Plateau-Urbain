@@ -240,6 +240,7 @@
                                         Les documents suivants seront attachés à toutes vos candidatures.
                                         Les fichiers complémentaires qui peuvent être joints dans toutes vos candidatures doivent être téléchargés à partir de chaque fiche projet.
                                         </dd>
+                                        <br/>
                                          <dd>
                                         Formats autorisés : JPG, GIF, PNG, PDF ou DOC.<br/>
                                         Chaque fichier ne doit pas excéder 10Mo.
@@ -289,7 +290,7 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                    <div class="col-sm-6 required-files">
+                                <div class="col-sm-6 required-files">
                                         <ul class="list-unstyled">
                                         {% if form.kbis is defined or app.user.hasDocuments('kbis') %}
                                         <li class="kbis-file">
@@ -301,7 +302,7 @@
                                             <label class="required">Kbis ou autre</label>
                                         </li>
                                         {% endif %}
-                                     </ul>
+                                        </ul>
                                         {% if app.user.hasDocuments('kbis') %}
                                             <div class="kbis-file file-infos clearfix">
                                                 <div class="clearfix actions ">
@@ -315,7 +316,7 @@
                                             </div>
                                         {% elseif form.kbis is defined %}
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions ">
+                                                <div class="actions">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.kbis) }}
                                                     </label>
@@ -335,12 +336,11 @@
                                             </div>
                                         {% endfor %}
 
-                                    </div>
-
                                 </div>
-
                             </div>
                         </div>
+                    </div>
+                    
                     
             
                     <div id="five" class="section">
@@ -372,8 +372,8 @@
                                     {{ form_errors(form.usageDuration) }}
                                 </div>
                                 
-                        </div>
-                        <div class="row form-group">
+                            </div>
+                                <div class="row form-group">
                                      <div class="col-sm-12 form-group">
                                      {{ form_row(form.projectDescription)}}
                                 </div>
