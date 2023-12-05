@@ -85,6 +85,7 @@ class ApplicationType extends AbstractType
                 )
             )
             ->add('openToGlobalProject', null, array('label' => "Je suis ouvert(e) à faire partie d'un projet collectif " ))
+            ->add('devenirSocietaire', null, array('label' => "Je souhaite être informé·e des modalités pour devenir sociétaire" ))
             ->add(
                 'lengthTypeOccupation',
                 'choice',

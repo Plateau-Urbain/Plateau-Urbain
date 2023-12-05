@@ -175,6 +175,11 @@ class Application
     protected $openToGlobalProject = false;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $devenirSocietaire = false;
+
+    /**
      * Application constructor.
      */
     public function __construct()
@@ -511,6 +516,22 @@ class Application
     public function setOpenToGlobalProject($openToGlobalProject)
     {
         $this->openToGlobalProject = $openToGlobalProject;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDevenirSocietaire()
+    {
+        return $this->devenirSocietaire;
+    }
+
+    /**
+     * @param mixed $devenirSocietaire
+     */
+    public function setDevenirSocietaire($devenirSocietaire)
+    {
+        $this->devenirSocietaire = $devenirSocietaire;
     }
 
     /**
