@@ -26,6 +26,7 @@ class User extends BaseUser
 
     const MISTER = 'M';
     const MISS = 'Mme';
+    const AUTRE = 'Atr';
 
     /**
      * @var int
@@ -652,7 +653,8 @@ class User extends BaseUser
     public static function getAllCivilities() {
         return array(
             self::MISTER => self::MISTER,
-            self::MISS => self::MISS
+            self::MISS => self::MISS,
+            self::AUTRE => 'Autre'
         );
     }
 
