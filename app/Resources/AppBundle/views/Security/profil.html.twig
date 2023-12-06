@@ -255,7 +255,7 @@
                                     <ul class="list-unstyled">
                                         {% if form.idcard is defined or app.user.hasDocuments('id') %}
                                         <li class="idcard-file">
-                                            {% if app.user.hasDocuments('id') %}
+                                            {% if app.user.hasDocuments('id') and form.vars.valid %}
                                                 <i class="fa fa-check fa-lg"></i>
                                             {% else %}
                                                 <i class="fa fa-times fa-lg"></i>
@@ -264,10 +264,9 @@
                                         </li>
                                         {% endif %}
                                     </ul>
-                                     
-                                    
+
                                     <div class="files">
-                                        {% if app.user.hasDocuments('id') %}
+                                        {% if form.idcard is not defined %}
                                             <div class="idcard-file file-infos clearfix">
                                                 <div class="clearfix actions ">
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
@@ -294,7 +293,7 @@
                                         <ul class="list-unstyled">
                                         {% if form.kbis is defined or app.user.hasDocuments('kbis') %}
                                         <li class="kbis-file">
-                                            {% if app.user.hasDocuments('kbis') %}
+                                            {% if app.user.hasDocuments('kbis') and form.vars.valid %}
                                                 <i class="fa fa-check fa-lg"></i>
                                             {% else %}
                                                 <i class="fa fa-times fa-lg"></i>
@@ -303,7 +302,7 @@
                                         </li>
                                         {% endif %}
                                         </ul>
-                                        {% if app.user.hasDocuments('kbis') %}
+                                        {% if form.kbis is not defined %}
                                             <div class="kbis-file file-infos clearfix">
                                                 <div class="clearfix actions ">
                                                     {% set file =  app.user.getDocumentsType('kbis')[0] %}
