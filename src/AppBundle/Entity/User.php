@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -1337,4 +1338,39 @@ class User extends BaseUser
         return $this->linkedinId;
     }
 
+    /**
+     * @Assert\Callback()
+     * @param ExecutionContextInterface $context
+     */
+    public function validateDocuments(ExecutionContextInterface $context)
+    {
+        $mimes = [
+            "image/png",
+            "image/jpeg",
+            "image/jpg",
+            "application/pdf",
+            "application/x-pdf",
+            "application/msword"
+        ];
+
+        foreach ($this->getDocuments() as $doc) {
+            if (! $doc->getType()) {
+                continue;
+            }
+
+            $path = $doc->getType() === 'kbis' ? 'kbis' : 'idcard';
+
+            $constraints = [
+                new Assert\File([
+                    'maxSize' => "10M",
+                    'mimeTypes' => $mimes
+                ])
+            ];
+
+            $context->getValidator()
+                    ->inContext($context)
+                    ->atPath($path)
+                    ->validate($doc->getFile(), $constraints);
+        }
+    }
 }
