@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApplicationRepository")
- * @Assert\Callback(callback="validateContribution")
  */
 class Application
 {
@@ -142,6 +141,7 @@ class Application
      *     orphanRemoval=true,
      *     cascade={"persist", "remove"}
      * )
+     * @Assert\Valid()
      */
     protected $files;
 
@@ -619,6 +619,7 @@ class Application
     }
 
     /**
+     * @Assert\Callback()
      * @param ExecutionContextInterface $context
      */
     public function validateContribution(ExecutionContextInterface $context)
@@ -652,5 +653,39 @@ class Application
     public function getSelected()
     {
         return $this->selected;
+    }
+
+    /**
+     * @Assert\Callback()
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $mimes = [
+            "image/png",
+            "image/jpeg",
+            "image/jpg",
+            "application/pdf",
+            "application/x-pdf",
+            "application/msword"
+        ];
+
+        $constraints = [
+            new Assert\File([
+                'maxSize' => "1k",
+                'mimeTypes' => $mimes
+            ])
+        ];
+
+        foreach($this->getFiles() as $applicationfile) {
+            $path = ($applicationfile->getSpaceDocument()) ? '_'.$applicationfile->getSpaceDocument() : 'newDocument';
+
+            echo $applicationfile->getFileName().PHP_EOL;
+            $context->getValidator()
+                    ->inContext($context)
+                    ->atPath($path)
+                    ->validate($applicationfile->getFile(), $constraints);
+        }
+        exit;
     }
 }

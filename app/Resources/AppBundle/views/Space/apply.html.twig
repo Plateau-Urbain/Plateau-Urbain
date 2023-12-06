@@ -394,8 +394,9 @@
                                                         Chaque fichier ne doit pas excéder 10Mo.
                                                         </dd>
                                                     </dl>
-                                                 
+
                                                     {{ form_widget(form.newDocument, {'attr': {'class': 'form-control'}}) }}
+                                                    {{ form_errors(form.newDocument) }}
                                                 </div>
                                             </div>
 
