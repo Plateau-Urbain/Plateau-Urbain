@@ -446,7 +446,7 @@
                                                                 <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                                 <div style="display:inline-block" class="pull-right">
                                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
-                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
+                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id, 'service': app.request.uri }) }}"><i class="fa fa-trash"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -485,7 +485,7 @@
                                                                 <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                                 <div style="display:inline-block" class="pull-right">
                                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
-                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
+                                                                    <a href="{{ path('profile_removedocument', { 'id': file.id, 'service': app.request.uri }) }}"><i class="fa fa-trash"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>

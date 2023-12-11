@@ -213,6 +213,10 @@ class SecurityController extends Controller
 
         $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
 
+        if ($request->get('service')) {
+            return $this->redirect($request->get('service'));
+        }
+
         return $this->redirect($this->generateUrl('security_profil'));
     }
 
