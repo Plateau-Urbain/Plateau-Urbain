@@ -324,7 +324,6 @@
                                                    <span class="img-docs"></span> <h6 class="docs">{{space.getDocuments() | length}} fichier{% if space.getDocuments() | length > 1%}s{% endif %} à joindre à votre candidature <span class="red">*</span></h6>
                                                     {% endif %}
                                                 </div>
-                                                <ul class="list-unstyled files-list"></ul>
 
                                                 {% for document in space.documents %}
                                                 <div class="col-sm-6 form-group">
@@ -350,46 +349,34 @@
                                                     </div>
                                                 </div>
                                                 {% endfor %}
+
                                                 <div class="col-sm-12 ">
                                                     <label class="control-label">Joindre des fichiers supplémentaires à cette candidature</label>
-
-
                                                     {% if form.vars.data.getFilesType(null) | length > 0 %}
                                                     <dl class="dl-horizontal  info-block">
-
-                                                        <dd>
-                                                        Les documents suivants seront seulement attachés à la
-                                                        candidature de cet espace. Les fichiers qui peuvent être
-                                                        joints dans toutes vos candidatures doivent être téléchargés
-                                                        dans la section "Documents".
-                                                        </dd>
+                                                        <dd>Les documents suivants seront seulement attachés à la candidature de cet espace. Les fichiers qui peuvent être joints dans toutes vos candidatures doivent être téléchargés dans la section "Documents".</dd>
                                                     </dl>
+                                                    {% endif %}
                                                 </div>
-                                            </div>
-                                            {% endif %}
 
-                                            {% if form.vars.data.getFilesType(null) | length > 0 %}
-                                            <div class="row">
-                                                <div class="files col-sm-6">
+                                                {% if form.vars.data.getFilesType(null) | length > 0 %}
+                                                    <div class="files col-sm-6">
 
-                                                    {% for file in form.vars.data.getFilesType(null) %}
-                                                    <div class="file-infos">
+                                                        {% for file in form.vars.data.getFilesType(null) %}
+                                                        <div class="file-infos">
 
-                                                        <div class="pull-right actions overflow">
-                                                            <span>{{file.fileName | slice(14, 100)}}</span>
-
-                                                            <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                                                            {% if file.id is not empty %}
-                                                            <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
-                                                            {% endif %}
+                                                            <div class="actions overflow">
+                                                                <span>{{file.fileName | slice(14, 100)}}</span>
+                                                                <div style="width: 10%" class="clearfix pull-right">
+                                                                    <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
+                                                                    <a href="{{ path('space_removefile', { 'id': file.id, 'service': app.request.uri }) }}"><i class="fa fa-trash"></i></a>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                        {% endfor %}
                                                     </div>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                            {% endif %}
+                                                {% endif %}
 
-                                            <div class="row">
                                                 <div class="add-file col-xs-12">
                                                     {% if form.vars.data.getFilesType(null) | length > 0 %}
                                                     <h4>
