@@ -680,12 +680,10 @@ class Application
         foreach($this->getFiles() as $applicationfile) {
             $path = ($applicationfile->getSpaceDocument()) ? '_'.$applicationfile->getSpaceDocument() : 'newDocument';
 
-            echo $applicationfile->getFileName().PHP_EOL;
             $context->getValidator()
                     ->inContext($context)
                     ->atPath($path)
                     ->validate($applicationfile->getFile(), $constraints);
         }
-        exit;
     }
 }
