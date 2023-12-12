@@ -16,7 +16,7 @@ class Builder implements ContainerAwareInterface
         // security.context is deprecated in symfony 2.6
         // replace by 'security.token_storage' and 'security.authorization_checker'
         // https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
-        $isLogged = $this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY');
+        $logged = $this->container->get('security.token_storage')->getToken();
 
         $menu = $factory->createItem('root', array('childrenAttributes'=> array('class'=> 'nav navbar-nav',)));
 
@@ -53,47 +53,48 @@ class Builder implements ContainerAwareInterface
             'class' => 'local',
         )))->setLabel('<span class="">Trouver un local</span>')->setExtra('safe_label',true);
         ####
-        if ($isLogged) {
-
-            $user = $this->container->get('security.token_storage')->getToken()->getUser();
-            $context = $this->container->get('security.authorization_checker');
+        if ($logged) {
+            if ($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+                $user = $this->container->get('security.token_storage')->getToken()->getUser();
+                $context = $this->container->get('security.authorization_checker');
 
 /*            if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
                 $menu->addChild('Proposer un espace', array('route' => 'space_manager_add'));
-            }*/
+}*/
 /*            if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
                 $menu->addChild('Trouver un local', array('route' => 'search_index'));
-            }*/
-            $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown pipe'), 'extras' => array(
-                'safe_label' => true
-            ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown','class' => 'connectMenured')));
-            $loggedMenu->setChildrenAttribute('class', 'dropdown-menu');
+}*/
+                $loggedMenu = $menu->addChild('Mon compte', array('uri' => '#', 'attributes' => array('class'=>'dropdown pipe'), 'extras' => array(
+                    'safe_label' => true
+                ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown','class' => 'connectMenured')));
+                $loggedMenu->setChildrenAttribute('class', 'dropdown-menu');
 
-            $role = ($user->isProprio() || $context->isGranted('ROLE_OWNER')) ? "propriétaire" : "candidat";
-            $role = $context->isGranted('ROLE_ADMIN') ? 'propriétaire' : $role;
+                $role = ($user->isProprio() || $context->isGranted('ROLE_OWNER')) ? "propriétaire" : "candidat";
+                $role = $context->isGranted('ROLE_ADMIN') ? 'propriétaire' : $role;
 
-            $loggedMenu->addChild('Mon profil '.$role, array('route' => 'security_profil', 'attributes' => array('class'=>'')));
+                $loggedMenu->addChild('Mon profil '.$role, array('route' => 'security_profil', 'attributes' => array('class'=>'')));
 
-            if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
-              $loggedMenu->addChild('Mes espaces', array('route' => 'space_manager_list', 'attributes' => array('class'=>'')));
-              $loggedMenu->addChild('Ajouter un espace', array('route' => 'space_manager_add', 'attributes' => array('class'=>'')));
+                if ($user->isProprio() || $context->isGranted('ROLE_OWNER')) {
+                    $loggedMenu->addChild('Mes espaces', array('route' => 'space_manager_list', 'attributes' => array('class'=>'')));
+                    $loggedMenu->addChild('Ajouter un espace', array('route' => 'space_manager_add', 'attributes' => array('class'=>'')));
 
-             /* $loggedMenu->addChild('Liste des AACs', ['route' => 'aac_list', 'attributes' => ['class' => '']]);*/
-            } else if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
-              $loggedMenu->addChild('Mes candidatures', array('route' => 'my_applications_list', 'attributes' => array('class'=>'')));
+                    /* $loggedMenu->addChild('Liste des AACs', ['route' => 'aac_list', 'attributes' => ['class' => '']]);*/
+                } else if ($user->isPorteur() || $context->isGranted('ROLE_PROJECT_HOLDER')) {
+                    $loggedMenu->addChild('Mes candidatures', array('route' => 'my_applications_list', 'attributes' => array('class'=>'')));
+                }
+
+                $loggedMenu->addChild('Déconnexion', array('route' => 'fos_user_security_logout', 'attributes' => array('class'=>'off-icon menu-icon')));
+
+            } else {
+
+                #$menu->addChild('Proposer', array('route' => 'proprietaire'));
+                /*$menu->addChild('Trouver un local', array('route' => 'search_index', 'attributes' => array('class'=>'local')));*/
+                $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
+                    'class' => 'local',
+                )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
+                /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
+                $menu->addChild('Mon compte', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
             }
-
-            $loggedMenu->addChild('Déconnexion', array('route' => 'fos_user_security_logout', 'attributes' => array('class'=>'off-icon menu-icon')));
-
-        } else {
-
-            #$menu->addChild('Proposer', array('route' => 'proprietaire'));
-            /*$menu->addChild('Trouver un local', array('route' => 'search_index', 'attributes' => array('class'=>'local')));*/
-            $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
-                'class' => 'local',
-            )))->setLabel('<span>Trouver un local</span>')->setExtra('safe_label',true);
-            /*$menu['Trouver un local']->setLabel('<span class="sub-arrow"></span>')->setExtra('safe_label',true);*/
-            $menu->addChild('Mon compte', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
         }
 
        return $menu;

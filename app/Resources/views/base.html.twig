@@ -116,9 +116,7 @@
                                 <ul class="mobile"><li class="mobile-local"><a href=""><span>Trouver un local</span></a></li></ul>
                                 <button id="nav-mobile-btn"></button>
                                 <!-- Ajout de Label dans KPN -->
-                                {% if app.user %}
-                                    {{ knp_menu_render('AppBundle:Builder:mainMenu', {'allow_safe_labels': true}) | raw  }}
-                                {% endif %}
+                                {{ knp_menu_render('AppBundle:Builder:mainMenu', {'allow_safe_labels': true}) | raw  }}
                             </nav>
                             <!-- END MAIN MENU -->
 
