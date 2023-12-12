@@ -334,7 +334,7 @@
                                                             <div class="actions overflow">
                                                                 {% set file = application.getFilesType(document.id)[0] %}
                                                                 <div style="display:inline-block; width:90%; text-overflow:ellipsis;overflow:hidden">{{ file.filename }}</div>
-                                                                <div style="display:inline-block" class="clearfix pull-right">
+                                                                <div style="width: 10%" class="clearfix pull-right">
                                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
                                                                     <a href="{{ path('space_removefile', { 'id': file.id, 'service': app.request.uri }) }}"><i class="fa fa-trash"></i></a>
                                                                 </div>
