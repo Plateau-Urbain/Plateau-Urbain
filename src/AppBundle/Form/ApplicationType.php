@@ -123,6 +123,10 @@ class ApplicationType extends AbstractType
         $projectHolderForm->get('userInfo')->remove('oldPassword');
 
         foreach ($application->getSpace()->getDocuments() as $field) {
+            if ($application->hasFileType($field->getId())) {
+                continue;
+            }
+
             $builder->add(
               'document_' . $field->getId(),
               ApplicationFileType::class,
