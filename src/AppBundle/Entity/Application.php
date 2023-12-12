@@ -672,7 +672,7 @@ class Application
 
         $constraints = [
             new Assert\File([
-                'maxSize' => "1k",
+                'maxSize' => "10M",
                 'mimeTypes' => $mimes
             ])
         ];
