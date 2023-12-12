@@ -91,6 +91,8 @@ fos_user:
         address: noreply@plateau-urbain.com
         sender_name: Plateau Urbain
     registration:
+        confirmation:
+            enabled: true
         form:
             # validation_groups: [register, default]
             type: AppBundle\Form\RegistrationFormType
