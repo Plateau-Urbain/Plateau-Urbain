@@ -268,7 +268,7 @@
                                     <div class="files">
                                         {% if form.idcard is not defined %}
                                             <div class="idcard-file file-infos clearfix">
-                                                <div class="clearfix actions ">
+                                                <div class="clearfix actions overflow">
                                                     {% set file =  app.user.getDocumentsType('id')[0] %}
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -279,7 +279,7 @@
                                             </div>
                                         {% elseif form.idcard is defined %}
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
-                                                <div class=" actions ">
+                                                <div class=" actions overflow ">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.idcard) }}
                                                     </label>
@@ -304,7 +304,7 @@
                                         </ul>
                                         {% if form.kbis is not defined %}
                                             <div class="kbis-file file-infos clearfix">
-                                                <div class="clearfix actions ">
+                                                <div class="clearfix actions overflow">
                                                     {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
@@ -315,7 +315,7 @@
                                             </div>
                                         {% elseif form.kbis is defined %}
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
-                                                <div class="actions">
+                                                <div class="actions overflow">
                                                     <label class="btn btn-accepted">
                                                         {{ form_widget(form.kbis) }}
                                                     </label>

@@ -9830,12 +9830,17 @@ form .main .section-title {
   font-weight: 300;
   border-radius:10px;
 }
-
-
 .form-contener label {
   font-weight: 300;
 }
-
+.file-infos {
+  margin: 5px 0;
+}
+.form-contener .arrow label {
+  font-weight: 300;
+  display:inline;
+  padding-bottom:10px;
+}
 .form-contener h4 {
   text-transform: uppercase;
 }
@@ -10917,8 +10922,16 @@ a.btn-line-19:hover span{
   margin-bottom: 50px;
   position:relative;
 }
-
-
+@media (max-width: 992px) {
+.titre-page-hr{
+  text-align: left;
+  padding-top: 75px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 50px;
+  position:relative;
+}
+}
 .titre-page{
   text-align: left;
   padding-top: 100px;
@@ -11805,4 +11818,7 @@ padding-bottom:10px;
 
 .help-block ul li {
   font-size:14px !important;
+}
+.first {
+margin-bottom:0;
 }

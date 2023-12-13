@@ -305,10 +305,9 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-12 form-group">
+                                            <div class="col-sm-12 form-group first">
                                                 {{ form_row(form.description) }}
-                                            </div>
-                                            <div class="col-sm-12 form-group">
+                                            
                                                 {{ form_row(form.openToGlobalProject, { 'attr': { 'data-checkbox-toggle': '#toggle_' ~ form.contribution.vars.id } }) }}
                                             </div>
                                             <div class="col-sm-12 form-group" id="toggle_{{ form.contribution.vars.id }}">
@@ -316,6 +315,7 @@
                                             </div>
                                             <div class="col-sm-12 form-group">
                                                 {{ form_row(form.devenirSocietaire) }}
+                                                
                                             </div>
 
                                             <div class=" files">
@@ -326,7 +326,7 @@
                                                 </div>
 
                                                 {% for document in space.documents %}
-                                                <div class="col-sm-6 form-group">
+                                                <div class="col-sm-8 offset-4 form-group arrow">
                                                    <i class="fa fa-arrow-right fa-lg"></i>&nbsp;<label>{{document.name}}</label>
                                                     {% if form["document_#{document.id}"] is not defined %}
                                                         <div class="file-infos clearfix" >
@@ -341,7 +341,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="file-infos clearfix" >
-                                                            <div class="actions">
+                                                            <div class="actions overflow">
                                                                 <label class="small">
                                                                     {{ form_widget(attribute(form, "document_#{document.id}")) }}
                                                                 </label>
@@ -379,7 +379,7 @@
                                                     </div>
                                                 {% endif %}
 
-                                                <div class="add-file col-xs-12">
+                                                <div class="add-file col-xs-12 col-sm-8 offset-4">
                                                     {% if form.vars.data.getFilesType(null) | length > 0 %}
                                                     <h4>
                                                         <i class="icon small icon-inline add-red"></i>
@@ -452,7 +452,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="idcard-file file-infos clearfix{% if not form.projectHolder.idcard.vars.valid %} has-error{% endif %}">
-                                                            <div class=" actions ">
+                                                            <div class=" actions overflow">
                                                                 <label class="btn btn-accepted">
                                                                     {{ form_widget(form.projectHolder.idcard) }}
                                                                 </label>
@@ -480,7 +480,7 @@
                                                 <div class="files">
                                                     {% if app.user and app.user.hasDocuments('kbis') %}
                                                         <div class="kbis-file file-infos clearfix">
-                                                            <div class="clearfix actions ">
+                                                            <div class="clearfix actions overflow">
                                                                 {% set file =  app.user.getDocumentsType('kbis')[0] %}
                                                                 <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                                 <div style="display:inline-block" class="pull-right">
@@ -491,7 +491,7 @@
                                                         </div>
                                                     {% else %}
                                                         <div class="kbis-file file-infos clearfix{% if not form.projectHolder.kbis.vars.valid %} has-error{% endif %}">
-                                                            <div class=" actions ">
+                                                            <div class=" actions overflow">
                                                                 <label class="btn btn-accepted">
                                                                     {{ form_widget(form.projectHolder.kbis) }}
                                                                 </label>
@@ -503,7 +503,7 @@
                                                     {% for doc in form.projectHolder.vars.data.getDocumentsType('') %}
                                                     <div class="file-infos">
                                                         <span>{{doc.fileName | slice(14, 100)}}</span>
-                                                        <div class="pull-right actions ">
+                                                        <div class="pull-right actions overflow">
                                                             <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                                                             <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                                                         </div>
