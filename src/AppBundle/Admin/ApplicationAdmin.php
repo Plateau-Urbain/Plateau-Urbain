@@ -37,6 +37,7 @@ class ApplicationAdmin extends AbstractAdmin
             ->add('description', null, array('label'=>"Description du projet"))
             ->add('openToGlobalProject', 'choice', array('label'=> "Ouvert à faire partie d'un projet collectif", 'choices' => ['Oui' => true, 'Non' => false]))
             ->add('contribution', null, array('label'=> "Contribution au projet global du propriétaire"))
+            ->add('devenirSocietaire', 'choice', array('label'=> "Souhaite être informé(e) des modalités pour devenir sociétaire", 'choices' => ['Oui' => true, 'Non' => false]))
 
 
             ->end()
