@@ -10520,7 +10520,7 @@ a.btn-line-19:hover span{
 .separateur {
   background-color: #F2BE6A;
   background-size: contain;
-  height:83px;
+  height:90px;
   width:100%;
   z-index:6;
   display: flex;
@@ -10920,6 +10920,7 @@ a.btn-line-19:hover span{
   padding-bottom: 15px;
   border-bottom: 1px solid #000;
   margin-bottom: 50px;
+  padding-right:135px;
   position:relative;
 }
 @media (max-width: 992px) {
@@ -10929,6 +10930,7 @@ a.btn-line-19:hover span{
   padding-bottom: 15px;
   border-bottom: 1px solid #000;
   margin-bottom: 50px;
+  padding-right:0;
   position:relative;
 }
 }
