@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 class SpaceType extends AbstractType
 {
@@ -54,8 +53,8 @@ class SpaceType extends AbstractType
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…"), 'required' => false))
-            ->add('description', CKEditorType::class, array('label' => 'Description', 'attr' => array('class' => 'form-control', 'rows' => 5), 'required' => false))
-            ->add('activityDescription', CKEditorType::class, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control', 'rows' => 5), 'required' => false))
+            ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('tags', CollectionType::class, [
                 'entry_type' => SpaceAttributeType::class,
                 'label' => false,

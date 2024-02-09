@@ -39,7 +39,6 @@
         "monolog/monolog": "^1.0",
         "laminas/laminas-zendframework-bridge": "^1.6",
         "nyholm/psr7": "^1.8",
-        "egeloen/ckeditor-bundle": "^6.0",
         "sonata-project/exporter": "~2.7.0"
     },
     "scripts": {
