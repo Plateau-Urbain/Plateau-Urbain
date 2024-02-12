@@ -64,8 +64,8 @@ class SpaceAdmin extends AbstractAdmin
             ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
             ->add('availability', null, array('label' => 'Période de disponibilité'))
             ->add('type', null, array('label' => "Type d'espace", 'required' => true))
-            ->add('description', null, array('label' => "Description de l'espace"))
-            ->add('activityDescription', null, array('label' => "Activités recherchées"))
+            ->add('description', null, array('label' => "Description de l'espace", 'attr' => ['class' => 'trumbowyg']))
+            ->add('activityDescription', null, array('label' => "Activités recherchées", 'attr' => ['class' => 'trumbowyg']))
             ->add('price', null, array('label' => 'Prix de la redevance au m² mensuel'))
             ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
 

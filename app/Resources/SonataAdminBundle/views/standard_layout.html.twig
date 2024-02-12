@@ -1,0 +1,25 @@
+{% extends "@!SonataAdmin/standard_layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/trumbowyg.min.css') }}" media="all" />
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent () }}
+    <script type="text/javascript" src="{{ asset('bundles/app/js/trumbowyg.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/app/langs/fr.min.js') }}"></script>
+    <script>
+        $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg"
+        document.addEventListener('DOMContentLoaded', function () {
+            $('textarea.trumbowyg').trumbowyg({
+                lang: 'fr',
+                resetCss: true,
+                removeformatPasted: true,
+                autogrow: true
+            })
+        })
+    </script>
+
+{% endblock %}
