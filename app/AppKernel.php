@@ -45,6 +45,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
+            new Gregwar\CaptchaBundle\GregwarCaptchaBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

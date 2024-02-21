@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 use AppBundle\Entity\User;
 
 class RegistrationFormType extends AbstractType
@@ -28,6 +29,7 @@ class RegistrationFormType extends AbstractType
                         'second_options' => array('label' => 'form.password_confirmation', 'attr' => array('class' => 'form-control', 'placeholder' => 'Confirmation')),
                         'label' => "Mot de passe")
                 )
+                ->add('captcha', CaptchaType::class);
         ;
 
 

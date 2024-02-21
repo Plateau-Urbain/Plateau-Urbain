@@ -42,6 +42,14 @@
                 Il vous sera demandé de cliquer sur le lien pour confirmer votre adresse email.
             </p>
 
+            <div class="form-group{{ form.captcha.vars.errors | length ? ' has-error' : '' }}">
+                <div class="input-group">
+                    <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/lock_login.png') }}" alt="user" class="closed" /></span>
+                    {{ form_widget(form.captcha) }}
+                </div>
+                {{ form_errors(form.captcha) }}
+            </div>
+
             {{ form_rest(form) }}
            <!-- <div class="alert alert-danger alert-error">
             {% for msg in app.session.flashbag.get('error_sign')  %}

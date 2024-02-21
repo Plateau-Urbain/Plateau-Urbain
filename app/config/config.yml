@@ -237,3 +237,8 @@ stof_doctrine_extensions:
         default:
             timestampable: true
             sortable: true
+
+gregwar_captcha:
+    length: 8
+    quality: 60
+    width: 150
