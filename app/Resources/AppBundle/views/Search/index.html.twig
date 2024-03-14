@@ -25,25 +25,24 @@
     <section class='row pu-home-content accroche'>
         <div class='col-sm-12 '>
             <div class="image-home"></div>
-            <h2 class="center">Vous cherchez un espace de travail abordable dans un lieu vivant et créatif</h2>
-            <h4>Consultez nos appels à candidatures en cours et inscrivez-vous pour être informé·es <span class="nowrap">dès leurs lancements !</span></h4>
+            <h1 class="center">Vous cherchez un espace de travail abordable dans un tiers-lieu vivant et <span class="nowrap">créatif ?</h1>
+            <p class="center p-30 space">Consultez nos appels à candidatures en cours et inscrivez-vous pour être informé·es <span class="nowrap">dès qu’il y en a de nouveaux !</span></p>
             <div class="center">
                 <a href='https://plateforme.plateau-urbain.com/register/' target="" class='btn btn-line'><span>Je m'inscris</span></a>
             </div>
         </div>
     </section>
-                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="content separateur">
         <div class="container">
-                    <div class="row pu-home-content">
-                       
+                    <div class="row pu-home-content">         
         <div class='col-sm-12 left'>
             <div class="btn-ancre-wrapper">
-            <a href='https://www.plateau-urbain.com/recherche/#proprio' target="_blank" class='btn-ancre'><i class="btn-ancre-icone"></i><h6>Vous êtes propriétaire d'un batîment ?</h6></a>
+            <a href='https://www.plateau-urbain.com/recherche/#proprio' target="_blank" class='btn-ancre'><i class="btn-ancre-icone"></i><h6>Vous êtes propriétaire d'un bâtiment ?</h6></a>
             </div>
             <div class="btn-ancre-wrapper">
            <a href='https://www.plateau-urbain.com/recherche/#faq' target="_blank" class='btn-ancre'> <i class="btn-ancre-icone"></i><h6>Vous avez des questions ? Consultez la FAQ</h6></a>
@@ -87,7 +86,7 @@
                         </div>#}
                         <div class="foot">
                             <p class="ville">{{ space.city }} ({{ space.depCode }})</p>
-                            <h6>{{ space.name }}</h6>
+                            <h3 class="h3-21">{{ space.name }}</h3>
                             <ul>
                             <li>{{ space.type }}</li>
                             <!-- AJOUT OLIVIER -->
@@ -112,7 +111,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <div class="col-xs-12"> <h6>Il n'y a aucun espace disponible actuellement</h6></div>
+            <div class="col-xs-12"> <p class="h3-21">Il n'y a aucun espace disponible actuellement</h3></div>
         {% endif %}
 
 {#        <h2 class="section-title animate-from-bottom animation-from-bottom" data-animation-direction="from-bottom" data-animation-delay="50">Les espaces occupés</h2>#}
@@ -129,7 +128,7 @@
                 </div> #}
                 <div class="foot-unavailable">
                     <p class="ville">{{ space.city }} ({{ space.depCode }})</p>
-                    <h6>{{ space.name }}</h6>
+                    <h3 class="h3-21">{{ space.name }}</h3>
                     <ul>
                     <li>{{ space.type }}</li>
                     <!-- AJOUT OLIVIER -->
@@ -159,7 +158,7 @@
                 <div class="bat"></div>
             </div>
             <div class="col-xs-12 col-md-6 col-lg-7 ">
-                <h4>Inscrivez-vous pour recevoir en avant-première les nouveaux appels à projets</h4>
+                <p class="p-30">Inscrivez-vous pour recevoir en avant-première les nouveaux appels à candidatures</p>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4 btn-right">
                 <a href='https://plateforme.plateau-urbain.com/register/' target="_blank" class='btn btn-line'><span>Je m'inscris</span></a>
@@ -178,32 +177,33 @@
 <div class="content orange">
     <div class="container">
         <div class="row pu-home-content faq">
-            <h3 class="titre">Candidater, comment ça marche ?</h3>
+            <h2 class="titre">Candidater, comment ça marche ?</h2>
             <div class="col-xs-12 col-md-6 col-lg-6">
                 
                 <div class="un"></div>
                 <div class="faq-txt">
-                    <h2>1 .</h2>
-                    <h5 class="expliq">Je consulte les appels à candidature en cours</h5>
+                    <p class="p-56">1 .</p>
+                    <p class="expliq p-24">Je consulte les appels à candidatures en cours</p>
                 </div>
 
                 <div class="deux"></div>
                 <div class="faq-txt">
-                    <h2>2 .</h2>
-                    <h5 class="expliq">Je candidate en précisant mon projet, mes besoins</h5> 
-                        <p>Après avoir candidaté, je reçois un mail de confirmation de dépôt de candidature (vérifier les spams)</p>
+                    <p class="p-56">2 .</p>
+                    <p class="expliq p-24">Je candidate en précisant mon projet et mes besoins</h5> 
+                    <p>Je reçois ensuite un mail de confirmation de dépôt de candidature (vérifier les spams)</p>
                 </div>
             </div>
             <div class="col-xs-12 col-md-6 col-lg-6">
                 <div class="trois"></div>
-                <div class="faq-txt"><h2>3 .</h2>
-                    <h5 class="expliq">Je prends rendez-vous pour une visite de site</p>
+                <div class="faq-txt">
+                    <p class="p-56">3 .</p>
+                    <p class="expliq p-24">Je prends rendez-vous pour une visite de site</p>
                 </div>
 
                 <div class="quatre"></div>
                 <div class="faq-txt">
-                        <h2>4 .</h2>
-                        <h5 class="expliq">À l'issue de la visite, je confirme ma candidature et précise les lots visés</h5>
+                    <p class="p-56">4 .</p>
+                    <p class="expliq p-24">À l'issue de la visite, je confirme ma candidature et précise les lots visés</h5>
                 </div>
             </div>
             </div>
@@ -222,7 +222,7 @@
         </div>
         <div class="col-sm-12 col-md-6 col-lg-5">
         <h2>Proposer un espace</h2>
-            <h5>Vous êtes PROPRIÉTAIRES ou GÉRANT•ES et souhaitez redonner une utilité à un espace vacant ? Vous pouvez proposer la gestion de votre bâtiment à Plateau Urbain ou bien diffuser sur notre plateforme votre appel à candidatures auprès de 12 000 inscrit.es et ainsi valoriser votre patrimoine inutilisé tout en ayant un impact positif sur le plan sociétal&nbsp;!</h5>
+            <p class="p-24">Vous êtes PROPRIÉTAIRE ou GÉRANT•E et souhaitez redonner une utilité à un espace vacant ? Vous pouvez proposer la gestion de votre bâtiment à Plateau Urbain ou bien diffuser sur notre plateforme votre appel à candidatures auprès de 12 000 inscrit·es et ainsi valoriser votre patrimoine inutilisé tout en ayant un impact positif sur le plan sociétal.</p>
         </div>
         <div class="col-sm-12 col-md-offset-6 col-md-6 col-lg-offset-0 col-lg-3 espace btn-espace">
             <a href='https://www.plateau-urbain.com/montage-et-gestion/' class='btn btn-line-2'><span>Découvrir notre offre</span></a>
@@ -236,7 +236,7 @@
         <div class="row pu-home-content info">
 
             <div class="col-xs-12 col-md-8 col-lg-8">
-                <h4>Vous souhaitez obtenir plus d'informations</h4>
+                <p class="p-30 blanc">Vous souhaitez obtenir plus d'informations</p>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-4  btn-right">
                 <a href='https://www.plateau-urbain.com/contactez-nous/' class='btn btn-line'><span>Contactez-nous</span></a>

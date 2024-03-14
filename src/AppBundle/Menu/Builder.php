@@ -52,6 +52,7 @@ class Builder implements ContainerAwareInterface
         $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
             'class' => 'local',
         )))->setLabel('<span class="">Trouver un local</span>')->setExtra('safe_label',true);
+        $menu->addChild('Mon compte', array('route' => 'fos_user_security_login', 'attributes' => array('class'=>'pipe'), 'linkAttributes' => array('class' => 'connectMenu')));
         ####
         if ($logged) {
             if ($this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
