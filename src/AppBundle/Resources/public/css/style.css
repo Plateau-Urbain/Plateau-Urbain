@@ -10440,6 +10440,7 @@ img {
 .pu-home-content.accroche h1 {
   text-align:center;
   padding-bottom:23px;
+  font-size:56px;
 }
 .pu-home-content.accroche p.space {
   text-align:center;
@@ -11734,7 +11735,7 @@ padding: 0 5px;
 /*subarrow hors menu*/
 
 a.red {
-text-decoration: none;
+text-decoration: underline;
 color:black !important;
 
 }

@@ -28,27 +28,29 @@ class Builder implements ContainerAwareInterface
         ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>La coopérative')->setExtra('safe_label',true);
 	//
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild('Qui sommes-nous ?', array('uri' => 'https://www.plateau-urbain.com/la-cooperative/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Devenir sociétaire", array('uri' => 'https://www.plateau-urbain.com/devenir-societaire/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Les équipes", array('uri' => 'https://www.plateau-urbain.com/les-equipes/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Ressources", array('uri' => 'https://www.plateau-urbain.com/ressources/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild('Qui sommes-nous ?', array('uri' => 'https://www.plateau-urbain.com/la-cooperative-plateau-urbain/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Devenir sociétaire", array('uri' => 'https://www.plateau-urbain.com/la-cooperative-plateau-urbain/devenir-societaire/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Les équipes", array('uri' => 'https://www.plateau-urbain.com/la-cooperative-plateau-urbain/les-equipes/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Urbanisme transitoire", array('uri' => 'https://www.plateau-urbain.com/la-cooperative-plateau-urbain/urbanisme-transitoire/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Ressources", array('uri' => 'https://www.plateau-urbain.com/la-cooperative-plateau-urbain/ressources/', 'linkAttributes' => array('target' => '_top')));
 ####
         $Menu = $menu->addChild('Notre offre', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
        ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>Notre offre')->setExtra('safe_label',true);
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild("Notre accompagnement", array('uri' => 'https://www.plateau-urbain.com/notre-offre/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Montage et gestion", array('uri' => 'https://www.plateau-urbain.com/montage-et-gestion/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Conseil et études", array('uri' => 'https://www.plateau-urbain.com/conseil-et-etudes/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Privatisation", array('uri' => 'https://www.plateau-urbain.com/privatisation/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Notre accompagnement", array('uri' => 'https://www.plateau-urbain.com/notre-accompagnement/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Montage et gestion", array('uri' => 'https://www.plateau-urbain.com/notre-accompagnement/montage-et-gestion/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Conseil et études", array('uri' => 'https://www.plateau-urbain.com/notre-accompagnement/conseil-et-etudes/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Privatisation", array('uri' => 'https://www.plateau-urbain.com/notre-accompagnement/privatisation/', 'linkAttributes' => array('target' => '_top')));
         ####
         $Menu = $menu->addChild('Les tiers-lieux', array('uri' => '#', 'attributes' => array('class'=>'dropdown'), 'extras' => array(
             'safe_label' => true
         ),'linkAttributes' => array('data-toggle' => 'dropdown', 'data-hover' => 'dropdown')))->setLabel('<span class="sub-arrow"><i class="fa fa-square"></i></span>Les tiers-lieux')->setExtra('safe_label',true);
         $Menu->setChildrenAttribute('class', 'dropdown-menu');
-        $Menu->addChild("Nos projets", array('uri' => 'https://www.plateau-urbain.com/nos-projets/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Actualités des lieux", array('uri' => 'https://www.plateau-urbain.com/actualites-des-lieux/', 'linkAttributes' => array('target' => '_top')));
-        $Menu->addChild("Occupant·es", array('uri' => 'https://www.plateau-urbain.com/occupant-es/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Définition", array('uri' => 'https://www.plateau-urbain.com/tiers-lieux/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Nos projets", array('uri' => 'https://www.plateau-urbain.com/tiers-lieux/nos-projets/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Actualités des lieux", array('uri' => 'https://www.plateau-urbain.com/tiers-lieux/actualites-des-lieux/', 'linkAttributes' => array('target' => '_top')));
+        $Menu->addChild("Occupant·es", array('uri' => 'https://www.plateau-urbain.com/tiers-lieux/occupant-es/', 'linkAttributes' => array('target' => '_top')));
         $menu->addChild('Trouver un local', array('route' => 'search_index','attributes' => array(
             'class' => 'local',
         )))->setLabel('<span class="">Trouver un local</span>')->setExtra('safe_label',true);
