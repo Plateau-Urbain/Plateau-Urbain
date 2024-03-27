@@ -20,7 +20,6 @@ php app/console doctrine:schema:create
 php app/console hautelook:fixtures:load --purge-with-truncate -b AppBundle
 
 ## Assets
-php app/console ckeditor:install --clear=drop --tag=4.22.1
 make # compilation main.less
 php app/console assets:install
 php app/console assetic:dump
