@@ -50,7 +50,14 @@ h6 {
   /*text-rendering: optimizelegibility;*/
 }
 h1 {
-  font-size: 74px;
+  font-size: 56px;
+}
+.pu-home-content.accroche h1 {
+  text-align:center;
+  padding-bottom:23px;
+  font-size:56px;
+  line-height:56px;
+ 
 }
 h2 {   
   font-size: 56px;
@@ -131,7 +138,7 @@ th, td {
 
 @media (max-width: 992px){
   h1 {
-  font-size: 48px;
+  font-size: 40px;
   line-height:40px;
   color: #000;
 }
@@ -198,7 +205,7 @@ th, td {
 }
 @media (max-width: 767px){
   h1 {
-  font-size: 36px;
+  font-size: 32px;
   line-height:40px;
   color: #000;
 }
@@ -277,7 +284,7 @@ th, td {
 }
 @media (max-width: 767px){
   h1 {
-  font-size: 36px;
+  font-size: 32px;
   line-height:40px;
   color: #000;
 }
@@ -286,6 +293,13 @@ h2 {
   line-height:34px;
   color: #000;
 }
+ .pu-home-content.accroche h1 {
+  text-align:center;
+  padding-bottom:34px;
+  font-size: 40px !important;
+  line-height:40px;
+  }
+
 h3 {
   font-size: 28px;
   line-height:36px;
@@ -10427,6 +10441,7 @@ img {
   @media (max-width: 480px) {
 .image-home {
   margin-bottom: 0;
+  margin-top:0;
 }
   }
 .aucun-esp{
@@ -10437,15 +10452,7 @@ img {
   max-width: 100%;
   width: 500px;  
 }
-.pu-home-content.accroche h1 {
-  text-align:center;
-  padding-bottom:23px;
-  font-size:56px;
-}
-.pu-home-content.accroche p.space {
-  text-align:center;
-  padding-bottom:34px;
-}
+
 .center {
   text-align:center;
 }
@@ -11135,7 +11142,7 @@ top: unset !important;
 }
 .sticky {
   position: sticky;
-  top: 140px;
+  top: 0;
  
 }
 .bkg-img  {
@@ -12038,4 +12045,7 @@ margin-bottom:0;
     text-align:center;
     margin: 10px auto;
   }
+}
+.space-ss {
+  padding-bottom:40px;
 }
