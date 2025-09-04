@@ -14,7 +14,14 @@
         <!-- BEGIN MAIN CONTENT -->
     <div class=" col-sm-12 ">
         <div class="titre-page">
-            <h1>Mes espaces</h1>
+            <h1>
+                {% if isAdmin is defined and isAdmin %}
+                    Gestion des espaces
+                    <small style="color: #bc1b38; font-size: 0.7em;">(Vue Admin)</small>
+                {% else %}
+                    Mes espaces
+                {% endif %}
+            </h1>
         </div>
     </div>
 </div>

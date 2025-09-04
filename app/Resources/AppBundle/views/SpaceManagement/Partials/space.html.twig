@@ -111,6 +111,11 @@
               {% elseif not space.isEnabled %}
                 <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>
               {% endif %}
+              
+              {# Bouton de publication pour les admins #}
+              {% if app.user and is_granted('ROLE_ADMIN') and space.submitted and not space.enabled %}
+                <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('Êtes-vous sûr de vouloir publier cet espace ? Il sera visible par tous les candidats.');"><span>Publier l\'espace</span></a>
+              {% endif %}
             </div>
          </div>
 

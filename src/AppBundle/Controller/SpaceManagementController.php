@@ -38,6 +38,7 @@ class SpaceManagementController extends Controller
     {
         // see https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
         // Handle the filter form
         $filterForm = $this->handleSpaceFilterForm($request, array(
@@ -49,15 +50,30 @@ class SpaceManagementController extends Controller
         $filters = $filterForm->getData();
 
         $params = array(
-            'user'      => $user,
             'orderBy'   => $filters['sort_field'],
             'sort'      => $filters['sort_order']
         );
 
-        if ($filters['status_filter'] == 'closed') {
-            $params['closed'] = true;
-        } else if ($filters['status_filter'] == 'enabled')  {
-            $params['enabled'] = true;
+        // Si admin, voir tous les espaces. Sinon, seulement ceux de l'utilisateur
+        if ($isAdmin) {
+            // Pour les admins, on peut ajouter un filtre pour voir les espaces en attente
+            if ($filters['status_filter'] == 'pending') {
+                $params['submitted'] = true;
+                $params['enabled'] = false;
+            } else if ($filters['status_filter'] == 'closed') {
+                $params['closed'] = true;
+            } else if ($filters['status_filter'] == 'enabled')  {
+                $params['enabled'] = true;
+            }
+        } else {
+            // Pour les propriétaires, seulement leurs espaces
+            $params['user'] = $user;
+            
+            if ($filters['status_filter'] == 'closed') {
+                $params['closed'] = true;
+            } else if ($filters['status_filter'] == 'enabled')  {
+                $params['enabled'] = true;
+            }
         }
 
         $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
@@ -68,10 +84,10 @@ class SpaceManagementController extends Controller
             $request->query->getInt('page', 1)/*page number*/
         );
 
-
         return array(
             "pagination" => $pagination,
-            'filterForm' => $filterForm->createView()
+            'filterForm' => $filterForm->createView(),
+            'isAdmin' => $isAdmin
         );
     }
 
@@ -256,6 +272,50 @@ class SpaceManagementController extends Controller
         } else {
             $this->get('session')->getFlashBag()->set('success', 'Espace dépublié avec succès. Vous pouvez maintenant le modifier.');
         }
+
+        return $this->redirect($this->generateUrl('space_manager_list'));
+    }
+
+    /**
+     * Publier un espace en attente (action admin)
+     * 
+     * @Route("/publier/{id}", name="space_manager_publish")
+     */
+    public function publishAction(Space $space)
+    {
+        // Vérifier que l'utilisateur est admin
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à publier cet espace.');
+        }
+
+        // Vérifier que l'espace est soumis mais pas encore activé
+        if (!$space->isSubmitted() || $space->isEnabled()) {
+            $this->get('session')->getFlashBag()->set('error', 'Cet espace ne peut pas être publié.');
+            return $this->redirect($this->generateUrl('space_manager_list'));
+        }
+
+        // Activer l'espace
+        $space->setEnabled(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($space);
+        $em->flush();
+
+        // Envoyer un email de confirmation au propriétaire
+        $message = (new \Swift_Message())
+            ->setSubject('Votre espace a été publié !')
+            ->setFrom($this->container->getParameter('mail_confirmation_from'))
+            ->setTo($space->getOwner()->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'AppBundle:Email:space_published.html.twig',
+                    compact('space')
+                ), 'text/html'
+            );
+
+        $this->get('mailer')->send($message);
+
+        $this->get('session')->getFlashBag()->set('success', 'L\'espace "' . $space->getName() . '" a été publié avec succès. Le propriétaire a été notifié.');
 
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
@@ -733,12 +793,21 @@ class SpaceManagementController extends Controller
             'empty_data' => ''
         ));
 
+        // Vérifier si l'utilisateur est admin pour ajouter l'option "En attente de publication"
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
+        $statusChoices = [
+            'enabled' => 'Projets en cours',
+            'closed'  => 'Projets clôturés',
+        ];
+        
+        if ($isAdmin) {
+            $statusChoices['pending'] = 'En attente de publication';
+        }
+        
         $builder->add('status_filter', 'choice', array(
             'required' => false,
-            'choices' => array_flip([
-                'enabled' => 'Projets en cours',
-                'closed'  => 'Projets clôturés',
-            ]),
+            'choices' => array_flip($statusChoices),
             'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));
