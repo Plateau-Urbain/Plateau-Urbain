@@ -8,7 +8,11 @@
             {% if space.isClosed %}
               <div class="clos"><p> Appel à candidature cloturé</p></div>
             {% elseif not space.isSubmitted and not space.isEnabled %}
-              <div class="enedition"><p> En cours d'édition</p></div>
+              {% if space.submittedAt %}
+                <div class="depublie"><p> Dépublié temporairement</p></div>
+              {% else %}
+                <div class="enedition"><p> En cours d'édition</p></div>
+              {% endif %}
             {% elseif space.isSubmitted and space.isEnabled %}
               <div class="encours"><p> Appel à candidature en cours </p></div>
             {% endif %}
@@ -102,6 +106,7 @@
               {% endif %}
             
               {% if space.isEnabled and not space.isClosed %}
+                <a href="{{ path('space_manager_unpublish', {'id' : space.id}) }}" class="btn btn-line-19 btn-warning" onClick="return confirm('Suspendre temporairement cet AAC pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');"><span>Suspendre pour modification</span></a>
                 <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
               {% elseif not space.isEnabled %}
                 <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>

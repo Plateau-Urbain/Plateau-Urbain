@@ -206,6 +206,61 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * Dépublier un appel à candidatures
+     * 
+     * @Route("/depublier/{id}", name="space_manager_unpublish")
+     */
+    public function unpublishAction(Space $space)
+    {
+        // Vérifier que l'utilisateur est propriétaire de l'espace
+        if (!$space->isOwner($this->getUser())) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à dépublier cet espace.');
+        }
+
+        // Vérifier que l'espace est bien activé (enabled)
+        if (!$space->isEnabled()) {
+            $this->get('session')->getFlashBag()->set('error', 'Cet espace n\'est pas activé.');
+            return $this->redirect($this->generateUrl('space_manager_list'));
+        }
+
+        // Vérifier s'il y a des candidatures en cours
+        $nbApplications = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Application')
+            ->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.space = :space')
+            ->andWhere('a.status != :draft')
+            ->setParameter('space', $space)
+            ->setParameter('draft', 'draft')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        // Si candidatures existent, permettre mais avec avertissement
+        if ($nbApplications > 0) {
+            $this->get('session')->getFlashBag()->set('warning', 
+                'Attention : Cet espace a été dépublié temporairement alors qu\'il avait ' . $nbApplications . ' candidature(s). ' .
+                'Les candidats ne peuvent plus voir l\'annonce. Pensez à republier rapidement après vos corrections.');
+        }
+
+        // Dépublier l'espace
+        $space->setEnabled(false);
+        // Optionnellement, remettre submitted à false pour permettre les modifications
+        $space->setSubmitted(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($space);
+        $em->flush();
+
+        if ($nbApplications > 0) {
+            $this->get('session')->getFlashBag()->set('success', 'Espace dépublié temporairement. Modifiez-le rapidement et republiez-le pour que les candidats puissent le voir à nouveau.');
+        } else {
+            $this->get('session')->getFlashBag()->set('success', 'Espace dépublié avec succès. Vous pouvez maintenant le modifier.');
+        }
+
+        return $this->redirect($this->generateUrl('space_manager_list'));
+    }
+
+    /**
      * @Route("/candidats/{id}", name="space_manager_candidates", methods={"get", "post"}, requirements={"id": "\d+"})
      * @Template()
      */

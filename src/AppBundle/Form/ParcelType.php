@@ -18,7 +18,14 @@ class ParcelType extends AbstractType
         $builder
             ->add('floor', null, array('label' => 'Étage', 'placeholder' => 'Étage' ,'attr' => array('class' => 'form-control')))
             ->add('type', null, array('label' => 'Type de locaux', 'placeholder' => 'Type de locaux', 'attr' => array('class' => 'form-control')))
-            ->add('surface', null, array('label' => 'Surface', 'attr' => array('class' => 'form-control')))
+            ->add('surface', null, array(
+                'label' => 'Surface (m²)', 
+                'required' => true,
+                'attr' => array(
+                    'class' => 'form-control',
+                    'placeholder' => 'Surface en m²'
+                )
+            ))
             // date => Symfony\Component\Form\Extension\Core\Type\DateType
             ->add(
                 'disponibility',

@@ -50,9 +50,9 @@
        <h6><a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
     <div class="content ">
       <h6>en bref</h6>
-      <p class="pu-label">Commune: {{ space.city }} ({{ space.zipCode|slice(0,2)}})</p>
-      <p class="pu-label">Type de locaux: {{ space.type }}</p>
-       <p class="pu-label">Bailleur: {% if space.owner %}
+      <p class="pu-label">Commune&nbsp;: {{ space.city }} ({{ space.zipCode|slice(0,2)}})</p>
+      <p class="pu-label">Type de locaux&nbsp;: {{ space.type }}</p>
+       <p class="pu-label">Bailleur&nbsp;: {% if space.owner %}
         {% if space.owner.website %}
           <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
         {% else %}
@@ -64,7 +64,7 @@
       </p>
 
     <div class="pu-price-zone ">
-    <p class="pu-label">Prix: </sup>
+    <p class="pu-label">Prix&nbsp;: </sup>
             À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
             <br />Soit {{ space.price }} € / m<sup>2</sup> / mois</p>
     
@@ -76,7 +76,7 @@
             <a href="#parcels">Voir la répartition des espaces</a>
           </dd>
         </dl> #} 
-            <p class="pu-label">Disponibilité: {{ space.availability }}</p>
+            <p class="pu-label">Disponibilité&nbsp;: {{ space.availability }}</p>
      
     </div>
 </div>
@@ -174,11 +174,11 @@
                 <p>
                     {% set file = space.getDocs('document_aac') %}
                     {% if file | length %}
-                        <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}">
+                        <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}" target="_blank">
                     {% else %}
                         <a class="red" href="#">
                     {% endif %}
-                        Télécharger l'appel à candidature
+                        Télécharger l'appel à candidatures
                     </a>
                 </p>
             </div>
@@ -189,7 +189,7 @@
                <p>
                    {% set file = space.getDocs('document_plan') %}
                    {% if file | length %}
-                       <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}">
+                       <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}" target="_blank">
                    {% else %}
                        <a class="red" href="#">
                    {%endif %}

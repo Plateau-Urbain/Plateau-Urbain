@@ -104,6 +104,12 @@ h6 {
   font-family: 'ginkamedium', sans-serif;
   display:inline;
 }
+.p-21-regular {
+  font-size: 21px;
+  text-transform: none;
+  font-family: 'ginka', sans-serif;
+  display:inline;
+}
 
 p {
   font-size: 19px;
@@ -5782,9 +5788,7 @@ margin-bottom: 5px;
   border: 0;
   display: block;
   height: 100%;
-  -webkit-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
+  opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
@@ -11848,6 +11852,9 @@ padding-bottom:10px;
 .kbis-file, .idcard-file {
   padding: 8px 0;
 }
+.google-none{
+  display:none;
+}
 @media (max-width: 767px){
 
   .idcard-file {
@@ -12048,4 +12055,73 @@ margin-bottom:0;
 }
 .space-ss {
   padding-bottom:40px;
+}
+
+/* Bouton dépublier */
+.btn-warning {
+    background-color: #f39c12 !important;
+    border-color: #f39c12 !important;
+    color: white !important;
+}
+
+.btn-warning:hover {
+    background-color: #e67e22 !important;
+    border-color: #e67e22 !important;
+    color: white !important;
+}
+
+/* Statut dépublié temporairement */
+.depublie {
+    background-color: #FFFFFF;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 3px;
+
+    text-align: center;
+}
+.space-card .depublie {
+  background: url('/bundles/app/images/group_spin.png') no-repeat left;
+    background-size: auto;
+  height: 23px;
+  background-size: contain;
+  padding: 0 10px 0 30px;
+  width: 100%;
+  margin: 5px 5px;
+}
+
+.depublie p {
+    margin: 0;
+    font-size: 14px !important;
+}
+
+/* Styles pour l'overlay de disponibilité */
+.availability-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #69bd93;
+  color: white;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 10;
+  max-width: 80%;
+  text-align: center;
+}
+
+.availability-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive pour l'overlay */
+@media (max-width: 768px) {
+  .availability-overlay {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 5px;
+    right: 5px;
+  }
 }

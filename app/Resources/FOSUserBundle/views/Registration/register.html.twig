@@ -13,7 +13,7 @@
         <div id="cboxContent white">
 
             {{ form_start(form, {'action': path('fos_user_registration_register'), 'attr': {'class':'fos_user_registration_register'}}) }}
-
+         
             <div class="form-group{{ form.email.vars.errors | length ? ' has-error' : '' }}">
                 <div class="input-group">
                     <span class="input-group-addon"><img src="{{ asset('/bundles/app/images/user_login.png') }}" alt="user" class="closed" /></span>
