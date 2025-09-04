@@ -82,7 +82,7 @@
         <div class="colorBox-content">
             <h4>Espace enregistré</h4>
             <br />
-            <p>Votre espace a été enregistré et sera publié après validation par l'administrateur.</p>
+            <p>{% if app.user and is_granted('ROLE_ADMIN') %}L'espace a été enregistré et peut être publié depuis la gestion des espaces.{% else %}Votre espace a été enregistré et peut être publié directement depuis la gestion de vos espaces.{% endif %}</p>
         </div>
     </div>
 </div>
