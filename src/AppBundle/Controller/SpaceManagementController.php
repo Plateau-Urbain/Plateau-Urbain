@@ -228,8 +228,8 @@ class SpaceManagementController extends Controller
      */
     public function unpublishAction(Space $space)
     {
-        // Vérifier que l'utilisateur est propriétaire de l'espace
-        if (!$space->isOwner($this->getUser())) {
+        // Vérifier que l'utilisateur est propriétaire de l'espace OU admin
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException('Vous n\'êtes pas autorisé à dépublier cet espace.');
         }
 
@@ -514,8 +514,8 @@ class SpaceManagementController extends Controller
      */
     public function removePictureAction(Request $request, SpaceImage $image)
     {
-        if (!$image->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$image->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette photo.');
         }
 
         // Check csrfToken
@@ -543,8 +543,8 @@ class SpaceManagementController extends Controller
      */
     public function movePictureAction(Request $request, SpaceImage $image)
     {
-        if (!$image->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$image->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à déplacer cette photo.');
         }
 
         // Check csrfToken
@@ -571,8 +571,8 @@ class SpaceManagementController extends Controller
      */
     public function removeAction(Space $space)
     {
-        if (!$space->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cet espace.');
         }
 
         if ($space->isPublished()) {
@@ -598,8 +598,8 @@ class SpaceManagementController extends Controller
      */
     public function removeDocumentAction(Request $request, SpaceDocument $spaceDocument)
     {
-        if (!$spaceDocument->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$spaceDocument->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce document.');
         }
 
         $spaceId = $spaceDocument->getSpace()->getId();
@@ -622,8 +622,8 @@ class SpaceManagementController extends Controller
      */
     public function removeParcelAction(Request $request, Parcel $parcel)
     {
-        if (!$parcel->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$parcel->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce lot.');
         }
 
         // Check csrfToken
