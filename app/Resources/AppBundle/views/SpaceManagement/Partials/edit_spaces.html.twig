@@ -173,7 +173,7 @@
                     form.publish, {
                         'attr': {
                             'class': 'btn btn-line-s js-publish',
-                            'onclick': "return confirm(\'{% if app.user and is_granted('ROLE_ADMIN') %}ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.{% else %}Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?{% endif %}\');"
+                            'onclick': "return confirm(\'{% if app.user and is_granted('ROLE_ADMIN') %}ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.{% else %}Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous pourrez le modifier ou le suspendre à tout moment depuis la gestion de vos espaces.{% endif %}\');"
                         }
                     })
                 }}
