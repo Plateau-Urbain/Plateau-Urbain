@@ -162,9 +162,14 @@ class SpaceManagementController extends Controller
      */
     public function editAction(Request $request, Space $space)
     {
-        // Check ownership
-        if (!$space->isOwner($this->getUser()) || $space->isSubmitted()) {
-            throw new AccessDeniedException();
+        // Check ownership - Les admins peuvent modifier n'importe quel espace
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier cet espace.');
+        }
+        
+        // Pour les non-admins, vérifier que l'espace n'est pas soumis
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $space->isSubmitted()) {
+            throw new AccessDeniedException('Cet espace ne peut pas être modifié car il a été soumis.');
         }
 
         $form = $this->createSpaceForm($space, array(
