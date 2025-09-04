@@ -557,5 +557,84 @@
                 document.querySelector('.help-block').closest('.form-contener').scrollIntoView(true);
             }, 500);
         }
+
+        // Vérification périodique de l'état de l'espace
+        $(document).ready(function() {
+            var spaceId = {{ space.id }};
+            var checkInterval = 30000; // Vérifier toutes les 30 secondes
+            var isChecking = false;
+            var hasShownWarning = false;
+
+            // Fonction pour vérifier l'état de l'espace
+            function checkSpaceStatus() {
+                if (isChecking || hasShownWarning) return;
+                
+                isChecking = true;
+                
+                $.ajax({
+                    url: '{{ path('space_check_status', {'id': space.id}) }}',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (!data.enabled || data.closed) {
+                            if (!hasShownWarning) {
+                                showSpaceUnavailableWarning();
+                                hasShownWarning = true;
+                            }
+                        }
+                    },
+                    error: function() {
+                        // En cas d'erreur, on continue la vérification
+                    },
+                    complete: function() {
+                        isChecking = false;
+                    }
+                });
+            }
+
+            // Fonction pour afficher l'avertissement
+            function showSpaceUnavailableWarning() {
+                var warningHtml = `
+                    <div class="colorBox-content">
+                        <h4>⚠️ Espace temporairement indisponible</h4>
+                        <br />
+                        <p>L'espace sur lequel vous êtes en train de candidater a été temporairement suspendu par le propriétaire.</p>
+                        <br />
+                        <p><strong>Vos données sont sauvegardées automatiquement.</strong></p>
+                        <br />
+                        <p>Vous pouvez :</p>
+                        <ul style="text-align: left; margin: 10px 0;">
+                            <li>Continuer à remplir votre candidature (elle sera envoyée quand l'espace sera republié)</li>
+                            <li>Enregistrer votre brouillon et revenir plus tard</li>
+                            <li>Consulter d'autres espaces disponibles</li>
+                        </ul>
+                        <br />
+                        <p><em>Nous vous notifierons par email quand l'espace sera à nouveau disponible.</em></p>
+                        <br />
+                        <div style="text-align: center;">
+                            <button onclick="closeWarning()" class="btn btn-fullcolor">Compris</button>
+                        </div>
+                    </div>
+                `;
+
+                $.colorbox({
+                    width: "500px",
+                    html: warningHtml,
+                    overlayClose: false,
+                    escKey: false
+                });
+            }
+
+            // Fonction pour fermer l'avertissement
+            window.closeWarning = function() {
+                $.colorbox.close();
+            };
+
+            // Démarrer la vérification périodique
+            setInterval(checkSpaceStatus, checkInterval);
+            
+            // Vérifier immédiatement au chargement
+            setTimeout(checkSpaceStatus, 5000);
+        });
     </script>
 {% endblock %}

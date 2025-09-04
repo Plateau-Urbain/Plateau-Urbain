@@ -320,6 +320,31 @@ class SpaceManagementController extends Controller
 
         $this->get('mailer')->send($message);
 
+        // Notifier les candidats qui ont des brouillons
+        $draftApplications = $em->getRepository('AppBundle:Application')
+            ->findBy([
+                'space' => $space,
+                'status' => 'draft'
+            ]);
+
+        foreach ($draftApplications as $application) {
+            $notificationMessage = (new \Swift_Message())
+                ->setSubject('Espace à nouveau disponible !')
+                ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                ->setTo($application->getProjectHolder()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'AppBundle:Email:space_available_again.html.twig',
+                        [
+                            'space' => $space,
+                            'application' => $application
+                        ]
+                    ), 'text/html'
+                );
+
+            $this->get('mailer')->send($notificationMessage);
+        }
+
         $this->get('session')->getFlashBag()->set('success', 'L\'espace "' . $space->getName() . '" a été publié avec succès. Le propriétaire a été notifié.');
 
         return $this->redirect($this->generateUrl('space_manager_list'));

@@ -124,6 +124,16 @@ class SpaceController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifier à nouveau l'état de l'espace avant de traiter la candidature
+            if (!$space->isEnabled() || $space->isClosed()) {
+                $this->addFlash('warning', 'Cet espace n\'est plus disponible pour les candidatures. Votre candidature a été sauvegardée en brouillon.');
+                $application->setStatus(Application::DRAFT_STATUS);
+                $em->persist($application);
+                $em->flush();
+                
+                return $this->redirectToRoute('space_show', ['id' => $space->getId()]);
+            }
+            
             if ($form->get('submit')->isClicked()) {
                 $application->setStatus(Application::UNREAD_STATUS);
             }
@@ -214,6 +224,23 @@ class SpaceController extends Controller
     public function  confirmationAction()
     {
         return array();
+    }
+
+    /**
+     * Vérifier l'état d'un espace (pour AJAX)
+     * 
+     * @Route("/check-status/{id}", name="space_check_status")
+     */
+    public function checkStatusAction(Space $space)
+    {
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse([
+            'enabled' => $space->isEnabled(),
+            'closed' => $space->isClosed(),
+            'submitted' => $space->isSubmitted(),
+            'available' => $space->isEnabled() && !$space->isClosed()
+        ]);
+
+        return $response;
     }
 }
 
