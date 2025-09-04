@@ -101,7 +101,7 @@
          
             
             <div class="col-sm-6 right align-btn">
-              {% if not space.submitted and not space.enabled and not space.isClosed %}
+              {% if (not space.submitted and not space.enabled and not space.isClosed) or (space.isOwner(app.user) and not space.isClosed) %}
                 <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
               {% endif %}
             
@@ -121,9 +121,13 @@
                 {% endif %}
               {% endif %}
               
-              {# Bouton de publication pour les admins #}
-              {% if app.user and is_granted('ROLE_ADMIN') and space.submitted and not space.enabled %}
-                <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Publier l\'espace</span></a>
+              {# Bouton de publication pour les admins et propriétaires #}
+              {% if app.user and space.submitted and not space.enabled %}
+                {% if is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Publier l\'espace</span></a>
+                {% elseif space.isOwner(app.user) %}
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous recevrez une notification par email.');"><span>Publier l\'espace</span></a>
+                {% endif %}
               {% endif %}
             </div>
          </div>

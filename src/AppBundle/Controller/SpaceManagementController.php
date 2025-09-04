@@ -167,8 +167,8 @@ class SpaceManagementController extends Controller
             throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier cet espace.');
         }
         
-        // Pour les non-admins, vérifier que l'espace n'est pas soumis
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && $space->isSubmitted()) {
+        // Pour les non-admins et non-propriétaires, vérifier que l'espace n'est pas soumis
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$space->isOwner($this->getUser()) && $space->isSubmitted()) {
             throw new AccessDeniedException('Cet espace ne peut pas être modifié car il a été soumis.');
         }
 
@@ -282,14 +282,14 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * Publier un espace en attente (action admin)
+     * Publier un espace en attente (action admin ou propriétaire)
      * 
      * @Route("/publier/{id}", name="space_manager_publish")
      */
     public function publishAction(Space $space)
     {
-        // Vérifier que l'utilisateur est admin
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        // Vérifier que l'utilisateur est admin OU propriétaire de l'espace
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$space->isOwner($this->getUser())) {
             throw new AccessDeniedException('Vous n\'êtes pas autorisé à publier cet espace.');
         }
 
