@@ -110,7 +110,11 @@
               {% endif %}
             
               {% if space.isEnabled and not space.isClosed %}
-                <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');">Clôturer</a>
+                {% else %}
+                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+                {% endif %}
               {% endif %}
             </div>
           </div>
