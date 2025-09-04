@@ -115,7 +115,7 @@
                 {% endif %}
               {% elseif not space.isEnabled %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir supprimer définitivement cet espace ?\n\nCette action est irréversible et supprimera toutes les données associées.');"><span>Supprimer</span></a>
+                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir supprimer définitivement cet espace ?\n\nCette action est irréversible et supprimera :\n- L\'espace et toutes ses données\n- Toutes les candidatures associées\n- Tous les fichiers de candidatures\n\nATTENTION : Cette action ne peut pas être annulée.');"><span>Supprimer</span></a>
                 {% else %}
                   <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>
                 {% endif %}

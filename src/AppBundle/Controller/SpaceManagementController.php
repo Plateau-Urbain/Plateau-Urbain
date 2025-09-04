@@ -585,7 +585,30 @@ class SpaceManagementController extends Controller
             return $this->redirectToRoute('space_manager_list');
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em = $this->getDoctrine()->getManager();
+        
+        // Vérifier s'il y a des candidatures associées
+        $applications = $em->getRepository('AppBundle:Application')->findBy(['space' => $space]);
+        $nbApplications = count($applications);
+        
+        if ($nbApplications > 0) {
+            // Supprimer d'abord toutes les candidatures associées
+            foreach ($applications as $application) {
+                // Supprimer les fichiers associés à la candidature
+                $applicationFiles = $em->getRepository('AppBundle:ApplicationFile')->findBy(['application' => $application]);
+                foreach ($applicationFiles as $file) {
+                    $em->remove($file);
+                }
+                
+                // Supprimer la candidature
+                $em->remove($application);
+            }
+            
+            $this->get('session')->getFlashBag()->set('warning', 
+                'L\'espace a été supprimé avec ' . $nbApplications . ' candidature(s) associée(s).');
+        }
+        
+        // Supprimer l'espace
         $em->remove($space);
         $em->flush();
 
