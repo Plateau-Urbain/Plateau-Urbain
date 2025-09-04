@@ -70,7 +70,12 @@
     {% endif %}
 
 {% endif %}
-                <h2>Les derniers appels à candidatures</h2>
+                <h2>
+                    Les derniers appels à candidatures
+                    {% if isAdmin is defined and isAdmin %}
+                        <small style="color: #bc1b38; font-size: 0.7em;">(Vue Admin - Tous les espaces)</small>
+                    {% endif %}
+                </h2>
         </div>
     </div>
 
@@ -94,6 +99,17 @@
                             <div class="availability-overlay">
                                 <span class="availability-text">Période de disponibilité : {{ space.availability }}</span>
                             </div>
+                            {% if isAdmin is defined and isAdmin %}
+                                {% if not space.enabled %}
+                                    <div class="admin-status-overlay" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 165, 0, 0.9); color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+                                        DÉSACTIVÉ
+                                    </div>
+                                {% elseif space.closed %}
+                                    <div class="admin-status-overlay" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 0, 0, 0.9); color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+                                        FERMÉ
+                                    </div>
+                                {% endif %}
+                            {% endif %}
                         </div>
 {#                        <div class="price_contener">
                             <span class="top">à partir de</span><br />
@@ -139,6 +155,17 @@
                     <div class="availability-overlay">
                         <span class="availability-text">Période de disponibilité : {{ space.availability }}</span>
                     </div>
+                    {% if isAdmin is defined and isAdmin %}
+                        {% if not space.enabled %}
+                            <div class="admin-status-overlay" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 165, 0, 0.9); color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+                                DÉSACTIVÉ
+                            </div>
+                        {% elseif space.closed %}
+                            <div class="admin-status-overlay" style="position: absolute; top: 10px; left: 10px; background: rgba(255, 0, 0, 0.9); color: white; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: bold;">
+                                FERMÉ
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
                 {# <div class="price_contener">
                     <span class="top">à partir de</span><br />

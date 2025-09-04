@@ -27,19 +27,39 @@ class SearchController extends Controller
     {
         $form = $this->createForm(SearchType::class);
 
+        // Vérifier si l'utilisateur est admin
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
         $params = array(
             'orderBy'           => 'created',
             'sort'              => 'DESC',
-            'limitAvailability' => new \DateTime('today'),
-            'enabled'           => true,
-            'closed'            => false,
         );
+
+        // Si admin, ne pas filtrer par statut pour voir tous les espaces
+        if (!$isAdmin) {
+            $params['limitAvailability'] = new \DateTime('today');
+            $params['enabled'] = true;
+            $params['closed'] = false;
+        }
 
         $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
-        $unavailableSpaces = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter([
-            'orderBy' => 'created', 'sort' => 'DESC', 'unavailable' => true, 'pagination' => 6
-        ]);
+        // Pour les espaces non disponibles, même logique
+        $unavailableParams = [
+            'orderBy' => 'created', 
+            'sort' => 'DESC', 
+            'pagination' => 6
+        ];
+        
+        if (!$isAdmin) {
+            $unavailableParams['unavailable'] = true;
+        } else {
+            // Pour admin, montrer les espaces fermés ou désactivés
+            $unavailableParams['enabled'] = true;
+            $unavailableParams['closed'] = true;
+        }
+
+        $unavailableSpaces = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($unavailableParams);
 
         $departements = $this->buildDepartementsFromSpaces($all);
 
@@ -48,6 +68,7 @@ class SearchController extends Controller
             'latest'            => $all,
             'unavailableSpaces' => $unavailableSpaces,
             'departements'      => $departements,
+            'isAdmin'           => $isAdmin,
         );
     }
 
@@ -62,6 +83,9 @@ class SearchController extends Controller
 
         if ($search->isValid())
         {
+            // Vérifier si l'utilisateur est admin
+            $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+            
             $params = array(
                 'zipCode'           => $search->get('zipCode')->getData(),
                 'localType'         => $search->get('localType')->getData(),
@@ -71,10 +95,14 @@ class SearchController extends Controller
                 'maximumSurface'    => $search->get('maximumSurface')->getData(),
                 'orderBy'           => $search->get('orderBy')->getData(),
                 'sort'              => $search->get('sort')->getData(),
-                'limitAvailability' => new \DateTime('today'),
-                'enabled'           => true,
-                'closed'            => false,
             );
+
+            // Si admin, ne pas filtrer par statut pour voir tous les espaces
+            if (!$isAdmin) {
+                $params['limitAvailability'] = new \DateTime('today');
+                $params['enabled'] = true;
+                $params['closed'] = false;
+            }
 
             $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
@@ -93,7 +121,8 @@ class SearchController extends Controller
                 'zipCode'       => $search->get('zipCode')->getData(),
                 'pagination'    => $pagination,
                 'form'          => $search->createView(),
-                'departements'  => $departements
+                'departements'  => $departements,
+                'isAdmin'       => $isAdmin
             );
         }
     }
