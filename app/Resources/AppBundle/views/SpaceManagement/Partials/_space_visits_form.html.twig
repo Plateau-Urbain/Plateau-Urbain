@@ -1,0 +1,65 @@
+<h5>
+  Visites
+</h5>
+
+<table class="lots table">
+  <thead>
+    <tr>
+      <th class="col-sm-4">Date</th>
+      <th class="col-sm-3">Début</th>
+      <th class="col-sm-3">Fin</th>
+      <th class="col-sm-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for v in visits if v.id is not empty %}
+        <tr>
+            <td>{{ v.visitDate|date('d/m/Y') }}</td>
+            <td>{{ v.startTime|date('H:i') }}</td>
+            <td>{{ v.endTime|date('H:i') }}</td>
+            <td>
+                <a href="{{ path('space_manager_removevisit', { 'id': v.id, 'token': csrf_token('remove_visit') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
+                    <i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="4" class="center sans-lot">Pas de visites</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h5>
+ <div class="ajouter"><span class="circle"><i class="fa fa-plus"></i></span></div> {{ form.vars.label }}
+</h5>
+
+{{ form_errors(form) }}
+{% if form.visitDate.vars.errors|length or form.startTime.vars.errors|length or form.endTime.vars.errors|length %}
+  <div class="alert alert-danger" role="alert">
+    Merci de renseigner une date et des horaires valides pour ajouter une visite.
+  </div>
+{% endif %}
+
+<div class="lots table">
+  <div class="col-xs-12 col-md-4">
+    <div class="lots-title">{{ form_label(form.visitDate) }}</div>
+    <div class="lots-select">{{ form_widget(form.visitDate) }}</div>
+  </div>
+  <div class="col-xs-12 col-md-3">
+    <div class="lots-title">{{ form_label(form.startTime) }}</div>
+    <div class="lots-select">{{ form_widget(form.startTime) }}</div>
+  </div>
+  <div class="col-xs-12 col-md-3">
+    <div class="lots-title">{{ form_label(form.endTime) }}</div>
+    <div class="lots-select">{{ form_widget(form.endTime) }}</div>
+  </div>
+  <div class="col-xs-12 col-md-2 margin-10">
+    <button type="submit" class="btn btn-block form-control">
+      <span>Ajouter</span>
+    </button>
+  </div>
+</div>
+
+

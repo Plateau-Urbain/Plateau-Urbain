@@ -60,18 +60,63 @@
                         <div class="form-contener">
                             <h3>Mes informations</h3>
                             <div class="row">
-                                <div class="col-sm-6 inline-controls form-group civility-group">
-                                    {{ form_label(form.userInfo.civility) }}
-                                    {{ form_widget(form.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                                    {{ form_errors(form.userInfo.civility) }}
+                                <div class="col-sm-6 inline-controls form-group civility-group{% if form.userInfo.civility.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.civility, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.civility, { 
+                                        'label_attr': { 'class': 'radio-inline' },
+                                        'attr': {
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.civility.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'civility-error'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.civility, {
+                                        'attr': {
+                                            'id': 'civility-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 form-group">
-                                    {{ form_row(form.userInfo.firstname) }}
+                                <div class="col-sm-6 form-group{% if form.userInfo.firstname.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.firstname, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.firstname, {
+                                        'attr': {
+                                            'required': 'required',
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.firstname.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'firstname-error',
+                                            'data-error-message': 'Veuillez renseigner votre prénom'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.firstname, {
+                                        'attr': {
+                                            'id': 'firstname-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    {{ form_row(form.userInfo.lastname) }}
+                                <div class="col-sm-6 form-group{% if form.userInfo.lastname.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.lastname, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.lastname, {
+                                        'attr': {
+                                            'required': 'required',
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.lastname.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'lastname-error',
+                                            'data-error-message': 'Veuillez renseigner votre nom'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.lastname, {
+                                        'attr': {
+                                            'id': 'lastname-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -175,14 +220,14 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <div class="input-group social-group">
-                                    <span class="input-group-addon"><i class="fa-brands fa-facebook fa-lg"></i></span>
+                                    <span class="input-group-addon"><i class="fa-brands fa-facebook"></i></span>
                                     {{ form_widget(form.facebookUrl) }}
                                     {{ form_errors(form.facebookUrl) }}
                                 </div>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <div class="input-group social-group">
-                                    <span class="input-group-addon"><i class="fa-brands fa-bluesky fa-lg"></i></span>
+                                    <span class="input-group-addon"><i class="fa-brands fa-google-plus"></i></span>
                                     {{ form_widget(form.googleUrl) }}
                                     {{ form_errors(form.googleUrl) }}
                                 </div>
@@ -192,14 +237,14 @@
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <div class="input-group social-group">
-                                    <span class="input-group-addon"><i class="fa-brands fa-x-twitter fa-lg"></i></span>
+                                    <span class="input-group-addon"><i class="fa-brands fa-twitter"></i></span>
                                     {{ form_widget(form.twitterUrl) }}
                                     {{ form_errors(form.twitterUrl) }}
                                 </div>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <div class="input-group social-group">
-                                    <span class="input-group-addon"><i class="fa-brands fa-linkedin fa-lg"></i></span>
+                                    <span class="input-group-addon"><i class="fa-brands fa-linkedin"></i></span>
                                     {{ form_widget(form.linkedinUrl) }}
                                     {{ form_errors(form.linkedinUrl) }}
                                 </div>
@@ -281,10 +326,23 @@
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
                                                 <div class=" actions overflow ">
                                                     <label class="btn btn-accepted">
-                                                        {{ form_widget(form.idcard) }}
+                                                        {{ form_widget(form.idcard, {
+                                                            'attr': {
+                                                                'required': 'required',
+                                                                'aria-required': 'true',
+                                                                'aria-invalid': form.idcard.vars.errors|length ? 'true' : 'false',
+                                                                'aria-describedby': 'idcard-error'
+                                                            }
+                                                        }) }}
                                                     </label>
                                                 </div>
-                                                {{ form_errors(form.idcard) }}
+                                                {{ form_errors(form.idcard, {
+                                                    'attr': {
+                                                        'id': 'idcard-error',
+                                                        'role': 'alert',
+                                                        'aria-live': 'polite'
+                                                    }
+                                                }) }}
                                             </div>
                                         {% endif %}
                                     </div>
@@ -317,10 +375,23 @@
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
                                                 <div class="actions overflow">
                                                     <label class="btn btn-accepted">
-                                                        {{ form_widget(form.kbis) }}
+                                                        {{ form_widget(form.kbis, {
+                                                            'attr': {
+                                                                'required': 'required',
+                                                                'aria-required': 'true',
+                                                                'aria-invalid': form.kbis.vars.errors|length ? 'true' : 'false',
+                                                                'aria-describedby': 'kbis-error'
+                                                            }
+                                                        }) }}
                                                     </label>
                                                 </div>
-                                                {{ form_errors(form.kbis) }}
+                                                {{ form_errors(form.kbis, {
+                                                    'attr': {
+                                                        'id': 'kbis-error',
+                                                        'role': 'alert',
+                                                        'aria-live': 'polite'
+                                                    }
+                                                }) }}
                                             </div>
                                         {% endif %}
 
@@ -416,6 +487,105 @@
                 document.querySelector('.help-block').closest('.form-contener').scrollIntoView(true);
             }, 500);
         }
+        
+        $(document).ready(function() {
+            // Fonction de validation des champs
+            function handleFieldValidation(field) {
+                const $field = $(field);
+                const formGroup = $field.closest('.form-group, .social-group, .civility-group');
+                const value = $field.val();
+                const isRequired = $field.prop('required') || $field.closest('.required').length > 0;
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (isRequired && (!value || value.trim() === '')) {
+                    // Champ requis mais vide - pas de vert, pas de rouge (attendre la soumission)
+                    formGroup.removeClass('is-valid').removeClass('has-error');
+                } else if (isRequired && value && value.trim() !== '') {
+                    // Seulement vert si le champ est requis ET correctement rempli
+                    formGroup.removeClass('has-error').addClass('is-valid');
+                } else if (!isRequired) {
+                    // Pour les champs non requis, pas de validation visuelle
+                    formGroup.removeClass('has-error is-valid');
+                }
+            }
+            
+            // Validation en temps réel sur blur et change (sauf les radio buttons)
+            $('input, select, textarea').not('input[type="radio"]').on('blur change', function() {
+                handleFieldValidation(this);
+            });
+            
+            // Validation spéciale pour les groupes de radio (civilité)
+            $('input[name*="civility"]').on('change', function() {
+                const civilityGroup = $('.civility-group');
+                civilityGroup.find('.help-block').remove();
+                
+                if ($('input[name*="civility"]:checked').length > 0) {
+                    civilityGroup.removeClass('has-error').addClass('is-valid');
+                } else {
+                    civilityGroup.removeClass('is-valid').addClass('has-error');
+                    civilityGroup.append('<span class="help-block" role="alert" aria-live="polite">Veuillez sélectionner votre civilité</span>');
+                }
+            });
+            
+            // Gestion spéciale pour les fichiers
+            $('.file-infos input[type="file"]').on('change', function() {
+                const fileInfo = $(this).closest('.file-infos');
+                const file = this.files[0];
+                
+                // Supprimer les anciens messages d'erreur
+                fileInfo.find('.help-block').remove();
+                
+                if (file) {
+                    // Vérifier la taille du fichier (10Mo max)
+                    if (file.size > 10 * 1024 * 1024) {
+                        fileInfo.addClass('has-error');
+                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Le fichier est trop volumineux (maximum 10Mo)</span>');
+                    } else {
+                        fileInfo.removeClass('has-error');
+                    }
+                } else {
+                    // Si aucun fichier sélectionné et que le champ est requis
+                    if ($(this).closest('.required-files').length > 0) {
+                        fileInfo.addClass('has-error');
+                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Ce fichier est requis</span>');
+                    } else {
+                        fileInfo.removeClass('has-error');
+                    }
+                }
+            });
+            
+            // Validation à la soumission du formulaire
+            $('form').on('submit', function(e) {
+                // La validation côté serveur Symfony s'occupe de la validation réelle
+                // On ne bloque plus la soumission côté client pour éviter les problèmes de session
+                return true;
+            });
+            
+            // Nettoyer tous les styles de validation au chargement
+            $('.form-group, .social-group, .civility-group').removeClass('is-valid has-error');
+
+            // Initialiser la validation pour les champs requis déjà remplis (sauf les radio buttons)
+            $('input[required], select[required], textarea[required]').not('input[type="radio"]').each(function() {
+                const $field = $(this);
+                const value = $field.val();
+                const isRequired = $field.prop('required') || $field.closest('.required').length > 0;
+
+                if (isRequired) {
+                    if (!value || value.trim() === '') {
+                        // Champ requis mais vide - pas de vert
+                        $field.closest('.form-group').removeClass('is-valid').removeClass('has-error');
+                    } else {
+                        // Champ requis et rempli - vert
+                        handleFieldValidation(this);
+                    }
+                }
+            });
+
+            // Ne pas initialiser automatiquement la validation pour les groupes de radio
+            // Ils seront validés seulement lors de l'interaction utilisateur
+        });
     </script>
     
     
@@ -426,4 +596,126 @@
 
     {# Thomas BERNARD datepicker supprime
     #}
+    
+    <style>
+        /* Styles de validation pour la page profil */
+        .form-group.has-error .help-block {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+            padding: 5px 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 3px solid #dc3545;
+            border-radius: 3px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .form-group.has-error .form-control {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        .form-group.is-valid .form-control {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        .form-group.has-error .form-control {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        /* Styles spécifiques pour les champs select */
+        select.form-control {
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-group.is-valid select.form-control {
+            border: 2px solid #28a745;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        .form-group.has-error select.form-control {
+            border: 2px solid #dc3545;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        /* Styles pour les groupes de radio */
+        .civility-group.has-error .radio-inline {
+            color: #dc3545;
+        }
+        
+        .civility-group.is-valid .radio-inline {
+            color: #28a745;
+        }
+        
+        /* Styles pour les fichiers */
+        .file-infos.has-error {
+            border: 2px solid #dc3545;
+            border-radius: 4px;
+            padding: 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+        
+        .file-infos .help-block {
+            margin-top: 8px;
+            margin-bottom: 0;
+            color: #dc3545;
+            font-size: 0.9em;
+            padding: 5px 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 3px solid #dc3545;
+            border-radius: 3px;
+        }
+        
+        /* Animation pour les messages d'erreur */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Styles pour les groupes sociaux */
+        .social-group.has-error .form-control {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        .social-group.is-valid .form-control {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+    </style>
 {% endblock %}
