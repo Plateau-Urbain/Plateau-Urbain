@@ -8,6 +8,7 @@ use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
 use AppBundle\Entity\SpaceDocument;
+use AppBundle\Entity\SpaceVisit;
 use AppBundle\Form\SpaceType;
 use Sonata\Exporter\Handler;
 use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
@@ -691,6 +692,35 @@ class SpaceManagementController extends Controller
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'Le lot a bien été supprimé.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
+     * @Route("/visit/{id}/delete", name="space_manager_removevisit")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeVisitAction(Request $request, SpaceVisit $visit)
+    {
+        if (!$visit->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette visite.');
+        }
+
+        // Check csrfToken
+        if (!$this->isCsrfTokenValid('remove_visit', $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid token');
+        }
+
+        $spaceId = $visit->getSpace()->getId();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($visit);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'La visite a bien été supprimée.');
 
         return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
     }

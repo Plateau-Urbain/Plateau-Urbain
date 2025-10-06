@@ -8,6 +8,7 @@ use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceAttribute;
 use AppBundle\Entity\SpaceImage;
 use AppBundle\Entity\SpaceDocument;
+use AppBundle\Entity\SpaceVisit;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +54,10 @@ class SpaceType extends AbstractType
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…"), 'required' => false))
+            ->add('nbSpaces', IntegerType::class, array('label' => 'Nombre d\'espaces', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('minSpace', IntegerType::class, array('label' => 'Surface minimale (m²)', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('maxSpace', IntegerType::class, array('label' => 'Surface maximale (m²)', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('societaireMessageType', null, array('label' => 'Type de message sociétaire', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('tags', CollectionType::class, [
@@ -84,6 +89,15 @@ class SpaceType extends AbstractType
                 SpaceDocumentType::class,
                 array(
                 'label'     => 'Ajouter un document',
+                'mapped' => false,
+                'required' => false
+            )
+            )
+            ->add(
+                'newVisit',
+                SpaceVisitType::class,
+                array(
+                'label'     => 'Ajouter une visite',
                 'mapped' => false,
                 'required' => false
             )
@@ -144,6 +158,12 @@ class SpaceType extends AbstractType
             if ($newDocument instanceof SpaceDocument) {
                 $newDocument->setSpace($event->getData());
                 $event->getData()->addDocument($newDocument);
+            }
+
+            // Handles new visit
+            $newVisit = $event->getForm()->get('newVisit')->getData();
+            if ($newVisit instanceof SpaceVisit) {
+                $event->getData()->addVisit($newVisit);
             }
 
             // Handles new required doc

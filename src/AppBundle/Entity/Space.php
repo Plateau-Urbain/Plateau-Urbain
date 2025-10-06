@@ -221,6 +221,41 @@ class Space
     private $application;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="SpaceVisit", mappedBy="space", cascade={"persist", "remove"}
+     * )
+     */
+    private $visits;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_spaces", type="integer", nullable=true)
+     */
+    private $nbSpaces;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_space", type="integer", nullable=true)
+     */
+    private $minSpace;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="max_space", type="integer", nullable=true)
+     */
+    private $maxSpace;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="societaire_message_type", type="string", length=50, nullable=true)
+     */
+    private $societaireMessageType;
+
+    /**
      * @return ArrayCollection
      */
     public function getTags()
@@ -258,6 +293,7 @@ class Space
         $this->parcels = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
     /**
      * Get id.
@@ -817,8 +853,8 @@ class Space
     public function getMinSize() {
         $min = -1;
         foreach ($this->getParcels() as $parcel) {
-            if ($min == -1 || $min > $parcel->getSurface()) {
-                $min = $parcel->getSurface();
+            if ($min == -1 || $min > $parcel->getMinSurface()) {
+                $min = $parcel->getMinSurface();
             }
         }
         return $min;
@@ -830,8 +866,8 @@ class Space
     public function getMaxSize() {
         $max = 0;
         foreach ($this->getParcels() as $parcel) {
-            if ($max < $parcel->getSurface()) {
-                $max = $parcel->getSurface();
+            if ($max < $parcel->getMaxSurface()) {
+                $max = $parcel->getMaxSurface();
             }
         }
         return $max;
@@ -1142,5 +1178,96 @@ class Space
     public function removeApplication(\AppBundle\Entity\Application $application)
     {
         $this->application->removeElement($application);
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbSpaces()
+    {
+        return $this->nbSpaces;
+    }
+
+    /**
+     * @param int $nbSpaces
+     */
+    public function setNbSpaces($nbSpaces)
+    {
+        $this->nbSpaces = $nbSpaces;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSpace()
+    {
+        return $this->minSpace;
+    }
+
+    /**
+     * @param int $minSpace
+     */
+    public function setMinSpace($minSpace)
+    {
+        $this->minSpace = $minSpace;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSpace()
+    {
+        return $this->maxSpace;
+    }
+
+    /**
+     * @param int $maxSpace
+     */
+    public function setMaxSpace($maxSpace)
+    {
+        $this->maxSpace = $maxSpace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSocietaireMessageType()
+    {
+        return $this->societaireMessageType;
+    }
+
+    /**
+     * @param string $societaireMessageType
+     */
+    public function setSocietaireMessageType($societaireMessageType)
+    {
+        $this->societaireMessageType = $societaireMessageType;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    /**
+     * @param SpaceVisit $visit
+     * @return $this
+     */
+    public function addVisit(SpaceVisit $visit)
+    {
+        $visit->setSpace($this);
+        $this->visits->add($visit);
+        return $this;
+    }
+
+    /**
+     * @param SpaceVisit $visit
+     */
+    public function removeVisit(SpaceVisit $visit)
+    {
+        $this->visits->removeElement($visit);
     }
 }

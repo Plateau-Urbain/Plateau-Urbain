@@ -5,10 +5,12 @@
 <table class="lots table">
   <thead>
     <tr>
-      <th class="col-sm-3">Étage</th>
-      <th class="col-sm-3">Type de locaux</th>
-      <th class="col-sm-3">Surface</th>
-      <th class="col-sm-3">Disponibilité</th>
+      <th class="col-sm-2">Étage</th>
+      <th class="col-sm-2">Type de locaux</th>
+      <th class="col-sm-2">Surface min</th>
+      <th class="col-sm-2">Surface max</th>
+      <th class="col-sm-2">Disponibilité</th>
+      <th class="col-sm-2">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -16,9 +18,12 @@
         <tr>
             <td >{{ parcel.floor }}</td>
             <td>{{ parcel.type }}</td>
-            <td>{{ parcel.surface }}</td>
+            <td>{{ parcel.minSurface }} m²</td>
+            <td>{{ parcel.maxSurface }} m²</td>
             <td>
                 {{ parcel.disponibilityToString }}
+            </td>
+            <td>
                 <a href="{{ path('space_manager_removeparcel', { 'id': parcel.id, 'token': csrf_token('remove_parcel') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
                     <i class="fa fa-times"></i>
                 </a>
@@ -26,7 +31,7 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="4" class="center sans-lot">Pas de lots</td>
+            <td colspan="6" class="center sans-lot">Pas de lots</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -40,27 +45,32 @@
 
 <div class="lots table">
 
-      <div class="col-xs-12 col-md-3">
+      <div class="col-xs-12 col-md-2">
         <div class="lots-title">{{ form_label(form.floor) }}</div>
         <div class="lots-select">{{ form_widget(form.floor) }}</div>
   </div>
-      <div class="col-xs-12 col-md-3">
+      <div class="col-xs-12 col-md-2">
         <div class="lots-title">{{ form_label(form.type) }}</div>
         <div class="lots-select">{{ form_widget(form.type) }}</div>
       </div>
-      <div class="col-xs-12 col-md-3">
-        <div class="lots-title">{{ form_label(form.surface) }}</div>
-        <div class="lots-select">{{ form_widget(form.surface) }}
-        {{ form_errors(form.surface) }}</div>
+      <div class="col-xs-12 col-md-2">
+        <div class="lots-title">{{ form_label(form.minSurface) }}</div>
+        <div class="lots-select">{{ form_widget(form.minSurface) }}
+        {{ form_errors(form.minSurface) }}</div>
       </div>
-      <div class="col-xs-12 col-md-3 margin-10">
+      <div class="col-xs-12 col-md-2">
+        <div class="lots-title">{{ form_label(form.maxSurface) }}</div>
+        <div class="lots-select">{{ form_widget(form.maxSurface) }}
+        {{ form_errors(form.maxSurface) }}</div>
+      </div>
+      <div class="col-xs-12 col-md-2 margin-10">
         <div class="lots-title">{{ form_label(form.disponibility) }}</div>
         <div class="lots-select">{{ form_widget(form.disponibility) }}</div>
       </div>
-     
+      <div class="col-xs-12 col-md-2">
         <button type="submit" class="btn btn-block form-control">
         <span>Ajouter</span>
-     
+        </button>
       </div>
 
 

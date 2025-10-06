@@ -1,34 +1,34 @@
 <h5>
-  Visites
+  Visites organisées
 </h5>
 
-<table class="lots table">
+<table class="visits table">
   <thead>
     <tr>
-      <th class="col-sm-4">Date</th>
-      <th class="col-sm-3">Début</th>
-      <th class="col-sm-3">Fin</th>
-      <th class="col-sm-2">Actions</th>
+      <th class="col-sm-3">Date</th>
+      <th class="col-sm-3">Heure de début</th>
+      <th class="col-sm-3">Heure de fin</th>
+      <th class="col-sm-3">Actions</th>
     </tr>
-    </thead>
-    <tbody>
-    {% for v in visits if v.id is not empty %}
+  </thead>
+  <tbody>
+    {% for visit in visits if visit.id is not empty %}
         <tr>
-            <td>{{ v.visitDate|date('d/m/Y') }}</td>
-            <td>{{ v.startTime|date('H:i') }}</td>
-            <td>{{ v.endTime|date('H:i') }}</td>
+            <td>{{ visit.visitDate|date('d/m/Y') }}</td>
+            <td>{{ visit.startTime|date('H:i') }}</td>
+            <td>{{ visit.endTime|date('H:i') }}</td>
             <td>
-                <a href="{{ path('space_manager_removevisit', { 'id': v.id, 'token': csrf_token('remove_visit') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
+                <a href="{{ path('space_manager_removevisit', { 'id': visit.id, 'token': csrf_token('remove_visit') }) }}" class="btn js-btn-space" role="button" data-link-method="post">
                     <i class="fa fa-times"></i>
                 </a>
             </td>
         </tr>
     {% else %}
         <tr>
-            <td colspan="4" class="center sans-lot">Pas de visites</td>
+            <td colspan="4" class="center sans-visite">Aucune visite organisée</td>
         </tr>
     {% endfor %}
-    </tbody>
+  </tbody>
 </table>
 
 <h5>
@@ -36,30 +36,25 @@
 </h5>
 
 {{ form_errors(form) }}
-{% if form.visitDate.vars.errors|length or form.startTime.vars.errors|length or form.endTime.vars.errors|length %}
-  <div class="alert alert-danger" role="alert">
-    Merci de renseigner une date et des horaires valides pour ajouter une visite.
-  </div>
-{% endif %}
 
-<div class="lots table">
-  <div class="col-xs-12 col-md-4">
-    <div class="lots-title">{{ form_label(form.visitDate) }}</div>
-    <div class="lots-select">{{ form_widget(form.visitDate) }}</div>
-  </div>
-  <div class="col-xs-12 col-md-3">
-    <div class="lots-title">{{ form_label(form.startTime) }}</div>
-    <div class="lots-select">{{ form_widget(form.startTime) }}</div>
-  </div>
-  <div class="col-xs-12 col-md-3">
-    <div class="lots-title">{{ form_label(form.endTime) }}</div>
-    <div class="lots-select">{{ form_widget(form.endTime) }}</div>
-  </div>
-  <div class="col-xs-12 col-md-2 margin-10">
-    <button type="submit" class="btn btn-block form-control">
-      <span>Ajouter</span>
-    </button>
-  </div>
+<div class="visits table">
+    <div class="col-xs-12 col-md-3">
+        <div class="visits-title">{{ form_label(form.visitDate) }}</div>
+        <div class="visits-select">{{ form_widget(form.visitDate) }}</div>
+    </div>
+    <div class="col-xs-12 col-md-3">
+        <div class="visits-title">{{ form_label(form.startTime) }}</div>
+        <div class="visits-select">{{ form_widget(form.startTime) }}
+        {{ form_errors(form.startTime) }}</div>
+    </div>
+    <div class="col-xs-12 col-md-3">
+        <div class="visits-title">{{ form_label(form.endTime) }}</div>
+        <div class="visits-select">{{ form_widget(form.endTime) }}
+        {{ form_errors(form.endTime) }}</div>
+    </div>
+    <div class="col-xs-12 col-md-3">
+        <button type="submit" class="btn btn-block form-control">
+            <span>Ajouter</span>
+        </button>
+    </div>
 </div>
-
-

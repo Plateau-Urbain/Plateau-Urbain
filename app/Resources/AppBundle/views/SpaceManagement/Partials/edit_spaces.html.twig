@@ -38,6 +38,9 @@
                 <li>
                     <a class="indicator" href="#five"></a>
                 </li>
+                <li>
+                    <a class="indicator" href="#six"></a>
+                </li>
                 
             </ul>
         </div>     
@@ -82,6 +85,24 @@
                 </div>
                 <div class="col-sm-6 form-group">
                     {{ form_row(form.price) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.nbSpaces) }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.minSpace) }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.maxSpace) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    {{ form_row(form.societaireMessageType) }}
                 </div>
             </div>
 
@@ -150,6 +171,20 @@
                 <div class="col-sm-12">
                 {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="six" class="section">
+        <span class="section-title form-six"></span>
+        <div class="form-contener bleu">
+            <h3>
+                Visites organisées
+            </h3>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include '@App/SpaceManagement/Partials/_space_visits_form.html.twig' with { 'visits': form.vars.data.visits,'form': form.newVisit } %}
                 </div>
             </div>
         </div>
