@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Class ApplicationType
@@ -88,7 +89,7 @@ class ApplicationType extends AbstractType
             ->add('devenirSocietaire', null, array('label' => "Je souhaite être informé·e des modalités pour devenir sociétaire" ))
             ->add(
                 'lengthTypeOccupation',
-                'choice',
+                ChoiceType::class,
                 array(
                     'choices' => Application::getAllLengthType(),
                     'label' => "Durée d'occupation"
@@ -138,9 +139,20 @@ class ApplicationType extends AbstractType
           );
         }
 
-        $builder->add('submit', 'submit', array(
+        $builder->add('save', SubmitType::class, array(
+            'label' => 'Enregistrer en brouillon',
+            'attr' => array(
+                'class' => 'btn btn-default-color submit_form',
+                'value' => 'Enregistrer en brouillon'
+            )
+        ));
+
+        $builder->add('submit', SubmitType::class, array(
             'label' => 'Soumettre ma candidature',
-            'attr' => array('class' => 'btn btn-fullcolor submit_form')
+            'attr' => array(
+                'class' => 'btn btn-fullcolor submit_form',
+                'value' => 'Soumettre ma candidature'
+            )
         ));
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
@@ -190,14 +202,14 @@ class ApplicationType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
-            /* 'validation_groups' => function (FormInterface $form) { */
-            /*     if ($form->get('save')->isClicked()) { */
-            /*         return "default"; */
-            /*     } */
+            'validation_groups' => function (FormInterface $form) {
+                if ($form->get('save')->isClicked()) {
+                    // Pour l'enregistrement en brouillon, on désactive la validation
+                    return array();
+                }
 
-            /*     return "submit"; */
-            /* } */
-            'validation_groups' => 'submit',
+                return array('submit');
+            },
             'user' => 'AppBundle\Entity\User'
         ));
     }

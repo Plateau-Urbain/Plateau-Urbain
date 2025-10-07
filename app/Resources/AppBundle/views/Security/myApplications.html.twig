@@ -117,7 +117,7 @@
                         {% if not application.space.isClosed %}
                         <p>Statut de votre candidature</p> 
                           {% if application.status == 'draft' %}
-                              <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-line-19 btn-draft"> <i class="fa fa-pencil"></i>À compléter</span></a>
+                              <a href="{{ path('space_apply', {'space': application.space.id}) }}" class="btn btn-line-19 btn-draft"> <i class="fa fa-pencil"></i>À compléter</span></a>
                           {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
                             <a href="#" class="btn btn-line-19 btn-awaiting"><i class="fa fa-hourglass-half"></i>Envoyée</a>
                           {% elseif application.status == 'accepted'  %}
@@ -128,9 +128,7 @@
                         {% endif %}
                     
                         {% if not application.space.isClosed %}
-                          {% if application.status == 'draft' %}
-                            <a href="{{ path('space_show', {'id': application.space.id}) }}#candidate" class="btn btn-line-19 btn-grey"><span>À compléter</span></a>
-                          {% else %}
+                          {% if application.status != 'draft' %}
                             <a href="{{ path('my_application_show', { 'id': application.id }) }}" class="btn btn-line-19 btn-grey"> <i class="fa fa-eye fa-lg"></i></a>
                           {% endif %}
                         {% endif %}

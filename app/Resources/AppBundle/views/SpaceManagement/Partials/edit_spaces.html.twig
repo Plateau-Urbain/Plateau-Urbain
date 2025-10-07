@@ -38,9 +38,6 @@
                 <li>
                     <a class="indicator" href="#five"></a>
                 </li>
-                <li>
-                    <a class="indicator" href="#six"></a>
-                </li>
                 
             </ul>
         </div>     
@@ -100,11 +97,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-12 form-group">
-                    {{ form_row(form.societaireMessageType) }}
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-sm-12 form-group">
@@ -120,21 +112,10 @@
         </div>
     </div>
 
-   <div id="two" class="section">
-                <span class="section-title form-two"></span>
-                <div class="form-contener bleu">
-                    <h3>Répartition des surfaces</h3>
-                    <div class="row">
-                        <div class="col-sm-12">
-                         {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-                        </div>
-                    </div>
-                </div>
-    </div>
     
 
-    <div id="three" class="section">
-        <span class="section-title form-three"></span>
+    <div id="two" class="section">
+        <span class="section-title form-two"></span>
         <div class="form-contener bleu">
             <h3>
                 Photos du lieu
@@ -147,8 +128,8 @@
         </div>
     </div>
 
-    <div id="four" class="section">
-        <span class="section-title form-four"></span>
+    <div id="three" class="section">
+        <span class="section-title form-three"></span>
         <div class="form-contener bleu">
             <h3>
                 Pièce(s) demandée(s)
@@ -161,8 +142,8 @@
         </div>
     </div>
 
-    <div id="five" class="section">
-        <span class="section-title form-five"></span>
+    <div id="four" class="section">
+        <span class="section-title form-four"></span>
         <div class="form-contener bleu">
             <h3>
                 Documents ressources
@@ -176,8 +157,8 @@
         </div>
     </div>
 
-    <div id="six" class="section">
-        <span class="section-title form-six"></span>
+    <div id="five" class="section">
+        <span class="section-title form-five"></span>
         <div class="form-contener bleu">
             <h3>
                 Visites organisées

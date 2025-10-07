@@ -62,21 +62,11 @@
         <h6>
             <i class="fa-solid fa-chevron-right"></i> Si vous possédez déjà un compte, connectez-vous pour récupérer les informations de <a href="{{ path('security_profil') }}" class="mailto">votre profil</a>.
         </h6>
-        {# <div class="fake-tabs">
-            <div class="fake-tabs__tabs fake-tabs__tabs-selected">
-                <span>Création de compte</span>
-            </div>
-            <div class="fake-tabs__tabs">
-                <a href="#inline_content" class="inline cboxElement">
-                    J'ai déjà un compte
-                </a>
-            </div>
-        </div> #}
         {% endif %}
 
         <div class="pu-col-container content-block">
             <div class="row">
-                {{ form_start(form, {'attr' : {'class' : 'col-md-12', 'role': 'form', 'aria-label': 'Formulaire de candidature'} } ) }}
+                {{ form_start(form, {'attr' : {'class' : 'col-md-12 form-apply', 'role': 'form', 'aria-label': 'Formulaire de candidature'} } ) }}
                 {{ form_errors(form, {'attr': {'role': 'alert', 'aria-live': 'polite'}}) }}
 
                 <div id="js-form-space" role="group" aria-label="Étapes du formulaire">
@@ -484,7 +474,7 @@
                                         <div class="row">
                                             <div class="col-sm-12 form-group first{% if form.description.vars.errors|length %} has-error{% endif %}">
                                                 {{ form_label(form.description, null, {'label_attr': {'class': 'required'}}) }}
-                                                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Décrivez votre projet en détail (emojis non autorisés)'}}) }}
                                                 {{ form_errors(form.description) }}
                                             </div>
                                             <div class="col-sm-12 form-group">
@@ -688,24 +678,16 @@
 </div>
                             <div class="col-sm-12">
                                 <div class="save center">
-                                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-line-form-end submit'}}) }}
-                                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-line-form-end submit'}}) }}
+                                    {% if form.save is defined %}
+                                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-default-color submit_form', 'style': 'margin-right: 15px;'}}) }}
+                                    {% endif %}
+                                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-fullcolor submit_form'}}) }}
                                 </div>
                             </div>
                         </div>
                     </div>
 
 </div>
-
-        <!--<div class="col-sm-12">
-            <p class="tip text-center">
-            Il vous manque une pièce ? Cliquez sur "Enregistrer" : votre
-            formulaire sera<br/> sauvegardé en l'état, et vous pourrez reprendre
-            la constitution plus tard.<br/>
-            Cliquez sur "Clôturer ma candidature" quand votre dossier est
-            prêt<br/> à être envoyé au propriétaire.
-            </p>
-            </div>-->
 
             {{ form_rest(form, {'render_rest': false}) }}
             {{ form_end(form, {'render_rest': false}) }}
@@ -716,254 +698,11 @@
 </div>
 {% endblock body %}
 
-{% block stylesheets %}
-    <style>
-        /* Styles généraux pour les formulaires */
-        form input:invalid,
-        form select:invalid,
-        form textarea:invalid {
-            box-shadow: none !important;
-        }
-
-        /* Désactiver les bulles de validation natives de Chrome */
-        form input::-webkit-validation-bubble-message,
-        form select::-webkit-validation-bubble-message,
-        form textarea::-webkit-validation-bubble-message {
-            display: none !important;
-        }
-
-        /* Désactiver l'apparence native des champs invalides */
-        form input:-webkit-autofill:invalid,
-        form select:-webkit-autofill:invalid,
-        form textarea:-webkit-autofill:invalid {
-            box-shadow: 0 0 0 1000px white inset !important;
-        }
-
-        /* Style amélioré pour les messages d'erreur */
-        .form-group.has-error .help-block {
-            display: block !important;
-            visibility: visible !important;
-            color: #dc3545;
-            margin-top: 8px;
-            font-size: 0.9em;
-            padding: 8px 12px;
-            background-color: rgba(220, 53, 69, 0.1);
-            border-radius: 4px;
-            border-left: 4px solid #dc3545;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Style amélioré pour les champs en erreur */
-        .form-group.has-error .form-control {
-            border-color: #dc3545;
-            border-width: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group.has-error .form-control:focus {
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-            border-color: #dc3545;
-        }
-
-        /* Icône d'erreur pour les champs */
-        .form-group.has-error .form-control {
-            padding-right: 30px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23dc3545'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 20px;
-        }
-
-        /* Style pour les champs valides */
-        .form-group.is-valid .form-control {
-            border-color: #28a745;
-            border-width: 2px;
-            padding-right: 30px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2328a745'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 20px;
-        }
-
-        /* Styles spécifiques pour le champ category - même aspect que durée d'occupation */
-        #appbundle_application_category {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            position: relative !important;
-            z-index: 1 !important;
-            /* Style identique aux autres champs avec bordure verte */
-            height: 38px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 2px solid #28a745;
-            border-radius: 4px;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        }
-
-        /* Scrollbar personnalisé pour le select */
-        #appbundle_application_category {
-            scrollbar-width: thin;
-            scrollbar-color: #ccc #f5f5f5;
-        }
-
-        #appbundle_application_category::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        #appbundle_application_category::-webkit-scrollbar-track {
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        #appbundle_application_category::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-
-        #appbundle_application_category::-webkit-scrollbar-thumb:hover {
-            background: #999;
-        }
-
-        /* Correction du z-index pour la modale d'avertissement */
-        #depublished-warning-modal {
-            z-index: 9999 !important;
-        }
-        
-        #depublished-warning-modal .modal-dialog {
-            z-index: 10000 !important;
-        }
-        
-        #depublished-warning-modal .modal-content {
-            z-index: 10001 !important;
-            position: relative;
-        }
-
-        /* Forcer l'affichage des erreurs pour le champ category */
-        #appbundle_application_category + .help-block,
-        .form-group:has(#appbundle_application_category) .help-block {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-
-        /* Masquer explicitement le conteneur Chosen pour éviter le doublon */
-        #appbundle_application_category_chosen,
-        #appbundle_application_category_chzn,
-        #appbundle_application_category + .chzn-container,
-        #appbundle_application_category + .chosen-container {
-            display: none !important;
-        }
-
-        /* Coche verte pour le select - même style que durée d'occupation */
-        .form-group.is-valid #appbundle_application_category {
-            border-color: #28a745 !important;
-            border-width: 2px !important;
-            padding-right: 35px !important;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%2328a745'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E") !important;
-            background-repeat: no-repeat !important;
-            background-position: right 10px center !important;
-            background-size: 18px !important;
-        }
-
-        .form-group.has-error #appbundle_application_category {
-            border-color: #dc3545 !important;
-            border-width: 2px !important;
-            padding-right: 35px !important;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23dc3545'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E") !important;
-            background-repeat: no-repeat !important;
-            background-position: right 10px center !important;
-            background-size: 18px !important;
-        }
-
-        /* Style pour les messages d'erreur avec ARIA */
-        [role="alert"] {
-            color: #dc3545;
-            background-color: rgba(220, 53, 69, 0.1);
-            border: none;
-            border-left: 4px solid #dc3545;
-            border-radius: 4px;
-            padding: 12px 15px;
-            margin-top: 8px;
-            font-weight: 500;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        /* Style pour les erreurs de fichiers */
-        .file-infos.has-error {
-            border: 2px solid #dc3545;
-            border-radius: 4px;
-            padding: 8px;
-            background-color: rgba(220, 53, 69, 0.1);
-            /* Empêcher le décalage du layout */
-            margin-bottom: 10px;
-            min-height: 60px;
-        }
-        
-        /* Style pour les messages d'erreur des fichiers */
-        .file-infos .help-block {
-            margin-top: 8px;
-            margin-bottom: 0;
-            color: #dc3545;
-            font-size: 0.9em;
-            padding: 5px 8px;
-            background-color: rgba(220, 53, 69, 0.1);
-            border-left: 3px solid #dc3545;
-            border-radius: 3px;
-        }
-
-        /* Indicateur de progression des étapes */
-        .indicator {
-            position: relative;
-        }
-
-        .indicator.has-error::after {
-            content: '!';
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #dc3545;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* Animation de focus pour les champs */
-        .form-control:focus {
-            transition: all 0.3s ease;
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-    </style>
-{% endblock %}
-
 {% block javascript %}
     <script>
         $(document).ready(function() {
-            // Variable globale pour empêcher l'affichage multiple du pop-up
             let modalAlreadyShown = false;
+            let spaceCheckInterval = null;
             
             // Fonction pour afficher le pop-up d'avertissement
             function showDepublishedModal() {
@@ -975,502 +714,424 @@
                 });
             }
             
-            // Afficher le pop-up d'avertissement si l'espace est dépublié au chargement
+            // Afficher le pop-up d'avertissement si l'espace est dépublié
             {% if not space.isEnabled() and not space.isClosed() %}
-            // Attendre 3 secondes puis afficher le pop-up pendant la saisie
-                    setTimeout(function() {
+            setTimeout(function() {
                 showDepublishedModal();
             }, 3000);
             {% endif %}
             
-            // Vérifier périodiquement l'état de l'espace pendant la saisie
-            let spaceCheckInterval = null;
-            
+            // Vérification périodique de l'état de l'espace
             function checkSpaceStatus() {
-                if (modalAlreadyShown) return;
-                
-                // Ne pas vérifier si l'utilisateur est en train de soumettre le formulaire
-                if ($('form').data('submitting')) {
-                    return;
-                }
+                if (modalAlreadyShown || $('form').data('submitting')) return;
                 
                 $.ajax({
                     url: '{{ path('space_check_status', {'id': space.id}) }}',
                     type: 'GET',
                     dataType: 'json',
+                    timeout: 5000,
                     success: function(data) {
                         if (data.isDepublished && !data.isClosed) {
                             showDepublishedModal();
-                            // Arrêter la vérification périodique
                             if (spaceCheckInterval) {
                                 clearInterval(spaceCheckInterval);
                             }
                         }
                     },
                     error: function() {
-                        // En cas d'erreur, continuer la vérification
                         console.log('Erreur lors de la vérification de l\'état de l\'espace');
-                                }
-                            });
-                        }
+                    }
+                });
+            }
             
-            // Démarrer la vérification périodique après 5 secondes (pour laisser le temps à l'utilisateur de commencer à saisir)
+            // Démarrer la vérification périodique
             setTimeout(function() {
-                spaceCheckInterval = setInterval(checkSpaceStatus, 10000); // Vérifier toutes les 10 secondes
+                spaceCheckInterval = setInterval(checkSpaceStatus, 15000);
             }, 5000);
             
             // Désactiver le bouton Soumettre si l'espace est dépublié
             {% if not space.isEnabled() and not space.isClosed() %}
-            $(document).ready(function() {
-                const submitButton = $('input[name="appbundle_application[submit]"], button[name="appbundle_application[submit]"]');
-                if (submitButton.length) {
-                    submitButton.prop('disabled', true);
-                    submitButton.attr('title', 'L\'espace doit être publié pour soumettre la candidature');
-                    submitButton.addClass('disabled');
-                }
-            });
+            const submitButton = $('input[name="appbundle_application[submit]"], button[name="appbundle_application[submit]"]');
+            if (submitButton.length) {
+                submitButton.prop('disabled', true);
+                submitButton.attr('title', 'L\'espace doit être publié pour soumettre la candidature');
+                submitButton.addClass('disabled');
+            }
             {% endif %}
             
-            // Force hide Chosen container for category if present
-            (function hideChosenForCategory() {
-                var $native = $('#appbundle_application_category');
-                var $chosen = $('#appbundle_application_category_chosen, #appbundle_application_category_chzn, #appbundle_application_category + .chzn-container, #appbundle_application_category + .chosen-container');
+            // Masquer les conteneurs Chosen pour le champ category
+            function hideChosenForCategory() {
+                const $native = $('#appbundle_application_category');
+                const $chosen = $('#appbundle_application_category_chosen, #appbundle_application_category_chzn, #appbundle_application_category + .chzn-container, #appbundle_application_category + .chosen-container');
                 if ($chosen.length) {
                     $chosen.hide();
                 }
-                // also ensure native is visible
                 if ($native.length) {
                     $native.show();
                 }
-            })();
-            // Fonction pour gérer l'affichage des erreurs
-            function handleFieldValidation(field) {
-                const formGroup = field.closest('.form-group');
-                const value = field.val();
-                const isRequired = field.prop('required') || field.attr('required') === 'required' || field.closest('.required').length > 0;
-                const fieldName = field.attr('name') || field.attr('id');
-                
-                // Supprimer les anciens messages d'erreur
-                formGroup.find('.help-block').remove();
-                
-                if (isRequired && (!value || value.trim() === '')) {
-                    // Champ requis mais vide - pas de vert, pas de rouge (attendre la soumission)
-                    formGroup.removeClass('is-valid').removeClass('has-error');
-                } else if (isRequired && value && value.trim() !== '') {
-                    // Seulement vert si le champ est requis ET correctement rempli
-                    formGroup.removeClass('has-error').addClass('is-valid');
-                } else if (!isRequired) {
-                    // Pour les champs non requis, pas de validation visuelle
-                    formGroup.removeClass('has-error is-valid');
-                }
-                
-                // Mettre à jour les indicateurs d'étape
-                updateStepIndicators();
-                
-                return isRequired && (!value || value.trim() === ''); // Retourne true s'il y a une erreur
             }
-
-            // Fonction pour mettre à jour les indicateurs d'étape
-            function updateStepIndicators() {
-                $('.section').each(function() {
-                    const section = $(this);
-                    const hasErrors = section.find('.has-error').length > 0;
-                    const indicator = $(`a[href="#${section.attr('id')}"]`);
-                    
-                    if (hasErrors) {
-                        indicator.addClass('has-error');
-                    } else {
-                        indicator.removeClass('has-error');
-                                }
-                            });
-                        }
-
-            // Validation en temps réel pour tous les champs
-            $('input, select, textarea').on('blur change', function() {
-                const $field = $(this);
-                
-                // Ne pas valider les champs de durée d'occupation si l'utilisateur est connecté
-                if ($field.closest('.form-group').find('label.required').length > 0) {
-                    handleFieldValidation($field);
-                } else if (!$field.is('#appbundle_application_lengthOccupation, #appbundle_application_lengthTypeOccupation')) {
-                    handleFieldValidation($field);
-                }
-                
-                // Ajouter la coche verte pour tous les champs valides
-                updateFieldValidationIcon($field);
-            });
+            hideChosenForCategory();
             
-            // Fonction pour mettre à jour l'icône de validation
-            function updateFieldValidationIcon($field) {
+            // Fonction de validation pour les champs - avec messages d'erreur en temps réel
+            function validateField($field) {
                 const formGroup = $field.closest('.form-group');
                 const value = $field.val();
                 const isRequired = $field.prop('required') || $field.attr('required') === 'required' || $field.closest('.required').length > 0;
-
-
-                // Pour les selects, vérifier si une option valide est sélectionnée
-                if ($field.is('select')) {
-                    const isValidSelect = value && value !== '' && value !== '0' && !$field.find('option:selected').text().includes('Sélectionner');
-                    if (isRequired && isValidSelect) {
-                        // Seulement vert si requis ET valide
-                        formGroup.addClass('is-valid').removeClass('has-error');
-                    } else if (isRequired && !isValidSelect && value && value.trim() !== '') {
-                        // Rouge seulement si une valeur invalide est sélectionnée
-                        formGroup.addClass('has-error').removeClass('is-valid');
-                    } else {
-                        // Pas de validation visuelle par défaut
-                        formGroup.removeClass('has-error is-valid');
-                    }
-                } else {
-                    // Pour les autres champs
-                    if (isRequired && value && value.trim() !== '') {
-                        // Seulement vert si requis ET rempli
-                        formGroup.addClass('is-valid').removeClass('has-error');
-                    } else {
-                        // Pas de validation visuelle par défaut
-                        formGroup.removeClass('has-error is-valid');
-                    }
-                }
-            }
-
-            // Validation spéciale pour la date d'entrée
-            $('#appbundle_application_startOccupation').on('change', function() {
-                const value = $(this).val();
-                const formGroup = $(this).closest('.form-group');
                 
-                if (!value) {
-                    formGroup.addClass('has-error').removeClass('is-valid');
-                    if (formGroup.find('.help-block').length === 0) {
-                        formGroup.append('<span class="help-block" role="alert">Veuillez indiquer une date d\'entrée souhaitée</span>');
-                    }
-                } else {
-                    formGroup.removeClass('has-error').addClass('is-valid');
-                    formGroup.find('.help-block').remove();
-                }
-            });
-
-            // Gestion spéciale pour les fichiers
-            $('.file-infos input[type="file"]').on('change', function() {
-                const fileInfo = $(this).closest('.file-infos');
-                const file = this.files[0];
+                // Supprimer les messages d'erreur existants
+                formGroup.find('.help-block').remove();
                 
-                // Supprimer les anciens messages d'erreur
-                fileInfo.find('.help-block').remove();
-                
-                if (file) {
-                    // Vérifier la taille du fichier (10Mo max)
-                    if (file.size > 10 * 1024 * 1024) {
-                        fileInfo.addClass('has-error');
-                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Le fichier est trop volumineux (maximum 10Mo)</span>');
-                    } else {
-                        fileInfo.removeClass('has-error');
+                // Vérifier si le champ est obligatoire et vide
+                if (isRequired && (!value || value.trim() === '')) {
+                    // Afficher le message d'erreur immédiatement
+                    let errorMessage = 'Ce champ est requis';
+                    
+                    // Messages spécifiques selon le type de champ
+                    if ($field.attr('id') === 'appbundle_application_name') {
+                        errorMessage = 'Veuillez saisir le nom de votre projet';
+                    } else if ($field.attr('id') === 'appbundle_application_description') {
+                        errorMessage = 'Veuillez décrire votre projet';
+                    } else if ($field.attr('id') === 'appbundle_application_startOccupation') {
+                        errorMessage = 'Veuillez indiquer une date d\'entrée souhaitée';
+                    } else if ($field.attr('id') === 'appbundle_application_projectHolder_userInfo_firstname') {
+                        errorMessage = 'Veuillez saisir votre prénom';
+                    } else if ($field.attr('id') === 'appbundle_application_projectHolder_userInfo_lastname') {
+                        errorMessage = 'Veuillez saisir votre nom';
+                    } else if ($field.attr('id') === 'appbundle_application_projectHolder_userInfo_phone') {
+                        errorMessage = 'Veuillez saisir votre numéro de téléphone';
+                    } else if ($field.attr('id') === 'appbundle_application_projectHolder_userInfo_email') {
+                        errorMessage = 'Veuillez saisir votre adresse email';
+                    } else if ($field.attr('id') === 'appbundle_application_projectHolder_companyInfo_zipcode') {
+                        errorMessage = 'Veuillez saisir le code postal';
+                    } else if ($field.attr('id') === 'appbundle_application_lengthOccupation') {
+                        errorMessage = 'Veuillez indiquer la durée d\'occupation';
+                    } else if ($field.attr('id') === 'appbundle_application_lengthTypeOccupation') {
+                        errorMessage = 'Veuillez sélectionner l\'unité de temps';
+                    } else if ($field.attr('name') && $field.attr('name').includes('civility')) {
+                        errorMessage = 'Veuillez sélectionner votre civilité';
                     }
-                } else {
-                    // Si aucun fichier sélectionné et que le champ est requis
-                    if ($(this).prop('required')) {
-                        fileInfo.addClass('has-error');
-                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Ce fichier est requis</span>');
-                    } else {
-                        fileInfo.removeClass('has-error');
-                    }
-                }
-                
-                updateStepIndicators();
-            });
-
-            // Validation spéciale pour le type de projet
-            $('#appbundle_application_category').on('change', function() {
-                const $field = $(this);
-                const formGroup = $field.closest('.form-group');
-                const value = $field.val();
-                
-                // Vérifier si une option valide est sélectionnée (pas la première option vide)
-                if (!value || value === '' || value === '0' || $field.find('option:selected').text().includes('Sélectionner')) {
-                    formGroup.removeClass('is-valid').addClass('has-error');
-                    if (formGroup.find('.help-block').length === 0) {
-                        formGroup.append('<span class="help-block" role="alert">Veuillez sélectionner un type de projet</span>');
-                    }
+                    
+                    formGroup.append(`<span class="help-block" role="alert">${errorMessage}</span>`);
+                    formGroup.addClass('has-error');
                     $field.attr('aria-invalid', 'true');
-                } else {
-                    formGroup.removeClass('has-error').addClass('is-valid');
-                    formGroup.find('.help-block').remove();
+                } else if (isRequired && value && value.trim() !== '') {
+                    // Champ valide - supprimer les attributs d'erreur
+                    formGroup.removeClass('has-error');
                     $field.attr('aria-invalid', 'false');
                 }
                 
                 updateStepIndicators();
-            });
-
-            // Détecter le bouton cliqué avant la soumission
-            let clickedButtonName = null;
-            $('input[type="submit"], button[type="submit"]').on('click', function(e) {
-                clickedButtonName = $(this).attr('name');
-                console.log('=== CLIC BOUTON ===');
-                console.log('Bouton cliqué détecté:', clickedButtonName);
-                console.log('Bouton element:', $(this));
-                console.log('Type du bouton:', $(this).attr('type'));
-                console.log('Valeur du bouton:', $(this).val());
-                console.log('Classes du bouton:', $(this).attr('class'));
+                return isRequired && (!value || value.trim() === '');
+            }
+            
+            // Mettre à jour les indicateurs d'étape - sans styles d'erreur
+            function updateStepIndicators() {
+                // Ne plus ajouter de classes d'erreur aux indicateurs
+                // La validation fonctionne toujours mais sans styles visuels
+            }
+            
+            // Validation en temps réel lors de la saisie pour le champ description
+            $('#appbundle_application_description').on('input', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val();
                 
-                // Si c'est le bouton Enregistrer, permettre la soumission sans validation
-                if (clickedButtonName === 'appbundle_application[save]') {
-                    console.log('✅ Bouton Enregistrer détecté - validation désactivée');
-                    // Marquer que c'est un enregistrement pour éviter la validation
-                    $(this).data('is-save', true);
-                    console.log('✅ Données marquées sur le bouton');
-                    
-                    // Forcer la soumission du formulaire
-                    console.log('=== FORÇAGE SOUMISSION ===');
-                    const form = $(this).closest('form');
-                    console.log('Formulaire parent trouvé:', form);
-                    console.log('Action du formulaire:', form.attr('action'));
-                    console.log('Méthode du formulaire:', form.attr('method'));
-                    
-                    // Forcer la soumission du formulaire après un court délai
-                    setTimeout(function() {
-                        console.log('=== SOUMISSION FORCÉE ===');
-                        console.log('Tentative de soumission du formulaire...');
-                        form[0].submit();
-                    }, 100);
-                    
-                    // Ne pas empêcher la soumission - laisser le formulaire se soumettre
-                    console.log('✅ Sortie du gestionnaire de clic - soumission autorisée');
-                    return; // Sortir sans empêcher la soumission
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                formGroup.removeClass('has-error');
+                
+                if (!value || value.trim() === '') {
+                    // Champ vide - pas d'erreur pendant la saisie
+                    $field.attr('aria-invalid', 'false');
                 } else {
-                    console.log('❌ Autre bouton cliqué:', clickedButtonName);
+                    // Vérifier les caractères spéciaux (emojis uniquement)
+                    const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+                    const hasEmojis = emojiRegex.test(value);
+                    
+                    if (hasEmojis) {
+                        formGroup.append('<span class="help-block" role="alert">Le texte ne doit pas contenir d\'emojis</span>');
+                        formGroup.addClass('has-error');
+                        $field.attr('aria-invalid', 'true');
+                    } else {
+                        // Texte valide
+                        $field.attr('aria-invalid', 'false');
+                    }
                 }
             });
-
-            // Validation à la soumission
-            console.log('=== ATTACHEMENT GESTIONNAIRE FORMULAIRE ===');
-            console.log('Nombre de formulaires trouvés:', $('form').length);
-            console.log('Formulaire principal:', $('form').first());
             
-            $('form').on('submit', function(e) {
-                console.log('=== SOUMISSION FORMULAIRE ===');
-                console.log('Event:', e);
-                console.log('Formulaire:', $(this));
+            // Validation en temps réel
+            $('.form-apply input, .form-apply select, .form-apply textarea').on('blur change', function() {
+                const $field = $(this);
+                
+                if ($field.is('#appbundle_application_description')) {
+                    // Validation spéciale pour le champ description - détection des caractères spéciaux
+                    const formGroup = $field.closest('.form-group');
+                    const value = $field.val();
+                    
+                    // Supprimer les anciens messages d'erreur
+                    formGroup.find('.help-block').remove();
+                    formGroup.removeClass('has-error');
+                    
+                    if (!value || value.trim() === '') {
+                        // Champ vide - message d'erreur standard
+                        formGroup.append('<span class="help-block" role="alert">Veuillez décrire votre projet</span>');
+                        formGroup.addClass('has-error');
+                        $field.attr('aria-invalid', 'true');
+                    } else {
+                        // Vérifier les caractères spéciaux (emojis uniquement)
+                        const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+                        const hasEmojis = emojiRegex.test(value);
+                        
+                        if (hasEmojis) {
+                            formGroup.append('<span class="help-block" role="alert">Le texte ne doit pas contenir d\'emojis</span>');
+                            formGroup.addClass('has-error');
+                            $field.attr('aria-invalid', 'true');
+                        } else {
+                            // Texte valide
+                            $field.attr('aria-invalid', 'false');
+                        }
+                    }
+                } else if ($field.is('#appbundle_application_category')) {
+                    const formGroup = $field.closest('.form-group');
+                    const value = $field.val();
+                    
+                    if (!value || value === '' || value === '0' || $field.find('option:selected').text().includes('Sélectionner')) {
+                        // Pas de classe has-error, juste le message d'erreur
+                        if (formGroup.find('.help-block').length === 0) {
+                            formGroup.append('<span class="help-block" role="alert">Veuillez sélectionner un type de projet</span>');
+                        }
+                        formGroup.addClass('has-error');
+                        $field.attr('aria-invalid', 'true');
+                    } else {
+                        // Pas de classe is-valid, juste supprimer le message d'erreur
+                        formGroup.find('.help-block').remove();
+                        formGroup.removeClass('has-error');
+                        $field.attr('aria-invalid', 'false');
+                    }
+                } else if ($field.attr('name') && $field.attr('name').includes('civility')) {
+                    // Validation spéciale pour les champs de civilité (radio buttons)
+                    const formGroup = $field.closest('.form-group');
+                    const checkedRadio = formGroup.find('input[name="' + $field.attr('name') + '"]:checked');
+                    
+                    if (checkedRadio.length === 0) {
+                        if (formGroup.find('.help-block').length === 0) {
+                            formGroup.append('<span class="help-block" role="alert">Veuillez sélectionner votre civilité</span>');
+                        }
+                        formGroup.addClass('has-error');
+                    } else {
+                        formGroup.find('.help-block').remove();
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    validateField($field);
+                }
+                
+                updateStepIndicators();
+            });
+            
+            // ===== SOLUTION RADICALE : Unbind tous les handlers submit existants =====
+            $('.form-apply').off('submit');
+            
+            console.log('=== HANDLERS SUBMIT SUPPRIMÉS ===');
+            
+            // ===== Intercepter le bouton Save AVANT toute chose =====
+            $('#appbundle_application_save').on('click', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation(); // Stopper TOUS les autres handlers
+                
+                console.log('=== CLIC SUR ENREGISTRER ===');
+                console.log('✅ Soumission directe forcée');
+                
+                // Arrêter la vérification périodique
+                if (spaceCheckInterval) {
+                    clearInterval(spaceCheckInterval);
+                }
+                
+                // Créer un formulaire temporaire avec les mêmes données
+                const $form = $('.form-apply');
+                const formData = new FormData($form[0]);
+                
+                // Ajouter explicitement le bouton save
+                formData.append('appbundle_application[save]', 'Enregistrer en brouillon');
+                
+                // Soumettre via AJAX pour éviter tout conflit
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('✅ Enregistrement réussi');
+                        // Rediriger vers "Mes candidatures"
+                        window.location.href = '{{ path('my_applications_list') }}';
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('❌ Erreur:', error);
+                        alert('Erreur lors de l\'enregistrement. Veuillez réessayer.');
+                    }
+                });
+                
+                return false;
+            });
+            
+            // ===== Handler pour le bouton Submit avec validation =====
+            $('#appbundle_application_submit').on('click', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                
+                console.log('=== CLIC SUR SOUMETTRE ===');
+                console.log('⚠️ Validation en cours');
                 
                 let hasErrors = false;
                 let firstErrorSection = null;
                 let firstErrorElement = null;
-
-                // Marquer que le formulaire est en cours de soumission
-                $('form').data('submitting', true);
-                console.log('✅ Formulaire marqué comme en cours de soumission');
-
-                // Utiliser le bouton détecté
-                const isSubmitButton = clickedButtonName === 'appbundle_application[submit]';
-                const isSaveButton = clickedButtonName === 'appbundle_application[save]';
                 
-                // Debug: afficher quel bouton a été cliqué
-                console.log('=== ANALYSE BOUTON ===');
-                console.log('clickedButtonName:', clickedButtonName);
-                console.log('isSubmitButton:', isSubmitButton);
-                console.log('isSaveButton:', isSaveButton);
+                // Validation des champs requis
+                const requiredFields = [
+                    '#appbundle_application_category',
+                    '#appbundle_application_name',
+                    '#appbundle_application_description',
+                    '#appbundle_application_startOccupation'
+                ];
                 
-                // Si c'est le bouton Enregistrer, ne pas valider
-                if (isSaveButton) {
-                    console.log('✅ Bouton Enregistrer détecté - pas de validation, soumission directe');
-                    // Arrêter la vérification périodique pendant la soumission
-                    if (spaceCheckInterval) {
-                        clearInterval(spaceCheckInterval);
-                        console.log('✅ Vérification périodique arrêtée');
-                    }
-                    // Permettre la soumission sans validation
-                    console.log('✅ Autorisation de la soumission du formulaire');
-                    return true; // Autoriser la soumission du formulaire
-                } else {
-                    console.log('❌ Bouton Enregistrer NON détecté, validation activée');
-                }
-                
-                // Fonction pour vérifier et marquer les erreurs
-                function checkAndMarkError(element) {
-                    const $element = $(element);
-                    const value = $element.val();
-                    const isRequired = $element.prop('required') || $element.attr('required') === 'required' || $element.closest('.required').length > 0;
-                    
-                    if (isRequired && (!value || value === '')) {
-                        const formGroup = $element.closest('.form-group');
-                        formGroup.removeClass('is-valid').addClass('has-error');
+                requiredFields.forEach(function(fieldId) {
+                    const $field = $(fieldId);
+                    if ($field.length) {
+                        const value = $field.val();
+                        const formGroup = $field.closest('.form-group');
                         
-                        // Message d'erreur personnalisé pour le type de projet
-                        const errorMessage = $element.attr('id') === 'appbundle_application_category' 
-                            ? 'Veuillez sélectionner un type de projet'
-                            : 'Ce champ est requis';
-                            
-                        if (formGroup.find('.help-block').length === 0) {
-                            formGroup.append(`<span class="help-block" role="alert">${errorMessage}</span>`);
-                        }
-                        
-                        $element.attr('aria-invalid', 'true');
-                        
-                        // Toujours mettre à jour firstErrorSection
-                        firstErrorSection = $element.closest('.section');
-                        firstErrorElement = $element;
-                        
-                        return true;
-                    }
-                    return false;
-                }
-
-                // Valider uniquement si on clique sur le bouton Soumettre (pas sur Enregistrer)
-                if (isSubmitButton) {
-                    console.log('=== VALIDATION ACTIVÉE ===');
-                    console.log('✅ Bouton Soumettre détecté - validation complète');
-                    // Vérifier le type de projet en premier
-                    const categoryField = $('#appbundle_application_category');
-                    const categoryValue = categoryField.val();
-                    
-                    if (!categoryValue) {
-                        hasErrors = true;
-                        const formGroup = categoryField.closest('.form-group');
-                        formGroup.addClass('has-error');
-                        if (formGroup.find('.help-block').length === 0) {
-                            formGroup.append('<span class="help-block" role="alert">Veuillez sélectionner un type de projet</span>');
-                        }
-                        firstErrorSection = categoryField.closest('.section');
-                        firstErrorElement = categoryField;
-                    }
-                    
-                    // Si le type de projet est valide, valider les autres champs
-                    if (!hasErrors) {
-                        // Valider le champ description séparément (requis seulement à la soumission)
-                        const descriptionField = $('#appbundle_application_description');
-                        const descriptionValue = descriptionField.val();
-                        
-                        if (!descriptionValue || descriptionValue.trim() === '') {
+                        if (!value || value.trim() === '') {
                             hasErrors = true;
-                            const formGroup = descriptionField.closest('.form-group');
-                            formGroup.addClass('has-error');
+                            // Pas de classe has-error, juste le message d'erreur
+                            
                             if (formGroup.find('.help-block').length === 0) {
-                                formGroup.append('<span class="help-block" role="alert">Veuillez décrire votre projet</span>');
+                                let errorMessage = 'Ce champ est requis';
+                                if (fieldId === '#appbundle_application_category') {
+                                    errorMessage = 'Veuillez sélectionner un type de projet';
+                                } else if (fieldId === '#appbundle_application_description') {
+                                    errorMessage = 'Veuillez décrire votre projet';
+                                }
+                                formGroup.append(`<span class="help-block" role="alert">${errorMessage}</span>`);
                             }
-                            if (!firstErrorSection) {
-                                firstErrorSection = descriptionField.closest('.section');
-                                firstErrorElement = descriptionField;
+                        } else if (fieldId === '#appbundle_application_description') {
+                            // Vérification spéciale pour le champ description
+                            const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+                            const hasEmojis = emojiRegex.test(value);
+                            
+                            if (hasEmojis) {
+                                hasErrors = true;
+                                if (formGroup.find('.help-block').length === 0) {
+                                    formGroup.append('<span class="help-block" role="alert">Le texte ne doit pas contenir d\'emojis</span>');
+                                }
+                                
+                                if (!firstErrorSection) {
+                                    firstErrorSection = $field.closest('.section');
+                                    firstErrorElement = $field;
+                                }
                             }
                         }
                         
-                        $('input[required], select[required], textarea[required]').not('#appbundle_application_category, #appbundle_application_description').each(function() {
-                            if (checkAndMarkError(this)) {
-                                hasErrors = true;
-                                if (!firstErrorSection) {
-                                    firstErrorSection = $(this).closest('.section');
-                                    firstErrorElement = $(this);
-                    }
-                }
-            });
-                        
-                        // Valider les fichiers requis (pièce d'identité et Kbis)
-                        $('.file-infos').each(function() {
-                            const fileInfo = $(this);
-                            const fileInput = fileInfo.find('input[type="file"]');
-                            
-                            // Vérifier si c'est un fichier requis et s'il est vide
-                            if (fileInput.length && fileInput.prop('required') && !fileInput[0].files.length) {
-                                hasErrors = true;
-                                fileInfo.addClass('has-error');
-                                
-                                // Supprimer les anciens messages d'erreur
-                                fileInfo.find('.help-block').remove();
-                                
-                                // Ajouter le message d'erreur
-                                fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Ce fichier est requis</span>');
-                                
-                                if (!firstErrorSection) {
-                                    firstErrorSection = fileInfo.closest('.section');
-                                    firstErrorElement = fileInfo;
-                                }
-                            } else if (fileInput.length && fileInput[0].files.length) {
-                                // Si le fichier est présent, supprimer l'erreur
-                                fileInfo.removeClass('has-error');
-                                fileInfo.find('.help-block').remove();
+                        if (!value || value.trim() === '') {
+                            if (!firstErrorSection) {
+                                firstErrorSection = $field.closest('.section');
+                                firstErrorElement = $field;
                             }
-                        });
+                        }
                     }
-                } else {
-                    console.log('=== VALIDATION DÉSACTIVÉE ===');
-                    console.log('❌ Validation désactivée - bouton Enregistrer détecté ou autre');
-                    console.log('clickedButtonName final:', clickedButtonName);
-                }
+                });
                 
-                    if (hasErrors && isSubmitButton) {
-                    console.log('=== ERREURS DÉTECTÉES ===');
-                    console.log('❌ Erreurs trouvées, empêchement de la soumission');
-                    e.preventDefault();
+                if (hasErrors) {
+                    console.log('❌ ERREURS DÉTECTÉES - Soumission bloquée');
                     
                     if (firstErrorSection && firstErrorElement) {
-                        // Activer l'onglet contenant l'erreur
                         const sectionId = firstErrorSection.attr('id');
                         const tabLink = $(`a[href="#${sectionId}"]`);
                         
                         if (tabLink.length) {
-                            // Activer l'onglet
                             $('.section').hide();
                             firstErrorSection.show();
                             $('.indicator').removeClass('active');
                             tabLink.addClass('active');
                             
-                                // Scroll vers l'erreur (cible le .form-group pour une marge correcte)
-            setTimeout(function() {
-                                    const target = firstErrorElement.closest('.form-group');
-                                    const offset = (target.length ? target : firstErrorElement).offset().top - 100;
+                            setTimeout(function() {
+                                const target = firstErrorElement.closest('.form-group');
+                                const offset = (target.length ? target : firstErrorElement).offset().top - 100;
                                 $('html, body').animate({
                                     scrollTop: offset
-            }, 500);
+                                }, 500);
                                 
-                                // Focus sur le premier champ en erreur
                                 if (firstErrorElement.is(':input')) {
                                     firstErrorElement.focus();
                                 }
                             }, 100);
                         }
                     }
+                    
+                    return false;
                 }
-            });
-
-            // Initialisation : vérifier les erreurs existantes et mettre à jour les icônes
-            $('.has-error').each(function() {
-                const section = $(this).closest('.section');
-                $(`a[href="#${section.attr('id')}"]`).addClass('has-error');
+                
+                console.log('✅ Validation OK - Soumission en cours');
+                
+                // Arrêter la vérification périodique
+                if (spaceCheckInterval) {
+                    clearInterval(spaceCheckInterval);
+                }
+                
+                // Soumettre le formulaire
+                const $form = $('.form-apply');
+                const formData = new FormData($form[0]);
+                
+                // Ajouter explicitement le bouton submit
+                formData.append('appbundle_application[submit]', 'Soumettre ma candidature');
+                
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('✅ Soumission réussie');
+                        window.location.href = window.location.href;
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('❌ Erreur:', error);
+                        alert('Erreur lors de la soumission. Veuillez réessayer.');
+                    }
+                });
+                
+                return false;
             });
             
-            // Nettoyer tous les styles de validation au chargement
-            $('.form-group').removeClass('is-valid has-error');
-
-            // Initialiser les icônes de validation pour les champs déjà remplis
-            $('input, select, textarea').each(function() {
+            // Initialisation - sans classes de validation visuelle
+            // Ne plus ajouter de classes has-error aux indicateurs
+            // $('.has-error').each(function() {
+            //     const section = $(this).closest('.section');
+            //     $(`a[href="#${section.attr('id')}"]`).addClass('has-error');
+            // });
+            
+            // Ne plus ajouter de classes de validation aux form-group
+            // $('.form-group').removeClass('is-valid has-error');
+            
+            // Nettoyage initial - supprimer toutes les classes d'erreur au chargement
+            $('.form-group').removeClass('has-error');
+            $('.help-block').remove();
+            
+            // Validation initiale - NE PAS afficher les erreurs au chargement
+            // Les erreurs ne s'afficheront que lors de l'interaction utilisateur
+            $('.form-apply input, .form-apply select, .form-apply textarea').each(function() {
                 const $field = $(this);
                 const value = $field.val();
                 const isRequired = $field.prop('required') || $field.attr('required') === 'required' || $field.closest('.required').length > 0;
                 
-                
-                if (isRequired && value && value.trim() !== '') {
-                    updateFieldValidationIcon($field);
-                }
+                // Ne plus valider automatiquement au chargement
+                // La validation se fera seulement lors de l'interaction utilisateur (blur, change, input)
+                // Cela évite d'afficher des erreurs avant que l'utilisateur ait commencé à remplir le formulaire
             });
-
-            // Animation des messages d'erreur
-            function animateErrorMessages() {
-                $('.help-block[role="alert"]').each(function() {
-                    if (!$(this).hasClass('animated')) {
-                        $(this).addClass('animated');
-                    }
-                });
-            }
-
-            // Observer les changements dans le DOM pour les nouveaux messages d'erreur
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.addedNodes.length) {
-                        animateErrorMessages();
-                    }
-                });
-            });
-
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
+            
+            console.log('=== INITIALISATION TERMINÉE ===');
+            console.log('Boutons configurés avec handlers personnalisés');
         });
     </script>
 {% endblock %}

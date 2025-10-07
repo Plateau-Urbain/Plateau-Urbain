@@ -66,8 +66,8 @@
 
     <div class="row">
             <ul>
-              <li>{{ space.parcels | length }} espace(s)</li>
-              <li>De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup></li>
+              <li>{{ space.nbSpaces }} espace(s)</li>
+              <li>De {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup></li>
               <li>Disponibilité: {{ space.availability }}</li>
               <li>À partir de: {{ space.price }}€/m²/mois <small class="sub">H.C. H.T.<sup>1</sup></li>
                 <li>Bailleur: {{ application.space.owner.company }}</li>
@@ -256,6 +256,12 @@
 
 <div class="row application_buttons">
   <div class="save-recap center">
+    {% if application.isDraft and not application.space.isClosed %}
+      <a href="{{ path('space_apply', {'space': application.space.id}) }}" class="btn btn-line-form-end">
+        <i class="fa fa-pencil fa-lg"></i>
+        Continuer ma candidature
+      </a>
+    {% endif %}
     <a href="javascript:print();" class="btn btn-line-form-end">
       <i class="fa-solid fa-print fa-lg"></i>
       Imprimer ma candidature

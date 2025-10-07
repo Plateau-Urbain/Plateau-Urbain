@@ -72,7 +72,7 @@
   
           <dd>
             <span class="pu-title"><strong>{{ space.parcels | length }}</strong> espaces</span>
-            De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+            De {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
             <a href="#parcels">Voir la répartition des espaces</a>
           </dd>
         </dl> #} 
@@ -98,9 +98,23 @@
             <span>{{ 'Voir votre candidature !'}}</span>
           </a>
         {% elseif not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
-          <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-line-19">
-            <span>{{ 'Je candidate'}}</span>
-          </a>
+          {% if not app.user %}
+            <a href="{{ path('fos_user_registration_register', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+              <span>Créer un compte / Se connecter</span>
+            </a>
+            <p class="center" style="margin-top:8px">Vous devez avoir un compte pour candidater.</p>
+          {% else %}
+            {% if not app.user.isProfileComplete() %}
+              <a href="{{ path('security_profil', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Veuillez compléter votre profil</span>
+              </a>
+              <p class="center" style="margin-top:8px">Votre profil doit être complet pour candidater.</p>
+            {% else %}
+              <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-line-19">
+                <span>{{ 'Je candidate'}}</span>
+              </a>
+            {% endif %}
+          {% endif %}
         {% endif %}
       </p>
       {% if application is defined and application is not null and not application.isDraft %}
@@ -161,6 +175,20 @@
     <div class="pu-col-container content-block">
       <p>{{ space.activityDescription | raw }}</p>
     </div>
+
+    {% if space.visits | length %}
+    <h4>
+      Dates et horaires des visites prévues
+    </h4>
+    <div class="pu-col-container content-block">
+      <p>Si vous êtes sélectionnés, nous vous convoquerons à l'une de ces visites :</p>
+      <ul class="property-amenities-list">
+        {% for v in space.visits %}
+          <li><i class="fa fa-calendar" aria-hidden="true" style="margin-right:8px;"></i> {{ v.visitDate|date('d/m/Y') }} de {{ v.startTime|date('H:i') }} à {{ v.endTime|date('H:i') }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
  
   <h4>
       {{ 'Documents ressources' }}

@@ -32,7 +32,9 @@ class SpaceImage
 
     /**
      * @Assert\File(
-     *     maxSize="20M"
+     *     maxSize="600k",
+     *     mimeTypes={"image/jpeg", "image/jpg", "image/png", "image/webp"},
+     *     mimeTypesMessage="Seuls les formats JPEG, PNG et WebP sont acceptés"
      * )
      * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
      */

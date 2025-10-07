@@ -1,6 +1,10 @@
 <h6>
-    Enregistrez jusqu'à 20 photos
+    Enregistrez jusqu'à 20 photos (max 600 Ko par photo)
 </h6>
+<p class="text-muted small">
+    <i class="fa fa-info-circle"></i>
+    Formats acceptés : JPEG, PNG, WebP. Taille maximale : 600 Ko par photo.
+</p>
 
 
 <div class="row photo-list">
@@ -37,7 +41,11 @@
 
 {{ form_errors(form) }}
 
-
+<!-- Zone d'affichage des erreurs de validation -->
+<div id="file-validation-errors" class="alert alert-danger" style="display: none;">
+    <i class="fa fa-exclamation-triangle"></i>
+    <span id="file-error-message"></span>
+</div>
 
 <div class="row">
   <div class="col-sm-7">

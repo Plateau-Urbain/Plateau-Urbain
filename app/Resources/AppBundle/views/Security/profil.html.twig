@@ -14,6 +14,13 @@
             </div>
            <h6> <a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
             {# <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p> #}
+            
+            {% if next is defined and next %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"></i>
+                    <strong>Information :</strong> Veuillez compléter votre profil pour pouvoir candidater. Une fois terminé, vous serez automatiquement redirigé vers la page de candidature.
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -500,14 +507,15 @@
                 formGroup.find('.help-block').remove();
                 
                 if (isRequired && (!value || value.trim() === '')) {
-                    // Champ requis mais vide - pas de vert, pas de rouge (attendre la soumission)
-                    formGroup.removeClass('is-valid').removeClass('has-error');
+                    // Champ requis mais vide - afficher l'erreur
+                    formGroup.removeClass('has-error').addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Ce champ est requis</span>');
                 } else if (isRequired && value && value.trim() !== '') {
-                    // Seulement vert si le champ est requis ET correctement rempli
-                    formGroup.removeClass('has-error').addClass('is-valid');
+                    // Champ requis et rempli - pas d'erreur, pas de vert
+                    formGroup.removeClass('has-error');
                 } else if (!isRequired) {
                     // Pour les champs non requis, pas de validation visuelle
-                    formGroup.removeClass('has-error is-valid');
+                    formGroup.removeClass('has-error');
                 }
             }
             
@@ -516,15 +524,111 @@
                 handleFieldValidation(this);
             });
             
+            // Validation spéciale pour les champs téléphone
+            $('input[type="tel"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Regex pour validation téléphone français et international
+                    const phoneRegex = /^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/;
+                    
+                    if (!phoneRegex.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le format du téléphone n\'est pas valide. Utilisez le format français (01 23 45 67 89) ou international (+33 1 23 45 67 89).</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    formGroup.removeClass('has-error');
+                }
+            });
+            
+            // Validation spéciale pour le champ SIRET
+            $('input[name*="siret"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Vérifier le format SIRET avec ou sans espaces
+                    if (!/^(\d{3}\s?){4}\d{2}$/.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le SIRET doit contenir exactement 14 chiffres. Format accepté : 123 456 789 01234</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    formGroup.removeClass('has-error');
+                }
+            });
+            
+            // Validation spéciale pour le champ code postal
+            $('input[name*="zipcode"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Vérifier que c'est exactement 5 chiffres
+                    if (!/^\d{5}$/.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le code postal doit contenir exactement 5 chiffres.</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    // Champ obligatoire mais vide
+                    formGroup.addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le code postal est obligatoire.</span>');
+                }
+            });
+            
+            // Validation spéciale pour le téléphone mobile (obligatoire)
+            $('input[name*="companyMobile"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Regex pour validation téléphone français et international
+                    const phoneRegex = /^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/;
+                    
+                    if (!phoneRegex.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le format du téléphone n\'est pas valide. Utilisez le format français (06 12 34 56 78) ou international (+33 6 12 34 56 78).</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    // Champ obligatoire mais vide
+                    formGroup.addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le téléphone mobile est obligatoire.</span>');
+                }
+            });
+            
             // Validation spéciale pour les groupes de radio (civilité)
             $('input[name*="civility"]').on('change', function() {
                 const civilityGroup = $('.civility-group');
                 civilityGroup.find('.help-block').remove();
                 
                 if ($('input[name*="civility"]:checked').length > 0) {
-                    civilityGroup.removeClass('has-error').addClass('is-valid');
+                    civilityGroup.removeClass('has-error');
                 } else {
-                    civilityGroup.removeClass('is-valid').addClass('has-error');
+                    civilityGroup.addClass('has-error');
                     civilityGroup.append('<span class="help-block" role="alert" aria-live="polite">Veuillez sélectionner votre civilité</span>');
                 }
             });
@@ -564,27 +668,10 @@
             });
             
             // Nettoyer tous les styles de validation au chargement
-            $('.form-group, .social-group, .civility-group').removeClass('is-valid has-error');
+            $('.form-group, .social-group, .civility-group').removeClass('has-error');
 
-            // Initialiser la validation pour les champs requis déjà remplis (sauf les radio buttons)
-            $('input[required], select[required], textarea[required]').not('input[type="radio"]').each(function() {
-                const $field = $(this);
-                const value = $field.val();
-                const isRequired = $field.prop('required') || $field.closest('.required').length > 0;
-
-                if (isRequired) {
-                    if (!value || value.trim() === '') {
-                        // Champ requis mais vide - pas de vert
-                        $field.closest('.form-group').removeClass('is-valid').removeClass('has-error');
-                    } else {
-                        // Champ requis et rempli - vert
-                        handleFieldValidation(this);
-                    }
-                }
-            });
-
-            // Ne pas initialiser automatiquement la validation pour les groupes de radio
-            // Ils seront validés seulement lors de l'interaction utilisateur
+            // Ne pas initialiser automatiquement la validation au chargement
+            // La validation se fera seulement lors de l'interaction utilisateur
         });
     </script>
     
@@ -615,15 +702,6 @@
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
         }
         
-        .form-group.is-valid .form-control {
-            border-color: #28a745;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-            padding-right: calc(1.5em + 0.75rem);
-        }
         
         .form-group.has-error .form-control {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
@@ -642,15 +720,6 @@
             transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
         
-        .form-group.is-valid select.form-control {
-            border: 2px solid #28a745;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-            padding-right: calc(1.5em + 0.75rem);
-        }
-        
         .form-group.has-error select.form-control {
             border: 2px solid #dc3545;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
@@ -663,10 +732,6 @@
         /* Styles pour les groupes de radio */
         .civility-group.has-error .radio-inline {
             color: #dc3545;
-        }
-        
-        .civility-group.is-valid .radio-inline {
-            color: #28a745;
         }
         
         /* Styles pour les fichiers */
@@ -706,16 +771,6 @@
         .social-group.has-error .form-control {
             border-color: #dc3545;
             box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-        }
-        
-        .social-group.is-valid .form-control {
-            border-color: #28a745;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.44 1.44L7.7 4.3l.94.94L4.68 9.1z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-            padding-right: calc(1.5em + 0.75rem);
         }
     </style>
 {% endblock %}

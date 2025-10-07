@@ -33,7 +33,11 @@ class ProjectOwnerType extends AbstractType
                 'required' => false
             ])
             ->add('wishedSize', null, array('label' => "Surface", 'attr' => array('class' => 'form-control', 'min' => 0)))
-            ->add('useType', null, array('label' => "Type d'usage", 'attr' => array('class' => 'form-control')))
+            ->add('useType', null, array(
+                'label' => "Type d'usage", 
+                'attr' => array('class' => 'form-control'),
+                'placeholder' => 'Sélectionnez un type d\'usage'
+            ))
             ->add(
                 'usageDate',
                 DateType::class,

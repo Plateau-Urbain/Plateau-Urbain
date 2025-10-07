@@ -57,7 +57,6 @@ class SpaceType extends AbstractType
             ->add('nbSpaces', IntegerType::class, array('label' => 'Nombre d\'espaces', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('minSpace', IntegerType::class, array('label' => 'Surface minimale (m²)', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('maxSpace', IntegerType::class, array('label' => 'Surface maximale (m²)', 'attr' => array('class' => 'form-control'), 'required' => false))
-            ->add('societaireMessageType', null, array('label' => 'Type de message sociétaire', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('description', null, array('label' => 'Description', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('tags', CollectionType::class, [
@@ -71,15 +70,6 @@ class SpaceType extends AbstractType
             ->add('pics', SpaceImageType::class,
                 array(
                 'label' => 'Ajouter une photo',
-                'mapped' => false,
-                'required' => false
-            )
-            )
-            ->add(
-                'newParcel',
-                ParcelType::class,
-                array(
-                'label'     => 'Ajouter un lot',
                 'mapped' => false,
                 'required' => false
             )
@@ -141,11 +131,6 @@ class SpaceType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            // Handles new parcel
-            $newParcel = $event->getForm()->get('newParcel')->getData();
-            if ($newParcel instanceof Parcel) {
-                $event->getData()->addParcel($newParcel);
-            }
 
             // Handles new image
             $newImage = $event->getForm()->get('pics')->getData();

@@ -60,12 +60,13 @@
         <div class="candidature">
 
    {% if app.user %}
-    {% if app.user.firstname %}
+    {% if app.user.isProfileComplete() %}
         <p>Bonjour <span class="mailto">{{ app.user.firstname }}</span>,</p>
     {% else %}
-        <div class="">
-            <p>Bonjour, votre profil n'est pas complet. Simplifier votre candidature en remplissant votre <a href="{{ path('fos_user_profile_edit') }}" class="mailto"> profil </a>dés maintenant.
-            </p>
+        <div style="margin: 20px 0; padding: 20px; font-size: 16px; color: #333;">
+            <i class="fa fa-exclamation-triangle" style="margin-right: 8px; color: #e9473c;"></i>
+            <strong>Profil incomplet :</strong> Votre profil doit être complet pour pouvoir candidater. 
+            <a href="{{ path('security_profil') }}" class="mailto" style="color: #e9473c; font-weight: bold;">Complétez votre profil maintenant</a> pour simplifier vos candidatures futures.
         </div>
     {% endif %}
 
@@ -73,7 +74,7 @@
                 <h2>
                     Les derniers appels à candidatures
                     {% if isAdmin is defined and isAdmin %}
-                        <small style="color: #bc1b38; font-size: 0.7em;">(Vue Admin - Tous les espaces)</small>
+                        <small style="color: #e9473c; font-size: 0.7em;">Vue Admin </small>
                     {% endif %}
                 </h2>
         </div>
@@ -125,7 +126,7 @@
                                 À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
                             </li>
                             <li>
-                                <strong>{{ space.parcels | length }}</strong> espace(s) de {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+                                <strong>{{ space.nbSpaces }}</strong> espace(s) de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
                             </li>
                         </ul>
                         <div class="calendar"></div>
@@ -181,7 +182,7 @@
                         À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
                     </li>
                     <li>
-                        <strong>{{ space.parcels | length }}</strong> espaces de {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+                        <strong>{{ space.nbSpaces }}</strong> espaces de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
                     </li>
                 </ul>
                 <div class="calendar"></div>
@@ -234,7 +235,8 @@
                 <div class="deux"></div>
                 <div class="faq-txt">
                     <p class="p-56">2 .</p>
-                    <p class="expliq p-24">Je candidate en précisant mon projet et mes besoins</h5> 
+                    <p class="expliq p-24">Je candidate en précisant mon projet et mes besoins</p> 
+                    <p><strong>Important :</strong> Votre profil doit être complet pour pouvoir candidater. Complétez-le dès maintenant pour faciliter vos candidatures.</p>
                     <p>Je reçois ensuite un mail de confirmation de dépôt de candidature (vérifier les spams)</p>
                 </div>
             </div>

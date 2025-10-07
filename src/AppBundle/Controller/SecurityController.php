@@ -66,7 +66,12 @@ class SecurityController extends Controller
     public function inscriptionConfirmationAction(Request $request)
     {
         $user = $this->getUser();
-        return $this->redirect($this->generateUrl('security_profil_role', array('role' => $user->isProprio() ? 'proprio' : 'candidat')));
+        $next = $request->query->get('next');
+        
+        return $this->redirect($this->generateUrl('security_profil_role', array(
+            'role' => $user->isProprio() ? 'proprio' : 'candidat',
+            'next' => $next
+        )));
     }
 
     /**
@@ -77,6 +82,7 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $user = $this->getUser();
         $em   = $this->getDoctrine()->getManager();
+        $next = $request->query->get('next');
 
         $logger->debug('profilAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
         if ($this->getUser()->isProprio() && $request->get('role') == 'proprio') {
@@ -100,13 +106,15 @@ class SecurityController extends Controller
 
         if (! $form->handleRequest($request)->isSubmitted()) {
             return $this->render($template, [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'next' => $next
             ]);
         }
 
         if (! $form->isValid()) {
             return $this->render($template, [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'next' => $next
             ]);
         }
 
@@ -119,6 +127,12 @@ class SecurityController extends Controller
             $em->flush();
 
             $session->getFlashBag()->set('success_msg', "Profil mis à jour");
+            
+            // Rediriger vers la page suivante si spécifiée
+            if ($next) {
+                return $this->redirect($next);
+            }
+            
             return $this->redirect($this->generateUrl('security_profil'));
         }
 
@@ -135,6 +149,12 @@ class SecurityController extends Controller
         $em->flush();
 
         $session->getFlashBag()->set('success_msg', "Profil mis à jour");
+        
+        // Rediriger vers la page suivante si spécifiée
+        if ($next) {
+            return $this->redirect($next);
+        }
+        
         return $this->redirect($this->generateUrl('security_profil'));
     }
 

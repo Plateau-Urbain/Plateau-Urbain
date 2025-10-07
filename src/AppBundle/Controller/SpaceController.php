@@ -69,6 +69,11 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, Request $request)
     {
+        error_log('=== DEBUG APPLY ACTION APPELÉE ===');
+        error_log('Espace ID: ' . $space->getId());
+        error_log('Méthode HTTP: ' . $request->getMethod());
+        error_log('URL: ' . $request->getUri());
+        
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
         $userManager = $this->get('fos_user.user_manager');
@@ -77,6 +82,14 @@ class SpaceController extends Controller
         // Si l'utilisateur est connecté
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $user = $this->getUser();
+            
+            // Vérifier si le profil est complet pour les utilisateurs connectés
+            if (!$user->isProfileComplete()) {
+                $this->addFlash('warning', 'Veuillez compléter votre profil avant de pouvoir candidater.');
+                return $this->redirect($this->generateUrl('security_profil', [
+                    'next' => $this->generateUrl('space_apply', ['space' => $space->getId()])
+                ]));
+            }
         } else {
             $user = $userManager->createUser();
             $user->setEnabled(true);
@@ -109,7 +122,35 @@ class SpaceController extends Controller
             'user' => $user
         ]);
 
+        // Debug: vérifier si le champ save existe
+        if (!$form->has('save')) {
+            // Ajouter le champ save manuellement si il n'existe pas
+            $form->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', array(
+                'label' => 'Enregistrer en brouillon',
+                'attr' => array('class' => 'btn btn-default-color submit_form')
+            ));
+        }
+
         $form->handleRequest($request);
+
+        // Debug: vérifier l'état du formulaire
+        if ($form->isSubmitted()) {
+            error_log('=== DEBUG FORMULAIRE SOUMIS ===');
+            error_log('Formulaire soumis: ' . ($form->isSubmitted() ? 'OUI' : 'NON'));
+            error_log('Formulaire valide: ' . ($form->isValid() ? 'OUI' : 'NON'));
+            error_log('Bouton submit cliqué: ' . ($form->get('submit')->isClicked() ? 'OUI' : 'NON'));
+            error_log('Bouton save cliqué: ' . ($form->get('save')->isClicked() ? 'OUI' : 'NON'));
+            
+            // Debug des erreurs de validation
+            if (!$form->isValid()) {
+                error_log('=== ERREURS DE VALIDATION ===');
+                foreach ($form->getErrors(true) as $error) {
+                    error_log('Erreur: ' . $error->getMessage() . ' (champ: ' . $error->getOrigin()->getName() . ')');
+                }
+            }
+            
+            error_log('Données POST: ' . print_r($request->request->all(), true));
+        }
 
         // On vérifie qu'un compte n'existe pas avec la même adresse email
         if ($form->isSubmitted() && $user->getId() === null) {
@@ -135,7 +176,13 @@ class SpaceController extends Controller
             }
             
             if ($form->get('submit')->isClicked()) {
+                error_log('✅ Statut défini: UNREAD_STATUS (soumission)');
                 $application->setStatus(Application::UNREAD_STATUS);
+            } elseif ($form->get('save')->isClicked()) {
+                error_log('✅ Statut défini: DRAFT_STATUS (brouillon)');
+                $application->setStatus(Application::DRAFT_STATUS);
+            } else {
+                error_log('❌ Aucun bouton détecté comme cliqué');
             }
 
             $userManager->updateUser($user);

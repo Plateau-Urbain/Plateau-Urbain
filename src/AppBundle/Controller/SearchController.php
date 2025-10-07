@@ -35,12 +35,10 @@ class SearchController extends Controller
             'sort'              => 'DESC',
         );
 
-        // Si admin, ne pas filtrer par statut pour voir tous les espaces
-        if (!$isAdmin) {
-            $params['limitAvailability'] = new \DateTime('today');
-            $params['enabled'] = true;
-            $params['closed'] = false;
-        }
+        // Toujours filtrer pour ne montrer que les espaces publiés sur la page d'accueil
+        $params['limitAvailability'] = new \DateTime('today');
+        $params['enabled'] = true;
+        $params['closed'] = false;
 
         $all = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 
@@ -51,13 +49,8 @@ class SearchController extends Controller
             'pagination' => 6
         ];
         
-        if (!$isAdmin) {
-            $unavailableParams['unavailable'] = true;
-        } else {
-            // Pour admin, montrer les espaces fermés ou désactivés
-            $unavailableParams['enabled'] = true;
-            $unavailableParams['closed'] = true;
-        }
+        // Toujours filtrer pour ne montrer que les espaces publiés même dans la section "non disponibles"
+        $unavailableParams['unavailable'] = true;
 
         $unavailableSpaces = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($unavailableParams);
 
@@ -97,12 +90,10 @@ class SearchController extends Controller
                 'sort'              => $search->get('sort')->getData(),
             );
 
-            // Si admin, ne pas filtrer par statut pour voir tous les espaces
-            if (!$isAdmin) {
-                $params['limitAvailability'] = new \DateTime('today');
-                $params['enabled'] = true;
-                $params['closed'] = false;
-            }
+            // Toujours filtrer pour ne montrer que les espaces publiés dans les résultats de recherche
+            $params['limitAvailability'] = new \DateTime('today');
+            $params['enabled'] = true;
+            $params['closed'] = false;
 
             $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
 

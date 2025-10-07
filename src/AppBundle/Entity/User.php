@@ -1339,6 +1339,105 @@ class User extends BaseUser
     }
 
     /**
+     * Vérifie si le profil utilisateur est complet pour pouvoir candidater
+     * 
+     * @return bool
+     */
+    public function isProfileComplete()
+    {
+        // Vérifier les champs obligatoires de base
+        if (empty($this->civility) || empty($this->firstname) || empty($this->lastname) || empty($this->email)) {
+            return false;
+        }
+
+        // Vérifier les informations de l'entreprise
+        if (empty($this->company) || empty($this->companyStatus) || empty($this->address) || 
+            empty($this->zipcode) || empty($this->city)) {
+            return false;
+        }
+
+        // Vérifier les informations spécifiques au porteur de projet
+        if ($this->isPorteur()) {
+            if (empty($this->birthday) || empty($this->companyCreationDate) || 
+                empty($this->wishedSize) || empty($this->usageDate) || empty($this->usageDuration)) {
+                return false;
+            }
+        }
+
+        // Vérifier les documents obligatoires
+        if (!$this->hasDocuments(UserDocument::ID_TYPE) || !$this->hasDocuments(UserDocument::KBIS_TYPE)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Retourne la liste des champs manquants pour compléter le profil
+     * 
+     * @return array
+     */
+    public function getMissingProfileFields()
+    {
+        $missing = [];
+
+        if (empty($this->civility)) {
+            $missing[] = 'Civilité';
+        }
+        if (empty($this->firstname)) {
+            $missing[] = 'Prénom';
+        }
+        if (empty($this->lastname)) {
+            $missing[] = 'Nom';
+        }
+        if (empty($this->email)) {
+            $missing[] = 'Email';
+        }
+        if (empty($this->company)) {
+            $missing[] = 'Nom de l\'entreprise';
+        }
+        if (empty($this->companyStatus)) {
+            $missing[] = 'Statut de l\'entreprise';
+        }
+        if (empty($this->address)) {
+            $missing[] = 'Adresse';
+        }
+        if (empty($this->zipcode)) {
+            $missing[] = 'Code postal';
+        }
+        if (empty($this->city)) {
+            $missing[] = 'Ville';
+        }
+
+        if ($this->isPorteur()) {
+            if (empty($this->birthday)) {
+                $missing[] = 'Date de naissance';
+            }
+            if (empty($this->companyCreationDate)) {
+                $missing[] = 'Date de création de l\'entreprise';
+            }
+            if (empty($this->wishedSize)) {
+                $missing[] = 'Surface souhaitée';
+            }
+            if (empty($this->usageDate)) {
+                $missing[] = 'Date de disponibilité';
+            }
+            if (empty($this->usageDuration)) {
+                $missing[] = 'Durée d\'occupation';
+            }
+        }
+
+        if (!$this->hasDocuments(UserDocument::ID_TYPE)) {
+            $missing[] = 'Pièce d\'identité';
+        }
+        if (!$this->hasDocuments(UserDocument::KBIS_TYPE)) {
+            $missing[] = 'Kbis ou document équivalent';
+        }
+
+        return $missing;
+    }
+
+    /**
      * @Assert\Callback()
      * @param ExecutionContextInterface $context
      */

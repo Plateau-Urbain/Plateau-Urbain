@@ -12,6 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Application;
 
@@ -36,7 +40,21 @@ class CompanyType extends AbstractType
                 'label' => "Statut",
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('siret', null, ['label' => "SIRET", 'attr' => ['class' => 'form-control']])
+            ->add('siret', TextType::class, [
+                'label' => "SIRET", 
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Ex: 123 456 789 01234',
+                    'maxlength' => '18'
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^(\d{3}\s?){4}\d{2}$/',
+                        'message' => 'Le SIRET doit contenir exactement 14 chiffres. Format accepté : 123 456 789 01234'
+                    ])
+                ]
+            ])
             ->add('companyFunction', null, [
                 'label' => "Fonction",
                 'attr' => ['class' => 'form-control', 'rows' => 5]
@@ -61,14 +79,34 @@ class CompanyType extends AbstractType
             ->add('companySite', UrlType::class, [
                 'label' => "Site web", 'required' => false, 'attr' => ['class' => 'form-control']
             ])
-            ->add('companyPhone', TextType::class, [
+            ->add('companyPhone', TelType::class, [
                 'label' => "Téléphone fixe",
-                'attr' => ['class' => 'form-control']
-            ])
-            ->add('companyMobile', TextType::class, [
-                'label' => "Téléphone mobile",
                 'required' => false,
-                'attr' => ['class' => 'form-control']
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Ex: 01 23 45 67 89 ou +33 1 23 45 67 89'
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/',
+                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (01 23 45 67 89) ou international (+33 1 23 45 67 89).'
+                    ])
+                ]
+            ])
+            ->add('companyMobile', TelType::class, [
+                'label' => "Téléphone mobile",
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Ex: 06 12 34 56 78 ou +33 6 12 34 56 78',
+                    'required' => 'required'
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/',
+                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (06 12 34 56 78) ou international (+33 6 12 34 56 78).'
+                    ])
+                ]
             ])
             ->add('address', TextType::class, [
                 'label' => "Adresse de la structure",
@@ -81,7 +119,20 @@ class CompanyType extends AbstractType
             ])*/
             ->add('zipcode', TextType::class, [
                 'label' => 'Code postal',
-                'attr' => ['class' => 'form-control']
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Ex: 75001',
+                    'maxlength' => '5',
+                    'pattern' => '[0-9]{5}',
+                    'required' => 'required'
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^\d{5}$/',
+                        'message' => 'Le code postal doit contenir exactement 5 chiffres.'
+                    ])
+                ]
             ])
             ->add('city', TextType::class, [
                 'label' => 'Ville',

@@ -113,21 +113,13 @@ class SpaceManagementController extends Controller
     {
         $space = new Space();
         $space->setOwner($this->getUser());
-        $space->isClosed(false);
+        $space->setClosed(false);
         $space->setLimitAvailability((new \DateTime('today'))->modify('+1 month'));
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $em->persist($space);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
 
         $form = $this->createSpaceForm($space, array(
             'action' => $this->generateUrl('space_manager_add'),
             'method' => 'post'
         ));
-
-        $space->setOwner($this->getUser());
 
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -150,7 +142,7 @@ class SpaceManagementController extends Controller
             return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
         }
 
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(), 'space' => $space);
     }
 
     /**
