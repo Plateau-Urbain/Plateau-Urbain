@@ -13,6 +13,7 @@ use AppBundle\Form\SpaceType;
 use Sonata\Exporter\Handler;
 use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
 use Sonata\Exporter\Writer\CsvWriter;
+use ZipArchive;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -507,6 +508,262 @@ class SpaceManagementController extends Controller
             'Content-Type' => 'application/csv',
             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename)
         ));
+    }
+
+    /**
+     * @Route("/candidates-export-zip/{id}", name="space_manager_candidatesexportzip", methods={"get"})
+     *
+     * @param Request $request
+     * @param Space $space
+     *
+     * @return Response
+     */
+    public function candidatesExportZipAction(Request $request, Space $space)
+    {
+        // Vérifier les permissions
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à exporter les candidatures de cet espace.');
+        }
+
+        // Handle the filter form
+        $filterForm = $this->handleFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
+        ));
+
+        $filters = $filterForm->getData();
+
+        $params = array(
+            'space'     => $space,
+            'orderBy'   => $filters['sort_field'],
+            'status'    => $filters['status_filter'],
+            'sort'      => $filters['sort_order']
+        );
+
+        $qb = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
+        $applications = $qb->getQuery()->getResult();
+
+        // Créer le fichier ZIP temporaire
+        $zip = new ZipArchive();
+        $tempFile = tempnam(sys_get_temp_dir(), 'export_candidatures_');
+        $zip->open($tempFile, ZipArchive::CREATE);
+
+        $applicationFilesPath = $this->get('kernel')->getRootDir() . '/../web/uploads/application_files/';
+        $userDocumentsPath = $this->get('kernel')->getRootDir() . '/../web/uploads/user_documents/';
+
+        foreach ($applications as $application) {
+            // Créer le nom du dossier pour cette candidature
+            $candidateName = $this->sanitizeFileName($application->getProjectHolder()->getFullName());
+            $companyName = $this->sanitizeFileName($application->getProjectHolder()->getCompany());
+            $folderName = $candidateName . '_' . $companyName;
+            
+            // Créer le récapitulatif HTML
+            $summaryContent = $this->renderView('AppBundle:SpaceManagement:application_summary.html.twig', [
+                'application' => $application
+            ]);
+            
+            $zip->addFromString($folderName . '/recapitulatif.html', $summaryContent);
+
+            // Ajouter les documents de la candidature (ApplicationFile)
+            foreach ($application->getFiles() as $file) {
+                if ($file->getFileName()) {
+                    $filePath = $applicationFilesPath . $file->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $file->getFileName();
+                        if ($file->getSpaceDocument()) {
+                            $displayName = $file->getSpaceDocument()->getName() . '_' . $file->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_candidature/' . $displayName);
+                    }
+                }
+            }
+
+            // Ajouter les documents du profil utilisateur (UserDocument)
+            foreach ($application->getProjectHolder()->getDocuments() as $userDoc) {
+                if ($userDoc->getFileName()) {
+                    $filePath = $userDocumentsPath . $userDoc->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $userDoc->getFileName();
+                        if ($userDoc->getType()) {
+                            $typeLabel = $this->getDocumentTypeLabel($userDoc->getType());
+                            $displayName = $typeLabel . '_' . $userDoc->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_profil/' . $displayName);
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        // Générer le nom du fichier
+        $filename = 'export_candidatures_' . $this->sanitizeFileName($space->getName()) . '_' . date('Y-m-d_H-i-s') . '.zip';
+
+        // Retourner le fichier ZIP
+        $response = new Response(file_get_contents($tempFile));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+        $response->headers->set('Content-Length', filesize($tempFile));
+
+        // Nettoyer le fichier temporaire
+        unlink($tempFile);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/candidates-export-zip-selected/{id}", name="space_manager_candidatesexportzip_selected", methods={"post"})
+     *
+     * @param Request $request
+     * @param Space $space
+     *
+     * @return Response
+     */
+    public function candidatesExportZipSelectedAction(Request $request, Space $space)
+    {
+        // Vérifier les permissions
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à exporter les candidatures de cet espace.');
+        }
+
+        // Vérifier le token CSRF
+        if (!$this->isCsrfTokenValid('export_selected', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Token CSRF invalide.');
+        }
+
+        // Récupérer les IDs des candidatures sélectionnées
+        $selectedIds = $request->request->get('selected_applications', []);
+        
+        if (empty($selectedIds)) {
+            throw new BadRequestHttpException('Aucune candidature sélectionnée.');
+        }
+
+        // Récupérer les candidatures sélectionnées
+        $em = $this->getDoctrine()->getManager();
+        $applications = $em->getRepository('AppBundle:Application')
+            ->createQueryBuilder('a')
+            ->leftJoin('a.files', 'f')
+            ->leftJoin('a.projectHolder', 'u')
+            ->leftJoin('a.space', 's')
+            ->where('a.id IN (:ids)')
+            ->andWhere('a.space = :space')
+            ->setParameter('ids', $selectedIds)
+            ->setParameter('space', $space)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($applications)) {
+            throw new BadRequestHttpException('Aucune candidature valide trouvée.');
+        }
+
+        // Créer le fichier ZIP temporaire
+        $zip = new ZipArchive();
+        $tempFile = tempnam(sys_get_temp_dir(), 'export_candidatures_selected_');
+        $zip->open($tempFile, ZipArchive::CREATE);
+
+        $applicationFilesPath = $this->get('kernel')->getRootDir() . '/../web/uploads/application_files/';
+        $userDocumentsPath = $this->get('kernel')->getRootDir() . '/../web/uploads/user_documents/';
+
+        foreach ($applications as $application) {
+            // Créer le nom du dossier pour cette candidature
+            $candidateName = $this->sanitizeFileName($application->getProjectHolder()->getFullName());
+            $companyName = $this->sanitizeFileName($application->getProjectHolder()->getCompany());
+            $folderName = $candidateName . '_' . $companyName;
+            
+            // Créer le récapitulatif HTML
+            $summaryContent = $this->renderView('AppBundle:SpaceManagement:application_summary.html.twig', [
+                'application' => $application
+            ]);
+            
+            $zip->addFromString($folderName . '/recapitulatif.html', $summaryContent);
+
+            // Ajouter les documents de la candidature (ApplicationFile)
+            foreach ($application->getFiles() as $file) {
+                if ($file->getFileName()) {
+                    $filePath = $applicationFilesPath . $file->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $file->getFileName();
+                        if ($file->getSpaceDocument()) {
+                            $displayName = $file->getSpaceDocument()->getName() . '_' . $file->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_candidature/' . $displayName);
+                    }
+                }
+            }
+
+            // Ajouter les documents du profil utilisateur (UserDocument) - si disponibles
+            if (method_exists($application->getProjectHolder(), 'getDocuments')) {
+                foreach ($application->getProjectHolder()->getDocuments() as $userDoc) {
+                    if ($userDoc->getFileName()) {
+                        $filePath = $userDocumentsPath . $userDoc->getFileName();
+                        if (file_exists($filePath)) {
+                            // Créer un nom de fichier plus descriptif
+                            $displayName = $userDoc->getFileName();
+                            if ($userDoc->getType()) {
+                                $typeLabel = $this->getDocumentTypeLabel($userDoc->getType());
+                                $displayName = $typeLabel . '_' . $userDoc->getFileName();
+                            }
+                            $zip->addFile($filePath, $folderName . '/documents_profil/' . $displayName);
+                        }
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        // Générer le nom du fichier
+        $filename = 'export_candidatures_selection_' . $this->sanitizeFileName($space->getName()) . '_' . date('Y-m-d_H-i-s') . '.zip';
+
+        // Retourner le fichier ZIP
+        $response = new Response(file_get_contents($tempFile));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+        $response->headers->set('Content-Length', filesize($tempFile));
+
+        // Nettoyer le fichier temporaire
+        unlink($tempFile);
+
+        return $response;
+    }
+
+    /**
+     * Nettoie un nom de fichier pour qu'il soit valide
+     *
+     * @param string $fileName
+     * @return string
+     */
+    private function sanitizeFileName($fileName)
+    {
+        // Remplacer les caractères spéciaux par des underscores
+        $fileName = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $fileName);
+        // Supprimer les underscores multiples
+        $fileName = preg_replace('/_+/', '_', $fileName);
+        // Supprimer les underscores en début et fin
+        $fileName = trim($fileName, '_');
+        // Limiter la longueur
+        return substr($fileName, 0, 50);
+    }
+
+    /**
+     * Retourne le label lisible pour un type de document
+     *
+     * @param string $type
+     * @return string
+     */
+    private function getDocumentTypeLabel($type)
+    {
+        $labels = [
+            'id' => 'Piece_identite',
+            'kbis' => 'KBIS',
+            '' => 'Autre_document'
+        ];
+
+        return isset($labels[$type]) ? $labels[$type] : 'Document_' . $type;
     }
 
     /**

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Récapitulatif de candidature - {{ application.projectHolder.fullName }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        .header {
+            border-bottom: 2px solid #8B4513;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #8B4513;
+            margin: 0;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-left: 4px solid #8B4513;
+            background-color: #f9f9f9;
+        }
+        .section h2 {
+            color: #8B4513;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            font-weight: bold;
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            flex-grow: 1;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status.awaiting {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status.accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status.unread {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        .documents-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .documents-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .documents-list li:last-child {
+            border-bottom: none;
+        }
+        .no-documents {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Récapitulatif de candidature</h1>
+        <p><strong>Espace :</strong> {{ application.space.name }}</p>
+        <p><strong>Date d'export :</strong> {{ "now"|date("d/m/Y à H:i") }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Informations générales</h2>
+        <div class="info-row">
+            <div class="info-label">Statut :</div>
+            <div class="info-value">
+                <span class="status {{ application.status }}">{{ application.statusLabel }}</span>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Date de dépôt :</div>
+            <div class="info-value">{{ application.created|date("d/m/Y à H:i") }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Nom du projet :</div>
+            <div class="info-value">{{ application.name }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Type de projet :</div>
+            <div class="info-value">{{ application.category ? application.category.name : 'Non spécifié' }}</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Informations du porteur de projet</h2>
+        <div class="info-row">
+            <div class="info-label">Nom complet :</div>
+            <div class="info-value">{{ application.projectHolder.fullName }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Structure :</div>
+            <div class="info-value">{{ application.projectHolder.company }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Email :</div>
+            <div class="info-value">{{ application.projectHolder.email }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Téléphone :</div>
+            <div class="info-value">{{ application.projectHolder.companyPhone }}</div>
+        </div>
+        {% if application.projectHolder.companyDescription %}
+        <div class="info-row">
+            <div class="info-label">Présentation :</div>
+            <div class="info-value">{{ application.projectHolder.companyDescription }}</div>
+        </div>
+        {% endif %}
+        
+        {% if application.projectHolder.facebookUrl or application.projectHolder.twitterUrl or application.projectHolder.instagramUrl or application.projectHolder.googleUrl or application.projectHolder.linkedinUrl or application.projectHolder.otherUrl %}
+        <div class="info-row">
+            <div class="info-label">Réseaux sociaux :</div>
+            <div class="info-value">
+                {% if application.projectHolder.facebookUrl %}<a href="{{ application.projectHolder.facebookUrl }}">Facebook</a>{% endif %}
+                {% if application.projectHolder.twitterUrl %}<a href="{{ application.projectHolder.twitterUrl }}">Twitter</a>{% endif %}
+                {% if application.projectHolder.instagramUrl %}<a href="{{ application.projectHolder.instagramUrl }}">Instagram</a>{% endif %}
+                {% if application.projectHolder.googleUrl %}<a href="{{ application.projectHolder.googleUrl }}">Google+</a>{% endif %}
+                {% if application.projectHolder.linkedinUrl %}<a href="{{ application.projectHolder.linkedinUrl }}">LinkedIn</a>{% endif %}
+                {% if application.projectHolder.otherUrl %}<a href="{{ application.projectHolder.otherUrl }}">Autre</a>{% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Détails du projet</h2>
+        {% if application.description %}
+        <div class="info-row">
+            <div class="info-label">Description :</div>
+            <div class="info-value">{{ application.description|nl2br }}</div>
+        </div>
+        {% endif %}
+        <div class="info-row">
+            <div class="info-label">Surface recherchée :</div>
+            <div class="info-value">{{ application.wishedSize }} m²</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Durée d'occupation :</div>
+            <div class="info-value">{{ application.fullLengthOccupation }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Date d'entrée souhaitée :</div>
+            <div class="info-value">{{ application.startOccupation ? application.startOccupation|date("d/m/Y") : 'Non spécifiée' }}</div>
+        </div>
+        {% if application.contribution %}
+        <div class="info-row">
+            <div class="info-label">Contribution au projet :</div>
+            <div class="info-value">{{ application.contribution|nl2br }}</div>
+        </div>
+        {% endif %}
+        <div class="info-row">
+            <div class="info-label">Ouvert à un projet global :</div>
+            <div class="info-value">{{ application.openToGlobalProject ? 'Oui' : 'Non' }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Devenir sociétaire :</div>
+            <div class="info-value">{{ application.devenirSocietaire ? 'Oui' : 'Non' }}</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Documents de la candidature</h2>
+        {% if application.files|length > 0 %}
+            <ul class="documents-list">
+                {% for file in application.files %}
+                    <li>
+                        <strong>{{ file.fileName }}</strong>
+                        {% if file.spaceDocument %}
+                            <em>({{ file.spaceDocument.name }})</em>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-documents">Aucun document joint à cette candidature.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Documents du profil utilisateur</h2>
+        {% if application.projectHolder.documents|length > 0 %}
+            <ul class="documents-list">
+                {% for doc in application.projectHolder.documents %}
+                    <li>
+                        <strong>{{ doc.fileName }}</strong>
+                        {% if doc.type %}
+                            <em>({{ doc.type == 'id' ? 'Pièce d\'identité' : (doc.type == 'kbis' ? 'KBIS' : 'Autre document') }})</em>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-documents">Aucun document de profil disponible.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Informations de l'espace</h2>
+        <div class="info-row">
+            <div class="info-label">Nom de l'espace :</div>
+            <div class="info-value">{{ application.space.name }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Adresse :</div>
+            <div class="info-value">{{ application.space.address }}, {{ application.space.zipCode }} {{ application.space.city }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Type :</div>
+            <div class="info-value">{{ application.space.type }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Surface disponible :</div>
+            <div class="info-value">{{ application.space.size }} m²</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Prix :</div>
+            <div class="info-value">{{ application.space.price }} €/m²/mois</div>
+        </div>
+    </div>
+</body>
+</html>
