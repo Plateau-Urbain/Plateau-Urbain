@@ -65,8 +65,13 @@
 
     <div class="pu-price-zone ">
     <p class="pu-label">Prix&nbsp;: </sup>
-            À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
-            <br />Soit {{ space.price }} € / m<sup>2</sup> / mois</p>
+            {% if space.priceText %}
+                {{ space.priceText }}
+            {% else %}
+                À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                <br />Soit {{ space.price }} € / m<sup>2</sup> / mois
+            {% endif %}
+            </p>
     
       {#   <dl class="dl-horizontal">
   
@@ -99,9 +104,14 @@
           </a>
         {% elseif not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
           {% if not app.user %}
-            <a href="{{ path('fos_user_registration_register', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
-              <span>Créer un compte / Se connecter</span>
-            </a>
+            <div class="auth-buttons">
+              <a href="{{ path('fos_user_security_login', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Se connecter</span>
+              </a>
+              <a href="{{ path('fos_user_registration_register', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Créer un compte</span>
+              </a>
+            </div>
             <p class="center" style="margin-top:8px">Vous devez avoir un compte pour candidater.</p>
           {% else %}
             {% if not app.user.isProfileComplete() %}
@@ -337,4 +347,16 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .auth-buttons .btn {
+            width: 100%;
+            max-width: 200px;
+        }
+    </style>
 {% endblock %}

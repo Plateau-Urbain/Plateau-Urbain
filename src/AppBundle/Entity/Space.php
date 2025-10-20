@@ -146,9 +146,15 @@ class Space
      * @var string
      *
      * @ORM\Column(name="price", type="float", nullable=true)
-     * @Assert\NotBlank(groups={"save"})
      */
     private $price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price_text", type="string", length=255, nullable=true)
+     */
+    private $priceText;
 
     /**
      * @ORM\OneToMany(targetEntity="SpaceImage", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
@@ -547,6 +553,30 @@ class Space
     }
 
     /**
+     * Set priceText.
+     *
+     * @param string $priceText
+     *
+     * @return Space
+     */
+    public function setPriceText($priceText)
+    {
+        $this->priceText = $priceText;
+
+        return $this;
+    }
+
+    /**
+     * Get priceText.
+     *
+     * @return string
+     */
+    public function getPriceText()
+    {
+        return $this->priceText;
+    }
+
+    /**
      * @return ArrayCollection|SpaceImage[]
      */
     public function getPics()
@@ -925,6 +955,18 @@ class Space
      */
     public function getDepCode() {
         return substr($this->zipCode, 0, 2);
+    }
+
+    /**
+     * @Assert\Callback(groups={"save"})
+     */
+    public function validatePrice(ExecutionContextInterface $context)
+    {
+        if (empty($this->price) && empty($this->priceText)) {
+            $context->buildViolation('Vous devez renseigner soit le prix au m² mensuel, soit le prix personnalisé.')
+                ->atPath('price')
+                ->addViolation();
+        }
     }
 
     /**

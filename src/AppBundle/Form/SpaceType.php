@@ -53,6 +53,7 @@ class SpaceType extends AbstractType
             )
             ->add('type', null, array('label' => 'Type de locaux', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('price', IntegerType::class, array('label' => 'Prix au m² mensuel', 'attr' => array('class' => 'form-control'), 'required' => false))
+            ->add('priceText', null, array('label' => 'Prix personnalisé (texte libre)', 'attr' => array('class' => 'form-control', 'placeholder' => 'Ex: Sur devis, Prix négociable, etc.'), 'required' => false))
             ->add('availability', null, array('label' => 'Période de disponibilité', 'attr' => array('class' => 'form-control', 'placeholder' => "1 an, 6 mois…"), 'required' => false))
             ->add('nbSpaces', IntegerType::class, array('label' => 'Nombre d\'espaces', 'attr' => array('class' => 'form-control'), 'required' => false))
             ->add('minSpace', IntegerType::class, array('label' => 'Surface minimale (m²)', 'attr' => array('class' => 'form-control'), 'required' => false))

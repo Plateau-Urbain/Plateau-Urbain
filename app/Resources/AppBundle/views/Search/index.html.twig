@@ -60,13 +60,15 @@
         <div class="candidature">
 
    {% if app.user %}
-    {% if app.user.isProfileComplete() %}
+    {% if app.user.isProprio() %}
+        <p>Bonjour <span class="mailto">{{ app.user.firstname }}</span>,</p>
+    {% elseif app.user.isProfileComplete() %}
         <p>Bonjour <span class="mailto">{{ app.user.firstname }}</span>,</p>
     {% else %}
-        <div style="margin: 20px 0; padding: 20px; font-size: 16px; color: #333;">
+        <div style="margin: 20px 0; padding: 20px; font-size: 20px; color: #333;">
             <i class="fa fa-exclamation-triangle" style="margin-right: 8px; color: #e9473c;"></i>
-            <strong>Profil incomplet :</strong> Votre profil doit être complet pour pouvoir candidater. 
-            <a href="{{ path('security_profil') }}" class="mailto" style="color: #e9473c; font-weight: bold;">Complétez votre profil maintenant</a> pour simplifier vos candidatures futures.
+            <strong>Votre profil est incomplet :</strong> Votre profil doit être complet pour pouvoir candidater. 
+            <a href="{{ path('security_profil') }}" class="mailto" style="color: #e9473c; font-weight: bold;">Complétez votre profil dès maintenant</a> pour simplifier vos candidatures futures.
         </div>
     {% endif %}
 
@@ -123,7 +125,11 @@
                             <li>{{ space.type }}</li>
                             <!-- AJOUT OLIVIER -->
                             <li>
-                                À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                                {% if space.priceText %}
+                                    {{ space.priceText }}
+                                {% else %}
+                                    À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                                {% endif %}
                             </li>
                             <li>
                                 <strong>{{ space.nbSpaces }}</strong> espace(s) de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
@@ -179,7 +185,11 @@
                     <li>{{ space.type }}</li>
                     <!-- AJOUT OLIVIER -->
                     <li>
-                        À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                        {% if space.priceText %}
+                            {{ space.priceText }}
+                        {% else %}
+                            À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                        {% endif %}
                     </li>
                     <li>
                         <strong>{{ space.nbSpaces }}</strong> espaces de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>

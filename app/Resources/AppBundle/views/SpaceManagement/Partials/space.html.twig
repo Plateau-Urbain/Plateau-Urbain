@@ -41,7 +41,13 @@
             <ul>
              
               <li>{{ space.type }}</li>
-              <li>À partir de: {{ space.price }}€/m²/mois </li>
+              <li>
+                {% if space.priceText %}
+                  {{ space.priceText }}
+                {% else %}
+                  À partir de: {{ space.price }}€/m²/mois
+                {% endif %}
+              </li>
                <li>{{ space.nbSpaces }} espace(s)
               de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup></li>
               </ul>
@@ -125,9 +131,9 @@
               {# Bouton de publication pour les admins et propriétaires #}
               {% if app.user and space.submitted and not space.enabled %}
                 {% if is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Publier l\'espace</span></a>
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Publier l'espace</span></a>
                 {% elseif space.isOwner(app.user) %}
-                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous recevrez une notification par email.');"><span>Publier l\'espace</span></a>
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous recevrez une notification par email.');"><span>Publier l'espace</span></a>
                 {% endif %}
               {% endif %}
             </div>
