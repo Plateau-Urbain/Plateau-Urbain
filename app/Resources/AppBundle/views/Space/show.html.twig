@@ -90,7 +90,7 @@
     <div class="pu-apply-zone">
       <p class="center">Date limite de candidature</p>
       <h5 class="center apply-date-show">
-        {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+        {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
       </h5>
       <p class="center">
         {% if not space.isEnabled() %}
@@ -221,21 +221,19 @@
                 </p>
             </div>
           </div>
+          {% set filePlan = space.getDocs('document_plan') %}
+          {% if filePlan | length %}
           <div class="col-xs-12 col-md-6 grey">
            <div class="fd"><span class="pdf-repartition"></span></div>
            <div class="lien-pdf red">
                <p>
-                   {% set file = space.getDocs('document_plan') %}
-                   {% if file | length %}
-                       <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}" target="_blank">
-                   {% else %}
-                       <a class="red" href="#">
-                   {%endif %}
+                   <a class="red" href="{{ asset(vich_uploader_asset(filePlan[0], 'file')) }}" target="_blank">
                        Répartition des espaces
                    </a>
                </p>
            </div>
         </div>
+          {% endif %}
     
      </div>
     </div>

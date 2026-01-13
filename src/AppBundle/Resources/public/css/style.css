@@ -11302,10 +11302,18 @@ input.btn-line-s:hover, button.btn-line-s:hover  {
   width: 100%;
   margin: 5px 5px;
 }
-.space-card .encours p, .space-card .clos p, .space-card .enedition p{
+.space-card .enattente {
+  background: url('/bundles/app/images/group_spin.png') no-repeat left;
+  height:23px;
+  background-size: contain;
+  padding: 0 10px 0 30px;
+  width: 100%;
+  margin: 5px 5px;
+}
+.space-card .encours p, .space-card .clos p, .space-card .enedition p, .space-card .enattente p{
   font-size:14px;
 }  
-.statut-aac .encours span, .statut-aac .clos span, .statut-aac .enedition span     {
+.statut-aac .encours span, .statut-aac .clos span, .statut-aac .enedition span, .statut-aac .enattente span {
   font-size:14px;
   padding-right:5px;
 }
@@ -12124,6 +12132,7 @@ margin-bottom:0;
     padding: 3px 8px;
     top: 5px;
     right: 5px;
+    width:fit-content;
   }
 }
 
@@ -12275,5 +12284,23 @@ margin-bottom:0;
     .form-apply #appbundle_application_category {
         height: 34px !important;
         font-size: 16px !important;
+    }
+}
+
+/* Inverser l'ordre sidebar/main sur mobile pour que l'image soit en haut */
+@media (max-width: 992px) {
+    .row {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        order: 2;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    .main.show {
+        order: 1;
     }
 }

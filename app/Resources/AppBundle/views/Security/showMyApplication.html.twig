@@ -82,7 +82,7 @@
                             <div class="apply-date">
                             <p class="apply-date-p">Date limite de candidature</p>
                             <p class="apply-date-b">
-                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                   </p>
                       </div>
       </div>
@@ -109,7 +109,7 @@
           <tbody>
             <tr><th>Candidat</th><td>{{ application.projectHolder.fullName }}</td></tr>
             <tr><th>Date de naissance</th><td>{{ application.projectHolder.birthday|date('d/m/Y') }}</td></tr>
-            <tr><th>Téléphone</th><td></td></tr>
+            <tr><th>Téléphone</th><td>{{ application.projectHolder.phone }}</td></tr>
             <tr><th>Email</th><td>{{ application.projectHolder.email }}</td></tr>
             <tr><th>À propos</th><td>{{ application.projectHolder.description|nl2br }}</td></tr>
           </tbody>

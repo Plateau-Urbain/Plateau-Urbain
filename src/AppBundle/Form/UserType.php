@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use AppBundle\Entity\User;
@@ -30,18 +31,31 @@ class UserType extends AbstractType
             ])
             ->add('firstname', TextType::class, array('label' => "Prénom", 'attr' => array('class' => 'form-control')))
             ->add('lastname', TextType::class, array('label' => "Nom", 'attr' => array('class' => 'form-control')))
-            ->add('email', EmailType::class, array('label' => "Email", 'attr' => array('class' => 'form-control')))
+            ->add('email', EmailType::class, array(
+                'label' => "Email", 
+                'attr' => array(
+                    'class' => 'form-control',
+                    'readonly' => true
+                ),
+                'disabled' => true
+            ))
             ->add('phone', TelType::class, [
                 'label' => "Téléphone", 
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Ex: 01 23 45 67 89 ou +33 1 23 45 67 89'
+                    'placeholder' => 'Ex: 01 23 45 67 89 ou +33 1 23 45 67 89',
+                    'required' => 'required'
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le téléphone est obligatoire.',
+                        'groups' => ['projectHolder', 'Default']
+                    ]),
                     new Regex([
                         'pattern' => '/^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/',
-                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (01 23 45 67 89) ou international (+33 1 23 45 67 89).'
+                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (01 23 45 67 89) ou international (+33 1 23 45 67 89).',
+                        'groups' => ['projectHolder', 'Default']
                     ])
                 ]
             ])

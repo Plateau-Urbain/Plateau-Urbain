@@ -1,0 +1,405 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block title %}Sélection des champs à exporter{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        {# Afficher les filtres appliqués - Version robuste #}
+        {% set activeFilters = [] %}
+        {% set filterValues = filterParameters|default({}) %}
+        
+        {# Collecter uniquement les filtres avec des valeurs simples non vides #}
+        {% for key, value in filterValues %}
+            {% if key not in ['_page', '_sort_by', '_sort_order', '_per_page', 'fields'] %}
+                {% if value is iterable and value.value is defined %}
+                    {# Format Sonata: filter[value]=X #}
+                    {% set filterValue = value.value %}
+                    {# Ne prendre que les valeurs simples (string/number), pas les tableaux imbriqués comme les dates #}
+                    {% if filterValue is not null and filterValue != '' and filterValue is not iterable %}
+                        {% set activeFilters = activeFilters|merge([{
+                            'name': key,
+                            'value': filterValue
+                        }]) %}
+                    {% endif %}
+                {% elseif value is not null and value != '' and value is not iterable %}
+                    {# Format simple: filter=X #}
+                    {% set activeFilters = activeFilters|merge([{
+                        'name': key,
+                        'value': value
+                    }]) %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        
+        {% if activeFilters|length > 0 %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-filter"></i> Filtres appliqués ({{ activeFilters|length }})</h4>
+            <p>Les filtres suivants seront pris en compte dans l'export :</p>
+            <ul>
+                {% for filter in activeFilters %}
+                    <li>
+                        <strong>{{ filter.name|replace({'_': ' '})|title }}</strong> : {{ filter.value }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{{ admin.generateUrl('list', filterParameters) }}" class="btn btn-sm btn-default">
+                <i class="fa fa-edit"></i> Modifier les filtres
+            </a>
+        </div>
+        {% else %}
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-exclamation-triangle"></i> Aucun filtre appliqué</h4>
+            <p>Vous êtes sur le point d'exporter <strong>TOUTES les candidatures</strong>. Si vous souhaitez filtrer les données, cliquez sur le bouton ci-dessous.</p>
+            <a href="{{ admin.generateUrl('list') }}" class="btn btn-sm btn-primary">
+                <i class="fa fa-filter"></i> Appliquer des filtres d'abord
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">
+            <i class="fa fa-download"></i> Sélectionner les champs à exporter
+        </h3>
+        <div class="box-tools pull-right">
+            <a href="{{ admin.generateUrl('help_filters') }}" class="btn btn-box-tool" title="Aide">
+                <i class="fa fa-question-circle"></i> Aide
+            </a>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ admin.generateUrl('select_export_fields', filterParameters) }}" id="export-form">
+        <div class="box-body">
+            <div class="callout callout-success">
+                <h4><i class="fa fa-check-circle"></i> Prêt pour un export rapide !</h4>
+                <p>
+                    <strong>12 champs essentiels</strong> sont déjà pré-sélectionnés (cochés ✓) pour vous.<br>
+                    Vous pouvez les modifier ou cliquer directement sur <strong>"Exporter les candidatures"</strong> en bas de page.
+                </p>
+                <p style="margin-top: 10px; margin-bottom: 0;">
+                    <strong>Astuce :</strong> Utilisez les boutons ci-dessous pour modifier rapidement votre sélection.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary" id="select-common-btn" style="background-color: #3c8dbc; border-color: #3c8dbc;">
+                            <i class="fa fa-star"></i> Sélection recommandée (12 champs)
+                        </button>
+                        <button type="button" class="btn btn-default" id="select-all-btn">
+                            <i class="fa fa-check-square"></i> Tout sélectionner
+                        </button>
+                        <button type="button" class="btn btn-default" id="deselect-all-btn">
+                            <i class="fa fa-square-o"></i> Tout désélectionner
+                        </button>
+                    </div>
+                    <div class="pull-right">
+                        <span class="label label-default" id="selected-count" style="font-size: 14px; padding: 8px 12px;">
+                            0 champ sélectionné
+                        </span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                </div>
+            </div>
+
+            {% set grouped_fields = {} %}
+            {% for key, field in availableFields %}
+                {% set category = field.category %}
+                {% if grouped_fields[category] is not defined %}
+                    {% set grouped_fields = grouped_fields|merge({(category): []}) %}
+                {% endif %}
+                {% set grouped_fields = grouped_fields|merge({
+                    (category): grouped_fields[category]|merge([{key: key, field: field}])
+                }) %}
+            {% endfor %}
+
+            {% for category, fields in grouped_fields %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <i class="fa fa-folder-o"></i> {{ category }}
+                                <label class="pull-right" style="font-weight: normal; margin: 0;">
+                                    <input type="checkbox" class="select-category" data-category="{{ category|replace({' ': '_'}) }}" />
+                                    <small>Tout sélectionner</small>
+                                </label>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                {% for item in fields %}
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input 
+                                                type="checkbox" 
+                                                name="fields[]" 
+                                                value="{{ item.key }}"
+                                                class="field-checkbox category-{{ category|replace({' ': '_'}) }}"
+                                            />
+                                            {{ item.field.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success btn-lg" id="submit-btn">
+                <i class="fa fa-download"></i> Exporter les candidatures
+            </button>
+            <a href="{{ admin.generateUrl('list') }}" class="btn btn-default btn-lg">
+                <i class="fa fa-times"></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .panel-heading h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .checkbox {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .panel-body {
+        background-color: #f9f9f9;
+    }
+    
+    #selected-count {
+        font-size: 14px;
+        padding: 8px 12px;
+        vertical-align: middle;
+        margin-top: 10px;
+        display: inline-block;
+    }
+    
+    .box-footer {
+        padding: 15px;
+    }
+    
+    .btn-group {
+        margin-bottom: 15px;
+    }
+    
+    #select-common-btn:hover {
+        background-color: #2e6da4 !important;
+        border-color: #2e6da4 !important;
+    }
+    
+    /* Forcer à cacher les icheckbox de Sonata Admin */
+    .checkbox div[class^="icheckbox"],
+    .checkbox-inline div[class^="icheckbox"],
+    .radio div[class^="iradio"],
+    .radio-inline div[class^="iradio"] {
+        display: none !important;
+    }
+    
+    /* Indicateur visuel pour les champs sélectionnés */
+    .checkbox label.field-selected {
+        background-color: #d9edf7;
+        padding: 5px 10px;
+        border-radius: 3px;
+        border-left: 3px solid #3c8dbc;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+    
+    .checkbox label.field-selected:before {
+        content: "✓ ";
+        color: #3c8dbc;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+</style>
+
+<script>
+// Utiliser jQuery si disponible, sinon vanilla JS
+(function($) {
+    
+// Attendre que le document soit prêt
+$(document).ready(function() {
+    const fieldCheckboxes = $('.field-checkbox');
+    const categoryCheckboxes = $('.select-category');
+    const selectedCountLabel = $('#selected-count');
+    const selectAllBtn = $('#select-all-btn');
+    const deselectAllBtn = $('#deselect-all-btn');
+    const selectCommonBtn = $('#select-common-btn');
+    
+    // Champs recommandés pour export rapide - NOMS EXACTS des keys
+    const commonFields = [
+        'name',                      // Nom du projet
+        'status',                    // Statut
+        'created',                   // Date de création
+        'space',                     // Espace
+        'category',                  // Catégorie du projet
+        'projectHolder_fullName',    // Nom complet du porteur
+        'projectHolder_email',       // Email du porteur
+        'projectHolder_company',     // Nom de la structure
+        'projectHolder_companyPhone',// Téléphone
+        'wishedSize',                // Surface souhaitée
+        'startOccupation',           // Date d'entrée souhaitée
+        'fullLengthOccupation'       // Durée complète
+    ];
+    
+    console.log('Liste des champs recommandés:', commonFields);
+    
+    // Fonction pour mettre à jour le compteur
+    function updateSelectedCount() {
+        // Forcer jQuery à recalculer les cases cochées
+        const count = $('input[name="fields[]"]:checked').length;
+        console.log('Mise à jour du compteur:', count, 'champs cochés');
+        
+        selectedCountLabel.text(count + ' champ' + (count > 1 ? 's' : '') + ' sélectionné' + (count > 1 ? 's' : ''));
+        
+        if (count === 0) {
+            selectedCountLabel.attr('class', 'label label-default');
+        } else if (count < 5) {
+            selectedCountLabel.attr('class', 'label label-warning');
+        } else {
+            selectedCountLabel.attr('class', 'label label-info');
+        }
+    }
+    
+    // Bouton tout sélectionner
+    selectAllBtn.on('click', function(e) {
+        e.preventDefault();
+        console.log('Sélection de tous les champs...');
+        
+        // Sélectionner toutes les checkboxes
+        $('input[name="fields[]"]').prop('checked', true);
+        $('.field-checkbox').prop('checked', true);
+        $('.select-category').prop('checked', true);
+        
+        // Mettre à jour le compteur ET les indicateurs visuels
+        updateSelectedCount();
+        updateVisualIndicators();
+        
+        console.log('✓ Tous les champs sélectionnés');
+    });
+    
+    // Bouton tout désélectionner
+    deselectAllBtn.on('click', function(e) {
+        e.preventDefault();
+        console.log('Désélection de tous les champs...');
+        
+        // Désélectionner toutes les checkboxes
+        $('input[name="fields[]"]').prop('checked', false);
+        $('.field-checkbox').prop('checked', false);
+        $('.select-category').prop('checked', false);
+        
+        // Mettre à jour le compteur ET les indicateurs visuels
+        updateSelectedCount();
+        updateVisualIndicators();
+        
+        console.log('✓ Tous les champs désélectionnés');
+    });
+    
+    // Bouton sélection recommandée
+    selectCommonBtn.on('click', function(e) {
+        e.preventDefault();
+        console.log('Sélection des 12 champs recommandés...');
+        
+        // Désélectionner tout d'abord
+        $('input[name="fields[]"]').prop('checked', false);
+        $('.field-checkbox').prop('checked', false);
+        $('.select-category').prop('checked', false);
+        
+        // Sélectionner uniquement les champs recommandés
+        let selected = 0;
+        commonFields.forEach(function(fieldKey) {
+            const $checkbox = $('input[name="fields[]"][value="' + fieldKey + '"]');
+            if ($checkbox.length > 0) {
+                $checkbox.prop('checked', true);
+                selected++;
+            }
+        });
+        
+        console.log('✓ ' + selected + ' champs recommandés sélectionnés');
+        updateSelectedCount();
+        updateVisualIndicators();
+    });
+    
+    // Sélectionner/désélectionner par catégorie
+    categoryCheckboxes.on('change', function() {
+        const category = $(this).data('category');
+        $('.category-' + category).prop('checked', $(this).prop('checked'));
+        updateSelectedCount();
+        updateVisualIndicators();
+    });
+    
+    // Fonction pour mettre à jour l'indicateur visuel des champs sélectionnés
+    function updateVisualIndicators() {
+        $('input[name="fields[]"]').each(function() {
+            const $checkbox = $(this);
+            const $label = $checkbox.closest('label');
+            
+            if ($checkbox.is(':checked')) {
+                $label.addClass('field-selected');
+            } else {
+                $label.removeClass('field-selected');
+            }
+        });
+    }
+    
+    // Mettre à jour le compteur ET les indicateurs visuels quand on coche un champ
+    fieldCheckboxes.on('change', function() {
+        updateSelectedCount();
+        updateVisualIndicators();
+    });
+    
+    // Pré-sélection automatique : Simuler un clic sur le bouton "Sélection recommandée"
+    // Ce bouton fonctionne parfaitement quand on clique manuellement dessus,
+    // donc on va le déclencher automatiquement au chargement de la page
+    setTimeout(function() {
+        console.log('🤖 Déclenchement automatique du bouton "Sélection recommandée"...');
+        selectCommonBtn.trigger('click');
+        
+        // Forcer la mise à jour des indicateurs visuels après un court délai
+        setTimeout(function() {
+            updateVisualIndicators();
+            console.log('✓ Les 12 champs recommandés sont sélectionnés avec indicateurs visuels');
+        }, 100);
+    }, 500);
+    
+    // Validation du formulaire
+    $('#export-form').on('submit', function(e) {
+        const checkedCount = $('.field-checkbox:checked').length;
+        if (checkedCount === 0) {
+            e.preventDefault();
+            alert('Veuillez sélectionner au moins un champ à exporter.');
+            return false;
+        }
+        
+        // Debug: afficher ce qui est soumis
+        console.log('Formulaire soumis avec ' + checkedCount + ' champs');
+        const selectedFields = [];
+        $('.field-checkbox:checked').each(function() {
+            selectedFields.push($(this).val());
+        });
+        console.log('Champs sélectionnés:', selectedFields);
+    });
+});
+
+})(jQuery); // Fin du wrapper jQuery
+</script>
+{% endblock %}

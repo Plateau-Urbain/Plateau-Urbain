@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * SpaceImage
@@ -31,11 +32,6 @@ class SpaceImage
     private $id;
 
     /**
-     * @Assert\File(
-     *     maxSize="600k",
-     *     mimeTypes={"image/jpeg", "image/jpg", "image/png", "image/webp"},
-     *     mimeTypesMessage="Seuls les formats JPEG, PNG et WebP sont acceptés"
-     * )
      * @Vich\UploadableField(mapping="file", fileNameProperty="fileName")
      */
     protected $file;
@@ -204,5 +200,58 @@ class SpaceImage
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * Validation conditionnelle selon le type de fichier
+     * 
+     * @Assert\Callback
+     */
+    public function validateFile(ExecutionContextInterface $context)
+    {
+        if ($this->file === null) {
+            return;
+        }
+
+        $fileType = $this->getFileType();
+
+        // Validation pour les images (section 2 - Photos du lieu)
+        if ($fileType === self::FILETYPE_IMAGE) {
+            $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+            $maxSize = 600 * 1024; // 600 Ko en octets
+            $errorMessage = 'Seuls les formats JPEG, PNG et WebP sont acceptés pour les photos (max 600 Ko)';
+        }
+        // Validation pour les documents (section 4 - Documents ressources)
+        else if ($fileType === self::FILETYPE_DOCUMENT_AAC || $fileType === self::FILETYPE_DOCUMENT_PLAN) {
+            $allowedMimeTypes = [
+                'application/pdf',
+                'application/x-pdf',
+                'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+            $maxSize = 10 * 1024 * 1024; // 10 Mo en octets
+            $errorMessage = 'Seuls les formats PDF, DOC et DOCX sont acceptés pour les documents (max 10 Mo)';
+        }
+        else {
+            // Par défaut, accepter les images
+            $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+            $maxSize = 600 * 1024;
+            $errorMessage = 'Format de fichier non reconnu';
+        }
+
+        // Vérification du type MIME
+        if (!in_array($this->file->getMimeType(), $allowedMimeTypes)) {
+            $context->buildViolation($errorMessage)
+                ->atPath('file')
+                ->addViolation();
+        }
+
+        // Vérification de la taille
+        if ($this->file->getSize() > $maxSize) {
+            $maxSizeMB = round($maxSize / (1024 * 1024), 1);
+            $context->buildViolation('Le fichier est trop volumineux (max ' . $maxSizeMB . ' Mo)')
+                ->atPath('file')
+                ->addViolation();
+        }
     }
 }

@@ -56,13 +56,17 @@ class ApplicationRepository extends EntityRepository
           }
         }
 
+        // Ne pas filtrer par l'état de l'espace pour permettre de voir les candidatures
+        // même si l'espace est temporairement dépublié
+        // Les candidatures en brouillon doivent être visibles même si l'espace est suspendu
+
         if (!empty($params['orderBy'])) {
             $qb->orderBy('s.'.$params['orderBy'], $params['sort']);
         } else {
             $qb->orderBy('s.name', 'ASC');
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 
     /**

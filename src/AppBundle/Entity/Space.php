@@ -137,7 +137,7 @@ class Space
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="limitAvailability", type="date", nullable=true)
+     * @ORM\Column(name="limitAvailability", type="datetime", nullable=true)
      * @Assert\NotBlank(groups={"save"})
      */
     private $limitAvailability;
@@ -1125,12 +1125,13 @@ class Space
                     ->addViolation();
         }
 
-        if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN)) < 1) {
-            $context->buildViolation('Il manque le document de plan')
-                    ->atPath('doc_plan')
-                    //->setParameter('{{ value }}', $invalidValue)
-                    ->addViolation();
-        }
+        // Le document "Répartition des espaces" n'est plus obligatoire
+        // if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN)) < 1) {
+        //     $context->buildViolation('Il manque le document de plan')
+        //             ->atPath('doc_plan')
+        //             //->setParameter('{{ value }}', $invalidValue)
+        //             ->addViolation();
+        // }
     }
 
     /**

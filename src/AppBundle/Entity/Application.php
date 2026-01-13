@@ -129,7 +129,8 @@ class Application
     /**
      * @ORM\ManyToOne(
      *     targetEntity="User",
-     *     inversedBy="applications"
+     *     inversedBy="applications",
+     *     cascade={"persist"}
      * )
      */
     private $projectHolder;
@@ -678,7 +679,7 @@ class Application
         ];
 
         foreach($this->getFiles() as $applicationfile) {
-            $path = ($applicationfile->getSpaceDocument()) ? '_'.$applicationfile->getSpaceDocument() : 'newDocument';
+            $path = ($applicationfile->getSpaceDocument()) ? '_'.$applicationfile->getSpaceDocument()->getName() : 'newDocument';
 
             $context->getValidator()
                     ->inContext($context)

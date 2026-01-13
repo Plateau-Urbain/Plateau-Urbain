@@ -173,7 +173,12 @@ class ApplicationType extends AbstractType
 
                 $document = $event->getForm()->get('document_' . $field->getId())->getData();
 
-                if (($document instanceof ApplicationFile) == false && !$application->hasFileType($field->getId()) || ($document instanceof ApplicationFile && $document->getFile() == null && $event->getForm()->get('submit')->isClicked())) {
+                // Vérifier si le document est obligatoire et manquant lors de la soumission
+                $isSubmitClicked = $event->getForm()->get('submit')->isClicked();
+                $hasExistingFile = $application->hasFileType($field->getId());
+                $documentProvided = ($document instanceof ApplicationFile) && ($document->getFile() !== null);
+                
+                if ($isSubmitClicked && !$hasExistingFile && !$documentProvided) {
                     $event->getForm()->get('document_' . $field->getId())->addError(new FormError('Le document ' . $field->getName() . ' est obligatoire'));
                 } else {
                     if ($document instanceof ApplicationFile) {
@@ -208,7 +213,7 @@ class ApplicationType extends AbstractType
                     return array();
                 }
 
-                return array('submit');
+                return array('submit', 'projectHolder', 'Default');
             },
             'user' => 'AppBundle\Entity\User'
         ));

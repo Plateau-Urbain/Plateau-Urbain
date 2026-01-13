@@ -1,6 +1,10 @@
 /app/bootstrap.php.cache
 /app/cache/*
 !app/cache/.gitkeep
+/app/cache_backup/
+/app/cache_corrupted/
+/app/cache_old*/
+/app/cache_new/
 /app/config/parameters.yml
 /app/logs/*
 !app/logs/.gitkeep
@@ -24,3 +28,17 @@
 tags
 /src/AppBundle/Resources/public/css/main.css
 /web/uploads
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Vim swap files
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/

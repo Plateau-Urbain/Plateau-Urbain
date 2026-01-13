@@ -237,7 +237,15 @@ class SecurityController extends Controller
             return $this->redirect($request->get('service'));
         }
 
-        return $this->redirect($this->generateUrl('security_profil'));
+        // Ajouter un anchor pour rediriger vers la section des documents
+        $url = $this->generateUrl('security_profil');
+        if ($request->get('anchor')) {
+            $url .= '#' . $request->get('anchor');
+        } else {
+            $url .= '#four'; // Section des documents par défaut
+        }
+
+        return $this->redirect($url);
     }
 
     /**

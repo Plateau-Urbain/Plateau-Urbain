@@ -132,24 +132,38 @@ class SpaceType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /**
+             * @var Space $space
+             */
+            $space = $event->getData();
+
+            // Définir l'heure à 23:59:59 pour la date limite de candidature
+            if ($space->getLimitAvailability() !== null) {
+                $limitAvailability = $space->getLimitAvailability();
+                // Si c'est une date sans heure (DateType), créer un DateTime avec l'heure 23:59:59
+                if ($limitAvailability instanceof \DateTime) {
+                    $limitAvailability->setTime(23, 59, 59);
+                    $space->setLimitAvailability($limitAvailability);
+                }
+            }
 
             // Handles new image
             $newImage = $event->getForm()->get('pics')->getData();
             if ($newImage instanceof SpaceImage) {
-                $event->getData()->addPic($newImage);
+                $space->addPic($newImage);
             }
 
             // Handles new document
             $newDocument = $event->getForm()->get('newDocument')->getData();
             if ($newDocument instanceof SpaceDocument) {
-                $newDocument->setSpace($event->getData());
-                $event->getData()->addDocument($newDocument);
+                $newDocument->setSpace($space);
+                $space->addDocument($newDocument);
             }
 
             // Handles new visit
             $newVisit = $event->getForm()->get('newVisit')->getData();
             if ($newVisit instanceof SpaceVisit) {
-                $event->getData()->addVisit($newVisit);
+                $space->addVisit($newVisit);
             }
 
             // Handles new required doc
@@ -158,7 +172,7 @@ class SpaceType extends AbstractType
                 $newDocAAC = $event->getForm()->get('doc_aac')->getData();
             }
             if ($newDocAAC instanceof SpaceImage && $newDocAAC->getFile() !== null) {
-                $event->getData()->addDoc($newDocAAC, SpaceImage::FILETYPE_DOCUMENT_AAC);
+                $space->addDoc($newDocAAC, SpaceImage::FILETYPE_DOCUMENT_AAC);
             }
 
             $newDocPlan = null;
@@ -166,7 +180,7 @@ class SpaceType extends AbstractType
                 $newDocPlan = $event->getForm()->get('doc_plan')->getData();
             }
             if ($newDocPlan instanceof SpaceImage && $newDocPlan->getFile() !== null) {
-                $event->getData()->addDoc($newDocPlan, SpaceImage::FILETYPE_DOCUMENT_PLAN);
+                $space->addDoc($newDocPlan, SpaceImage::FILETYPE_DOCUMENT_PLAN);
             }
         });
     }

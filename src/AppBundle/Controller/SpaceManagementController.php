@@ -115,7 +115,9 @@ class SpaceManagementController extends Controller
         $space = new Space();
         $space->setOwner($this->getUser());
         $space->setClosed(false);
-        $space->setLimitAvailability((new \DateTime('today'))->modify('+1 month'));
+        $limitAvailability = (new \DateTime('today'))->modify('+1 month');
+        $limitAvailability->setTime(23, 59, 59);
+        $space->setLimitAvailability($limitAvailability);
 
         $form = $this->createSpaceForm($space, array(
             'action' => $this->generateUrl('space_manager_add'),
@@ -156,14 +158,17 @@ class SpaceManagementController extends Controller
      */
     public function editAction(Request $request, Space $space)
     {
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
         // Check ownership - Les admins peuvent modifier n'importe quel espace
-        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$space->isOwner($this->getUser()) && !$isAdmin) {
             throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier cet espace.');
         }
         
-        // Pour les non-admins et non-propriétaires, vérifier que l'espace n'est pas soumis
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$space->isOwner($this->getUser()) && $space->isSubmitted()) {
-            throw new AccessDeniedException('Cet espace ne peut pas être modifié car il a été soumis.');
+        // Les propriétaires ne peuvent pas modifier un espace qui est soumis mais pas encore publié
+        // Seuls les admins peuvent modifier les espaces en attente de validation
+        if (!$isAdmin && $space->isSubmitted() && !$space->isEnabled()) {
+            throw new AccessDeniedException('Cet espace est en attente de validation par un administrateur. Vous ne pouvez pas le modifier pour le moment.');
         }
 
         $form = $this->createSpaceForm($space, array(
@@ -219,6 +224,7 @@ class SpaceManagementController extends Controller
 
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
+
 
     /**
      * Dépublier un appel à candidatures
@@ -276,15 +282,15 @@ class SpaceManagementController extends Controller
     }
 
     /**
-     * Publier un espace en attente (action admin ou propriétaire)
+     * Publier un espace en attente de validation (Admin uniquement)
      * 
      * @Route("/publier/{id}", name="space_manager_publish")
      */
     public function publishAction(Space $space)
     {
-        // Vérifier que l'utilisateur est admin OU propriétaire de l'espace
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$space->isOwner($this->getUser())) {
-            throw new AccessDeniedException('Vous n\'êtes pas autorisé à publier cet espace.');
+        // Seuls les admins peuvent publier directement un espace
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Seuls les administrateurs peuvent publier des espaces.');
         }
 
         // Vérifier que l'espace est soumis mais pas encore activé
@@ -302,7 +308,7 @@ class SpaceManagementController extends Controller
 
         // Envoyer un email de confirmation au propriétaire
         $message = (new \Swift_Message())
-            ->setSubject('Votre espace a été publié !')
+            ->setSubject('Votre espace a été publié sur Plateau Urbain')
             ->setFrom($this->container->getParameter('mail_confirmation_from'))
             ->setTo($space->getOwner()->getEmail())
             ->setBody(
@@ -339,7 +345,7 @@ class SpaceManagementController extends Controller
             $this->get('mailer')->send($notificationMessage);
         }
 
-        $this->get('session')->getFlashBag()->set('success', 'L\'espace "' . $space->getName() . '" a été publié avec succès. Le propriétaire a été notifié.');
+        $this->get('session')->getFlashBag()->set('success', 'L\'espace "' . $space->getName() . '" a été publié avec succès. Le propriétaire a été notifié par email.');
 
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
@@ -1014,27 +1020,55 @@ class SpaceManagementController extends Controller
      */
     protected function submitSpace($space)
     {
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
         $space->setSubmitted(true);
-
-        $this->get('doctrine.orm.entity_manager')->flush();
-
-        $message = (new \Swift_Message())
-            ->setSubject('Nouvelle propriété ! ')
-            ->setFrom($this->container->getParameter('mail_confirmation_from'))
-            ->setTo($this->container->getParameter('mail_confirmation_to'))
-            ->setBody(
-                $this->renderView(
-                    'AppBundle:Email:new_property.html.twig',
-                    compact('space')
-                ), 'text/html'
-            )
-        ;
-
-        $this->get('mailer')->send($message);
-
-        $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
-
-        return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1')));
+        
+        // Si c'est un admin, on publie directement l'espace
+        if ($isAdmin) {
+            $space->setEnabled(true);
+            $this->get('doctrine.orm.entity_manager')->flush();
+            
+            // Envoyer un email au propriétaire pour l'informer de la publication
+            $owner = $space->getOwner();
+            if ($owner && $owner->getEmail()) {
+                $message = (new \Swift_Message())
+                    ->setSubject('Votre espace a été publié')
+                    ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                    ->setTo($owner->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'AppBundle:Email:space_published.html.twig',
+                            compact('space')
+                        ), 'text/html'
+                    )
+                ;
+                $this->get('mailer')->send($message);
+            }
+            
+            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été publié avec succès.');
+            return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1', 'published' => '1')));
+        } else {
+            // Propriétaire standard : soumettre pour validation
+            $this->get('doctrine.orm.entity_manager')->flush();
+            
+            // Envoyer un email aux admins pour validation
+            $message = (new \Swift_Message())
+                ->setSubject('Nouvelle propriété en attente de validation')
+                ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                ->setTo($this->container->getParameter('mail_confirmation_to'))
+                ->setBody(
+                    $this->renderView(
+                        'AppBundle:Email:new_property.html.twig',
+                        compact('space')
+                    ), 'text/html'
+                )
+            ;
+            $this->get('mailer')->send($message);
+            
+            $this->get('session')->getFlashBag()->set('success', 'Votre espace a été soumis pour validation. Un administrateur le publiera après vérification.');
+            return $this->redirect($this->generateUrl('space_manager_list', array('submit_confirm' => '1')));
+        }
     }
 
 

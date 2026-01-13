@@ -77,19 +77,23 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-6 form-group">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.type) }}
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.price) }}
-                </div>
+               
             </div>
 
-            <div class="row">
-                <div class="col-sm-12 form-group">
-                    {{ form_row(form.priceText) }}
-                </div>
-            </div>
+         <div class="row" style="display: flex; align-items: center;">
+            <div class="col-sm-5 form-group">
+                {{ form_row(form.price) }}
+        </div>
+        <div class="col-sm-2 text-center form-group">
+                <span>ou</span>
+        </div>
+        <div class="col-sm-5 form-group">
+            {{ form_row(form.priceText, { 'attr': { 'placeholder': 'Lorem ipsum' } }) }}
+        </div>
+</div>
 
             <div class="row">
                 <div class="col-sm-4 form-group">
@@ -189,13 +193,14 @@
                     })
                 }}
 
-                <input type="submit" value="Enregistrer" class="btn btn-line-s save" data-save='Vous pourrez compléter votre saisie depuis la rubrique "Mes espaces"'>
+                <input type="submit" value="Enregistrer" class="btn btn-line-s save" data-save='{% if app.user and is_granted("ROLE_ADMIN") %}Vous pourrez compléter et publier votre espace depuis la rubrique "Gestion des espaces".{% else %}Vous pourrez compléter votre saisie depuis la rubrique "Mes espaces", puis la soumettre pour validation.{% endif %}'>
 
                {{ form_widget(
                     form.publish, {
+                        'label': is_granted('ROLE_ADMIN') ? 'Publier' : 'Soumettre pour validation',
                         'attr': {
                             'class': 'btn btn-line-s js-publish',
-                            'onclick': "return confirm(\'{% if app.user and is_granted('ROLE_ADMIN') %}ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.{% else %}Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous pourrez le modifier ou le suspendre à tout moment depuis la gestion de vos espaces.{% endif %}\');"
+                            'onclick': "return confirm(\'{% if app.user and is_granted('ROLE_ADMIN') %}ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.{% else %}Êtes-vous sûr de vouloir soumettre cet espace pour validation ?\n\nUn administrateur vérifiera votre espace et le publiera. Vous serez notifié par email une fois l\'espace publié.{% endif %}\');"
                         }
                     })
                 }}

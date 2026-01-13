@@ -15,6 +15,15 @@ $(document).ready(function() {
         //$("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
+        
+        // Réinitialiser l'éditeur Trumbowyg après mise à jour AJAX
+        $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
+        $('textarea').trumbowyg({
+            lang: 'fr',
+            resetCss: true,
+            removeformatPasted: true,
+            autogrow: true
+        });
 
         if (saving && $("#js-form-space .has-error").length < 1) {
             $.colorbox({html:$('#saveBox').html().replace('%%savemsg%%', saving)});
@@ -155,4 +164,13 @@ $(document).ready(function() {
     initFormListener();
     initLinkListener();
     initFileValidation();
+    
+    // Initialiser l'éditeur Trumbowyg au chargement de la page
+    $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
+    $('textarea').trumbowyg({
+        lang: 'fr',
+        resetCss: true,
+        removeformatPasted: true,
+        autogrow: true
+    });
 });

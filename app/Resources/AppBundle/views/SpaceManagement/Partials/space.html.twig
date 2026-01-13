@@ -13,6 +13,8 @@
               {% else %}
                 <div class="enedition"><p> En cours d'édition</p></div>
               {% endif %}
+            {% elseif space.isSubmitted and not space.isEnabled %}
+              <div class="enattente"><p> En attente de validation</p></div>
             {% elseif space.isSubmitted and space.isEnabled %}
               <div class="encours"><p> Appel à candidature en cours </p></div>
             {% endif %}
@@ -99,7 +101,7 @@
                             <div class="apply-date">
                             <p class="apply-date-p">Date limite de candidature</p>
                             <p class="apply-date-b">
-                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                   </p>
                       </div>
 
@@ -107,9 +109,15 @@
          
             
             <div class="col-sm-6 right align-btn">
-              {# Bouton Modifier : seulement pour les espaces non publiés ou non soumis #}
-              {% if not space.submitted and not space.enabled and not space.isClosed %}
-                <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+              {# Bouton Modifier : seulement pour les espaces non soumis (brouillon) ou les admins #}
+              {% if not space.isClosed %}
+                {% if not space.submitted and not space.enabled %}
+                  {# Espace en brouillon : tout le monde peut modifier #}
+                  <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+                {% elseif space.submitted and not space.enabled and is_granted('ROLE_ADMIN') %}
+                  {# Espace en attente : seuls les admins peuvent modifier #}
+                  <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+                {% endif %}
               {% endif %}
             
               {% if space.isEnabled and not space.isClosed %}
@@ -128,12 +136,14 @@
                 {% endif %}
               {% endif %}
               
-              {# Bouton de publication pour les admins et propriétaires #}
+              {# Bouton de publication pour les admins uniquement #}
               {% if app.user and space.submitted and not space.enabled %}
                 {% if is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Publier l'espace</span></a>
-                {% elseif space.isOwner(app.user) %}
-                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera visible par tous les candidats et vous recevrez une notification par email.');"><span>Publier l'espace</span></a>
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir approuver et publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Approuver et Publier</span></a>
+                {% else %}
+                  <span class="text-warning" style="display: inline-block; padding: 10px; background: #fff3cd; border-radius: 4px; margin-top: 10px;">
+                    <i class="fa fa-hourglass-half"></i> Votre espace est en attente de validation par un administrateur. Vous serez notifié par email une fois publié.
+                  </span>
                 {% endif %}
               {% endif %}
             </div>

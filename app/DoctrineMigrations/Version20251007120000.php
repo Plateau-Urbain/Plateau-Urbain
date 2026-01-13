@@ -8,9 +8,9 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Migration to add price_text field to Space entity (if it doesn't exist)
  */
-final class Version20250115120000 extends AbstractMigration
+final class Version20251007120000 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -19,13 +19,15 @@ final class Version20250115120000 extends AbstractMigration
 
     public function up(Schema $schema) : void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Ajouter la colonne price_text
+        // Note: Si la colonne existe déjà, cette migration peut être marquée comme exécutée
+        // avec: php app/console doctrine:migrations:version Version20251007120000 --add
         $this->addSql('ALTER TABLE space ADD price_text VARCHAR(255) DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE space DROP price_text');
     }
 }
+

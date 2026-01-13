@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use AppBundle\Entity\User;
@@ -102,9 +103,14 @@ class CompanyType extends AbstractType
                     'required' => 'required'
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le téléphone mobile est obligatoire.',
+                        'groups' => ['projectHolder', 'Default']
+                    ]),
                     new Regex([
                         'pattern' => '/^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/',
-                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (06 12 34 56 78) ou international (+33 6 12 34 56 78).'
+                        'message' => 'Le format du téléphone n\'est pas valide. Utilisez le format français (06 12 34 56 78) ou international (+33 6 12 34 56 78).',
+                        'groups' => ['projectHolder', 'Default']
                     ])
                 ]
             ])

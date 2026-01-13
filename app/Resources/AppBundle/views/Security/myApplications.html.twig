@@ -1,5 +1,105 @@
 {% extends "::base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Styles pour les espaces suspendus */
+        .space_item_suspended {
+          padding: 0;
+          border-radius: 1rem;
+          position: relative;
+          height: 100%;
+          background: #F8F9FA; /* Couleur gris clair pour indiquer la suspension */
+        }
+
+        .foot-suspended {
+          position: relative;
+          background: #F8F9FA;
+          padding: 20px;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+        }
+
+        .foot-suspended h5 {
+          position: relative;
+          padding-bottom: 10px;
+        }
+
+        .foot-suspended .statut-aac {
+          position: absolute;
+          top: 13px;
+          right: 10px;
+          background: #FFF;
+          border-radius: 5px;
+          border: 1px solid #6C757D; /* Bordure grise pour indiquer la suspension */
+        }
+
+        .foot-suspended .statut-aac .suspended {
+          background: #6C757D; /* Fond gris pour le statut suspendu */
+          color: #FFF;
+          padding: 5px 10px;
+          border-radius: 3px;
+          font-size: 12px;
+          font-weight: bold;
+        }
+
+        .foot-suspended .statut-aac .suspended i {
+          margin-right: 5px;
+        }
+
+        /* Overlay pour les espaces suspendus */
+        #overlay-suspended {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0.2;
+          background: #6C757D; /* Overlay gris semi-transparent */
+          z-index: 1000;
+          border-radius: 1rem;
+        }
+
+        /* Bouton pour les candidatures en brouillon d'espaces suspendus */
+        .btn-draft-suspended {
+          background-color: #6C757D !important;
+          color: #FFF !important;
+          border-color: #6C757D !important;
+          font-weight: bold;
+        }
+
+        .btn-draft-suspended:hover {
+          background-color: #5A6268 !important;
+          border-color: #5A6268 !important;
+          color: #FFF !important;
+        }
+
+        /* Styles pour les images des espaces suspendus */
+        .space_item_suspended img {
+          width: 100%;
+          height: 340px;
+          border-top-left-radius: 1rem;
+          object-fit: cover;
+          border-top-right-radius: 1rem;
+        }
+
+        .space_item_suspended ul {
+          display: block;
+          padding: 5px 0px 20px 20px;
+          border-bottom: 1px solid #000;
+        }
+
+        .space_item_suspended ul li {
+          color: black;
+          line-height: 24px;
+        }
+
+        .space_item_suspended h4 {
+          color: black;
+        }
+    </style>
+{% endblock %}
+
 {# {% block breadcrumb_items %}
   <li><a href="{{ path('security_profil') }}">Mon compte</a></li>
   <li><span>Mes candidatures</span></li>
@@ -62,6 +162,8 @@
                  
                   {% if application.space.isClosed %}
                             <div class="space_item_unavailable">
+                  {% elseif not application.space.isEnabled %}
+                            <div class="space_item_suspended">
                   {% else %}
                            <div class="space_item">
                   {% endif %}
@@ -75,6 +177,8 @@
               
                    {% if application.space.isClosed %}
                             <div class="foot-unavailable">
+                  {% elseif not application.space.isEnabled %}
+                            <div class="foot-suspended">
                   {% else %}
                            <div class="foot">
                   {% endif %}              
@@ -82,6 +186,8 @@
                           <div class="statut-aac">
                         {% if application.space.isClosed %}
                           <div class="clos"><span><i class="fa fa-times fa-lg"></i>Cloturé</span></div>
+                        {% elseif not application.space.isEnabled %}
+                          <div class="suspended"><span><i class="fa fa-pause fa-lg"></i>Suspendu</span></div>
                         {% else %}
                           <div class="encours"><span><i class="fa fa-check fa-lg"></i>En cours</span></div>
                         {% endif %}
@@ -110,14 +216,18 @@
                             </p>
                                  {% else %}
                             <p class="apply-date-b"> 
-                             {{ application.space.limitAvailability|localizeddate('long', 'none') }} à {{ application.space.limitAvailability|date('H') }}h
+                             {{ application.space.limitAvailability|localizeddate('long', 'none') }} à {{ application.space.limitAvailability|date('H') }}h{{ application.space.limitAvailability|date('i') }}
                             </p>
                                 {% endif %}
                           
                         {% if not application.space.isClosed %}
                         <p>Statut de votre candidature</p> 
                           {% if application.status == 'draft' %}
+                            {% if not application.space.isEnabled %}
+                              <a href="{{ path('space_apply', {'space': application.space.id}) }}" class="btn btn-line-19 btn-draft-suspended"> <i class="fa fa-pencil"></i>À compléter</span></a>
+                            {% else %}
                               <a href="{{ path('space_apply', {'space': application.space.id}) }}" class="btn btn-line-19 btn-draft"> <i class="fa fa-pencil"></i>À compléter</span></a>
+                            {% endif %}
                           {% elseif application.status == 'unread' or application.status == 'awaiting'  %}
                             <a href="#" class="btn btn-line-19 btn-awaiting"><i class="fa fa-hourglass-half"></i>Envoyée</a>
                           {% elseif application.status == 'accepted'  %}
@@ -140,6 +250,8 @@
               </div>
               {% if application.space.isClosed %}
                            <div id="overlay"></div>
+              {% elseif not application.space.isEnabled %}
+                           <div id="overlay-suspended"></div>
               {% else %}
                          
               {% endif %}
