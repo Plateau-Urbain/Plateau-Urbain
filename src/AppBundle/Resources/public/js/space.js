@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('#addAttribute').on('click', function(e) {
+$(document).ready(function () {
+    $('#addAttribute').on('click', function (e) {
         // empêche le lien de créer un « # » dans l'URL
         e.preventDefault();
 
@@ -15,7 +15,7 @@ $(document).ready(function() {
         //$("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
-        
+
         // Réinitialiser l'éditeur Trumbowyg après mise à jour AJAX
         $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
         $('textarea').trumbowyg({
@@ -26,12 +26,12 @@ $(document).ready(function() {
         });
 
         if (saving && $("#js-form-space .has-error").length < 1) {
-            $.colorbox({html:$('#saveBox').html().replace('%%savemsg%%', saving)});
+            $.colorbox({ html: $('#saveBox').html().replace('%%savemsg%%', saving) });
         }
     }
 
     function initLinkListener() {
-        $('.js-btn-space').click(function() {
+        $('.js-btn-space').click(function () {
 
             var href = $(this).attr('href');
             var method = $(this).data('link-method');
@@ -57,7 +57,7 @@ $(document).ready(function() {
     function initFormListener() {
         var name = document.getElementById('appbundle_space_name');
 
-        $('button[type="submit"]:not(.no-ajax), input[type="submit"]:not(.no-ajax)').click(function(e){
+        $('button[type="submit"]:not(.no-ajax), input[type="submit"]:not(.no-ajax)').click(function (e) {
             if (name.checkValidity() == false) {
                 window.scroll(name.scrollTop, name.scrollLeft)
                 name.focus()
@@ -66,18 +66,21 @@ $(document).ready(function() {
                 return false
             }
 
-            // Validation de la taille des fichiers
+            // Validation de la taille des fichiers (photos uniquement - 600 Ko)
             var maxSize = 600 * 1024; // 600 Ko en bytes
-            var fileInputs = $('input[type="file"]');
+            // On exclut les inputs documents (.js-doc-upload) qui ont leur propre validation
+            var fileInputs = $('input[type="file"]').not(function () {
+                return $(this).closest('.js-doc-upload').length > 0;
+            });
             var hasError = false;
             var errorMessage = '';
             var errorDiv = $('#file-validation-errors');
             var errorSpan = $('#file-error-message');
-            
+
             // Masquer les erreurs précédentes
             errorDiv.hide();
-            
-            fileInputs.each(function() {
+
+            fileInputs.each(function () {
                 var files = this.files;
                 for (var i = 0; i < files.length; i++) {
                     if (files[i].size > maxSize) {
@@ -86,7 +89,7 @@ $(document).ready(function() {
                     }
                 }
             });
-            
+
             if (hasError) {
                 errorSpan.text(errorMessage);
                 errorDiv.show();
@@ -111,7 +114,7 @@ $(document).ready(function() {
             var previewing = $(this).attr('name') == 'appbundle_space[preview]';
 
             if (previewing) {
-              formData.append('appbundle_space[preview]', null);
+                formData.append('appbundle_space[preview]', null);
             }
 
             $.ajax({
@@ -121,7 +124,7 @@ $(document).ready(function() {
                 async: false,
                 success: function (data) {
                     if (previewing)
-                      return window.open(data);
+                        return window.open(data);
 
                     successAjax(data, saving);
                 },
@@ -134,24 +137,27 @@ $(document).ready(function() {
         });
     }
 
-    // Validation en temps réel lors de la sélection des fichiers
+    // Validation en temps réel lors de la sélection des fichiers (photos uniquement - 600 Ko)
     function initFileValidation() {
-        $('input[type="file"]').on('change', function() {
+        // On exclut les inputs dans .js-doc-upload qui ont leur propre validation
+        $('input[type="file"]').not(function () {
+            return $(this).closest('.js-doc-upload').length > 0;
+        }).on('change', function () {
             var maxSize = 600 * 1024; // 600 Ko en bytes
             var files = this.files;
             var errorMessage = '';
             var errorDiv = $('#file-validation-errors');
             var errorSpan = $('#file-error-message');
-            
+
             // Masquer les erreurs précédentes
             errorDiv.hide();
-            
+
             for (var i = 0; i < files.length; i++) {
                 if (files[i].size > maxSize) {
                     errorMessage += 'Le fichier "' + files[i].name + '" est trop volumineux (' + Math.round(files[i].size / 1024) + ' Ko). Taille maximale autorisée : 600 Ko.';
                 }
             }
-            
+
             if (errorMessage) {
                 errorSpan.text(errorMessage);
                 errorDiv.show();
@@ -164,7 +170,7 @@ $(document).ready(function() {
     initFormListener();
     initLinkListener();
     initFileValidation();
-    
+
     // Initialiser l'éditeur Trumbowyg au chargement de la page
     $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
     $('textarea').trumbowyg({
