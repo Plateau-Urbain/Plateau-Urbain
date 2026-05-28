@@ -4,13 +4,16 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
+
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -30,15 +33,15 @@ class CompanyType extends AbstractType
                 'attr' => ['class' => 'form-control']
             ])
             ->add('companyCreationDate', BirthdayType::class, [
-                'label' => 'Date de création',
-                'input' => 'datetime',
-                'widget' => 'choice',
-                'years' => range(date('Y') - 100, date('Y') + 5),
-                'attr' => ['class' => 'oneline-date']
+                'label'  => 'Date de création',
+                'input'  => 'datetime',
+                'widget' => 'single_text',
+                'attr'   => ['class' => 'form-control']
             ])
             ->add('companyStatus', ChoiceType::class, [
                 'choices' => User::getAllProCompanyStatut(),
-                'label' => "Statut",
+                'label' => "Statut juridique",
+                'placeholder' => 'Sélectionner votre statut juridique',
                 'attr' => ['class' => 'form-control']
             ])
             ->add('siret', TextType::class, [
@@ -77,8 +80,8 @@ class CompanyType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-control']
             ])
-            ->add('companySite', UrlType::class, [
-                'label' => "Site web", 'required' => false, 'attr' => ['class' => 'form-control']
+            ->add('companySite', TextType::class, [
+                'label' => "Site web", 'required' => false, 'attr' => ['class' => 'form-control', 'placeholder' => 'https://']
             ])
             ->add('companyPhone', TelType::class, [
                 'label' => "Téléphone fixe",
@@ -144,6 +147,52 @@ class CompanyType extends AbstractType
                 'label' => 'Ville',
                 'attr' => ['class' => 'form-control']
             ]);
+
+        // Statut hors catalogue actuel : afficher une entrée explicite + refuser l'enregistrement tant que non corrigé.
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+            $user = $event->getData();
+            $choices = User::getAllProCompanyStatut();
+            if ($user instanceof User) {
+                $current = $user->getCompanyStatus();
+                if ($current !== null && $current !== '' && !User::isInProCompanyStatusCatalog($current)) {
+                    $legacyLabel = sprintf(
+                        'Attention : ancienne valeur « %s » — veuillez choisir un statut actuel',
+                        $current
+                    );
+                    $choices = array($legacyLabel => $current) + $choices;
+                }
+            }
+            if ($form->has('companyStatus')) {
+                $form->remove('companyStatus');
+            }
+            $form->add('companyStatus', ChoiceType::class, array(
+                'choices' => $choices,
+                'label' => 'Statut juridique',
+                'placeholder' => 'Sélectionner votre statut juridique',
+                'attr' => array('class' => 'form-control'),
+            ));
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            if ($form->isDisabled()) {
+                return;
+            }
+            $user = $event->getData();
+            if (!$user instanceof User) {
+                return;
+            }
+            if (!$form->has('companyStatus')) {
+                return;
+            }
+            $status = $user->getCompanyStatus();
+            if ($status !== null && $status !== '' && !User::isInProCompanyStatusCatalog($status)) {
+                $form->get('companyStatus')->addError(new FormError(
+                    'Ce statut ne figure plus dans la liste actuelle. Veuillez en sélectionner un parmi les choix proposés.'
+                ));
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

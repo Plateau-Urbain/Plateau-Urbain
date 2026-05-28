@@ -5,9 +5,12 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\ApplicationFile;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\User;
 use AppBundle\Form\ProjectOwnerType;
 use AppBundle\Form\ApplicationFileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -21,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Class ApplicationType
@@ -49,22 +53,54 @@ class ApplicationType extends AbstractType
         $user = $options['user'];
 
         $builder
+            ->add('intent', HiddenType::class, array(
+                'mapped' => false,
+                'required' => false,
+            ))
 
             // Embed project owner form
-            ->add('projectHolder', ProjectOwnerType::class, ['data' => $user])
+            // disable_use_type=true : le champ "Type de projet" (User.useType) est affiché en récap
+            // sur la page apply. On le désactive pour que sa valeur ne soit pas écrasée à la soumission.
+            ->add('projectHolder', ProjectOwnerType::class, [
+                'data' => $user,
+                'disable_use_type' => true,
+            ])
 
             // Candidature
             ->add('name', null, array('label'=>"Nom de mon projet", 'attr' => array('class'=>'form-control input-box')))
+            ->add('companyStatus', ChoiceType::class, array(
+                'label' => "Statut juridique",
+                'choices' => Application::getApplicationCompanyStatuses(),
+                'placeholder' => 'Sélectionnez un statut',
+                'required' => true,
+                'attr' => array('class' => 'form-control input-box'),
+            ))
+            ->add('wishedSize', null, array(
+                'label' => "Surface souhaitée en m2",
+                'attr' => array(
+                    'class' => 'form-control',
+                    'min' => 1,
+                    'step' => 1
+                )
+            ))
             ->add('description', TextareaType::class, array(
-                'label'=>"Description du projet",
+                'label'=>"Présentation du projet",
                 'attr' => array(
                     'class'=>'textarea-box',
                     'rows'=> 6
                 )
             ))
+            ->add('localUsageDescription', TextareaType::class, array(
+                'label' => "Quel sera l'usage du local ?",
+                'required' => false,
+                'attr' => array(
+                    'class' => 'textarea-box',
+                    'rows' => 6
+                )
+            ))
             ->add('contribution', null, array(
                 'required' => false,
-                'label'=>"Quelle serait votre contribution au projet global du propriétaire ?",
+                'label'=>"Quelles idées avez-vous pour participer au projet collectif ?",
                 'attr' => array('class' => 'textarea-box', 'rows'=> 6),
             ))
             ->add(
@@ -85,8 +121,7 @@ class ApplicationType extends AbstractType
                     'attr' => array()
                 )
             )
-            ->add('openToGlobalProject', null, array('label' => "Je suis ouvert(e) à faire partie d'un projet collectif " ))
-            ->add('devenirSocietaire', null, array('label' => "Je souhaite être informé·e des modalités pour devenir sociétaire" ))
+            ->add('openToGlobalProject', null, array('label' => "Je suis ouvert(e) à faire parti(e) d'un projet collectif "))
             ->add(
                 'lengthTypeOccupation',
                 ChoiceType::class,
@@ -95,11 +130,39 @@ class ApplicationType extends AbstractType
                     'label' => "Durée d'occupation"
                 )
             )
-            ->add('category', null, array('label'=>"Type de projet",'required'=> true, 'attr'=> array('placeholder'=>"Categorie du projet", 'class'=>'form-control input-box')))
-            ->add('wishedSize', null, array(
-                'label'=>"Surface souhaitée en m²",
-                'attr' => array('class' => 'input-box'),
-                'block_name' => 'size_calculator'
+            ->add('category', EntityType::class, array(
+                'class' => Category::class,
+                'label' => "Type d'usage",
+                'required' => true,
+                'placeholder' => 'Catégorie',
+                'attr' => array('placeholder' => 'Catégorie', 'class' => 'form-control input-box'),
+                'query_builder' => function (EntityRepository $repo) use ($application) {
+                    // Contexte ERP : déterminé par l'espace associé à la candidature.
+                    $spaceIsErp = false;
+                    if ($application instanceof Application && $application->getSpace() && method_exists($application->getSpace(), 'getIsErp')) {
+                        $spaceIsErp = (bool) $application->getSpace()->getIsErp();
+                    }
+
+                    // Base : uniquement les types d'usage actifs.
+                    // Si le lieu n'est pas ERP, on masque aussi les types réservés aux ERP.
+                    $qb = $repo->createQueryBuilder('c')
+                        ->where('c.isActive = :active')
+                        ->setParameter('active', true);
+
+                    if (!$spaceIsErp) {
+                        $qb->andWhere('c.requiresErp = :notErp')
+                           ->setParameter('notErp', false);
+                    }
+
+                    // On conserve la valeur actuellement sélectionnée même si elle est
+                    // désormais archivée ou réservée ERP, pour ne pas perdre la donnée.
+                    if ($application instanceof Application && $application->getCategory() instanceof Category) {
+                        $qb->orWhere('c.id = :current')
+                           ->setParameter('current', $application->getCategory()->getId());
+                    }
+
+                    return $qb->orderBy('c.name', 'ASC');
+                },
             ))
             ->add('newDocument', ApplicationFileType::class, array(
                 'label' => false,
@@ -109,19 +172,53 @@ class ApplicationType extends AbstractType
         ;
 
         $projectHolderForm = $builder->get('projectHolder');
-        $projectHolderForm->remove('wishedSize')
-                          ->remove('useType')
-                          ->remove('usageDate')
-                          ->remove('usageDuration')
-                          ->remove('lengthTypeOccupation')
-                          ->remove('projectDescription')
-                          ->remove('newsletter');
+
+        // Ces champs du profil ne sont pas exposés dans le formulaire de candidature.
+        // IMPORTANT : on utilise setDisabled(true) plutôt que remove() pour les champs
+        // mappés sur l'entité User. remove() + clearMissing=true (défaut Symfony) viderait
+        // la propriété User à la soumission ; setDisabled() la préserve.
+        foreach (['usageDate', 'usageDuration', 'preferredDepartments',
+                  'wishedSize', 'lengthTypeOccupation', 'projectDescription',
+                  'monthlyBudgetMax', 'newsletter'] as $profileOnlyField) {
+            if ($projectHolderForm->has($profileOnlyField)) {
+                $projectHolderForm->get($profileOnlyField)->setDisabled(true);
+            }
+        }
+
+        // useType : désactivé en amont via l'option `disable_use_type` passée à ProjectOwnerType
+        // (le champ est ajouté dynamiquement dans PRE_SET_DATA, donc il n'est pas accessible ici).
 
         if ($user->getId()) {
             $projectHolderForm->get('userInfo')->remove('plainPassword');
         }
 
         $projectHolderForm->get('userInfo')->remove('oldPassword');
+
+        // IMPORTANT (UX + sécurité des données):
+        // Quand certaines sections issues du profil sont affichées en "récap" (non éditables) sur la page apply,
+        // les champs ne sont plus postés. Symfony "clear" alors les champs manquants et peut vider le profil.
+        // On désactive explicitement ces sous-champs pour qu'ils ne soient ni soumis ni modifiés.
+        if (!empty($options['freeze_profile_sections'])) {
+            if ($projectHolderForm->has('userInfo')) {
+                $projectHolderForm->get('userInfo')->setDisabled(true);
+            }
+            if ($projectHolderForm->has('companyInfo')) {
+                $projectHolderForm->get('companyInfo')->setDisabled(true);
+            }
+
+            foreach (['facebookUrl', 'twitterUrl', 'instagramUrl', 'googleUrl', 'linkedinUrl', 'youtubeUrl', 'tiktokUrl', 'otherUrl'] as $socialField) {
+                if ($projectHolderForm->has($socialField)) {
+                    $projectHolderForm->get($socialField)->setDisabled(true);
+                }
+            }
+
+            // Documents de profil éventuellement présents dans le form (cas profil incomplet)
+            foreach (['idcard', 'kbis'] as $docField) {
+                if ($projectHolderForm->has($docField)) {
+                    $projectHolderForm->get($docField)->setDisabled(true);
+                }
+            }
+        }
 
         foreach ($application->getSpace()->getDocuments() as $field) {
             if ($application->hasFileType($field->getId())) {
@@ -158,6 +255,24 @@ class ApplicationType extends AbstractType
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $application = $event->getData();
+
+            // Bloquer les emojis côté serveur (la DB n'accepte pas utf8mb4 sur certains champs).
+            // Sinon on obtient une exception SQL "Incorrect string value" à la soumission.
+            $emojiRegex = '/[\x{1F600}-\x{1F64F}]|[\x{1F300}-\x{1F5FF}]|[\x{1F680}-\x{1F6FF}]|[\x{1F1E0}-\x{1F1FF}]|[\x{2600}-\x{26FF}]|[\x{2700}-\x{27BF}]/u';
+            $textFields = [
+                'description' => "Le texte ne doit pas contenir d'emojis",
+                'localUsageDescription' => "Le texte ne doit pas contenir d'emojis",
+                'contribution' => "Le texte ne doit pas contenir d'emojis",
+            ];
+            foreach ($textFields as $fieldName => $message) {
+                if (!$form->has($fieldName)) {
+                    continue;
+                }
+                $value = $form->get($fieldName)->getData();
+                if (is_string($value) && $value !== '' && preg_match($emojiRegex, $value)) {
+                    $form->get($fieldName)->addError(new FormError($message));
+                }
+            }
 
             $document = $event->getForm()->get('newDocument')->getData();
             if ($document instanceof ApplicationFile) {
@@ -208,14 +323,21 @@ class ApplicationType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
             'validation_groups' => function (FormInterface $form) {
-                if ($form->get('save')->isClicked()) {
+                $intent = '';
+                if ($form->has('intent')) {
+                    $intent = (string) $form->get('intent')->getData();
+                }
+
+                if ($form->get('save')->isClicked() || $intent === 'save') {
                     // Pour l'enregistrement en brouillon, on désactive la validation
                     return array();
                 }
 
                 return array('submit', 'projectHolder', 'Default');
             },
-            'user' => 'AppBundle\Entity\User'
+            'user' => 'AppBundle\Entity\User',
+            // True = sections "profil" en lecture seule dans apply (évite d'écraser le profil).
+            'freeze_profile_sections' => false,
         ));
     }
 
