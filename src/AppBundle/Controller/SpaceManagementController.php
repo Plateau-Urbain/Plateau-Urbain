@@ -8,10 +8,12 @@ use AppBundle\Entity\Parcel;
 use AppBundle\Entity\Space;
 use AppBundle\Entity\SpaceImage;
 use AppBundle\Entity\SpaceDocument;
+use AppBundle\Entity\SpaceVisit;
 use AppBundle\Form\SpaceType;
 use Sonata\Exporter\Handler;
 use Sonata\Exporter\Source\DoctrineORMQuerySourceIterator;
 use Sonata\Exporter\Writer\CsvWriter;
+use ZipArchive;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,6 +40,7 @@ class SpaceManagementController extends Controller
     {
         // see https://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
 
         // Handle the filter form
         $filterForm = $this->handleSpaceFilterForm($request, array(
@@ -49,15 +52,30 @@ class SpaceManagementController extends Controller
         $filters = $filterForm->getData();
 
         $params = array(
-            'user'      => $user,
             'orderBy'   => $filters['sort_field'],
             'sort'      => $filters['sort_order']
         );
 
-        if ($filters['status_filter'] == 'closed') {
-            $params['closed'] = true;
-        } else if ($filters['status_filter'] == 'enabled')  {
-            $params['enabled'] = true;
+        // Si admin, voir tous les espaces. Sinon, seulement ceux de l'utilisateur
+        if ($isAdmin) {
+            // Pour les admins, on peut ajouter un filtre pour voir les espaces en attente
+            if ($filters['status_filter'] == 'pending') {
+                $params['submitted'] = true;
+                $params['enabled'] = false;
+            } else if ($filters['status_filter'] == 'closed') {
+                $params['closed'] = true;
+            } else if ($filters['status_filter'] == 'enabled')  {
+                $params['enabled'] = true;
+            }
+        } else {
+            // Pour les propriétaires, seulement leurs espaces
+            $params['user'] = $user;
+            
+            if ($filters['status_filter'] == 'closed') {
+                $params['closed'] = true;
+            } else if ($filters['status_filter'] == 'enabled')  {
+                $params['enabled'] = true;
+            }
         }
 
         $query = $this->getDoctrine()->getManager()->getRepository('AppBundle:Space')->filter($params);
@@ -68,10 +86,10 @@ class SpaceManagementController extends Controller
             $request->query->getInt('page', 1)/*page number*/
         );
 
-
         return array(
             "pagination" => $pagination,
-            'filterForm' => $filterForm->createView()
+            'filterForm' => $filterForm->createView(),
+            'isAdmin' => $isAdmin
         );
     }
 
@@ -96,21 +114,15 @@ class SpaceManagementController extends Controller
     {
         $space = new Space();
         $space->setOwner($this->getUser());
-        $space->isClosed(false);
-        $space->setLimitAvailability((new \DateTime('today'))->modify('+1 month'));
-
-        $em = $this->get('doctrine.orm.entity_manager');
-        $em->persist($space);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
+        $space->setClosed(false);
+        $limitAvailability = (new \DateTime('today'))->modify('+1 month');
+        $limitAvailability->setTime(23, 59, 59);
+        $space->setLimitAvailability($limitAvailability);
 
         $form = $this->createSpaceForm($space, array(
             'action' => $this->generateUrl('space_manager_add'),
             'method' => 'post'
         ));
-
-        $space->setOwner($this->getUser());
 
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -133,7 +145,7 @@ class SpaceManagementController extends Controller
             return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $space->getId())));
         }
 
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(), 'space' => $space);
     }
 
     /**
@@ -146,9 +158,17 @@ class SpaceManagementController extends Controller
      */
     public function editAction(Request $request, Space $space)
     {
-        // Check ownership
-        if (!$space->isOwner($this->getUser()) || $space->isSubmitted()) {
-            throw new AccessDeniedException();
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
+        // Check ownership - Les admins peuvent modifier n'importe quel espace
+        if (!$space->isOwner($this->getUser()) && !$isAdmin) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier cet espace.');
+        }
+        
+        // Les propriétaires ne peuvent pas modifier un espace qui est soumis mais pas encore publié
+        // Seuls les admins peuvent modifier les espaces en attente de validation
+        if (!$isAdmin && $space->isSubmitted() && !$space->isEnabled()) {
+            throw new AccessDeniedException('Cet espace est en attente de validation par un administrateur. Vous ne pouvez pas le modifier pour le moment.');
         }
 
         $form = $this->createSpaceForm($space, array(
@@ -201,6 +221,131 @@ class SpaceManagementController extends Controller
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'Espace fermé');
+
+        return $this->redirect($this->generateUrl('space_manager_list'));
+    }
+
+
+    /**
+     * Dépublier un appel à candidatures
+     * 
+     * @Route("/depublier/{id}", name="space_manager_unpublish")
+     */
+    public function unpublishAction(Space $space)
+    {
+        // Vérifier que l'utilisateur est propriétaire de l'espace OU admin
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à dépublier cet espace.');
+        }
+
+        // Vérifier que l'espace est bien activé (enabled)
+        if (!$space->isEnabled()) {
+            $this->get('session')->getFlashBag()->set('error', 'Cet espace n\'est pas activé.');
+            return $this->redirect($this->generateUrl('space_manager_list'));
+        }
+
+        // Vérifier s'il y a des candidatures en cours
+        $nbApplications = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Application')
+            ->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.space = :space')
+            ->andWhere('a.status != :draft')
+            ->setParameter('space', $space)
+            ->setParameter('draft', 'draft')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        // Si candidatures existent, permettre mais avec avertissement
+        if ($nbApplications > 0) {
+            $this->get('session')->getFlashBag()->set('warning', 
+                'Attention : Cet espace a été dépublié temporairement alors qu\'il avait ' . $nbApplications . ' candidature(s). ' .
+                'Les candidats ne peuvent plus voir l\'annonce. Pensez à republier rapidement après vos corrections.');
+        }
+
+        // Dépublier l'espace
+        $space->setEnabled(false);
+        // Optionnellement, remettre submitted à false pour permettre les modifications
+        $space->setSubmitted(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($space);
+        $em->flush();
+
+        if ($nbApplications > 0) {
+            $this->get('session')->getFlashBag()->set('success', 'Espace dépublié temporairement. Modifiez-le rapidement et republiez-le pour que les candidats puissent le voir à nouveau.');
+        } else {
+            $this->get('session')->getFlashBag()->set('success', 'Espace dépublié avec succès. Vous pouvez maintenant le modifier.');
+        }
+
+        return $this->redirect($this->generateUrl('space_manager_list'));
+    }
+
+    /**
+     * Publier un espace en attente de validation (Admin uniquement)
+     * 
+     * @Route("/publier/{id}", name="space_manager_publish")
+     */
+    public function publishAction(Space $space)
+    {
+        // Seuls les admins peuvent publier directement un espace
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Seuls les administrateurs peuvent publier des espaces.');
+        }
+
+        // Vérifier que l'espace est soumis mais pas encore activé
+        if (!$space->isSubmitted() || $space->isEnabled()) {
+            $this->get('session')->getFlashBag()->set('error', 'Cet espace ne peut pas être publié.');
+            return $this->redirect($this->generateUrl('space_manager_list'));
+        }
+
+        // Activer l'espace
+        $space->setEnabled(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($space);
+        $em->flush();
+
+        // Envoyer un email de confirmation au propriétaire
+        $message = (new \Swift_Message())
+            ->setSubject('Votre espace a été publié sur Plateau Urbain')
+            ->setFrom($this->container->getParameter('mail_confirmation_from'))
+            ->setTo($space->getOwner()->getEmail())
+            ->setBody(
+                $this->renderView(
+                    'AppBundle:Email:space_published.html.twig',
+                    compact('space')
+                ), 'text/html'
+            );
+
+        $this->get('mailer')->send($message);
+
+        // Notifier les candidats qui ont des brouillons
+        $draftApplications = $em->getRepository('AppBundle:Application')
+            ->findBy([
+                'space' => $space,
+                'status' => 'draft'
+            ]);
+
+        foreach ($draftApplications as $application) {
+            $notificationMessage = (new \Swift_Message())
+                ->setSubject('Espace à nouveau disponible !')
+                ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                ->setTo($application->getProjectHolder()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'AppBundle:Email:space_available_again.html.twig',
+                        [
+                            'space' => $space,
+                            'application' => $application
+                        ]
+                    ), 'text/html'
+                );
+
+            $this->get('mailer')->send($notificationMessage);
+        }
+
+        $this->get('session')->getFlashBag()->set('success', 'L\'espace "' . $space->getName() . '" a été publié avec succès. Le propriétaire a été notifié par email.');
 
         return $this->redirect($this->generateUrl('space_manager_list'));
     }
@@ -372,6 +517,262 @@ class SpaceManagementController extends Controller
     }
 
     /**
+     * @Route("/candidates-export-zip/{id}", name="space_manager_candidatesexportzip", methods={"get"})
+     *
+     * @param Request $request
+     * @param Space $space
+     *
+     * @return Response
+     */
+    public function candidatesExportZipAction(Request $request, Space $space)
+    {
+        // Vérifier les permissions
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à exporter les candidatures de cet espace.');
+        }
+
+        // Handle the filter form
+        $filterForm = $this->handleFilterForm($request, array(
+            'sort_field' => 'created',
+            'sort_order' => 'desc',
+            'status_filter' => null
+        ));
+
+        $filters = $filterForm->getData();
+
+        $params = array(
+            'space'     => $space,
+            'orderBy'   => $filters['sort_field'],
+            'status'    => $filters['status_filter'],
+            'sort'      => $filters['sort_order']
+        );
+
+        $qb = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application')->filter($params);
+        $applications = $qb->getQuery()->getResult();
+
+        // Créer le fichier ZIP temporaire
+        $zip = new ZipArchive();
+        $tempFile = tempnam(sys_get_temp_dir(), 'export_candidatures_');
+        $zip->open($tempFile, ZipArchive::CREATE);
+
+        $applicationFilesPath = $this->get('kernel')->getRootDir() . '/../web/uploads/application_files/';
+        $userDocumentsPath = $this->get('kernel')->getRootDir() . '/../web/uploads/user_documents/';
+
+        foreach ($applications as $application) {
+            // Créer le nom du dossier pour cette candidature
+            $candidateName = $this->sanitizeFileName($application->getProjectHolder()->getFullName());
+            $companyName = $this->sanitizeFileName($application->getProjectHolder()->getCompany());
+            $folderName = $candidateName . '_' . $companyName;
+            
+            // Créer le récapitulatif HTML
+            $summaryContent = $this->renderView('AppBundle:SpaceManagement:application_summary.html.twig', [
+                'application' => $application
+            ]);
+            
+            $zip->addFromString($folderName . '/recapitulatif.html', $summaryContent);
+
+            // Ajouter les documents de la candidature (ApplicationFile)
+            foreach ($application->getFiles() as $file) {
+                if ($file->getFileName()) {
+                    $filePath = $applicationFilesPath . $file->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $file->getFileName();
+                        if ($file->getSpaceDocument()) {
+                            $displayName = $file->getSpaceDocument()->getName() . '_' . $file->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_candidature/' . $displayName);
+                    }
+                }
+            }
+
+            // Ajouter les documents du profil utilisateur (UserDocument)
+            foreach ($application->getProjectHolder()->getDocuments() as $userDoc) {
+                if ($userDoc->getFileName()) {
+                    $filePath = $userDocumentsPath . $userDoc->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $userDoc->getFileName();
+                        if ($userDoc->getType()) {
+                            $typeLabel = $this->getDocumentTypeLabel($userDoc->getType());
+                            $displayName = $typeLabel . '_' . $userDoc->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_profil/' . $displayName);
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        // Générer le nom du fichier
+        $filename = 'export_candidatures_' . $this->sanitizeFileName($space->getName()) . '_' . date('Y-m-d_H-i-s') . '.zip';
+
+        // Retourner le fichier ZIP
+        $response = new Response(file_get_contents($tempFile));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+        $response->headers->set('Content-Length', filesize($tempFile));
+
+        // Nettoyer le fichier temporaire
+        unlink($tempFile);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/candidates-export-zip-selected/{id}", name="space_manager_candidatesexportzip_selected", methods={"post"})
+     *
+     * @param Request $request
+     * @param Space $space
+     *
+     * @return Response
+     */
+    public function candidatesExportZipSelectedAction(Request $request, Space $space)
+    {
+        // Vérifier les permissions
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à exporter les candidatures de cet espace.');
+        }
+
+        // Vérifier le token CSRF
+        if (!$this->isCsrfTokenValid('export_selected', $request->request->get('_token'))) {
+            throw new BadRequestHttpException('Token CSRF invalide.');
+        }
+
+        // Récupérer les IDs des candidatures sélectionnées
+        $selectedIds = $request->request->get('selected_applications', []);
+        
+        if (empty($selectedIds)) {
+            throw new BadRequestHttpException('Aucune candidature sélectionnée.');
+        }
+
+        // Récupérer les candidatures sélectionnées
+        $em = $this->getDoctrine()->getManager();
+        $applications = $em->getRepository('AppBundle:Application')
+            ->createQueryBuilder('a')
+            ->leftJoin('a.files', 'f')
+            ->leftJoin('a.projectHolder', 'u')
+            ->leftJoin('a.space', 's')
+            ->where('a.id IN (:ids)')
+            ->andWhere('a.space = :space')
+            ->setParameter('ids', $selectedIds)
+            ->setParameter('space', $space)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($applications)) {
+            throw new BadRequestHttpException('Aucune candidature valide trouvée.');
+        }
+
+        // Créer le fichier ZIP temporaire
+        $zip = new ZipArchive();
+        $tempFile = tempnam(sys_get_temp_dir(), 'export_candidatures_selected_');
+        $zip->open($tempFile, ZipArchive::CREATE);
+
+        $applicationFilesPath = $this->get('kernel')->getRootDir() . '/../web/uploads/application_files/';
+        $userDocumentsPath = $this->get('kernel')->getRootDir() . '/../web/uploads/user_documents/';
+
+        foreach ($applications as $application) {
+            // Créer le nom du dossier pour cette candidature
+            $candidateName = $this->sanitizeFileName($application->getProjectHolder()->getFullName());
+            $companyName = $this->sanitizeFileName($application->getProjectHolder()->getCompany());
+            $folderName = $candidateName . '_' . $companyName;
+            
+            // Créer le récapitulatif HTML
+            $summaryContent = $this->renderView('AppBundle:SpaceManagement:application_summary.html.twig', [
+                'application' => $application
+            ]);
+            
+            $zip->addFromString($folderName . '/recapitulatif.html', $summaryContent);
+
+            // Ajouter les documents de la candidature (ApplicationFile)
+            foreach ($application->getFiles() as $file) {
+                if ($file->getFileName()) {
+                    $filePath = $applicationFilesPath . $file->getFileName();
+                    if (file_exists($filePath)) {
+                        // Créer un nom de fichier plus descriptif
+                        $displayName = $file->getFileName();
+                        if ($file->getSpaceDocument()) {
+                            $displayName = $file->getSpaceDocument()->getName() . '_' . $file->getFileName();
+                        }
+                        $zip->addFile($filePath, $folderName . '/documents_candidature/' . $displayName);
+                    }
+                }
+            }
+
+            // Ajouter les documents du profil utilisateur (UserDocument) - si disponibles
+            if (method_exists($application->getProjectHolder(), 'getDocuments')) {
+                foreach ($application->getProjectHolder()->getDocuments() as $userDoc) {
+                    if ($userDoc->getFileName()) {
+                        $filePath = $userDocumentsPath . $userDoc->getFileName();
+                        if (file_exists($filePath)) {
+                            // Créer un nom de fichier plus descriptif
+                            $displayName = $userDoc->getFileName();
+                            if ($userDoc->getType()) {
+                                $typeLabel = $this->getDocumentTypeLabel($userDoc->getType());
+                                $displayName = $typeLabel . '_' . $userDoc->getFileName();
+                            }
+                            $zip->addFile($filePath, $folderName . '/documents_profil/' . $displayName);
+                        }
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        // Générer le nom du fichier
+        $filename = 'export_candidatures_selection_' . $this->sanitizeFileName($space->getName()) . '_' . date('Y-m-d_H-i-s') . '.zip';
+
+        // Retourner le fichier ZIP
+        $response = new Response(file_get_contents($tempFile));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $filename));
+        $response->headers->set('Content-Length', filesize($tempFile));
+
+        // Nettoyer le fichier temporaire
+        unlink($tempFile);
+
+        return $response;
+    }
+
+    /**
+     * Nettoie un nom de fichier pour qu'il soit valide
+     *
+     * @param string $fileName
+     * @return string
+     */
+    private function sanitizeFileName($fileName)
+    {
+        // Remplacer les caractères spéciaux par des underscores
+        $fileName = preg_replace('/[^a-zA-Z0-9\-_\.]/', '_', $fileName);
+        // Supprimer les underscores multiples
+        $fileName = preg_replace('/_+/', '_', $fileName);
+        // Supprimer les underscores en début et fin
+        $fileName = trim($fileName, '_');
+        // Limiter la longueur
+        return substr($fileName, 0, 50);
+    }
+
+    /**
+     * Retourne le label lisible pour un type de document
+     *
+     * @param string $type
+     * @return string
+     */
+    private function getDocumentTypeLabel($type)
+    {
+        $labels = [
+            'id' => 'Piece_identite',
+            'kbis' => 'KBIS',
+            '' => 'Autre_document'
+        ];
+
+        return isset($labels[$type]) ? $labels[$type] : 'Document_' . $type;
+    }
+
+    /**
      * @Route("/application/{id}/toggle_selected", name="space_manager_toggle_selected_application", methods={"get", "post"})
      *
      * @param Request $request
@@ -399,8 +800,8 @@ class SpaceManagementController extends Controller
      */
     public function removePictureAction(Request $request, SpaceImage $image)
     {
-        if (!$image->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$image->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette photo.');
         }
 
         // Check csrfToken
@@ -428,8 +829,8 @@ class SpaceManagementController extends Controller
      */
     public function movePictureAction(Request $request, SpaceImage $image)
     {
-        if (!$image->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$image->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à déplacer cette photo.');
         }
 
         // Check csrfToken
@@ -456,8 +857,8 @@ class SpaceManagementController extends Controller
      */
     public function removeAction(Space $space)
     {
-        if (!$space->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$space->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cet espace.');
         }
 
         if ($space->isPublished()) {
@@ -465,7 +866,30 @@ class SpaceManagementController extends Controller
             return $this->redirectToRoute('space_manager_list');
         }
 
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em = $this->getDoctrine()->getManager();
+        
+        // Vérifier s'il y a des candidatures associées
+        $applications = $em->getRepository('AppBundle:Application')->findBy(['space' => $space]);
+        $nbApplications = count($applications);
+        
+        if ($nbApplications > 0) {
+            // Supprimer d'abord toutes les candidatures associées
+            foreach ($applications as $application) {
+                // Supprimer les fichiers associés à la candidature
+                $applicationFiles = $em->getRepository('AppBundle:ApplicationFile')->findBy(['application' => $application]);
+                foreach ($applicationFiles as $file) {
+                    $em->remove($file);
+                }
+                
+                // Supprimer la candidature
+                $em->remove($application);
+            }
+            
+            $this->get('session')->getFlashBag()->set('warning', 
+                'L\'espace a été supprimé avec ' . $nbApplications . ' candidature(s) associée(s).');
+        }
+        
+        // Supprimer l'espace
         $em->remove($space);
         $em->flush();
 
@@ -483,8 +907,8 @@ class SpaceManagementController extends Controller
      */
     public function removeDocumentAction(Request $request, SpaceDocument $spaceDocument)
     {
-        if (!$spaceDocument->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$spaceDocument->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce document.');
         }
 
         $spaceId = $spaceDocument->getSpace()->getId();
@@ -507,8 +931,8 @@ class SpaceManagementController extends Controller
      */
     public function removeParcelAction(Request $request, Parcel $parcel)
     {
-        if (!$parcel->getSpace()->isOwner($this->getUser())) {
-            throw new AccessDeniedException();
+        if (!$parcel->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce lot.');
         }
 
         // Check csrfToken
@@ -523,6 +947,35 @@ class SpaceManagementController extends Controller
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'Le lot a bien été supprimé.');
+
+        return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
+    }
+
+    /**
+     * @Route("/visit/{id}/delete", name="space_manager_removevisit")
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function removeVisitAction(Request $request, SpaceVisit $visit)
+    {
+        if (!$visit->getSpace()->isOwner($this->getUser()) && !$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer cette visite.');
+        }
+
+        // Check csrfToken
+        if (!$this->isCsrfTokenValid('remove_visit', $request->query->get('token'))) {
+            throw new BadRequestHttpException('Invalid token');
+        }
+
+        $spaceId = $visit->getSpace()->getId();
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->remove($visit);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->set('success', 'La visite a bien été supprimée.');
 
         return $this->redirect($this->generateUrl('space_manager_edit', array('id' => $spaceId)));
     }
@@ -567,27 +1020,55 @@ class SpaceManagementController extends Controller
      */
     protected function submitSpace($space)
     {
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
         $space->setSubmitted(true);
-
-        $this->get('doctrine.orm.entity_manager')->flush();
-
-        $message = (new \Swift_Message())
-            ->setSubject('Nouvelle propriété ! ')
-            ->setFrom($this->container->getParameter('mail_confirmation_from'))
-            ->setTo($this->container->getParameter('mail_confirmation_to'))
-            ->setBody(
-                $this->renderView(
-                    'AppBundle:Email:new_property.html.twig',
-                    compact('space')
-                ), 'text/html'
-            )
-        ;
-
-        $this->get('mailer')->send($message);
-
-        $this->get('session')->getFlashBag()->set('success', 'L\'espace a été crée');
-
-        return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1')));
+        
+        // Si c'est un admin, on publie directement l'espace
+        if ($isAdmin) {
+            $space->setEnabled(true);
+            $this->get('doctrine.orm.entity_manager')->flush();
+            
+            // Envoyer un email au propriétaire pour l'informer de la publication
+            $owner = $space->getOwner();
+            if ($owner && $owner->getEmail()) {
+                $message = (new \Swift_Message())
+                    ->setSubject('Votre espace a été publié')
+                    ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                    ->setTo($owner->getEmail())
+                    ->setBody(
+                        $this->renderView(
+                            'AppBundle:Email:space_published.html.twig',
+                            compact('space')
+                        ), 'text/html'
+                    )
+                ;
+                $this->get('mailer')->send($message);
+            }
+            
+            $this->get('session')->getFlashBag()->set('success', 'L\'espace a été publié avec succès.');
+            return $this->redirect($this->generateUrl('space_manager_list', array('create_confirm' => '1', 'published' => '1')));
+        } else {
+            // Propriétaire standard : soumettre pour validation
+            $this->get('doctrine.orm.entity_manager')->flush();
+            
+            // Envoyer un email aux admins pour validation
+            $message = (new \Swift_Message())
+                ->setSubject('Nouvelle propriété en attente de validation')
+                ->setFrom($this->container->getParameter('mail_confirmation_from'))
+                ->setTo($this->container->getParameter('mail_confirmation_to'))
+                ->setBody(
+                    $this->renderView(
+                        'AppBundle:Email:new_property.html.twig',
+                        compact('space')
+                    ), 'text/html'
+                )
+            ;
+            $this->get('mailer')->send($message);
+            
+            $this->get('session')->getFlashBag()->set('success', 'Votre espace a été soumis pour validation. Un administrateur le publiera après vérification.');
+            return $this->redirect($this->generateUrl('space_manager_list', array('submit_confirm' => '1')));
+        }
     }
 
 
@@ -678,12 +1159,21 @@ class SpaceManagementController extends Controller
             'empty_data' => ''
         ));
 
+        // Vérifier si l'utilisateur est admin pour ajouter l'option "En attente de publication"
+        $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        
+        $statusChoices = [
+            'enabled' => 'Projets en cours',
+            'closed'  => 'Projets clôturés',
+        ];
+        
+        if ($isAdmin) {
+            $statusChoices['pending'] = 'En attente de publication';
+        }
+        
         $builder->add('status_filter', 'choice', array(
             'required' => false,
-            'choices' => array_flip([
-                'enabled' => 'Projets en cours',
-                'closed'  => 'Projets clôturés',
-            ]),
+            'choices' => array_flip($statusChoices),
             'placeholder' => 'Filtrer par',
             'empty_data' => ''
         ));

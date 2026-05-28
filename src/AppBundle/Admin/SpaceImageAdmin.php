@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use AppBundle\Entity\SpaceImage;
 
 /**
  * SpaceImage admin.
@@ -20,7 +21,16 @@ class SpaceImageAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('fileName');
+            ->addIdentifier('fileName')
+            ->add('fileType', 'choice', [
+                'choices' => [
+                    SpaceImage::FILETYPE_IMAGE => 'Image',
+                    SpaceImage::FILETYPE_DOCUMENT_PLAN => 'Plan',
+                    SpaceImage::FILETYPE_DOCUMENT_AAC => 'AAC'
+                ],
+                'label' => 'Type'
+            ])
+            ->add('space', null, ['label' => 'Espace']);
 
         return $listMapper;
     }
@@ -35,7 +45,17 @@ class SpaceImageAdmin extends AbstractAdmin
         $formMapper
             ->add('file', VichImageType::class, array(
                 'required' => false,
-            ));
+            ))
+            ->add('fileType', 'choice', [
+                'choices' => [
+                    SpaceImage::FILETYPE_IMAGE => 'Image',
+                    SpaceImage::FILETYPE_DOCUMENT_PLAN => 'Plan',
+                    SpaceImage::FILETYPE_DOCUMENT_AAC => 'AAC'
+                ],
+                'label' => 'Type de fichier',
+                'required' => true
+            ])
+            ->add('space', null, ['label' => 'Espace']);
 
         return $formMapper;
     }

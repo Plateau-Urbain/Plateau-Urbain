@@ -154,26 +154,26 @@ class UserDocument
     }
 
     /**
-     * Set user
+     * Set projectHolder
      *
-     * @param \AppBundle\Entity\User $user
+     * @param \AppBundle\Entity\User $projectHolder
      * @return UserDocument
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(\AppBundle\Entity\User $projectHolder = null)
     {
-        $this->user = $user;
+        $this->projectHolder = $projectHolder;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get projectHolder
      *
      * @return \AppBundle\Entity\User
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->projectHolder;
     }
 
     /**

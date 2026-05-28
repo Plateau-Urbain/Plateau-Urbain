@@ -1,6 +1,10 @@
 /app/bootstrap.php.cache
 /app/cache/*
 !app/cache/.gitkeep
+/app/cache_backup/
+/app/cache_corrupted/
+/app/cache_old*/
+/app/cache_new/
 /app/config/parameters.yml
 /app/logs/*
 !app/logs/.gitkeep
@@ -24,3 +28,41 @@
 tags
 /src/AppBundle/Resources/public/css/main.css
 /web/uploads
+
+# SQL dumps (données sensibles)
+*.sql
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Vim swap files
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Fichiers de travail temporaires
+10000
+*.xls
+*.xlsx
+*.csv
+
+# Docs de développement intermédiaires (non destinées au dépôt public)
+ANALYSE_*.md
+AUDIT_*.md
+CORRECTIFS_*.md
+CORRECTIONS_*.md
+INSTRUCTIONS_*.md
+RESUME_*.md
+GUIDE_EXPORT_*.md
+GUIDE_FILTRES_*.md
+GUIDE_GENERATION_*.md
+GUIDE_RAPIDE_*.md
+DOCUMENTATION_EXPORT_PERSONNALISE*.md
+DOCUMENTATION_VALIDATION_WORKFLOW.md
+DOCUMENTATION_FIX_PDF_UPLOAD.md

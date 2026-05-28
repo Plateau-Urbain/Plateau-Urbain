@@ -91,8 +91,8 @@
                                     <dl class="dl-horizontal dl-with-icon">
                                         <dt><i class="icon small square-brown"></i></dt>
                                         <dd>
-                                            <span class="dd-title"><strong>{{ space.parcels | length }}</strong> espaces</span><br/>
-                                            À partir de {{ space.minSize }}m<sup>2</sup>
+                                            <span class="dd-title"><strong>{{ space.nbSpaces }}</strong> espaces</span><br/>
+                                            À partir de {{ space.minSpace }}m<sup>2</sup>
                                         </dd>
                                     </dl>
                                 </div>
@@ -110,7 +110,7 @@
                                         <dt><i class="icon small time-brown"></i></dt>
                                         <dd>
                                             <span class="dd-title">Date limite de candidature</span><br/>
-                                            {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+                                            {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                                         </dd>
                                     </dl>
                                 </div>

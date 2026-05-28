@@ -13,6 +13,26 @@
         filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="print" />
     {% endstylesheets %}
+    
+    <style>
+        .selection-controls {
+            margin-top: 10px;
+        }
+        .selection-controls .btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .exportCheck {
+            margin-right: 8px;
+        }
+        #exportSelectedBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .actions {
+            padding: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -95,7 +115,7 @@
                             <div class="apply-date">
                             <p class="apply-date-p">Date limite de candidature</p>
                             <p class="apply-date-b">
-                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                   </p>
                       </div>
             </div>
@@ -110,7 +130,11 @@
             </div>
             <div class="col-sm-4">
               {% if space.isEnabled and not space.isClosed %}
-                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');"><span>Clôturer</span></a>
+                {% else %}
+                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
+                {% endif %}
               {% endif %}
             </div>
           </div> #}
@@ -142,11 +166,11 @@
   </div> #}
 
   <div class="row">
-    <div class="col-sm-6" id="firstChartContener">
+    {# <div class="col-sm-6" id="firstChartContener">
       <h4 class="stats-title secondary">Par type de candidature</h4>
       <canvas id="firstChart" width="585px" height="300px"></canvas>
-    </div>
-    <div class="col-sm-6" id="secondChartContener">
+    </div> #}
+    <div class="col-sm-6 col-sm-offset-6" id="secondChartContener">
       <h4 class="stats-title secondary">Par type de projet</h4>
       <canvas id="secondChart" width="585px" height="300px"></canvas>
     </div>
@@ -180,8 +204,16 @@
       <div class="btn-toolbar pull-right">
         <a href="{{ path('space_manager_candidatesexport', { 'id': space.id }) }}" class="btn btn-line-19">
           <i class="fa fa-download"></i>
-          Exporter la liste
+          Exporter CSV
         </a>
+        <a href="{{ path('space_manager_candidatesexportzip', { 'id': space.id }) }}" class="btn btn-line-19">
+          <i class="fa fa-file-archive-o"></i>
+          Exporter avec documents
+        </a>
+        <button type="button" class="btn btn-line-19" id="exportSelectedBtn" disabled>
+          <i class="fa fa-file-archive-o"></i>
+          Exporter sélection (<span id="selectedCount">0</span>)
+        </button>
         <a href="javascript:print();" class="btn btn-line-19">
           <i class="fa fa-print"></i>
           Imprimer
@@ -204,6 +236,15 @@
       <div class="btn-appli">
       <a href="#accept_content" class="btn btn-line-19 btn-form" id="groupActionBtn">Appliquer</a>
     </div>
+    </div>
+    
+    <div class="col-sm-6">
+      <div class="selection-controls">
+        <button type="button" class="btn btn-sm btn-default" id="selectAllBtn">Tout sélectionner</button>
+        <button type="button" class="btn btn-sm btn-default" id="selectNoneBtn">Tout désélectionner</button>
+        <button type="button" class="btn btn-sm btn-default" id="selectAcceptedBtn">Sélectionner acceptées</button>
+        <button type="button" class="btn btn-sm btn-default" id="selectRejectedBtn">Sélectionner refusées</button>
+      </div>
     </div>
 
     <div class="col-sm-6">
@@ -230,9 +271,7 @@
         <div class=" col-xs-12 col-md-12 border-box">
           
            <div class="actions">
-          {% if application.isAwaiting or application.isUnread %}
-            <input type="checkbox" class="groupCheck" value="{{ application.id }}" />
-          {% endif %}
+            <input type="checkbox" class="exportCheck" value="{{ application.id }}" data-status="{{ application.status }}" />
         </div>
         <div class="candidate-argus">
           <div class="cell-content ">
@@ -409,24 +448,10 @@
                 $(this).trigger('submit');
             });
 
-            var barChartData2 = {
-                labels : [{% for cat in categories %}'{{ cat.name }}',{% endfor %}],
-                datasets : [
-                    {
-                        fillColor : "rgba(151,187,205,0.5)",
-                        strokeColor : "rgba(151,187,205,0.8)",
-                        highlightFill : "rgba(151,187,205,0.75)",
-                        highlightStroke : "rgba(151,187,205,1)",
-                        data : [{% for cat in categories %}{{ space.nbApplicationCategory(cat) }},{% endfor %}]
-                    }
-                ]
-
-            };
-
             var colors = ['#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'];
             var hightLightColors = ['#FF5A5E', '#5AD3D1', '#FFC870', '#A8B3C5', '#616774'];
 
-            var barChartData1 = [
+            {# var barChartData1 = [
                 {% for key, use in useTypes %}
                 {
                     value: {{ space.nbApplicationUseType(use) }},
@@ -436,8 +461,6 @@
                 },
                 {% endfor %}
             ];
-
-
 
             var ctx = document.getElementById("firstChart").getContext("2d");
             window.myPie = new Chart(ctx).Pie(barChartData1, {
@@ -451,12 +474,31 @@
             var legend = window.myPie.generateLegend();
 
             //and append it to your page somewhere
-            $('#firstChartContener').append(legend);
+            $('#firstChartContener').append(legend); #}
+
+            // Graphique camembert par type de projet
+            var pieChartData2 = [
+                {% for key, cat in categories %}
+                {
+                    value: {{ space.nbApplicationCategory(cat) }},
+                    color: colors[{{ key }} % 5],
+                    highlight: hightLightColors[{{ key }} % 5],
+                    label: "{{ cat.name }}"
+                },
+                {% endfor %}
+            ];
 
             var ctx = document.getElementById("secondChart").getContext("2d");
-                window.myBar = new Chart(ctx).Bar(barChartData2, {
-                responsive : true
+            window.myPie = new Chart(ctx).Pie(pieChartData2, {
+                showTooltips: true,
+                responsive: true,
+                multiTooltipTemplate: "<%= value %>",
+                legendTemplate : '{{ "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%> !important\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>" }}'
             });
+
+            // Générer la légende
+            var legend = window.myPie.generateLegend();
+            $('#secondChartContener').append(legend);
         });
 
         var hash = window.location.hash.substring(1);
@@ -469,6 +511,87 @@
             }
         });
 
+        // Gestion de la sélection pour l'export
+        $(document).ready(function() {
+            // Mettre à jour le compteur de sélection
+            function updateSelectionCount() {
+                var selectedCount = $('.exportCheck:checked').length;
+                $('#selectedCount').text(selectedCount);
+                $('#exportSelectedBtn').prop('disabled', selectedCount === 0);
+            }
+
+            // Écouter les changements sur les cases à cocher
+            $(document).on('change', '.exportCheck', updateSelectionCount);
+
+            // Bouton "Tout sélectionner"
+            $('#selectAllBtn').click(function() {
+                $('.exportCheck').prop('checked', true);
+                updateSelectionCount();
+            });
+
+            // Bouton "Tout désélectionner"
+            $('#selectNoneBtn').click(function() {
+                $('.exportCheck').prop('checked', false);
+                updateSelectionCount();
+            });
+
+            // Bouton "Sélectionner acceptées"
+            $('#selectAcceptedBtn').click(function() {
+                $('.exportCheck').prop('checked', false);
+                $('.exportCheck[data-status="accepted"]').prop('checked', true);
+                updateSelectionCount();
+            });
+
+            // Bouton "Sélectionner refusées"
+            $('#selectRejectedBtn').click(function() {
+                $('.exportCheck').prop('checked', false);
+                $('.exportCheck[data-status="rejected"]').prop('checked', true);
+                updateSelectionCount();
+            });
+
+            // Export des candidatures sélectionnées
+            $('#exportSelectedBtn').click(function() {
+                var selectedIds = [];
+                $('.exportCheck:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
+
+                if (selectedIds.length === 0) {
+                    alert('Veuillez sélectionner au moins une candidature à exporter.');
+                    return;
+                }
+
+                // Créer un formulaire pour envoyer les IDs sélectionnés
+                var form = $('<form>', {
+                    'method': 'POST',
+                    'action': '{{ path("space_manager_candidatesexportzip_selected", {"id": space.id}) }}'
+                });
+
+                // Ajouter les IDs sélectionnés comme champs cachés
+                selectedIds.forEach(function(id) {
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': 'selected_applications[]',
+                        'value': id
+                    }));
+                });
+
+                // Ajouter le token CSRF
+                form.append($('<input>', {
+                    'type': 'hidden',
+                    'name': '_token',
+                    'value': '{{ csrf_token("export_selected") }}'
+                }));
+
+                // Soumettre le formulaire
+                $('body').append(form);
+                form.submit();
+                form.remove();
+            });
+
+            // Initialiser le compteur
+            updateSelectionCount();
+        });
 
     </script>
 {% endblock %}

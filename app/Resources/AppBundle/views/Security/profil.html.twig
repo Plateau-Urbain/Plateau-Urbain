@@ -14,6 +14,13 @@
             </div>
            <h6> <a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
             {# <p>Voir les <a href="{{ path('cgu') }}">Conditions générales d'utilisation</a></p> #}
+            
+            {% if next is defined and next %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"></i>
+                    <strong>Information :</strong> Veuillez compléter votre profil pour pouvoir candidater. Une fois terminé, vous serez automatiquement redirigé vers la page de candidature.
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -60,18 +67,63 @@
                         <div class="form-contener">
                             <h3>Mes informations</h3>
                             <div class="row">
-                                <div class="col-sm-6 inline-controls form-group civility-group">
-                                    {{ form_label(form.userInfo.civility) }}
-                                    {{ form_widget(form.userInfo.civility, { 'label_attr': { 'class': 'radio-inline' } }) }}
-                                    {{ form_errors(form.userInfo.civility) }}
+                                <div class="col-sm-6 inline-controls form-group civility-group{% if form.userInfo.civility.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.civility, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.civility, { 
+                                        'label_attr': { 'class': 'radio-inline' },
+                                        'attr': {
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.civility.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'civility-error'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.civility, {
+                                        'attr': {
+                                            'id': 'civility-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 form-group">
-                                    {{ form_row(form.userInfo.firstname) }}
+                                <div class="col-sm-6 form-group{% if form.userInfo.firstname.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.firstname, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.firstname, {
+                                        'attr': {
+                                            'required': 'required',
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.firstname.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'firstname-error',
+                                            'data-error-message': 'Veuillez renseigner votre prénom'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.firstname, {
+                                        'attr': {
+                                            'id': 'firstname-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
-                                <div class="col-sm-6 form-group">
-                                    {{ form_row(form.userInfo.lastname) }}
+                                <div class="col-sm-6 form-group{% if form.userInfo.lastname.vars.errors|length %} has-error{% endif %}">
+                                    {{ form_label(form.userInfo.lastname, null, {'label_attr': {'class': 'required'}}) }}
+                                    {{ form_widget(form.userInfo.lastname, {
+                                        'attr': {
+                                            'required': 'required',
+                                            'aria-required': 'true',
+                                            'aria-invalid': form.userInfo.lastname.vars.errors|length ? 'true' : 'false',
+                                            'aria-describedby': 'lastname-error',
+                                            'data-error-message': 'Veuillez renseigner votre nom'
+                                        }
+                                    }) }}
+                                    {{ form_errors(form.userInfo.lastname, {
+                                        'attr': {
+                                            'id': 'lastname-error',
+                                            'role': 'alert',
+                                            'aria-live': 'polite'
+                                        }
+                                    }) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -85,11 +137,15 @@
                             <div class="row">
                                 <div class="col-sm-12 form-group">
                                     {{ form_row(form.userInfo.email) }}
+                                    <small class="help-block text-muted">
+                                        <i class="fa fa-info-circle"></i> 
+                                        L'adresse email ne peut pas être modifiée après la création du compte. 
+                                    </small>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 form-group">
-                                    {{ form_row(form.userInfo.description) }}
+                                    {{ form_row(form.userInfo.description, {'attr': {'placeholder': 'Décrivez-vous en quelques mots (emojis non autorisés)'}}) }}
                                 </div>
                             </div>
                             <div class="row form-group form-group">
@@ -145,7 +201,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 form-group">
-                                    {{ form_row(form.companyInfo.companyDescription)}}
+                                    {{ form_row(form.companyInfo.companyDescription, {'attr': {'placeholder': 'Présentez votre structure (emojis non autorisés)'}}) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -273,7 +329,7 @@
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
                                                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
-                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{ path('profile_removedocument', { 'id': file.id, 'anchor': 'four' }) }}"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -281,10 +337,23 @@
                                             <div class="idcard-file file-infos clearfix{% if not form.idcard.vars.valid %} has-error{% endif %}">
                                                 <div class=" actions overflow ">
                                                     <label class="btn btn-accepted">
-                                                        {{ form_widget(form.idcard) }}
+                                                        {{ form_widget(form.idcard, {
+                                                            'attr': {
+                                                                'required': 'required',
+                                                                'aria-required': 'true',
+                                                                'aria-invalid': form.idcard.vars.errors|length ? 'true' : 'false',
+                                                                'aria-describedby': 'idcard-error'
+                                                            }
+                                                        }) }}
                                                     </label>
                                                 </div>
-                                                {{ form_errors(form.idcard) }}
+                                                {{ form_errors(form.idcard, {
+                                                    'attr': {
+                                                        'id': 'idcard-error',
+                                                        'role': 'alert',
+                                                        'aria-live': 'polite'
+                                                    }
+                                                }) }}
                                             </div>
                                         {% endif %}
                                     </div>
@@ -309,7 +378,7 @@
                                                     <div style="display:inline-block; width:80%">{{ file.originalname }}</div>
                                                     <div style="display:inline-block" class="pull-right">
                                                         <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}"><i class="fa fa-eye"></i></a>
-                                                        <a href="{{ path('profile_removedocument', { 'id': file.id }) }}"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{ path('profile_removedocument', { 'id': file.id, 'anchor': 'four' }) }}"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -317,10 +386,23 @@
                                             <div class="kbis-file file-infos clearfix{% if not form.kbis.vars.valid %} has-error{% endif %}">
                                                 <div class="actions overflow">
                                                     <label class="btn btn-accepted">
-                                                        {{ form_widget(form.kbis) }}
+                                                        {{ form_widget(form.kbis, {
+                                                            'attr': {
+                                                                'required': 'required',
+                                                                'aria-required': 'true',
+                                                                'aria-invalid': form.kbis.vars.errors|length ? 'true' : 'false',
+                                                                'aria-describedby': 'kbis-error'
+                                                            }
+                                                        }) }}
                                                     </label>
                                                 </div>
-                                                {{ form_errors(form.kbis) }}
+                                                {{ form_errors(form.kbis, {
+                                                    'attr': {
+                                                        'id': 'kbis-error',
+                                                        'role': 'alert',
+                                                        'aria-live': 'polite'
+                                                    }
+                                                }) }}
                                             </div>
                                         {% endif %}
 
@@ -330,7 +412,7 @@
                                                 <span>{{doc.fileName | slice(14, 100)}}</span>
                                                 <div class="pull-right actions ">
                                                     <a target="_blank" href="{{ asset(vich_uploader_asset(doc, 'file')) }}" class="btn btn-show"><i class="fa fa-eye"></i></a>
-                                                    <a href="{{ path('profile_removedocument', { 'id': doc.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                                                    <a href="{{ path('profile_removedocument', { 'id': doc.id, 'anchor': 'four' }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                                                 </div>
                                             </div>
                                         {% endfor %}
@@ -374,7 +456,7 @@
                             </div>
                                 <div class="row form-group">
                                      <div class="col-sm-12 form-group">
-                                     {{ form_row(form.projectDescription)}}
+                                     {{ form_row(form.projectDescription, {'attr': {'placeholder': 'Présentez votre projet (emojis non autorisés)'}}) }}
                                 </div>
                             </div>
                         </div>
@@ -411,11 +493,564 @@
 
 {% block javascript %}
     <script>
-        if (document.querySelector('.help-block')) {
+        // Défilement automatique seulement s'il y a des erreurs de validation visibles
+        // Ignorer les messages informatifs (text-muted) et ne garder que les erreurs réelles
+        if (document.querySelector('.form-group.has-error .help-block:not(.text-muted)')) {
             setTimeout(function() {
-                document.querySelector('.help-block').closest('.form-contener').scrollIntoView(true);
+                const firstError = document.querySelector('.form-group.has-error .help-block:not(.text-muted)');
+                if (firstError) {
+                    firstError.closest('.form-contener').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }, 500);
         }
+        
+        $(document).ready(function() {
+            console.log('=== DOCUMENT READY ===');
+            console.log('jQuery version:', $.fn.jquery);
+            
+            // Restaurer les données du formulaire si elles existent
+            const savedFormData = sessionStorage.getItem('profileFormData');
+            if (savedFormData) {
+                console.log('🔄 Restauration des données du formulaire...');
+                const formData = JSON.parse(savedFormData);
+                
+                // Restaurer chaque champ
+                Object.keys(formData).forEach(function(fieldName) {
+                    const $field = $('[name="' + fieldName + '"]');
+                    if ($field.length > 0) {
+                        const value = formData[fieldName];
+                        const type = $field.attr('type');
+                        
+                        if (type === 'checkbox' || type === 'radio') {
+                            $field.prop('checked', value);
+                        } else {
+                            $field.val(value);
+                        }
+                        console.log('✅ Champ restauré:', fieldName, '=', value);
+                    }
+                });
+                
+                // Supprimer les données sauvegardées
+                sessionStorage.removeItem('profileFormData');
+                console.log('✅ Données restaurées et nettoyées');
+            }
+            // Gestion de la navigation par anchor
+            function handleAnchorNavigation() {
+                const hash = window.location.hash;
+                if (hash) {
+                    // Retirer le # du hash
+                    const sectionId = hash.substring(1);
+                    
+                    // Vérifier s'il y a des messages de succès (après soumission du formulaire)
+                    const hasSuccessMessage = $('.alert-success').length > 0;
+                    
+                    // Si c'est après une soumission réussie, faire défiler vers le message de succès
+                    if (hasSuccessMessage) {
+                        // Faire défiler vers le message de succès en haut de page
+                        setTimeout(function() {
+                            $('html, body').animate({
+                                scrollTop: 0
+                            }, 500);
+                        }, 100);
+                        
+                        // Nettoyer l'URL pour éviter la confusion
+                        if (history.replaceState) {
+                            history.replaceState(null, null, window.location.pathname);
+                        }
+                        return;
+                    }
+                    
+                    // Trouver l'indicateur correspondant et l'activer
+                    const $indicator = $('a.indicator[href="#' + sectionId + '"]');
+                    if ($indicator.length > 0) {
+                        // Désactiver tous les indicateurs
+                        $('a.indicator').removeClass('active');
+                        // Activer l'indicateur correspondant
+                        $indicator.addClass('active');
+                        
+                        // Faire défiler vers la section
+                        setTimeout(function() {
+                            $('#' + sectionId)[0].scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                    }
+                }
+            }
+            
+            // Appeler la fonction au chargement
+            handleAnchorNavigation();
+            
+            // Fonction de validation des champs
+            function handleFieldValidation(field) {
+                const $field = $(field);
+                const formGroup = $field.closest('.form-group, .social-group, .civility-group');
+                const value = $field.val();
+                const isRequired = $field.prop('required') || $field.closest('.required').length > 0;
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (isRequired && (!value || value.trim() === '')) {
+                    // Champ requis mais vide - afficher l'erreur
+                    formGroup.removeClass('has-error').addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Ce champ est requis</span>');
+                } else if (isRequired && value && value.trim() !== '') {
+                    // Champ requis et rempli - pas d'erreur, pas de vert
+                    formGroup.removeClass('has-error');
+                } else if (!isRequired) {
+                    // Pour les champs non requis, pas de validation visuelle
+                    formGroup.removeClass('has-error');
+                }
+            }
+            
+            // Validation en temps réel sur blur et change (sauf les radio buttons)
+            $('input, select, textarea').not('input[type="radio"]').on('blur change', function() {
+                const $field = $(this);
+                
+                // Validation spéciale pour les champs texte avec emojis
+                if ($field.is('textarea[name*="description"]') || $field.is('textarea[name*="projectDescription"]')) {
+                    const formGroup = $field.closest('.form-group');
+                    const value = $field.val();
+                    const isRequired = $field.prop('required') || $field.closest('.required').length > 0;
+                    
+                    // Supprimer les anciens messages d'erreur
+                    formGroup.find('.help-block').remove();
+                    formGroup.removeClass('has-error');
+                    
+                    if (!value || value.trim() === '') {
+                        // Champ vide
+                        if (isRequired) {
+                            formGroup.append('<span class="help-block" role="alert">Ce champ est requis</span>');
+                            formGroup.addClass('has-error');
+                            $field.attr('aria-invalid', 'true');
+                        } else {
+                            $field.attr('aria-invalid', 'false');
+                        }
+                    } else {
+                        // Champ rempli - vérifier les emojis
+                        const emojiRegex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+                        const hasEmojis = emojiRegex.test(value);
+                        
+                        if (hasEmojis) {
+                            formGroup.append('<span class="help-block" role="alert">Le texte ne doit pas contenir d\'emojis</span>');
+                            formGroup.addClass('has-error');
+                            $field.attr('aria-invalid', 'true');
+                        } else {
+                            // Texte valide
+                            $field.attr('aria-invalid', 'false');
+                        }
+                    }
+                } else {
+                    // Validation standard pour les autres champs
+                    handleFieldValidation(this);
+                }
+            });
+            
+            // Validation spéciale pour les champs téléphone
+            $('input[type="tel"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Regex pour validation téléphone français et international
+                    const phoneRegex = /^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/;
+                    
+                    if (!phoneRegex.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le format du téléphone n\'est pas valide. Utilisez le format français (01 23 45 67 89) ou international (+33 1 23 45 67 89).</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    // Vérifier si c'est le téléphone personnel (obligatoire)
+                    if ($field.attr('name') && $field.attr('name').includes('phone') && !$field.attr('name').includes('company')) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le téléphone est obligatoire.</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                }
+            });
+            
+            // Validation spéciale pour le champ SIRET
+            $('input[name*="siret"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Vérifier le format SIRET avec ou sans espaces
+                    if (!/^(\d{3}\s?){4}\d{2}$/.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le SIRET doit contenir exactement 14 chiffres. Format accepté : 123 456 789 01234</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    formGroup.removeClass('has-error');
+                }
+            });
+            
+            // Validation spéciale pour le champ code postal
+            $('input[name*="zipcode"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Vérifier que c'est exactement 5 chiffres
+                    if (!/^\d{5}$/.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le code postal doit contenir exactement 5 chiffres.</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    // Champ obligatoire mais vide
+                    formGroup.addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le code postal est obligatoire.</span>');
+                }
+            });
+            
+            // Validation spéciale pour le téléphone mobile (obligatoire)
+            $('input[name*="companyMobile"]').on('blur change', function() {
+                const $field = $(this);
+                const formGroup = $field.closest('.form-group');
+                const value = $field.val().trim();
+                
+                // Supprimer les anciens messages d'erreur
+                formGroup.find('.help-block').remove();
+                
+                if (value !== '') {
+                    // Regex pour validation téléphone français et international
+                    const phoneRegex = /^(\+33\s?[1-9](\s?\d{2}){4}|0[1-9](\s?\d{2}){4})$/;
+                    
+                    if (!phoneRegex.test(value)) {
+                        formGroup.addClass('has-error');
+                        formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le format du téléphone n\'est pas valide. Utilisez le format français (06 12 34 56 78) ou international (+33 6 12 34 56 78).</span>');
+                    } else {
+                        formGroup.removeClass('has-error');
+                    }
+                } else {
+                    // Champ obligatoire mais vide
+                    formGroup.addClass('has-error');
+                    formGroup.append('<span class="help-block" role="alert" aria-live="polite">Le téléphone mobile est obligatoire.</span>');
+                }
+            });
+            
+            // Validation spéciale pour les groupes de radio (civilité)
+            $('input[name*="civility"]').on('change', function() {
+                const civilityGroup = $('.civility-group');
+                civilityGroup.find('.help-block').remove();
+                
+                if ($('input[name*="civility"]:checked').length > 0) {
+                    civilityGroup.removeClass('has-error');
+                } else {
+                    civilityGroup.addClass('has-error');
+                    civilityGroup.append('<span class="help-block" role="alert" aria-live="polite">Veuillez sélectionner votre civilité</span>');
+                }
+            });
+            
+            // Gestion spéciale pour les fichiers
+            $('.file-infos input[type="file"]').on('change', function() {
+                const fileInfo = $(this).closest('.file-infos');
+                const file = this.files[0];
+                
+                // Supprimer les anciens messages d'erreur
+                fileInfo.find('.help-block').remove();
+                
+                if (file) {
+                    // Vérifier la taille du fichier (10Mo max)
+                    if (file.size > 10 * 1024 * 1024) {
+                        fileInfo.addClass('has-error');
+                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Le fichier est trop volumineux (maximum 10Mo)</span>');
+                    } else {
+                        fileInfo.removeClass('has-error');
+                        
+                        // Mettre à jour la coche verte immédiatement après sélection d'un fichier valide
+                        updateDocumentCheckmark($(this));
+                    }
+                } else {
+                    // Si aucun fichier sélectionné et que le champ est requis
+                    if ($(this).closest('.required-files').length > 0) {
+                        fileInfo.addClass('has-error');
+                        fileInfo.append('<span class="help-block" role="alert" aria-live="polite">Ce fichier est requis</span>');
+                        
+                        // Retirer la coche verte si le fichier est supprimé
+                        removeDocumentCheckmark($(this));
+                    } else {
+                        fileInfo.removeClass('has-error');
+                    }
+                }
+            });
+            
+            // Fonction pour mettre à jour la coche verte d'un document
+            function updateDocumentCheckmark($fileInput) {
+                const fileName = $fileInput.attr('name');
+                
+                if (fileName && fileName.includes('idcard')) {
+                    // Document pièce d'identité
+                    const $checkmark = $('.idcard-file i');
+                    if ($checkmark.length > 0) {
+                        $checkmark.removeClass('fa-times').addClass('fa-check');
+                    }
+                } else if (fileName && fileName.includes('kbis')) {
+                    // Document Kbis
+                    const $checkmark = $('.kbis-file i');
+                    if ($checkmark.length > 0) {
+                        $checkmark.removeClass('fa-times').addClass('fa-check');
+                    }
+                }
+            }
+            
+            // Fonction pour retirer la coche verte d'un document
+            function removeDocumentCheckmark($fileInput) {
+                const fileName = $fileInput.attr('name');
+                
+                if (fileName && fileName.includes('idcard')) {
+                    // Document pièce d'identité
+                    const $checkmark = $('.idcard-file i');
+                    if ($checkmark.length > 0) {
+                        $checkmark.removeClass('fa-check').addClass('fa-times');
+                    }
+                } else if (fileName && fileName.includes('kbis')) {
+                    // Document Kbis
+                    const $checkmark = $('.kbis-file i');
+                    if ($checkmark.length > 0) {
+                        $checkmark.removeClass('fa-check').addClass('fa-times');
+                    }
+                }
+            }
+            
+            // Test de détection des liens de suppression
+            console.log('=== RECHERCHE DES LIENS DE SUPPRESSION ===');
+            const $deleteLinks = $('a[href*="profile_removedocument"]');
+            console.log('Nombre de liens trouvés:', $deleteLinks.length);
+            $deleteLinks.each(function(index) {
+                console.log('Lien', index + 1, ':', $(this).attr('href'));
+            });
+            
+            // Test de détection des sections de documents
+            console.log('=== RECHERCHE DES SECTIONS DOCUMENTS ===');
+            console.log('Section idcard-file:', $('.idcard-file').length);
+            console.log('Section kbis-file:', $('.kbis-file').length);
+            console.log('Tous les liens avec fa-trash:', $('a i.fa-trash').length);
+            
+            // Test de tous les liens
+            console.log('=== TOUS LES LIENS DE LA PAGE ===');
+            $('a').each(function(index) {
+                const href = $(this).attr('href');
+                if (href && (href.includes('delete') || href.includes('remove'))) {
+                    console.log('Lien de suppression potentiel:', href);
+                }
+            });
+            
+            // Gestionnaire pour TOUS les liens (test)
+            $(document).on('click', 'a', function(e) {
+                const href = $(this).attr('href');
+                const $link = $(this);
+                
+                // Vérifier si c'est un lien de suppression (par URL ou par icône)
+                const isDeleteLink = (href && href.includes('profile_removedocument')) || 
+                                   $link.find('i.fa-trash').length > 0;
+                
+                if (isDeleteLink) {
+                    console.log('=== LIEN DE SUPPRESSION DÉTECTÉ ===');
+                    console.log('URL:', href);
+                    
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('✅ Rechargement empêché');
+                    
+                    // Confirmation de suppression
+                    if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+                        return false;
+                    }
+                    
+                    // Sauvegarder les données du formulaire
+                    console.log('💾 Sauvegarde des données du formulaire...');
+                    const formData = new FormData($('form')[0]);
+                    const savedData = {};
+                    
+                    // Sauvegarder tous les champs de saisie
+                    $('input, select, textarea').each(function() {
+                        const $field = $(this);
+                        const name = $field.attr('name');
+                        const type = $field.attr('type');
+                        
+                        if (name && type !== 'file' && type !== 'submit' && type !== 'button') {
+                            if (type === 'checkbox' || type === 'radio') {
+                                savedData[name] = $field.is(':checked');
+                            } else {
+                                savedData[name] = $field.val();
+                            }
+                        }
+                    });
+                    
+                    console.log('✅ Données sauvegardées:', Object.keys(savedData).length, 'champs');
+                    
+                    const $link = $(this);
+                    const $parentLi = $(this).closest('li');
+                    const $parentDiv = $(this).closest('.file-infos');
+                    
+                    console.log('Parent li trouvé:', $parentLi.length);
+                    console.log('Parent div trouvé:', $parentDiv.length);
+                    
+                    // Désactiver le lien pendant la requête
+                    $link.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+                    
+                    // Suppression en AJAX
+                    $.ajax({
+                        url: href,
+                        type: 'GET',
+                        success: function(response) {
+                            console.log('✅ Document supprimé avec succès');
+                            
+                            // Stocker les données dans sessionStorage pour les restaurer après rechargement
+                            sessionStorage.setItem('profileFormData', JSON.stringify(savedData));
+                            console.log('💾 Données stockées dans sessionStorage');
+                            
+                            // Recharger la page pour afficher les champs d'upload
+                            console.log('🔄 Rechargement de la page...');
+                            window.location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('❌ Erreur lors de la suppression:', error);
+                            // Réactiver le lien en cas d'erreur
+                            $link.prop('disabled', false).html('<i class="fa fa-trash"></i>');
+                            
+                            // Afficher un message d'erreur
+                            alert('Erreur lors de la suppression du document. Veuillez réessayer.');
+                        }
+                    });
+                    
+                    return false;
+                }
+            });
+            
+            // Ancien gestionnaire (commenté pour test)
+            /*
+            $(document).on('click', 'a[href*="profile_removedocument"]', function(e) {
+                console.log('=== CLIC SUR SUPPRESSION DOCUMENT ===');
+                e.preventDefault(); // Empêcher le rechargement de la page
+                e.stopPropagation(); // Empêcher la propagation
+                console.log('✅ Rechargement empêché');
+                
+                const href = $(this).attr('href');
+                console.log('URL:', href);
+                const $link = $(this);
+                const $parentLi = $(this).closest('li');
+                
+                // Confirmation de suppression
+                if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
+                    return false;
+                }
+                
+                // Désactiver le lien pendant la requête
+                $link.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>');
+                
+                // Suppression en AJAX
+                $.ajax({
+                    url: href,
+                    type: 'GET',
+                    success: function(response) {
+                        console.log('✅ Document supprimé avec succès');
+                        
+                        // Supprimer l'élément du DOM
+                        $parentLi.fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        // Mettre à jour les coches
+                        if ($parentLi.hasClass('idcard-file')) {
+                            const $checkmark = $('.idcard-file i');
+                            if ($checkmark.length > 0) {
+                                $checkmark.removeClass('fa-check').addClass('fa-times');
+                            }
+                        } else if ($parentLi.hasClass('kbis-file')) {
+                            const $checkmark = $('.kbis-file i');
+                            if ($checkmark.length > 0) {
+                                $checkmark.removeClass('fa-check').addClass('fa-times');
+                            }
+                        }
+                        
+                        // Afficher un message de succès
+                        const $successMessage = $('<div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 10px;">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button>' +
+                            '<i class="fa fa-check"></i> Document supprimé avec succès.' +
+                            '</div>');
+                        
+                        // Insérer le message après le titre de la section
+                        $parentLi.closest('.form-contener').find('h3').first().after($successMessage);
+                        
+                        // Supprimer le message après 3 secondes
+                        setTimeout(function() {
+                            $successMessage.fadeOut(300, function() {
+                                $(this).remove();
+                            });
+                        }, 3000);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('❌ Erreur lors de la suppression:', error);
+                        // Réactiver le lien en cas d'erreur
+                        $link.prop('disabled', false).html('<i class="fa fa-trash"></i>');
+                        
+                        // Afficher un message d'erreur
+                        alert('Erreur lors de la suppression du document. Veuillez réessayer.');
+                    }
+                });
+                
+                return false; // Empêcher le comportement par défaut
+            });
+            */
+            
+            // Validation à la soumission du formulaire
+            $('form').on('submit', function(e) {
+                // La validation côté serveur Symfony s'occupe de la validation réelle
+                // On ne bloque plus la soumission côté client pour éviter les problèmes de session
+                
+                // Ajouter un flag pour indiquer qu'une soumission est en cours
+                $(this).data('submitting', true);
+                
+                return true;
+            });
+            
+            // Gestion après soumission du formulaire
+            $(window).on('load', function() {
+                // Vérifier s'il y a des messages de succès (après soumission)
+                const hasSuccessMessage = $('.alert-success').length > 0;
+                const wasSubmitting = $('form').data('submitting');
+                
+                if (hasSuccessMessage && wasSubmitting) {
+                    // Faire défiler vers le message de succès en haut de page
+                    setTimeout(function() {
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 500);
+                    }, 100);
+                    
+                    // Nettoyer le flag
+                    $('form').removeData('submitting');
+                }
+            });
+            
+            // Nettoyer tous les styles de validation au chargement
+            $('.form-group, .social-group, .civility-group').removeClass('has-error');
+
+            // Ne pas initialiser automatiquement la validation au chargement
+            // La validation se fera seulement lors de l'interaction utilisateur
+        });
     </script>
     
     
@@ -426,4 +1061,114 @@
 
     {# Thomas BERNARD datepicker supprime
     #}
+    
+    <style>
+        /* Styles de validation pour la page profil */
+        .form-group.has-error .help-block {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+            padding: 5px 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 3px solid #dc3545;
+            border-radius: 3px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .form-group.has-error .form-control {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        
+        .form-group.has-error .form-control {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        /* Styles spécifiques pour les champs select */
+        select.form-control {
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-group.has-error select.form-control {
+            border: 2px solid #dc3545;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+            padding-right: calc(1.5em + 0.75rem);
+        }
+        
+        /* Styles pour les groupes de radio */
+        .civility-group.has-error .radio-inline {
+            color: #dc3545;
+        }
+        
+        /* Styles pour les fichiers */
+        .file-infos.has-error {
+            border: 2px solid #dc3545;
+            border-radius: 4px;
+            padding: 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            margin-bottom: 10px;
+            min-height: 60px;
+        }
+        
+        .file-infos .help-block {
+            margin-top: 8px;
+            margin-bottom: 0;
+            color: #dc3545;
+            font-size: 0.9em;
+            padding: 5px 8px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 3px solid #dc3545;
+            border-radius: 3px;
+        }
+        
+        /* Animation pour les messages d'erreur */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Styles pour les groupes sociaux */
+        .social-group.has-error .form-control {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+        
+        /* Style pour le champ email en lecture seule */
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        /* Animation pour les coches de documents */
+        .idcard-file i, .kbis-file i {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .idcard-file i.fa-check, .kbis-file i.fa-check {
+            color: #28a745;
+        }
+        
+        .idcard-file i.fa-times, .kbis-file i.fa-times {
+            color: #dc3545;
+        }
+    </style>
 {% endblock %}

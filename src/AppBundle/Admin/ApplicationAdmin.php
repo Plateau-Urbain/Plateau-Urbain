@@ -7,6 +7,8 @@ use AppBundle\Entity\ApplicationFile;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use AppBundle\Entity\Application;
 
 class ApplicationAdmin extends AbstractAdmin
@@ -19,6 +21,16 @@ class ApplicationAdmin extends AbstractAdmin
         '_sort_order' => 'desc',
         '_sort_by' => 'created',
     );
+
+    /**
+     * Configure les routes personnalisées
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('select_export_fields', 'select-export-fields');
+        $collection->add('custom_export', 'custom-export');
+        $collection->add('help_filters', 'help-filters-export');
+    }
 
     // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
@@ -60,9 +72,60 @@ class ApplicationAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
-            ->add('projectHolder')
-            ->add('space')
+            ->add('name', null, array('label' => 'Nom du projet'))
+            ->add('status', null, array('label' => 'Statut'), 'choice', array(
+                'choices' => Application::getStatusLabels()
+            ))
+            ->add('selected', null, array('label' => 'Sélectionné'))
+            ->add('category', null, array('label' => 'Catégorie'))
+            ->add('projectHolder', null, array('label' => 'Porteur de projet'))
+            ->add('space', null, array('label' => 'Espace'))
+            ->add('created', 'doctrine_orm_date_range', array('label' => 'Date de création'))
+            ->add('startOccupation', 'doctrine_orm_date_range', array('label' => 'Date d\'entrée souhaitée'))
+            ->add('wishedSize', null, array('label' => 'Surface souhaitée (m²)'))
+            ->add('openToGlobalProject', null, array('label' => 'Ouvert au projet collectif'))
+        ;
+    }
+    
+    // Fields to be shown on show page
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->with('Informations générales', array('class' => 'col-md-6'))
+                ->add('id', null, array('label' => 'ID'))
+                ->add('name', null, array('label' => 'Nom du projet'))
+                ->add('status', 'choice', array(
+                    'label' => 'Statut',
+                    'choices' => Application::getStatusLabels(),
+                    'catalogue' => 'messages',
+                    'template' => 'AppBundle:Admin:show_status.html.twig'
+                ))
+                ->add('selected', null, array('label' => 'Sélectionné'))
+                ->add('space', null, array('label' => 'Espace'))
+                ->add('category', null, array('label' => 'Catégorie'))
+                ->add('created', 'datetime', array('label' => 'Date de création', 'format' => 'd/m/Y à H:i'))
+                ->add('updated', 'datetime', array('label' => 'Date de mise à jour', 'format' => 'd/m/Y à H:i'))
+            ->end()
+            ->with('Porteur de projet', array('class' => 'col-md-6'))
+                ->add('projectHolder.fullName', null, array('label' => 'Nom complet'))
+                ->add('projectHolder.email', null, array('label' => 'Email'))
+                ->add('projectHolder.company', null, array('label' => 'Structure'))
+                ->add('projectHolder.companyPhone', null, array('label' => 'Téléphone'))
+            ->end()
+            ->with('Description du projet', array('class' => 'col-md-12'))
+                ->add('description', 'text', array('label' => 'Description'))
+                ->add('contribution', 'text', array('label' => 'Contribution au projet du propriétaire'))
+                ->add('openToGlobalProject', null, array('label' => 'Ouvert au projet collectif'))
+                ->add('devenirSocietaire', null, array('label' => 'Souhaite devenir sociétaire'))
+            ->end()
+            ->with('Informations sur l\'occupation', array('class' => 'col-md-6'))
+                ->add('wishedSize', null, array('label' => 'Surface souhaitée (m²)'))
+                ->add('fullLengthOccupation', null, array('label' => 'Durée d\'occupation'))
+                ->add('startOccupation', 'date', array('label' => 'Date d\'entrée souhaitée', 'format' => 'd/m/Y'))
+            ->end()
+            ->with('Documents', array('class' => 'col-md-6'))
+                ->add('files', null, array('label' => 'Fichiers joints', 'template' => 'AppBundle:Admin:show_files.html.twig'))
+            ->end()
         ;
     }
 
@@ -70,9 +133,73 @@ class ApplicationAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->addIdentifier('space')
+            ->addIdentifier('name', null, array('label' => 'Nom du projet'))
+            ->add('space', null, array('label' => 'Espace'))
+            ->add('status', 'choice', array(
+                'label' => 'Statut',
+                'choices' => Application::getStatusLabels(),
+                'catalogue' => 'messages',
+                'template' => 'AppBundle:Admin:list_status.html.twig'
+            ))
+            ->add('category', null, array('label' => 'Catégorie'))
+            ->add('projectHolder', null, array('label' => 'Porteur de projet'))
+            ->add('created', 'datetime', array('label' => 'Date de création', 'format' => 'd/m/Y H:i'))
+            ->add('_action', 'actions', array(
+                'label' => 'Actions',
+                'actions' => array(
+                    'show' => array(),
+                    'edit' => array(),
+                    'delete' => array(),
+                )
+            ))
         ;
+    }
+    
+    /**
+     * Configuration des actions batch
+     */
+    protected function configureBatchActions($actions)
+    {
+        // Conserver l'action de suppression par défaut
+        if (isset($actions['delete'])) {
+            $actions['delete'] = $actions['delete'];
+        }
+        
+        return $actions;
+    }
+    
+    /**
+     * Configure les actions disponibles sur la liste
+     */
+    public function configureActionButtons($action, $object = null)
+    {
+        $list = parent::configureActionButtons($action, $object);
+        
+        if ($action === 'list') {
+            $list['export_custom'] = array(
+                'template' => 'AppBundle:Admin:button_export_custom.html.twig',
+            );
+        }
+        
+        return $list;
+    }
+    
+    /**
+     * Définit les actions disponibles dans la vue liste
+     */
+    public function getDashboardActions()
+    {
+        $actions = parent::getDashboardActions();
+        
+        // Ajouter le bouton d'export personnalisé
+        $actions['custom_export'] = array(
+            'label'              => 'Export personnalisé',
+            'translation_domain' => 'SonataAdminBundle',
+            'url'                => $this->generateUrl('select_export_fields'),
+            'icon'               => 'download',
+        );
+        
+        return $actions;
     }
 
     public function getNewInstance()

@@ -50,9 +50,9 @@
        <h6><a href="{{ path('search_index') }}" class="red"><span class="sub-arrow"><i class="fa fa-square"></i></span>Tous les appels à candidatures</a></h6>
     <div class="content ">
       <h6>en bref</h6>
-      <p class="pu-label">Commune: {{ space.city }} ({{ space.zipCode|slice(0,2)}})</p>
-      <p class="pu-label">Type de locaux: {{ space.type }}</p>
-       <p class="pu-label">Bailleur: {% if space.owner %}
+      <p class="pu-label">Commune&nbsp;: {{ space.city }} ({{ space.zipCode|slice(0,2)}})</p>
+      <p class="pu-label">Type de locaux&nbsp;: {{ space.type }}</p>
+       <p class="pu-label">Bailleur&nbsp;: {% if space.owner %}
         {% if space.owner.website %}
           <a href="{{ space.owner.website }}" target="_blank">{{ space.owner.company }}</a>
         {% else %}
@@ -64,19 +64,24 @@
       </p>
 
     <div class="pu-price-zone ">
-    <p class="pu-label">Prix: </sup>
-            À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
-            <br />Soit {{ space.price }} € / m<sup>2</sup> / mois</p>
+    <p class="pu-label">Prix&nbsp;: </sup>
+            {% if space.priceText %}
+                {{ space.priceText }}
+            {% else %}
+                À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                <br />Soit {{ space.price }} € / m<sup>2</sup> / mois
+            {% endif %}
+            </p>
     
       {#   <dl class="dl-horizontal">
   
           <dd>
             <span class="pu-title"><strong>{{ space.parcels | length }}</strong> espaces</span>
-            De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup>
+            De {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
             <a href="#parcels">Voir la répartition des espaces</a>
           </dd>
         </dl> #} 
-            <p class="pu-label">Disponibilité: {{ space.availability }}</p>
+            <p class="pu-label">Disponibilité&nbsp;: {{ space.availability }}</p>
      
     </div>
 </div>
@@ -85,7 +90,7 @@
     <div class="pu-apply-zone">
       <p class="center">Date limite de candidature</p>
       <h5 class="center apply-date-show">
-        {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h
+        {{ space.limitAvailability|localizeddate('long', 'none') }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
       </h5>
       <p class="center">
         {% if not space.isEnabled() %}
@@ -98,9 +103,28 @@
             <span>{{ 'Voir votre candidature !'}}</span>
           </a>
         {% elseif not is_granted('ROLE_OWNER') or not app.user.isProprio() %}
-          <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-line-19">
-            <span>{{ 'Je candidate'}}</span>
-          </a>
+          {% if not app.user %}
+            <div class="auth-buttons">
+              <a href="{{ path('fos_user_security_login', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Se connecter</span>
+              </a>
+              <a href="{{ path('fos_user_registration_register', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Créer un compte</span>
+              </a>
+            </div>
+            <p class="center" style="margin-top:8px">Vous devez avoir un compte pour candidater.</p>
+          {% else %}
+            {% if not app.user.isProfileComplete() %}
+              <a href="{{ path('security_profil', {'next': path('space_apply', {'space': space.id})}) }}" class="btn btn-line-19">
+                <span>Veuillez compléter votre profil</span>
+              </a>
+              <p class="center" style="margin-top:8px">Votre profil doit être complet pour candidater.</p>
+            {% else %}
+              <a href="{{ path('space_apply', { 'space': space.id }) }}" class="btn btn-line-19">
+                <span>{{ 'Je candidate'}}</span>
+              </a>
+            {% endif %}
+          {% endif %}
         {% endif %}
       </p>
       {% if application is defined and application is not null and not application.isDraft %}
@@ -161,6 +185,20 @@
     <div class="pu-col-container content-block">
       <p>{{ space.activityDescription | raw }}</p>
     </div>
+
+    {% if space.visits | length %}
+    <h4>
+      Dates et horaires des visites prévues
+    </h4>
+    <div class="pu-col-container content-block">
+      <p>Si vous êtes sélectionnés, nous vous convoquerons à l'une de ces visites :</p>
+      <ul class="property-amenities-list">
+        {% for v in space.visits %}
+          <li><i class="fa fa-calendar" aria-hidden="true" style="margin-right:8px;"></i> {{ v.visitDate|date('d/m/Y') }} de {{ v.startTime|date('H:i') }} à {{ v.endTime|date('H:i') }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
  
   <h4>
       {{ 'Documents ressources' }}
@@ -174,30 +212,28 @@
                 <p>
                     {% set file = space.getDocs('document_aac') %}
                     {% if file | length %}
-                        <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}">
+                        <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}" target="_blank">
                     {% else %}
                         <a class="red" href="#">
                     {% endif %}
-                        Télécharger l'appel à candidature
+                        Télécharger l'appel à candidatures
                     </a>
                 </p>
             </div>
           </div>
+          {% set filePlan = space.getDocs('document_plan') %}
+          {% if filePlan | length %}
           <div class="col-xs-12 col-md-6 grey">
            <div class="fd"><span class="pdf-repartition"></span></div>
            <div class="lien-pdf red">
                <p>
-                   {% set file = space.getDocs('document_plan') %}
-                   {% if file | length %}
-                       <a class="red" href="{{ asset(vich_uploader_asset(file[0], 'file')) }}">
-                   {% else %}
-                       <a class="red" href="#">
-                   {%endif %}
+                   <a class="red" href="{{ asset(vich_uploader_asset(filePlan[0], 'file')) }}" target="_blank">
                        Répartition des espaces
                    </a>
                </p>
            </div>
         </div>
+          {% endif %}
     
      </div>
     </div>
@@ -309,4 +345,16 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        .auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .auth-buttons .btn {
+            width: 100%;
+            max-width: 200px;
+        }
+    </style>
 {% endblock %}

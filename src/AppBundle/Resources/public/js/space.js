@@ -11,9 +11,19 @@ $(document).ready(function() {
         $("#js-form-space").replaceWith($(data).find('#js-form-space'));
         initFormListener();
         initLinkListener();
+        initFileValidation();
         //$("input[data-provide='datepicker']").datepicker({'format' : 'dd/mm/yyyy', 'language': 'fr'});
         $("select").attr("data-placeholder", "Sélectionnez une option");
         $("select").chosen();
+        
+        // Réinitialiser l'éditeur Trumbowyg après mise à jour AJAX
+        $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
+        $('textarea').trumbowyg({
+            lang: 'fr',
+            resetCss: true,
+            removeformatPasted: true,
+            autogrow: true
+        });
 
         if (saving && $("#js-form-space .has-error").length < 1) {
             $.colorbox({html:$('#saveBox').html().replace('%%savemsg%%', saving)});
@@ -56,6 +66,34 @@ $(document).ready(function() {
                 return false
             }
 
+            // Validation de la taille des fichiers
+            var maxSize = 600 * 1024; // 600 Ko en bytes
+            var fileInputs = $('input[type="file"]');
+            var hasError = false;
+            var errorMessage = '';
+            var errorDiv = $('#file-validation-errors');
+            var errorSpan = $('#file-error-message');
+            
+            // Masquer les erreurs précédentes
+            errorDiv.hide();
+            
+            fileInputs.each(function() {
+                var files = this.files;
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].size > maxSize) {
+                        errorMessage += 'Le fichier "' + files[i].name + '" est trop volumineux (' + Math.round(files[i].size / 1024) + ' Ko). Taille maximale autorisée : 600 Ko.';
+                        hasError = true;
+                    }
+                }
+            });
+            
+            if (hasError) {
+                errorSpan.text(errorMessage);
+                errorDiv.show();
+                e.preventDefault();
+                return false;
+            }
+
             var saving = false;
 
             if ($(this).hasClass('js-publish')) {
@@ -96,6 +134,43 @@ $(document).ready(function() {
         });
     }
 
+    // Validation en temps réel lors de la sélection des fichiers
+    function initFileValidation() {
+        $('input[type="file"]').on('change', function() {
+            var maxSize = 600 * 1024; // 600 Ko en bytes
+            var files = this.files;
+            var errorMessage = '';
+            var errorDiv = $('#file-validation-errors');
+            var errorSpan = $('#file-error-message');
+            
+            // Masquer les erreurs précédentes
+            errorDiv.hide();
+            
+            for (var i = 0; i < files.length; i++) {
+                if (files[i].size > maxSize) {
+                    errorMessage += 'Le fichier "' + files[i].name + '" est trop volumineux (' + Math.round(files[i].size / 1024) + ' Ko). Taille maximale autorisée : 600 Ko.';
+                }
+            }
+            
+            if (errorMessage) {
+                errorSpan.text(errorMessage);
+                errorDiv.show();
+                // Vider le champ de fichier
+                $(this).val('');
+            }
+        });
+    }
+
     initFormListener();
     initLinkListener();
+    initFileValidation();
+    
+    // Initialiser l'éditeur Trumbowyg au chargement de la page
+    $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg";
+    $('textarea').trumbowyg({
+        lang: 'fr',
+        resetCss: true,
+        removeformatPasted: true,
+        autogrow: true
+    });
 });

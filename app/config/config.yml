@@ -239,6 +239,10 @@ stof_doctrine_extensions:
             sortable: true
 
 gregwar_captcha:
-    length: 8
-    quality: 60
-    width: 150
+    length: 6
+    quality: 80
+    width: 200
+    height: 60
+    distortion: true
+    max_front_lines: 2
+    max_behind_lines: 1

@@ -25,6 +25,16 @@
             <p>L'espace a été enregistré.</p>
         </div>
     </div>
+
+    <script>
+        $.trumbowyg.svgPath = "/public/images/icons-trumbowyg.svg"
+        $('textarea').trumbowyg({
+            lang: 'fr',
+            resetCss: true,
+            removeformatPasted: true,
+            autogrow: true
+        });
+    </script>
 {% endblock %}
 
 

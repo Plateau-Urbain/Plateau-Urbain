@@ -69,6 +69,11 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, Request $request)
     {
+        error_log('=== DEBUG APPLY ACTION APPELÉE ===');
+        error_log('Espace ID: ' . $space->getId());
+        error_log('Méthode HTTP: ' . $request->getMethod());
+        error_log('URL: ' . $request->getUri());
+        
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
         $userManager = $this->get('fos_user.user_manager');
@@ -77,13 +82,22 @@ class SpaceController extends Controller
         // Si l'utilisateur est connecté
         if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $user = $this->getUser();
+            
+            // Vérifier si le profil est complet pour les utilisateurs connectés
+            if (!$user->isProfileComplete()) {
+                $this->addFlash('warning', 'Veuillez compléter votre profil avant de pouvoir candidater.');
+                return $this->redirect($this->generateUrl('security_profil', [
+                    'next' => $this->generateUrl('space_apply', ['space' => $space->getId()])
+                ]));
+            }
         } else {
             $user = $userManager->createUser();
             $user->setEnabled(true);
             $connect_after_application = true;
         }
 
-        if (! $space->isEnabled() || $space->isClosed()) {
+        // Permettre l'accès même si l'espace est dépublié, mais pas s'il est fermé définitivement
+        if ($space->isClosed()) {
             return $this->redirect($this->generateUrl('search_index'));
         }
 
@@ -97,11 +111,28 @@ class SpaceController extends Controller
         ]);
 
         if (! $application instanceof Application) {
+            // Créer une nouvelle candidature avec les données du profil utilisateur
             $application = Application::createFromUser($user);
             $application->setSpace($space);
+            
+            // Si l'utilisateur est nouveau (pas connecté), le persister d'abord
+            if ($user->getId() === null) {
+                $userManager->updateUser($user);
+                $userManager->updatePassword($user);
+            }
+            
+            // Persister immédiatement la candidature pour qu'elle apparaisse dans "Mes candidatures"
+            $em->persist($application);
+            $em->flush();
         } elseif ($application->getStatus() === Application::UNREAD_STATUS) {
             // Pour l'instant on empeche les gens de refaire une candidature
             return $this->redirectToRoute('my_application_show', ['id' => $application->getId()]);
+        }
+        
+        // Si la candidature existe déjà, s'assurer qu'elle a les données du profil utilisateur à jour
+        // mais seulement pour les champs qui ne sont pas déjà remplis
+        if ($application->getId() !== null) {
+            $this->updateApplicationFromUserProfile($application, $user);
         }
 
         $form = $this->createForm(ApplicationType::class, $application, [
@@ -109,7 +140,48 @@ class SpaceController extends Controller
             'user' => $user
         ]);
 
+        // Debug: vérifier si le champ save existe
+        if (!$form->has('save')) {
+            // Ajouter le champ save manuellement si il n'existe pas
+            $form->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', array(
+                'label' => 'Enregistrer en brouillon',
+                'attr' => array('class' => 'btn btn-default-color submit_form')
+            ));
+        }
+
         $form->handleRequest($request);
+
+        // Debug: vérifier l'état du formulaire
+        if ($form->isSubmitted()) {
+            error_log('=== DEBUG FORMULAIRE SOUMIS ===');
+            error_log('Formulaire soumis: ' . ($form->isSubmitted() ? 'OUI' : 'NON'));
+            error_log('Formulaire valide: ' . ($form->isValid() ? 'OUI' : 'NON'));
+            error_log('Bouton submit cliqué: ' . ($form->get('submit')->isClicked() ? 'OUI' : 'NON'));
+            error_log('Bouton save cliqué: ' . ($form->get('save')->isClicked() ? 'OUI' : 'NON'));
+            
+            // Debug des erreurs de validation
+            if (!$form->isValid()) {
+                error_log('=== ERREURS DE VALIDATION ===');
+                foreach ($form->getErrors(true) as $error) {
+                    error_log('Erreur: ' . $error->getMessage() . ' (champ: ' . $error->getOrigin()->getName() . ')');
+                }
+                
+                // Debug spécifique pour les champs de documents
+                error_log('=== DEBUG CHAMPS DOCUMENTS ===');
+                foreach ($application->getSpace()->getDocuments() as $field) {
+                    $fieldName = 'document_' . $field->getId();
+                    if ($form->has($fieldName)) {
+                        $documentField = $form->get($fieldName);
+                        error_log('Champ ' . $fieldName . ' - Erreurs: ' . count($documentField->getErrors()));
+                        foreach ($documentField->getErrors() as $docError) {
+                            error_log('  - Erreur document: ' . $docError->getMessage());
+                        }
+                    }
+                }
+            }
+            
+            error_log('Données POST: ' . print_r($request->request->all(), true));
+        }
 
         // On vérifie qu'un compte n'existe pas avec la même adresse email
         if ($form->isSubmitted() && $user->getId() === null) {
@@ -124,22 +196,59 @@ class SpaceController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            // Vérifier l'état de l'espace seulement pour la soumission définitive
+            if ($form->get('submit')->isClicked() && (!$space->isEnabled() || $space->isClosed())) {
+                if ($space->isClosed()) {
+                    // Espace fermé définitivement
+                    $this->addFlash('error', 'Cet espace a été fermé définitivement. Votre candidature ne peut pas être soumise.');
+                    return $this->redirectToRoute('space_show', ['id' => $space->getId()]);
+                } else {
+                    // Espace temporairement suspendu - forcer l'enregistrement en brouillon
+                    $this->addFlash('warning', 'Cet espace a été temporairement suspendu pour modification. Votre candidature a été sauvegardée en brouillon. Vous pourrez la compléter et la soumettre une fois l\'espace republié.');
+                    $application->setStatus(Application::DRAFT_STATUS);
+                    
+                    // S'assurer que l'utilisateur est persisté avant l'application
+                    if ($user->getId() === null) {
+                        $userManager->updateUser($user);
+                        $userManager->updatePassword($user);
+                    } else {
+                        $userManager->updateUser($user);
+                    }
+                    
+                    $em->persist($application);
+                    $em->persist($user);
+                    $em->flush();
+                    
+                    return $this->redirectToRoute('my_applications_list');
+                }
+            }
+            
             if ($form->get('submit')->isClicked()) {
+                error_log('✅ Statut défini: UNREAD_STATUS (soumission)');
                 $application->setStatus(Application::UNREAD_STATUS);
+            } elseif ($form->get('save')->isClicked()) {
+                error_log('✅ Statut défini: DRAFT_STATUS (brouillon)');
+                $application->setStatus(Application::DRAFT_STATUS);
+            } else {
+                error_log('❌ Aucun bouton détecté comme cliqué');
             }
 
-            $userManager->updateUser($user);
-
+            // S'assurer que l'utilisateur est persisté avant l'application
             if ($user->getId() === null) {
+                $userManager->updateUser($user);
                 $userManager->updatePassword($user);
+            } else {
+                $userManager->updateUser($user);
             }
 
             $em->persist($application);
             $em->persist($user);
             $em->flush();
 
-	    $message = (new \Swift_Message())
-            	    ->setSubject('Confirmation de candidature')
+            try {
+                $message = (new \Swift_Message())
+                    ->setSubject('Confirmation de candidature')
                     ->setFrom($this->container->getParameter('mail_confirmation_from'))
                     ->setTo($application->getProjectHolder()->getEmail())
                     ->setBody(
@@ -153,6 +262,11 @@ class SpaceController extends Controller
                     );
 
                 $this->get('mailer')->send($message);
+                error_log('✅ Email de confirmation envoyé avec succès');
+            } catch (\Exception $e) {
+                error_log('❌ Erreur lors de l\'envoi de l\'email: ' . $e->getMessage());
+                // Ne pas faire échouer la candidature pour un problème d'email
+            }
 
 
 
@@ -165,14 +279,22 @@ class SpaceController extends Controller
                 $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
             }
 
-            if($application->getStatus() == Application::DRAFT_STATUS){
-                return $this->redirectToRoute('space_show', [
-                    'id' => $space->getId().'#espace_sauvegarde'
-                ]);
-            } else {
-                return $this->redirectToRoute('my_application_show', [
-                    'id' => $application->getId()
-                ]);
+            try {
+                if($application->getStatus() == Application::DRAFT_STATUS){
+                    error_log('✅ Redirection vers space_show pour brouillon');
+                    return $this->redirectToRoute('space_show', [
+                        'id' => $space->getId().'#espace_sauvegarde'
+                    ]);
+                } else {
+                    error_log('✅ Redirection vers my_application_show pour soumission');
+                    return $this->redirectToRoute('my_application_show', [
+                        'id' => $application->getId()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                error_log('❌ Erreur lors de la redirection: ' . $e->getMessage());
+                // Redirection de fallback vers la liste des candidatures
+                return $this->redirectToRoute('my_applications_list');
             }
         }
 
@@ -181,6 +303,30 @@ class SpaceController extends Controller
             'space' => $space,
             'form' => $form->createView(),
         ];
+    }
+    
+    /**
+     * Met à jour une candidature avec les données du profil utilisateur
+     * mais seulement pour les champs qui ne sont pas déjà remplis
+     */
+    private function updateApplicationFromUserProfile($application, $user)
+    {
+        // Mettre à jour seulement les champs vides avec les données du profil
+        if (empty($application->getDescription()) && !empty($user->getProjectDescription())) {
+            $application->setDescription($user->getProjectDescription());
+        }
+        
+        if (empty($application->getLengthOccupation()) && !empty($user->getUsageDuration())) {
+            $application->setLengthOccupation($user->getUsageDuration());
+        }
+        
+        if (empty($application->getLengthTypeOccupation()) && !empty($user->getLengthTypeOccupation())) {
+            $application->setLengthTypeOccupation($user->getLengthTypeOccupation());
+        }
+        
+        if (empty($application->getWishedSize()) && !empty($user->getWishedSize())) {
+            $application->setWishedSize($user->getWishedSize());
+        }
     }
 
     /**
@@ -215,4 +361,23 @@ class SpaceController extends Controller
     {
         return array();
     }
+
+    /**
+     * Vérifier l'état d'un espace (pour AJAX)
+     * 
+     * @Route("/check-status/{id}", name="space_check_status")
+     */
+    public function checkStatusAction(Space $space)
+    {
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse([
+            'enabled' => $space->isEnabled(),
+            'closed' => $space->isClosed(),
+            'submitted' => $space->isSubmitted(),
+            'available' => $space->isEnabled() && !$space->isClosed(),
+            'isDepublished' => !$space->isEnabled() && !$space->isClosed()
+        ]);
+
+        return $response;
+    }
 }
+

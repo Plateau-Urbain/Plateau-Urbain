@@ -25,11 +25,20 @@ class Parcel
     /**
      * @var int
      *
-     * @ORM\Column(name="surface", type="integer")
+     * @ORM\Column(name="min_surface", type="integer")
      * @Assert\NotBlank()
      * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"draft", "save"})
      */
-    private $surface;
+    private $minSurface;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="max_surface", type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"draft", "save"})
+     */
+    private $maxSurface;
 
     /**
      * @var \DateTime
@@ -69,27 +78,51 @@ class Parcel
     }
 
     /**
-     * Set surface.
+     * Set minSurface.
      *
-     * @param int $surface
+     * @param int $minSurface
      *
      * @return Parcel
      */
-    public function setSurface($surface)
+    public function setMinSurface($minSurface)
     {
-        $this->surface = $surface;
+        $this->minSurface = $minSurface;
 
         return $this;
     }
 
     /**
-     * Get surface.
+     * Get minSurface.
      *
      * @return int
      */
-    public function getSurface()
+    public function getMinSurface()
     {
-        return $this->surface;
+        return $this->minSurface;
+    }
+
+    /**
+     * Set maxSurface.
+     *
+     * @param int $maxSurface
+     *
+     * @return Parcel
+     */
+    public function setMaxSurface($maxSurface)
+    {
+        $this->maxSurface = $maxSurface;
+
+        return $this;
+    }
+
+    /**
+     * Get maxSurface.
+     *
+     * @return int
+     */
+    public function getMaxSurface()
+    {
+        return $this->maxSurface;
     }
 
     /**
@@ -156,7 +189,7 @@ class Parcel
 
     public function __toString()
     {
-        return $this->getSurface().' m²';
+        return $this->getMaxSurface().' m²';
     }
 
     /**

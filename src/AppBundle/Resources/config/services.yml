@@ -154,7 +154,7 @@ services:
         arguments:
             - ~
             - AppBundle\Entity\Application
-            -
+            - AppBundle\Controller\Admin\ApplicationAdminController
 
     app.form.type.space:
         class: AppBundle\Form\SpaceType

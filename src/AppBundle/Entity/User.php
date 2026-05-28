@@ -240,6 +240,16 @@ class User extends BaseUser
     protected $otherUrl;
 
     /**
+     * @ORM\Column(name="youtube_url", length=255, type="string", nullable=true)
+     */
+    protected $youtubeUrl;
+
+    /**
+     * @ORM\Column(name="tiktok_url", length=255, type="string", nullable=true)
+     */
+    protected $tiktokUrl;
+
+    /**
      * @ORM\Column( type="text", nullable=true)
      */
     protected $description;
@@ -279,12 +289,40 @@ class User extends BaseUser
     protected $usageDuration;
 
     /**
+     * Budget mensuel total maximum (en euros).
+     *
+     * @ORM\Column(name="monthly_budget_max", type="integer", nullable=true)
+     * @Assert\NotBlank(groups={"projectHolder"})
+     * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder"})
+     * @Assert\Range(min = 0, minMessage = "Vous devez renseigner un budget positif.", groups={"projectHolder"})
+     */
+    protected $monthlyBudgetMax;
+
+    /**
      * @ORM\Column(name="project_description", type="text", nullable=true)
      */
     protected $projectDescription;
 
     /**
+     * Quel sera l'usage du local ?
+     *
+     * @ORM\Column(name="local_usage_description", type="text", nullable=true)
+     */
+    protected $localUsageDescription;
+
+    /**
+     * @ORM\Column(name="preferred_departments", type="simple_array", nullable=true)
+     * @Assert\Count(
+     *     min=1,
+     *     minMessage="Veuillez sélectionner au moins un département.",
+     *     groups={"projectHolder"}
+     * )
+     */
+    protected $preferredDepartments = array();
+
+    /**
      * @ORM\ManyToOne(targetEntity="UseType" )
+     * @Assert\NotBlank(groups={"projectHolder"})
      */
     protected $useType;
 
@@ -504,6 +542,22 @@ class User extends BaseUser
     }
 
     /**
+     * @return int|null
+     */
+    public function getMonthlyBudgetMax()
+    {
+        return $this->monthlyBudgetMax;
+    }
+
+    /**
+     * @param int|null $monthlyBudgetMax
+     */
+    public function setMonthlyBudgetMax($monthlyBudgetMax)
+    {
+        $this->monthlyBudgetMax = $monthlyBudgetMax;
+    }
+
+    /**
      * @return mixed
      */
     public function getUsageType()
@@ -651,11 +705,175 @@ class User extends BaseUser
     /**
      * @return array
      */
+    public function getPreferredDepartments()
+    {
+        return $this->preferredDepartments ?: array();
+    }
+
+    /**
+     * @param array|null $preferredDepartments
+     */
+    public function setPreferredDepartments($preferredDepartments)
+    {
+        if ($preferredDepartments === null) {
+            $this->preferredDepartments = array();
+            return;
+        }
+
+        $this->preferredDepartments = array_values(array_unique(array_map('strval', (array) $preferredDepartments)));
+    }
+
+    /**
+     * Libellés des départements souhaités (pour récapitulatifs, exports).
+     *
+     * @return string[]
+     */
+    public function getPreferredDepartmentsLabels()
+    {
+        $byCode = array();
+        foreach (self::getAllFrenchDepartments() as $label => $code) {
+            $byCode[(string) $code] = $label;
+        }
+
+        $labels = array();
+        foreach ($this->getPreferredDepartments() as $code) {
+            $code = (string) $code;
+            $labels[] = isset($byCode[$code]) ? $byCode[$code] : $code;
+        }
+
+        return $labels;
+    }
+
+    /**
+     * Texte pour exports CSV (libellés séparés par « ; »).
+     *
+     * @return string
+     */
+    public function getPreferredDepartmentsLabelsForExport()
+    {
+        $labels = $this->getPreferredDepartmentsLabels();
+
+        return implode('; ', $labels);
+    }
+
+    /**
+     * @return array
+     */
     public static function getAllCivilities() {
         return array(
             self::MISTER => self::MISTER,
             self::MISS => self::MISS,
             self::AUTRE => 'Autre'
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function getAllFrenchDepartments()
+    {
+        return array(
+            '01 - Ain' => '01',
+            '02 - Aisne' => '02',
+            '03 - Allier' => '03',
+            '04 - Alpes-de-Haute-Provence' => '04',
+            '05 - Hautes-Alpes' => '05',
+            '06 - Alpes-Maritimes' => '06',
+            '07 - Ardeche' => '07',
+            '08 - Ardennes' => '08',
+            '09 - Ariege' => '09',
+            '10 - Aube' => '10',
+            '11 - Aude' => '11',
+            '12 - Aveyron' => '12',
+            '13 - Bouches-du-Rhone' => '13',
+            '14 - Calvados' => '14',
+            '15 - Cantal' => '15',
+            '16 - Charente' => '16',
+            '17 - Charente-Maritime' => '17',
+            '18 - Cher' => '18',
+            '19 - Correze' => '19',
+            '2A - Corse-du-Sud' => '2A',
+            '2B - Haute-Corse' => '2B',
+            '21 - Cote-d\'Or' => '21',
+            '22 - Cotes-d\'Armor' => '22',
+            '23 - Creuse' => '23',
+            '24 - Dordogne' => '24',
+            '25 - Doubs' => '25',
+            '26 - Drome' => '26',
+            '27 - Eure' => '27',
+            '28 - Eure-et-Loir' => '28',
+            '29 - Finistere' => '29',
+            '30 - Gard' => '30',
+            '31 - Haute-Garonne' => '31',
+            '32 - Gers' => '32',
+            '33 - Gironde' => '33',
+            '34 - Herault' => '34',
+            '35 - Ille-et-Vilaine' => '35',
+            '36 - Indre' => '36',
+            '37 - Indre-et-Loire' => '37',
+            '38 - Isere' => '38',
+            '39 - Jura' => '39',
+            '40 - Landes' => '40',
+            '41 - Loir-et-Cher' => '41',
+            '42 - Loire' => '42',
+            '43 - Haute-Loire' => '43',
+            '44 - Loire-Atlantique' => '44',
+            '45 - Loiret' => '45',
+            '46 - Lot' => '46',
+            '47 - Lot-et-Garonne' => '47',
+            '48 - Lozere' => '48',
+            '49 - Maine-et-Loire' => '49',
+            '50 - Manche' => '50',
+            '51 - Marne' => '51',
+            '52 - Haute-Marne' => '52',
+            '53 - Mayenne' => '53',
+            '54 - Meurthe-et-Moselle' => '54',
+            '55 - Meuse' => '55',
+            '56 - Morbihan' => '56',
+            '57 - Moselle' => '57',
+            '58 - Nievre' => '58',
+            '59 - Nord' => '59',
+            '60 - Oise' => '60',
+            '61 - Orne' => '61',
+            '62 - Pas-de-Calais' => '62',
+            '63 - Puy-de-Dome' => '63',
+            '64 - Pyrenees-Atlantiques' => '64',
+            '65 - Hautes-Pyrenees' => '65',
+            '66 - Pyrenees-Orientales' => '66',
+            '67 - Bas-Rhin' => '67',
+            '68 - Haut-Rhin' => '68',
+            '69 - Rhone' => '69',
+            '70 - Haute-Saone' => '70',
+            '71 - Saone-et-Loire' => '71',
+            '72 - Sarthe' => '72',
+            '73 - Savoie' => '73',
+            '74 - Haute-Savoie' => '74',
+            '75 - Paris' => '75',
+            '76 - Seine-Maritime' => '76',
+            '77 - Seine-et-Marne' => '77',
+            '78 - Yvelines' => '78',
+            '79 - Deux-Sevres' => '79',
+            '80 - Somme' => '80',
+            '81 - Tarn' => '81',
+            '82 - Tarn-et-Garonne' => '82',
+            '83 - Var' => '83',
+            '84 - Vaucluse' => '84',
+            '85 - Vendee' => '85',
+            '86 - Vienne' => '86',
+            '87 - Haute-Vienne' => '87',
+            '88 - Vosges' => '88',
+            '89 - Yonne' => '89',
+            '90 - Territoire de Belfort' => '90',
+            '91 - Essonne' => '91',
+            '92 - Hauts-de-Seine' => '92',
+            '93 - Seine-Saint-Denis' => '93',
+            '94 - Val-de-Marne' => '94',
+            '95 - Val-d\'Oise' => '95',
+            '971 - Guadeloupe' => '971',
+            '972 - Martinique' => '972',
+            '973 - Guyane' => '973',
+            '974 - La Reunion' => '974',
+            '976 - Mayotte' => '976'
         );
     }
 
@@ -668,6 +886,7 @@ class User extends BaseUser
         $this->groups = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->typeUser = self::PORTEUR;
+        $this->preferredDepartments = array();
     }
 
     /**
@@ -921,6 +1140,42 @@ class User extends BaseUser
     }
 
     /**
+     * @param string $youtubeUrl
+     * @return User
+     */
+    public function setYoutubeUrl($youtubeUrl)
+    {
+        $this->youtubeUrl = $youtubeUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYoutubeUrl()
+    {
+        return $this->youtubeUrl;
+    }
+
+    /**
+     * @param string $tiktokUrl
+     * @return User
+     */
+    public function setTiktokUrl($tiktokUrl)
+    {
+        $this->tiktokUrl = $tiktokUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTiktokUrl()
+    {
+        return $this->tiktokUrl;
+    }
+
+    /**
      * Set lengthTypeOccupation
      *
      * @param string $lengthTypeOccupation
@@ -987,6 +1242,25 @@ class User extends BaseUser
     public function getProjectDescription()
     {
         return $this->projectDescription;
+    }
+
+    /**
+     * @param string|null $localUsageDescription
+     * @return User
+     */
+    public function setLocalUsageDescription($localUsageDescription)
+    {
+        $this->localUsageDescription = $localUsageDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLocalUsageDescription()
+    {
+        return $this->localUsageDescription;
     }
 
     /**
@@ -1105,24 +1379,49 @@ class User extends BaseUser
      */
     public static function getAllProCompanyStatut() {
         return array(
+            // Listes détaillées (choix individuels) + options "groupées" demandées.
+            // Clés = valeurs (stockage en base en clair).
+            'Association loi 1901' => 'Association loi 1901',
+            'Micro Entreprise (Auto Entrepreneur)' => 'Micro Entreprise (Auto Entrepreneur)',
+            
+            'Profession libérale' => 'Profession libérale',
+            'Affiliée à la Maison des Artistes' => 'Affiliée à la Maison des Artistes',
+            'Etablissement public' => 'Etablissement public',
+            'Statut en cours de création' => 'Statut en cours de création',
+
+            // Autres statuts existants (conservés)
             'SA' => 'SA',
             'SAS' => 'SAS',
             'SARL' => 'SARL',
-            'Auto entrepreneur' => 'Auto entrepreneur',
-            'SASU' => 'SASU',
+            
+            'SNC' => 'SNC',
             'EURL' => 'EURL',
             'SCIC' => 'SCIC',
             'SCOP' => 'SCOP',
-            'Association loi 1901' => 'Association loi 1901',
-            'Association commerciale' => 'Association commerciale',
-            'Entreprise individuelle' => 'Entreprise individuelle',
-            'Artiste inscrit à la MDA' => 'Artiste inscrit à la MDA',
-            'Intermittent' => 'Intermittent',
-            'SCI' => 'SCI',
-            'SNC' => 'SNC',
-            'SELARL' => 'SELARL',
-            'SCP' => 'SCP'
+            'CAE' => 'CAE'
+            
         );
+    }
+
+    /**
+     * Indique si la valeur enregistrée figure dans le catalogue actuel des statuts
+     * proposés dans les formulaires (profil / structure).
+     *
+     * @param string|null $status
+     * @return bool
+     */
+    public static function isInProCompanyStatusCatalog($status)
+    {
+        if ($status === null || $status === '') {
+            return true;
+        }
+        foreach (self::getAllProCompanyStatut() as $value) {
+            if ($value === $status) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1336,6 +1635,115 @@ class User extends BaseUser
     public function getLinkedinId()
     {
         return $this->linkedinId;
+    }
+
+    /**
+     * Vérifie si le profil utilisateur est complet pour pouvoir candidater
+     * 
+     * @return bool
+     */
+    public function isProfileComplete()
+    {
+        // Vérifier les champs obligatoires de base
+        if (empty($this->civility) || empty($this->firstname) || empty($this->lastname) || empty($this->email)) {
+            return false;
+        }
+
+        // Vérifier les informations de l'entreprise
+        if (empty($this->company) || empty($this->companyStatus) || empty($this->address) || 
+            empty($this->zipcode) || empty($this->city)) {
+            return false;
+        }
+
+        // Vérifier les informations spécifiques au porteur de projet
+        if ($this->isPorteur()) {
+            if (empty($this->birthday) || empty($this->companyCreationDate) || 
+                empty($this->wishedSize) || empty($this->useType) || empty($this->usageDate) || empty($this->usageDuration) ||
+                empty($this->preferredDepartments) || empty($this->monthlyBudgetMax)) {
+                return false;
+            }
+        }
+
+        // Vérifier les documents obligatoires
+        if (!$this->hasDocuments(UserDocument::ID_TYPE) || !$this->hasDocuments(UserDocument::KBIS_TYPE)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Retourne la liste des champs manquants pour compléter le profil
+     * 
+     * @return array
+     */
+    public function getMissingProfileFields()
+    {
+        $missing = [];
+
+        if (empty($this->civility)) {
+            $missing[] = 'Civilité';
+        }
+        if (empty($this->firstname)) {
+            $missing[] = 'Prénom';
+        }
+        if (empty($this->lastname)) {
+            $missing[] = 'Nom';
+        }
+        if (empty($this->email)) {
+            $missing[] = 'Email';
+        }
+        if (empty($this->company)) {
+            $missing[] = 'Nom de l\'entreprise';
+        }
+        if (empty($this->companyStatus)) {
+            $missing[] = 'Statut de l\'entreprise';
+        }
+        if (empty($this->address)) {
+            $missing[] = 'Adresse';
+        }
+        if (empty($this->zipcode)) {
+            $missing[] = 'Code postal';
+        }
+        if (empty($this->city)) {
+            $missing[] = 'Ville';
+        }
+
+        if ($this->isPorteur()) {
+            if (empty($this->birthday)) {
+                $missing[] = 'Date de naissance';
+            }
+            if (empty($this->companyCreationDate)) {
+                $missing[] = 'Date de création de l\'entreprise';
+            }
+            if (empty($this->wishedSize)) {
+                $missing[] = 'Surface souhaitée';
+            }
+            if (empty($this->monthlyBudgetMax)) {
+                $missing[] = 'Budget mensuel total maximum';
+            }
+            if (empty($this->useType)) {
+                $missing[] = 'Type d\'usage';
+            }
+            if (empty($this->usageDate)) {
+                $missing[] = 'Date de disponibilité';
+            }
+            if (empty($this->usageDuration)) {
+                $missing[] = 'Durée d\'occupation';
+            }
+            if (empty($this->preferredDepartments)) {
+                $missing[] = 'Départements souhaités';
+            }
+        }
+
+        if (!$this->hasDocuments(UserDocument::ID_TYPE)) {
+            $missing[] = 'Pièce d\'identité';
+        }
+        if (!$this->hasDocuments(UserDocument::KBIS_TYPE)) {
+            $missing[] = 'Kbis ou document équivalent';
+        }
+
+        return $missing;
     }
 
     /**

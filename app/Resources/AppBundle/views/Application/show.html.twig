@@ -82,8 +82,8 @@
 
           <div class="row">
             <ul>
-              <li>{{ space.parcels | length }} espace(s)</li>
-              <li>De {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup></li>
+              <li>{{ space.nbSpaces }} espace(s)</li>
+              <li>De {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup></li>
               <li>Disponibilité: {{ space.availability }}</li>
               <li>À partir de: {{ space.price }}€/m²/mois <small class="sub">H.C. H.T.<sup>1</sup></li>
                 <li>Bailleur: {{ application.space.owner.company }}</li>
@@ -97,7 +97,7 @@
                             <div class="apply-date">
                             <p class="apply-date-p">Date limite de candidature</p>
                             <p class="apply-date-b">
-                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                   </p>
                       </div>
             </div>
@@ -110,7 +110,11 @@
               {% endif %}
             
               {% if space.isEnabled and not space.isClosed %}
-                <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');">Clôturer</a>
+                {% else %}
+                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+                {% endif %}
               {% endif %}
             </div>
           </div>
@@ -131,7 +135,7 @@
           <tbody>
             <tr><th>Candidat</th><td>{{ application.projectHolder.fullName }}</td></tr>
             <tr><th>Date de naissance</th><td>{{ application.projectHolder.birthday|date('d/m/Y') }}</td></tr>
-            <tr><th>Téléphone</th><td></td></tr>
+            <tr><th>Téléphone</th><td>{{ application.projectHolder.phone }}</td></tr>
             <tr><th>Email</th><td>{{ application.projectHolder.email }}</td></tr>
             <tr><th>À propos</th><td>{{ application.projectHolder.description|nl2br }}</td></tr>
            </tbody>
@@ -210,10 +214,12 @@
         <table>
           <tbody>
             <tr><th><i class="fa-brands fa-facebook fa-lg"></i></th><td>{{ application.projectHolder.facebookUrl }}</td></tr>
-            <tr><th><i class="fa-brands fa-twitter fa-lg"></i></th><td>{{ application.projectHolder.twitterUrl }}</td></tr>
+            <tr><th><i class="fa-brands fa-x-twitter fa-lg"></i></th><td>{{ application.projectHolder.twitterUrl }}</td></tr>
             <tr><th><i class="fa-brands fa-instagram fa-lg"></i></th><td>{{ application.projectHolder.instagramUrl }}</td></tr>
             <tr><th><i class="fa-brands fa-linkedin fa-lg"></i></th><td>{{ application.projectHolder.linkedinUrl }}</td></tr>
-            <tr><th><i class="fa fa-link fa-lg"></i></th><td>{{ application.projectHolder.otherUrl }}</td></tr>
+            <tr><th><i class="fa-brands fa-bluesky fa-lg"></i></th><td>{{ application.projectHolder.googleUrl }}</td></tr>
+            <tr><th><i class="fa-brands fa-tiktok fa-lg"></i></th><td>{{ application.projectHolder.otherUrl }}</td></tr>
+
           </tbody>
         </table>
       </div>

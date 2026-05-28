@@ -30,13 +30,13 @@
     {% endstylesheets  %}
      {% stylesheets  'bundles/app/css/Ginka.css' filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}?family=ginka:300,400,500,600,700" media="all" />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" media="all" />
     {% endstylesheets  %}
-
+       
 
     <!-- Template CSS -->
     {% stylesheets  'bundles/app/css/bootstrap.min.css'
     'bundles/app/css/icons.css'
-    'bundles/app/css/font-awesome_6.4.0_all.min.css'
     'bundles/app/css/cozy-real-estate-font.css'
     'bundles/app/css/owl.transitions.css'
     'bundles/app/css/colorbox.css'
@@ -101,7 +101,7 @@
     #}
 
 </head>
-<body onload="randomImg()">
+<body onload="if(typeof randomImg === 'function') randomImg()">
     <!-- BEGIN WRAPPER -->
     <div id="wrapper">
 
@@ -115,7 +115,7 @@
 
                             <!-- BEGIN MAIN MENU -->
                             <nav class="navbar">
-                                <ul class="mobile"><li class="mobile-local"><a href=""><span>Trouver un local</span></a></li></ul>
+                                <ul class="mobile"><li class="mobile-local"><a href="{{ path('search_index') }}"><span>Trouver un local</span></a></li></ul>
                                 <button id="nav-mobile-btn"></button>
                                 <!-- Ajout de Label dans KPN -->
                                 {{ knp_menu_render('AppBundle:Builder:mainMenu', {'allow_safe_labels': true}) | raw  }}

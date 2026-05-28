@@ -8,7 +8,13 @@
             {% if space.isClosed %}
               <div class="clos"><p> Appel à candidature cloturé</p></div>
             {% elseif not space.isSubmitted and not space.isEnabled %}
-              <div class="enedition"><p> En cours d'édition</p></div>
+              {% if space.submittedAt %}
+                <div class="depublie"><p> Dépublié temporairement</p></div>
+              {% else %}
+                <div class="enedition"><p> En cours d'édition</p></div>
+              {% endif %}
+            {% elseif space.isSubmitted and not space.isEnabled %}
+              <div class="enattente"><p> En attente de validation</p></div>
             {% elseif space.isSubmitted and space.isEnabled %}
               <div class="encours"><p> Appel à candidature en cours </p></div>
             {% endif %}
@@ -37,9 +43,15 @@
             <ul>
              
               <li>{{ space.type }}</li>
-              <li>À partir de: {{ space.price }}€/m²/mois </li>
-               <li>{{ space.parcels | length }} espace(s)
-              de {{ space.minSize }} m<sup>2</sup> à {{ space.maxSize }} m<sup>2</sup></li>
+              <li>
+                {% if space.priceText %}
+                  {{ space.priceText }}
+                {% else %}
+                  À partir de: {{ space.price }}€/m²/mois
+                {% endif %}
+              </li>
+               <li>{{ space.nbSpaces }} espace(s)
+              de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup></li>
               </ul>
              </div>
           </div> 
@@ -89,7 +101,7 @@
                             <div class="apply-date">
                             <p class="apply-date-p">Date limite de candidature</p>
                             <p class="apply-date-b">
-                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h
+                  {{ space.limitAvailability | localizeddate("long", "none") }} à {{ space.limitAvailability|date('H') }}h{{ space.limitAvailability|date('i') }}
                   </p>
                       </div>
 
@@ -97,14 +109,42 @@
          
             
             <div class="col-sm-6 right align-btn">
-              {% if not space.submitted and not space.enabled and not space.isClosed %}
-                <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+              {# Bouton Modifier : seulement pour les espaces non soumis (brouillon) ou les admins #}
+              {% if not space.isClosed %}
+                {% if not space.submitted and not space.enabled %}
+                  {# Espace en brouillon : tout le monde peut modifier #}
+                  <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+                {% elseif space.submitted and not space.enabled and is_granted('ROLE_ADMIN') %}
+                  {# Espace en attente : seuls les admins peuvent modifier #}
+                  <a href="{{ path('space_manager_edit', { 'id': space.id }) }}" class="btn btn-line-19 "><span>Modifier</span></a>
+                {% endif %}
               {% endif %}
             
               {% if space.isEnabled and not space.isClosed %}
-                <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_unpublish', {'id' : space.id}) }}" class="btn btn-line-19 btn-warning" onClick="return confirm('ADMIN : Suspendre temporairement cet espace pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');"><span>Suspendre pour modification</span></a>
+                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');"><span>Clôturer</span></a>
+                {% else %}
+                  <a href="{{ path('space_manager_unpublish', {'id' : space.id}) }}" class="btn btn-line-19 btn-warning" onClick="return confirm('Suspendre temporairement cet AAC pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');"><span>Suspendre pour modification</span></a>
+                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
+                {% endif %}
               {% elseif not space.isEnabled %}
-                <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir supprimer définitivement cet espace ?\n\nCette action est irréversible et supprimera :\n- L\'espace et toutes ses données\n- Toutes les candidatures associées\n- Tous les fichiers de candidatures\n\nATTENTION : Cette action ne peut pas être annulée.');"><span>Supprimer</span></a>
+                {% else %}
+                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>
+                {% endif %}
+              {% endif %}
+              
+              {# Bouton de publication pour les admins uniquement #}
+              {% if app.user and space.submitted and not space.enabled %}
+                {% if is_granted('ROLE_ADMIN') %}
+                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir approuver et publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Approuver et Publier</span></a>
+                {% else %}
+                  <span class="text-warning" style="display: inline-block; padding: 10px; background: #fff3cd; border-radius: 4px; margin-top: 10px;">
+                    <i class="fa fa-hourglass-half"></i> Votre espace est en attente de validation par un administrateur. Vous serez notifié par email une fois publié.
+                  </span>
+                {% endif %}
               {% endif %}
             </div>
          </div>

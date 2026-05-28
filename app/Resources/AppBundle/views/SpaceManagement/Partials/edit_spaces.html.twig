@@ -77,13 +77,36 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-6 form-group">
+                <div class="col-sm-12 form-group">
                     {{ form_row(form.type) }}
                 </div>
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.price) }}
+               
+            </div>
+
+         <div class="row" style="display: flex; align-items: center;">
+            <div class="col-sm-5 form-group">
+                {{ form_row(form.price) }}
+        </div>
+        <div class="col-sm-2 text-center form-group">
+                <span>ou</span>
+        </div>
+        <div class="col-sm-5 form-group">
+            {{ form_row(form.priceText, { 'attr': { 'placeholder': 'Lorem ipsum' } }) }}
+        </div>
+</div>
+
+            <div class="row">
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.nbSpaces) }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.minSpace) }}
+                </div>
+                <div class="col-sm-4 form-group">
+                    {{ form_row(form.maxSpace) }}
                 </div>
             </div>
+
 
             <div class="row">
                 <div class="col-sm-12 form-group">
@@ -99,21 +122,10 @@
         </div>
     </div>
 
-   <div id="two" class="section">
-                <span class="section-title form-two"></span>
-                <div class="form-contener bleu">
-                    <h3>Répartition des surfaces</h3>
-                    <div class="row">
-                        <div class="col-sm-12">
-                         {% include '@App/SpaceManagement/Partials/_space_parcels_form.html.twig' with { 'parcels': form.vars.data.parcels,'form': form.newParcel } %}
-                        </div>
-                    </div>
-                </div>
-    </div>
     
 
-    <div id="three" class="section">
-        <span class="section-title form-three"></span>
+    <div id="two" class="section">
+        <span class="section-title form-two"></span>
         <div class="form-contener bleu">
             <h3>
                 Photos du lieu
@@ -126,8 +138,8 @@
         </div>
     </div>
 
-    <div id="four" class="section">
-        <span class="section-title form-four"></span>
+    <div id="three" class="section">
+        <span class="section-title form-three"></span>
         <div class="form-contener bleu">
             <h3>
                 Pièce(s) demandée(s)
@@ -140,8 +152,8 @@
         </div>
     </div>
 
-    <div id="five" class="section">
-        <span class="section-title form-five"></span>
+    <div id="four" class="section">
+        <span class="section-title form-four"></span>
         <div class="form-contener bleu">
             <h3>
                 Documents ressources
@@ -150,6 +162,20 @@
                 <div class="col-sm-12">
                 {% include '@App/SpaceManagement/Partials/_space_required_form.html.twig' with { 'form': form, 'space': space } %}
                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="five" class="section">
+        <span class="section-title form-five"></span>
+        <div class="form-contener bleu">
+            <h3>
+                Visites organisées
+            </h3>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include '@App/SpaceManagement/Partials/_space_visits_form.html.twig' with { 'visits': form.vars.data.visits,'form': form.newVisit } %}
                 </div>
             </div>
         </div>
@@ -167,13 +193,14 @@
                     })
                 }}
 
-                <input type="submit" value="Enregistrer" class="btn btn-line-s save" data-save='Vous pourrez compléter votre saisie depuis la rubrique "Mes espaces"'>
+                <input type="submit" value="Enregistrer" class="btn btn-line-s save" data-save='{% if app.user and is_granted("ROLE_ADMIN") %}Vous pourrez compléter et publier votre espace depuis la rubrique "Gestion des espaces".{% else %}Vous pourrez compléter votre saisie depuis la rubrique "Mes espaces", puis la soumettre pour validation.{% endif %}'>
 
                {{ form_widget(
                     form.publish, {
+                        'label': is_granted('ROLE_ADMIN') ? 'Publier' : 'Soumettre pour validation',
                         'attr': {
                             'class': 'btn btn-line-s js-publish',
-                            'onclick': "return confirm(\'Attention une fois publiée, vous ne pourrez pas modifier cette annonce sans intervention d\\\'un administrateur. Êtes-vous sûr de vouloir continuer?');"
+                            'onclick': "return confirm(\'{% if app.user and is_granted('ROLE_ADMIN') %}ADMIN : Êtes-vous sûr de vouloir publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.{% else %}Êtes-vous sûr de vouloir soumettre cet espace pour validation ?\n\nUn administrateur vérifiera votre espace et le publiera. Vous serez notifié par email une fois l\'espace publié.{% endif %}\');"
                         }
                     })
                 }}

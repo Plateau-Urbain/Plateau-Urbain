@@ -32,6 +32,16 @@ class Space
     private $id;
 
     /**
+     * Indique si le lieu est un Établissement Recevant du Public (ERP).
+     * Certains "types d'usage" ne sont proposés que pour les ERP.
+     *
+     * @var bool
+     *
+     * @ORM\Column(name="is_erp", type="boolean", options={"default": false})
+     */
+    private $isErp = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
@@ -137,7 +147,7 @@ class Space
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="limitAvailability", type="date", nullable=true)
+     * @ORM\Column(name="limitAvailability", type="datetime", nullable=true)
      * @Assert\NotBlank(groups={"save"})
      */
     private $limitAvailability;
@@ -146,9 +156,15 @@ class Space
      * @var string
      *
      * @ORM\Column(name="price", type="float", nullable=true)
-     * @Assert\NotBlank(groups={"save"})
      */
     private $price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price_text", type="string", length=255, nullable=true)
+     */
+    private $priceText;
 
     /**
      * @ORM\OneToMany(targetEntity="SpaceImage", mappedBy="space", orphanRemoval=true, cascade={"persist", "remove"})
@@ -170,6 +186,16 @@ class Space
      * @ORM\Column(name="enabled", type="boolean")
      */
     private $enabled = false;
+
+    /**
+     * Active le mode "candidature au fil de l'eau" pour cet AAC.
+     * Quand c'est actif, la candidature affiche/rend obligatoire la "Date d'entrée souhaitée".
+     *
+     * @var bool
+     *
+     * @ORM\Column(name="rolling_applications", type="boolean", options={"default": 0})
+     */
+    private $rollingApplications = false;
 
     /**
      * @var bool
@@ -221,6 +247,41 @@ class Space
     private $application;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="SpaceVisit", mappedBy="space", cascade={"persist", "remove"}
+     * )
+     */
+    private $visits;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nb_spaces", type="integer", nullable=true)
+     */
+    private $nbSpaces;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_space", type="integer", nullable=true)
+     */
+    private $minSpace;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="max_space", type="integer", nullable=true)
+     */
+    private $maxSpace;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="societaire_message_type", type="string", length=50, nullable=true)
+     */
+    private $societaireMessageType;
+
+    /**
      * @return ArrayCollection
      */
     public function getTags()
@@ -258,6 +319,7 @@ class Space
         $this->parcels = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->visits = new ArrayCollection();
     }
     /**
      * Get id.
@@ -267,6 +329,33 @@ class Space
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsErp()
+    {
+        return (bool) $this->isErp;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isErp()
+    {
+        return $this->getIsErp();
+    }
+
+    /**
+     * @param bool $isErp
+     * @return Space
+     */
+    public function setIsErp($isErp)
+    {
+        $this->isErp = (bool) $isErp;
+
+        return $this;
     }
 
     /**
@@ -511,6 +600,30 @@ class Space
     }
 
     /**
+     * Set priceText.
+     *
+     * @param string $priceText
+     *
+     * @return Space
+     */
+    public function setPriceText($priceText)
+    {
+        $this->priceText = $priceText;
+
+        return $this;
+    }
+
+    /**
+     * Get priceText.
+     *
+     * @return string
+     */
+    public function getPriceText()
+    {
+        return $this->priceText;
+    }
+
+    /**
      * @return ArrayCollection|SpaceImage[]
      */
     public function getPics()
@@ -607,6 +720,76 @@ class Space
     }
 
     /**
+     * Virtual getter for Sonata admin — returns the first AAC document, or null.
+     */
+    public function getDocAac(): ?SpaceImage
+    {
+        $docs = $this->getDocs(SpaceImage::FILETYPE_DOCUMENT_AAC);
+        return !empty($docs) ? $docs[0] : null;
+    }
+
+    /**
+     * Virtual setter for Sonata admin — adds a new AAC doc if a file was uploaded.
+     * If the SpaceImage is already in the collection (no new upload), does nothing.
+     */
+    public function setDocAac(?SpaceImage $doc): self
+    {
+        if ($doc === null || $doc->getFile() === null) {
+            return $this;
+        }
+        if (!$this->pics->contains($doc)) {
+            $this->addDoc($doc, SpaceImage::FILETYPE_DOCUMENT_AAC);
+        }
+        return $this;
+    }
+
+    /**
+     * Virtual getter for Sonata admin — returns the first Plan document, or null.
+     */
+    public function getDocPlan(): ?SpaceImage
+    {
+        $docs = $this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN);
+        return !empty($docs) ? $docs[0] : null;
+    }
+
+    /**
+     * Virtual setter for Sonata admin — adds a new Plan doc if a file was uploaded.
+     */
+    public function setDocPlan(?SpaceImage $doc): self
+    {
+        if ($doc === null || $doc->getFile() === null) {
+            return $this;
+        }
+        if (!$this->pics->contains($doc)) {
+            $this->addDoc($doc, SpaceImage::FILETYPE_DOCUMENT_PLAN);
+        }
+        return $this;
+    }
+
+    /**
+     * Virtual getter for Sonata admin — returns the first FAQ document, or null.
+     */
+    public function getDocFaq(): ?SpaceImage
+    {
+        $docs = $this->getDocs(SpaceImage::FILETYPE_DOCUMENT_FAQ);
+        return !empty($docs) ? $docs[0] : null;
+    }
+
+    /**
+     * Virtual setter for Sonata admin — adds a new FAQ doc if a file was uploaded.
+     */
+    public function setDocFaq(?SpaceImage $doc): self
+    {
+        if ($doc === null || $doc->getFile() === null) {
+            return $this;
+        }
+        if (!$this->pics->contains($doc)) {
+            $this->addDoc($doc, SpaceImage::FILETYPE_DOCUMENT_FAQ);
+        }
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isEnabled()
@@ -627,11 +810,15 @@ class Space
      */
     public function isClosed()
     {
-        if ($this->closed || $this->getLimitAvailability() < new \DateTime('today')) {
+        if ($this->closed) {
             return true;
-        } else {
-            return false;
         }
+        $limit = $this->getLimitAvailability();
+        if ($limit !== null && $limit < new \DateTime('today')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -817,8 +1004,8 @@ class Space
     public function getMinSize() {
         $min = -1;
         foreach ($this->getParcels() as $parcel) {
-            if ($min == -1 || $min > $parcel->getSurface()) {
-                $min = $parcel->getSurface();
+            if ($min == -1 || $min > $parcel->getMinSurface()) {
+                $min = $parcel->getMinSurface();
             }
         }
         return $min;
@@ -830,8 +1017,8 @@ class Space
     public function getMaxSize() {
         $max = 0;
         foreach ($this->getParcels() as $parcel) {
-            if ($max < $parcel->getSurface()) {
-                $max = $parcel->getSurface();
+            if ($max < $parcel->getMaxSurface()) {
+                $max = $parcel->getMaxSurface();
             }
         }
         return $max;
@@ -850,7 +1037,11 @@ class Space
      */
     public function setSubmitted($submitted)
     {
-        $this->submittedAt = new \DateTime();
+        // N'horodate la soumission qu'au premier passage à true,
+        // pour ne pas écraser la date lors d'une dépublication (false).
+        if ($submitted && $this->submittedAt === null) {
+            $this->submittedAt = new \DateTime();
+        }
         $this->submitted = $submitted;
     }
 
@@ -877,6 +1068,24 @@ class Space
     }
 
     /**
+     * Indique si l'AAC a été proposé par un administrateur (owner avec ROLE_ADMIN ou typeUser admin).
+     *
+     * @return bool
+     */
+    public function isProposedByAdmin()
+    {
+        if (!$this->owner) {
+            return false;
+        }
+        $roles = $this->owner->getRoles();
+        // Vérifier le rôle admin (FOSUser groups ou typeUser)
+        // On vérifie ROLE_SUPER_ADMIN aussi car getRoles() peut ne pas retourner la hiérarchie complète
+        return in_array('ROLE_ADMIN', $roles, true)
+            || in_array('ROLE_SUPER_ADMIN', $roles, true)
+            || $this->owner->getTypeUser() === User::ADMIN;
+    }
+
+    /**
      * @return bool
      */
     public function isPublished()
@@ -889,6 +1098,18 @@ class Space
      */
     public function getDepCode() {
         return substr($this->zipCode, 0, 2);
+    }
+
+    /**
+     * @Assert\Callback(groups={"save"})
+     */
+    public function validatePrice(ExecutionContextInterface $context)
+    {
+        if (empty($this->price) && empty($this->priceText)) {
+            $context->buildViolation('Vous devez renseigner soit le prix au m² mensuel, soit le prix personnalisé.')
+                ->atPath('price')
+                ->addViolation();
+        }
     }
 
     /**
@@ -918,6 +1139,95 @@ class Space
             }
         }
         return false;
+    }
+
+    /**
+     * Détermine si l'AAC est "au fil de l'eau".
+     * On se base sur le nom de l'attribut (ex: "au fil de l'eau", "fil de l'eau", etc.)
+     * et uniquement quand le tag est marqué "Inclus".
+     *
+     * @return bool
+     */
+    public function isRollingAAC()
+    {
+        if ($this->rollingApplications) {
+            return true;
+        }
+
+        foreach ($this->tags as $tag) {
+            if (!$tag || !$tag->isIncluded() || !$tag->getAttribute()) {
+                continue;
+            }
+            $name = (string) $tag->getAttribute()->getName();
+            $normalized = $this->normalizeTagName($name);
+            if ($normalized === '') {
+                continue;
+            }
+
+            // Règle actuelle : “au fil de l’eau”
+            if (strpos($normalized, 'fil de l eau') !== false || strpos($normalized, 'fil de leau') !== false) {
+                return true;
+            }
+
+            // Compat : certains espaces peuvent encore utiliser un tag “indéfini”
+            if (strpos($normalized, 'indefini') !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Alias compat : ancienne règle “indéfini”.
+     *
+     * @return bool
+     */
+    public function isIndefiniteAAC()
+    {
+        return $this->isRollingAAC();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getRollingApplications()
+    {
+        return (bool) $this->rollingApplications;
+    }
+
+    /**
+     * @param bool $rollingApplications
+     * @return $this
+     */
+    public function setRollingApplications($rollingApplications)
+    {
+        $this->rollingApplications = (bool) $rollingApplications;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function normalizeTagName($name)
+    {
+        $name = trim((string) $name);
+        if ($name === '') {
+            return '';
+        }
+        $name = mb_strtolower($name, 'UTF-8');
+        // Retirer les accents pour matcher "indéfini" = "indefini"
+        if (function_exists('iconv')) {
+            $converted = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $name);
+            if ($converted !== false) {
+                $name = $converted;
+            }
+        }
+        // Remplacer la ponctuation par des espaces, puis normaliser
+        $name = preg_replace('/[^a-z0-9]+/', ' ', $name);
+        $name = preg_replace('/\s+/', ' ', $name);
+        $name = trim($name);
+        return $name;
     }
 
     /**
@@ -984,7 +1294,7 @@ class Space
         $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
 
         foreach ($this->getApplication()->matching($criteria) as $app) {
-            if ($app->getCategory()->getId() == $category->getId()) {
+            if ($app->getCategory() !== null && $app->getCategory()->getId() == $category->getId()) {
                 $ret++;
             }
         }
@@ -1008,16 +1318,89 @@ class Space
     }
 
     /**
+     * Nombre de candidatures d'une catégorie filtrées par statut
+     *
+     * @param $category
+     * @param $status
+     * @return int
+     */
+    public function nbApplicationCategoryByStatus($category, $status) {
+        $ret = 0;
+
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
+            if ($app->getCategory() !== null && $app->getCategory()->getId() == $category->getId() && $app->getStatus() == $status) {
+                $ret++;
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Nombre de candidatures (hors brouillons) pour un statut juridique (Application.companyStatus) donné.
+     *
+     * @param string $companyStatus
+     * @return int
+     */
+    public function nbApplicationByCompanyStatus($companyStatus) {
+        $ret = 0;
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+        foreach ($this->getApplication()->matching($criteria) as $app) {
+            if ($app->getCompanyStatus() === $companyStatus) {
+                $ret++;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Nombre de candidatures (hors brouillons) ayant renseigné une surface > 0 pour une catégorie.
+     * Utilisé pour calculer une moyenne correcte (exclut les candidatures sans surface).
+     *
+     * @param $category
+     * @return int
+     */
+    public function nbApplicationCategoryWithSurface($category) {
+        $ret = 0;
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+        foreach ($this->getApplication()->matching($criteria) as $app) {
+            if ($app->getCategory() !== null && $app->getCategory()->getId() == $category->getId() && $app->getWishedSize() > 0) {
+                $ret++;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Surface totale demandée pour une catégorie donnée
+     *
+     * @param $category
+     * @return int
+     */
+    public function totalWishedSizeByCategory($category) {
+        $ret = 0;
+
+        $criteria = Criteria::create()->where(Criteria::expr()->neq("status", Application::DRAFT_STATUS));
+
+        foreach ($this->getApplication()->matching($criteria) as $app) {
+            if ($app->getCategory() !== null && $app->getCategory()->getId() == $category->getId()) {
+                $ret += $app->getWishedSize();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
      * @Assert\Callback(groups="save")
      * @param ExecutionContextInterface $context
      */
     public function validateNbParcels(ExecutionContextInterface $context)
     {
-        if ($this->parcels->count() < 0) {
-            $context->buildViolation('Vous devez créer au moins un lot pour votre espace.')
-                    ->atPath('newParcel')
-                    ->addViolation();
-        }
+        // La gestion des lots (parcels) a été retirée du formulaire front-end.
+        // Validation désactivée intentionnellement.
     }
 
     /**
@@ -1047,12 +1430,13 @@ class Space
                     ->addViolation();
         }
 
-        if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN)) < 1) {
-            $context->buildViolation('Il manque le document de plan')
-                    ->atPath('doc_plan')
-                    //->setParameter('{{ value }}', $invalidValue)
-                    ->addViolation();
-        }
+        // Le document "Répartition des espaces" n'est plus obligatoire
+        // if (count($this->getDocs(SpaceImage::FILETYPE_DOCUMENT_PLAN)) < 1) {
+        //     $context->buildViolation('Il manque le document de plan')
+        //             ->atPath('doc_plan')
+        //             //->setParameter('{{ value }}', $invalidValue)
+        //             ->addViolation();
+        // }
     }
 
     /**
@@ -1142,5 +1526,96 @@ class Space
     public function removeApplication(\AppBundle\Entity\Application $application)
     {
         $this->application->removeElement($application);
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbSpaces()
+    {
+        return $this->nbSpaces;
+    }
+
+    /**
+     * @param int $nbSpaces
+     */
+    public function setNbSpaces($nbSpaces)
+    {
+        $this->nbSpaces = $nbSpaces;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMinSpace()
+    {
+        return $this->minSpace;
+    }
+
+    /**
+     * @param int $minSpace
+     */
+    public function setMinSpace($minSpace)
+    {
+        $this->minSpace = $minSpace;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxSpace()
+    {
+        return $this->maxSpace;
+    }
+
+    /**
+     * @param int $maxSpace
+     */
+    public function setMaxSpace($maxSpace)
+    {
+        $this->maxSpace = $maxSpace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSocietaireMessageType()
+    {
+        return $this->societaireMessageType;
+    }
+
+    /**
+     * @param string $societaireMessageType
+     */
+    public function setSocietaireMessageType($societaireMessageType)
+    {
+        $this->societaireMessageType = $societaireMessageType;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVisits()
+    {
+        return $this->visits;
+    }
+
+    /**
+     * @param SpaceVisit $visit
+     * @return $this
+     */
+    public function addVisit(SpaceVisit $visit)
+    {
+        $visit->setSpace($this);
+        $this->visits->add($visit);
+        return $this;
+    }
+
+    /**
+     * @param SpaceVisit $visit
+     */
+    public function removeVisit(SpaceVisit $visit)
+    {
+        $this->visits->removeElement($visit);
     }
 }
