@@ -24,7 +24,17 @@ class CategoryAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('General')
-            ->add('name')
+            ->add('name', null, array('label' => "Type d'usage"))
+            ->add('isActive', null, array(
+                'label' => "Actif",
+                'required' => false,
+                'help' => "Décocher pour archiver : la valeur ne sera plus proposée dans les formulaires utilisateurs, mais reste visible pour les candidatures/profils qui l'ont déjà sélectionnée.",
+            ))
+            ->add('requiresErp', null, array(
+                'label' => "Réservé aux lieux ERP",
+                'required' => false,
+                'help' => "Si coché, ce type d'usage ne sera proposé aux candidats que pour les espaces marqués comme ERP (Établissement Recevant du Public).",
+            ))
 
             ->end()
 
@@ -35,7 +45,9 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, array('label' => "Type d'usage"))
+            ->add('isActive', null, array('label' => "Actif"))
+            ->add('requiresErp', null, array('label' => "Réservé ERP"))
         ;
     }
 
@@ -43,7 +55,15 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', null, array('label' => "Type d'usage"))
+            ->add('isActive', null, array(
+                'label' => "Actif",
+                'editable' => true,
+            ))
+            ->add('requiresErp', null, array(
+                'label' => "Réservé ERP",
+                'editable' => true,
+            ))
         ;
     }
 

@@ -7,12 +7,15 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Form\SpaceDocumentType;
 use AppBundle\Form\SpaceImageType;
 use AppBundle\Form\SpaceAttributeAdminType;
 use AppBundle\Form\ParcelType;
+use AppBundle\Form\SpaceVisitType;
+use AppBundle\Form\SpaceDocAdminType;
 
 class SpaceAdmin extends AbstractAdmin
 {
@@ -26,6 +29,7 @@ class SpaceAdmin extends AbstractAdmin
     {
         $this->syncSpace($space, $space->getPics());
         $this->syncSpace($space, $space->getDocuments());
+        $this->syncSpace($space, $space->getVisits());
     }
 
     /**
@@ -35,6 +39,28 @@ class SpaceAdmin extends AbstractAdmin
     {
         $this->syncSpace($space, $space->getPics());
         $this->syncSpace($space, $space->getDocuments());
+        $this->syncSpace($space, $space->getVisits());
+    }
+
+    /**
+     * {@inheritdoc}
+     * Supprime les applications associées avant de supprimer l'espace
+     */
+    public function preRemove($space)
+    {
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+
+        $applications = $em->getRepository('AppBundle:Application')->findBy(['space' => $space]);
+
+        foreach ($applications as $application) {
+            $applicationFiles = $em->getRepository('AppBundle:ApplicationFile')->findBy(['application' => $application]);
+            foreach ($applicationFiles as $file) {
+                $em->remove($file);
+            }
+            $em->remove($application);
+        }
+        // Pas de flush() ici : Sonata commitera tout (fichiers + candidatures + espace)
+        // en une seule transaction atomique via son propre flush().
     }
 
     protected $baseRouteName = 'property';
@@ -42,8 +68,8 @@ class SpaceAdmin extends AbstractAdmin
 
     // setup the default sort column and order
     protected $datagridValues = array(
-        '_sort_order' => 'ASC',
-        '_sort_by' => 'name',
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'limitAvailability',
     );
 
     // Fields to be shown on create/edit forms
@@ -61,44 +87,45 @@ class SpaceAdmin extends AbstractAdmin
             ))
             ->add('zipCode', null, array('label' => "Code postal"))
             ->add('city', null, array('label' => "Ville"))
-            ->add('limitAvailability', null, array('label' => 'Date de fin de candidature possible'))
+            ->add('limitAvailability', null, array('label' => 'Date limite de candidature'))
             ->add('availability', null, array('label' => 'Période de disponibilité'))
-            ->add('type', null, array('label' => "Type d'espace", 'required' => true))
-            ->add('description', null, array('label' => "Description de l'espace", 'attr' => ['class' => 'trumbowyg']))
-            ->add('activityDescription', null, array('label' => "Activités recherchées", 'attr' => ['class' => 'trumbowyg']))
-            ->add('price', null, array('label' => 'Prix de la redevance au m² mensuel'))
-            ->add('usageRestriction', null, array('label' => "Condition d'utilisation du lieu"))
+            ->add('type', null, array('label' => 'Type de locaux', 'required' => true))
+            ->add('description', null, array('label' => 'Description', 'attr' => ['class' => 'trumbowyg']))
+            ->add('activityDescription', null, array('label' => 'Activités recherchées', 'attr' => ['class' => 'trumbowyg']))
+            ->add('price', null, array('label' => 'Prix au m² mensuel', 'required' => false))
+            ->add('priceText', null, array('label' => 'Prix personnalisé (texte libre)', 'required' => false))
+            ->add('nbSpaces', null, array('label' => "Nombre d'espaces", 'required' => false))
+            ->add('minSpace', null, array('label' => 'Surface minimale (m²)', 'required' => false))
+            ->add('maxSpace', null, array('label' => 'Surface maximale (m²)', 'required' => false))
 
             ->end()
-            ->with('Prestations et services')
-
-            ->add('tags', CollectionType::class, array(
-                    'entry_type' => SpaceAttributeAdminType::class,
-                    'allow_delete' => true,
-                    'allow_add' => true,
-                    'by_reference' => false,
-                    'label' => 'Attributs',
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ))
-
-            ->end()
-            ->with('Lots')
-
-            ->add('parcels', CollectionType::class, array(
-                'entry_type' => ParcelType::class,
-                'allow_delete' => true,
-                'allow_add' => true,
-                'by_reference' => false,
-                'label' => 'Lots',
-            ), array(
-                'edit' => 'inline',
-                'inline' => 'table',
-            ))
-
-            ->end()
+            // Section "Prestations et services" désactivée — les tags/attributs ne sont plus utilisés en front-end
+            // ->with('Prestations et services')
+            // ->add('tags', CollectionType::class, array(
+            //         'entry_type' => SpaceAttributeAdminType::class,
+            //         'allow_delete' => true,
+            //         'allow_add' => true,
+            //         'by_reference' => false,
+            //         'label' => 'Attributs',
+            //     ),
+            //     array(
+            //         'edit' => 'inline',
+            //         'inline' => 'table',
+            //     ))
+            // ->end()
+            // Section "Lots" désactivée — la gestion des lots a été retirée du formulaire front-end
+            // ->with('Lots')
+            // ->add('parcels', CollectionType::class, array(
+            //     'entry_type' => ParcelType::class,
+            //     'allow_delete' => true,
+            //     'allow_add' => true,
+            //     'by_reference' => false,
+            //     'label' => 'Lots',
+            // ), array(
+            //     'edit' => 'inline',
+            //     'inline' => 'table',
+            // ))
+            // ->end()
             ->with('Photos')
 
             ->add('pics', CollectionType::class, array(
@@ -114,7 +141,26 @@ class SpaceAdmin extends AbstractAdmin
                 ))
 
             ->end()
-            ->with('Documents')
+            ->with('Documents PDF (propriétaire)')
+
+            ->add('docAac', SpaceDocAdminType::class, array(
+                'label'     => "Appel à candidature (PDF)",
+                'required'  => false,
+                'file_type' => 'document_aac',
+            ))
+            ->add('docPlan', SpaceDocAdminType::class, array(
+                'label'     => "Répartition des espaces (PDF)",
+                'required'  => false,
+                'file_type' => 'document_plan',
+            ))
+            ->add('docFaq', SpaceDocAdminType::class, array(
+                'label'     => "F.A.Q (PDF)",
+                'required'  => false,
+                'file_type' => 'document_faq',
+            ))
+
+            ->end()
+            ->with('Documents requis (candidature)')
 
             ->add('documents', CollectionType::class, array(
                     'entry_type' => SpaceDocumentType::class,
@@ -130,9 +176,25 @@ class SpaceAdmin extends AbstractAdmin
 
             ->end()
 
+            ->with('Visites programmées')
+
+            ->add('visits', CollectionType::class, array(
+                    'entry_type' => SpaceVisitType::class,
+                    'allow_delete' => true,
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'label' => false,
+                ),
+                array(
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ))
+
+            ->end()
+
             ->with('Publication')
-                ->add('enabled', 'choice', array('label' => 'En ligne', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false]))
-                ->add('closed', 'choice', array('label' => 'Clotûré', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false]))
+                ->add('enabled', 'choice', array('label' => 'En ligne', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false], 'placeholder' => false))
+                ->add('closed', 'choice', array('label' => 'Clôturé', 'required' => false, 'choices' => ['Oui' => true, 'Non' => false], 'placeholder' => false))
             ->end()
 
 
@@ -143,8 +205,13 @@ class SpaceAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('name', null, array('label' => 'Nom'))
             ->add('owner', null, array('label' => 'Propriétaire'))
+            ->add('city', null, array('label' => 'Ville'))
+            ->add('type', null, array('label' => 'Type de locaux'))
             ->add('enabled', null, array('label' => 'En ligne'))
+            ->add('submitted', null, array('label' => 'Soumis'))
+            ->add('closed', null, array('label' => 'Clôturé'))
         ;
     }
 
@@ -152,7 +219,24 @@ class SpaceAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', null, array('label' => 'Nom'))
+            ->add('owner', null, array('label' => 'Propriétaire'))
+            ->add('city', null, array('label' => 'Ville'))
+            ->add('limitAvailability', null, array(
+                'label' => 'Date limite de candidature',
+                'format' => 'd/m/Y',
+                'sortable' => true,
+            ))
+            ->add('enabled', null, array('label' => 'En ligne'))
+            ->add('submitted', null, array('label' => 'Soumis'))
+            ->add('closed', null, array('label' => 'Clôturé'))
+            ->add('_action', null, array(
+                'label' => 'Actions',
+                'actions' => array(
+                    'edit'   => array(),
+                    'delete' => array(),
+                ),
+            ))
         ;
     }
 

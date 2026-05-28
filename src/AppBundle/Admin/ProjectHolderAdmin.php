@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\User;
 
 class ProjectHolderAdmin extends AbstractAdmin
@@ -74,6 +75,12 @@ class ProjectHolderAdmin extends AbstractAdmin
             ->end()
             ->with('Souhaits')
             ->add('wishedSize', null, array('required' => false, 'label' => 'Taille souhaitée (m²)'))
+            ->add('preferredDepartments', ChoiceType::class, array(
+                'label' => 'Départements souhaités',
+                'choices' => User::getAllFrenchDepartments(),
+                'multiple' => true,
+                'required' => false,
+            ))
             ->add('useType', null, array('required' => false, 'label' => 'Type d\'usage'))
             ->add('usageDate', null, array('required' => false, 'label' => 'Date de disponibilité'))
             ->add('usageDuration', null, array('required' => false, 'label' => 'Durée d\'occupation'))
@@ -83,11 +90,13 @@ class ProjectHolderAdmin extends AbstractAdmin
             ->end()
             ->with('Réseaux sociaux')
             ->add('facebookUrl', null, array('required' => false, 'label' => 'Facebook'))
-            ->add('googleUrl', null, array('required' => false, 'label' => 'Google+'))
-            ->add('twitterUrl', null, array('required' => false, 'label' => 'Twitter'))
-            ->add('linkedinUrl', null, array('required' => false, 'label' => 'Linkedin'))
+            ->add('twitterUrl', null, array('required' => false, 'label' => 'Twitter / X'))
             ->add('instagramUrl', null, array('required' => false, 'label' => 'Instagram'))
-            ->add('otherUrl', null, array('required' => false, 'label' => 'Viadeo'))
+            ->add('linkedinUrl', null, array('required' => false, 'label' => 'LinkedIn'))
+            ->add('youtubeUrl', null, array('required' => false, 'label' => 'YouTube'))
+            ->add('tiktokUrl', null, array('required' => false, 'label' => 'TikTok'))
+            ->add('googleUrl', null, array('required' => false, 'label' => 'Google+'))
+            ->add('otherUrl', null, array('required' => false, 'label' => 'Autre URL'))
 
             ->end()
 

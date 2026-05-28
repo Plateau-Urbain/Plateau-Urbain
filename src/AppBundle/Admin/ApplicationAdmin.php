@@ -30,6 +30,7 @@ class ApplicationAdmin extends AbstractAdmin
         $collection->add('select_export_fields', 'select-export-fields');
         $collection->add('custom_export', 'custom-export');
         $collection->add('help_filters', 'help-filters-export');
+        $collection->add('statistics', 'statistics');
     }
 
     // Fields to be shown on create/edit forms
@@ -42,16 +43,20 @@ class ApplicationAdmin extends AbstractAdmin
             ->add('projectHolder', null, array('label' => 'Porteur de projet'))
             ->add('name', null, array('label'=>"Nom du projet") )
             ->add('category', null, array('label'=>"Categorie du projet",'required'=> true))
-            ->add('wishedSize', null, array('label'=> 'Surface souhaitée (m²)'))
+            ->add('projectHolder.companyStatus', null, array('label' => 'Statut juridique (profil)'))
+            ->add('companyStatus', 'choice', array(
+                'label' => 'Statut juridique (candidature)',
+                'choices' => Application::getApplicationCompanyStatuses(),
+                'required' => false,
+            ))
+            ->add('projectHolder.wishedSize', null, array('label'=> 'Surface souhaitée (profil) (m²)'))
+            ->add('wishedSize', null, array('label'=> 'Surface souhaitée (candidature) (m²)'))
             ->add('lengthOccupation', null, array('label'=> 'Durée d\'occupation'))
             ->add('lengthTypeOccupation', 'choice', array('choices' => Application::getAllLengthType(), 'label'=> 'Durée d\'occupation'))
             ->add('startOccupation', 'date', array('label'=>"Date d'entrée souhaitée"))
             ->add('description', null, array('label'=>"Description du projet"))
             ->add('openToGlobalProject', 'choice', array('label'=> "Ouvert à faire partie d'un projet collectif", 'choices' => ['Oui' => true, 'Non' => false]))
             ->add('contribution', null, array('label'=> "Contribution au projet global du propriétaire"))
-            ->add('devenirSocietaire', 'choice', array('label'=> "Souhaite être informé(e) des modalités pour devenir sociétaire", 'choices' => ['Oui' => true, 'Non' => false]))
-
-
             ->end()
             ->with('Documents')
               ->add('files', 'sonata_type_collection',
@@ -82,7 +87,10 @@ class ApplicationAdmin extends AbstractAdmin
             ->add('space', null, array('label' => 'Espace'))
             ->add('created', 'doctrine_orm_date_range', array('label' => 'Date de création'))
             ->add('startOccupation', 'doctrine_orm_date_range', array('label' => 'Date d\'entrée souhaitée'))
-            ->add('wishedSize', null, array('label' => 'Surface souhaitée (m²)'))
+            ->add('projectHolder.companyStatus', null, array('label' => 'Statut juridique (profil)'))
+            ->add('companyStatus', null, array('label' => 'Statut juridique (candidature)'))
+            ->add('projectHolder.wishedSize', null, array('label' => 'Surface souhaitée (profil) (m²)'))
+            ->add('wishedSize', null, array('label' => 'Surface souhaitée (candidature) (m²)'))
             ->add('openToGlobalProject', null, array('label' => 'Ouvert au projet collectif'))
         ;
     }
@@ -111,15 +119,18 @@ class ApplicationAdmin extends AbstractAdmin
                 ->add('projectHolder.email', null, array('label' => 'Email'))
                 ->add('projectHolder.company', null, array('label' => 'Structure'))
                 ->add('projectHolder.companyPhone', null, array('label' => 'Téléphone'))
+                ->add('projectHolder.preferredDepartmentsLabelsForExport', null, array('label' => 'Départements souhaités'))
             ->end()
             ->with('Description du projet', array('class' => 'col-md-12'))
                 ->add('description', 'text', array('label' => 'Description'))
                 ->add('contribution', 'text', array('label' => 'Contribution au projet du propriétaire'))
                 ->add('openToGlobalProject', null, array('label' => 'Ouvert au projet collectif'))
-                ->add('devenirSocietaire', null, array('label' => 'Souhaite devenir sociétaire'))
             ->end()
             ->with('Informations sur l\'occupation', array('class' => 'col-md-6'))
-                ->add('wishedSize', null, array('label' => 'Surface souhaitée (m²)'))
+                ->add('projectHolder.companyStatus', null, array('label' => 'Statut juridique (profil)'))
+                ->add('companyStatus', null, array('label' => 'Statut juridique (candidature)'))
+                ->add('projectHolder.wishedSize', null, array('label' => 'Surface souhaitée (profil) (m²)'))
+                ->add('wishedSize', null, array('label' => 'Surface souhaitée (candidature) (m²)'))
                 ->add('fullLengthOccupation', null, array('label' => 'Durée d\'occupation'))
                 ->add('startOccupation', 'date', array('label' => 'Date d\'entrée souhaitée', 'format' => 'd/m/Y'))
             ->end()
@@ -179,6 +190,9 @@ class ApplicationAdmin extends AbstractAdmin
             $list['export_custom'] = array(
                 'template' => 'AppBundle:Admin:button_export_custom.html.twig',
             );
+            $list['statistics'] = array(
+                'template' => 'AppBundle:Admin/Application:button_statistics.html.twig',
+            );
         }
         
         return $list;
@@ -234,8 +248,11 @@ class ApplicationAdmin extends AbstractAdmin
           'Autre' => 'projectHolder.otherUrl',
           'Description' => 'description',
           'Date de dépôt de la candidature' => 'created',
-          'Type de projet' => 'category',
-          'Surface recherchée' => 'wishedSize',
+          'Type d\'usage' => 'category',
+          'Statut juridique (profil)' => 'projectHolder.companyStatus',
+          'Statut juridique (candidature)' => 'companyStatus',
+          'Surface souhaitée (profil)' => 'projectHolder.wishedSize',
+          'Surface souhaitée (candidature)' => 'wishedSize',
           'Durée d\'occupation souhaitée' => 'fullLengthOccupation',
           'Date d\'entrée souhaitée' => 'startOccupation',
           'Contribution au projet du propriétaire' => 'contribution'
