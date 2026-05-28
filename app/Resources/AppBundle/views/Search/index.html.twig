@@ -94,7 +94,7 @@
         {% if latest|length %}
             {% for space in latest %}
                 <div class="item col-xs-12 col-md-6 col-lg-4">
-                     <div class="space_item">
+                     <div class="space_item{{ space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
                     <!-- Set width to 4 columns for grid view mode only -->
                     <a href="{{ path('space_show', {'id' : space.id}) }}" >
                         <div class="image">
@@ -156,7 +156,7 @@
 
         {% for space in unavailableSpaces %}
             <div class="item col-xs-12 col-md-6 col-lg-4">
-                <div class="space_item_unavailable">
+                <div class="space_item_unavailable{{ space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
                 <div class="image">
                     <img src="{% if space.pics.0 is defined %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
                     <div class="availability-overlay">

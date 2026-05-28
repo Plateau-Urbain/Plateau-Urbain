@@ -53,25 +53,37 @@
          {{ form_errors(form) }}
      
              <div class="row">
-                <div class="col-sm-12 form-group">
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                     {{ form_row(form.name) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6 form-group">
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                     {{ form_row(form.zipCode) }}
                 </div>
-                <div class="col-sm-6 form-group">
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                     {{ form_row(form.city) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6 form-group">
-                    {{ form_row(form.limitAvailability) }}
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                    {{ form_label(form.limitAvailability) }}
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 form-group">
+                            {{ form_widget(form.limitAvailability.date) }}
+                        </div>
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            {{ form_widget(form.limitAvailability.time.hour) }}
+                        </div>
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            {{ form_widget(form.limitAvailability.time.minute) }}
+                        </div>
+                    </div>
+                    {{ form_errors(form.limitAvailability) }}
                 </div>
-                <div class="col-sm-6 form-group">
+                <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                     {{ form_row(form.availability) }}
                 </div>
             </div>
@@ -84,13 +96,13 @@
             </div>
 
          <div class="row" style="display: flex; align-items: center;">
-            <div class="col-sm-5 form-group">
+            <div class="col-md-5 col-sm-12 col-xs-12 form-group">
                 {{ form_row(form.price) }}
         </div>
         <div class="col-sm-2 text-center form-group">
                 <span>ou</span>
         </div>
-        <div class="col-sm-5 form-group">
+        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
             {{ form_row(form.priceText, { 'attr': { 'placeholder': 'Lorem ipsum' } }) }}
         </div>
 </div>
@@ -119,6 +131,30 @@
                     {{ form_row(form.activityDescription) }}
                 </div>
             </div>
+
+            {% if form.rollingApplications is defined %}
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <div class="alert alert-info" role="alert" style="margin-top: 8px;">
+                        <strong>Candidature au fil de l’eau :</strong> active l’affichage (et l’obligation) du champ
+                        <strong>“Date d’entrée souhaitée”</strong> côté candidat.
+                    </div>
+                    {{ form_row(form.rollingApplications) }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if form.isErp is defined %}
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <div class="alert alert-info" role="alert" style="margin-top: 8px;">
+                        <strong>ERP (Établissement Recevant du Public) :</strong> activer si le lieu est ouvert au public.
+                        Certains "types d’usage" réservés aux ERP seront alors proposés aux candidats.
+                    </div>
+                    {{ form_row(form.isErp) }}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 

@@ -1,5 +1,5 @@
 <div class="col-sm-12">
-  <div class="item application-space space-card list-aac">
+  <div class="item application-space space-card list-aac{{ space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
 
     <div class="row row-flex">
       <div class="col-xs-12 col-md-4">
@@ -122,24 +122,45 @@
             
               {% if space.isEnabled and not space.isClosed %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_unpublish', {'id' : space.id}) }}" class="btn btn-line-19 btn-warning" onClick="return confirm('ADMIN : Suspendre temporairement cet espace pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');"><span>Suspendre pour modification</span></a>
-                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');"><span>Clôturer</span></a>
+                  <form method="post" action="{{ path('space_manager_unpublish', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('ADMIN : Suspendre temporairement cet espace pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_unpublish_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19 btn-warning"><span>Suspendre pour modification</span></button>
+                  </form>
+                  <form method="post" action="{{ path('space_manager_close', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_close_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19"><span>Clôturer</span></button>
+                  </form>
                 {% else %}
-                  <a href="{{ path('space_manager_unpublish', {'id' : space.id}) }}" class="btn btn-line-19 btn-warning" onClick="return confirm('Suspendre temporairement cet AAC pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');"><span>Suspendre pour modification</span></a>
-                  <a href="{{ path('space_manager_close', {'id' : space.id}) }}" class="btn btn-line-19 " onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');"><span>Clôturer</span></a>
+                  <form method="post" action="{{ path('space_manager_unpublish', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('Suspendre temporairement cet AAC pour modification ?\n\nAttention : Les candidats ne pourront plus voir l\'annonce jusqu\'à ce que vous la republiiez.\nPensez à modifier et republier rapidement.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_unpublish_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19 btn-warning"><span>Suspendre pour modification</span></button>
+                  </form>
+                  <form method="post" action="{{ path('space_manager_close', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_close_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19"><span>Clôturer</span></button>
+                  </form>
                 {% endif %}
               {% elseif not space.isEnabled %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir supprimer définitivement cet espace ?\n\nCette action est irréversible et supprimera :\n- L\'espace et toutes ses données\n- Toutes les candidatures associées\n- Tous les fichiers de candidatures\n\nATTENTION : Cette action ne peut pas être annulée.');"><span>Supprimer</span></a>
+                  <form method="post" action="{{ path('space_manager_delete', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('ADMIN : Êtes-vous sûr de vouloir supprimer définitivement cet espace ?\n\nCette action est irréversible et supprimera :\n- L\'espace et toutes ses données\n- Toutes les candidatures associées\n- Tous les fichiers de candidatures\n\nATTENTION : Cette action ne peut pas être annulée.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_delete_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19"><span>Supprimer</span></button>
+                  </form>
                 {% else %}
-                  <a href="{{ path('space_manager_delete', {'id' : space.id}) }}" class="btn btn-line-19" onClick="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');"><span>Supprimer</span></a>
+                  <form method="post" action="{{ path('space_manager_delete', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet espace ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_delete_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19"><span>Supprimer</span></button>
+                  </form>
                 {% endif %}
               {% endif %}
               
               {# Bouton de publication pour les admins uniquement #}
               {% if app.user and space.submitted and not space.enabled %}
                 {% if is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_publish', {'id' : space.id}) }}" class="btn btn-line-19 btn-success" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir approuver et publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.');"><span>Approuver et Publier</span></a>
+                  <form method="post" action="{{ path('space_manager_publish', {'id' : space.id}) }}" style="display:inline;" onsubmit="return confirm('ADMIN : Êtes-vous sûr de vouloir approuver et publier cet espace ?\n\nL\'espace sera immédiatement visible par tous les candidats et le propriétaire sera notifié par email.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('space_publish_' ~ space.id) }}">
+                    <button type="submit" class="btn btn-line-19 btn-success"><span>Approuver et Publier</span></button>
+                  </form>
                 {% else %}
                   <span class="text-warning" style="display: inline-block; padding: 10px; background: #fff3cd; border-radius: 4px; margin-top: 10px;">
                     <i class="fa fa-hourglass-half"></i> Votre espace est en attente de validation par un administrateur. Vous serez notifié par email une fois publié.

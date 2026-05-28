@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
@@ -34,11 +35,13 @@ class SpaceController extends Controller
     {
         $user = $this->getUser();
         $em = $this->get('doctrine.orm.entity_manager');
+        $isAdmin = $user && $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+        $canView = $user && ($space->isOwner($user) || $isAdmin);
 
-        if ( (!$space->isEnabled() && ($user === null || (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles()))))
-          || ($space->isClosed() && ($user === null || (!$space->isOwner($user) && ! in_array("ROLE_ADMIN", $this->getUser()->getRoles())))) ) {
-              return $this->redirect($this->generateUrl('search_index'));
-          }
+        // Espace non publié ou fermé : seuls le propriétaire et l'admin peuvent le voir
+        if ((!$space->isEnabled() || $space->isClosed()) && !$canView) {
+            return $this->redirect($this->generateUrl('search_index'));
+        }
 
         if ($user === null) {
             return ['space' => $space];
@@ -69,11 +72,6 @@ class SpaceController extends Controller
      */
     public function applyAction(Space $space, Request $request)
     {
-        error_log('=== DEBUG APPLY ACTION APPELÉE ===');
-        error_log('Espace ID: ' . $space->getId());
-        error_log('Méthode HTTP: ' . $request->getMethod());
-        error_log('URL: ' . $request->getUri());
-        
         $application = false;
         $em = $this->get('doctrine.orm.entity_manager');
         $userManager = $this->get('fos_user.user_manager');
@@ -85,10 +83,24 @@ class SpaceController extends Controller
             
             // Vérifier si le profil est complet pour les utilisateurs connectés
             if (!$user->isProfileComplete()) {
-                $this->addFlash('warning', 'Veuillez compléter votre profil avant de pouvoir candidater.');
-                return $this->redirect($this->generateUrl('security_profil', [
-                    'next' => $this->generateUrl('space_apply', ['space' => $space->getId()])
-                ]));
+                $missing = method_exists($user, 'getMissingProfileFields') ? $user->getMissingProfileFields() : [];
+                if (!empty($missing)) {
+                    $this->addFlash(
+                        'warning',
+                        sprintf(
+                            'Veuillez compléter votre profil avant de pouvoir candidater. Champs manquants : %s.',
+                            implode(', ', $missing)
+                        )
+                    );
+                } else {
+                    $this->addFlash('warning', 'Veuillez compléter votre profil avant de pouvoir candidater.');
+                }
+
+                $next = $this->generateUrl('space_apply', ['space' => $space->getId()]);
+                // Le champ "Zone(s) géographique(s) souhaitée(s)" est dans la section #two du profil (UX).
+                $profilUrl = $this->generateUrl('security_profil', ['next' => $next]) . '#two';
+
+                return $this->redirect($profilUrl);
             }
         } else {
             $user = $userManager->createUser();
@@ -121,9 +133,10 @@ class SpaceController extends Controller
                 $userManager->updatePassword($user);
             }
             
-            // Persister immédiatement la candidature pour qu'elle apparaisse dans "Mes candidatures"
-            $em->persist($application);
-            $em->flush();
+            // IMPORTANT:
+            // Ne pas persister une candidature à l'ouverture de la page.
+            // La candidature est créée en base uniquement quand l'utilisateur clique sur
+            // "Enregistrer en brouillon" ou "Soumettre".
         } elseif ($application->getStatus() === Application::UNREAD_STATUS) {
             // Pour l'instant on empeche les gens de refaire une candidature
             return $this->redirectToRoute('my_application_show', ['id' => $application->getId()]);
@@ -137,7 +150,10 @@ class SpaceController extends Controller
 
         $form = $this->createForm(ApplicationType::class, $application, [
             'action' => $this->generateUrl('space_apply', ['space' => $space->getId()]),
-            'user' => $user
+            'user' => $user,
+            // Sections profil affichées en récap (non éditables) dans apply:
+            // on désactive ces champs pour éviter que Symfony ne vide le profil lors du POST.
+            'freeze_profile_sections' => true,
         ]);
 
         // Debug: vérifier si le champ save existe
@@ -149,39 +165,44 @@ class SpaceController extends Controller
             ));
         }
 
-        $form->handleRequest($request);
-
-        // Debug: vérifier l'état du formulaire
-        if ($form->isSubmitted()) {
-            error_log('=== DEBUG FORMULAIRE SOUMIS ===');
-            error_log('Formulaire soumis: ' . ($form->isSubmitted() ? 'OUI' : 'NON'));
-            error_log('Formulaire valide: ' . ($form->isValid() ? 'OUI' : 'NON'));
-            error_log('Bouton submit cliqué: ' . ($form->get('submit')->isClicked() ? 'OUI' : 'NON'));
-            error_log('Bouton save cliqué: ' . ($form->get('save')->isClicked() ? 'OUI' : 'NON'));
+        // Vérifier les erreurs d'upload PHP avant de traiter le formulaire
+        if ($request->isMethod('POST')) {
+            $uploadErrors = [];
+            $files = $request->files->all();
             
-            // Debug des erreurs de validation
-            if (!$form->isValid()) {
-                error_log('=== ERREURS DE VALIDATION ===');
-                foreach ($form->getErrors(true) as $error) {
-                    error_log('Erreur: ' . $error->getMessage() . ' (champ: ' . $error->getOrigin()->getName() . ')');
-                }
-                
-                // Debug spécifique pour les champs de documents
-                error_log('=== DEBUG CHAMPS DOCUMENTS ===');
-                foreach ($application->getSpace()->getDocuments() as $field) {
-                    $fieldName = 'document_' . $field->getId();
-                    if ($form->has($fieldName)) {
-                        $documentField = $form->get($fieldName);
-                        error_log('Champ ' . $fieldName . ' - Erreurs: ' . count($documentField->getErrors()));
-                        foreach ($documentField->getErrors() as $docError) {
-                            error_log('  - Erreur document: ' . $docError->getMessage());
+            foreach ($files as $key => $fileArray) {
+                if (is_array($fileArray)) {
+                    foreach ($fileArray as $subKey => $file) {
+                        if ($file instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
+                            $errorCode = $file->getError();
+                            if ($errorCode !== UPLOAD_ERR_OK) {
+                                $errorMessage = $this->getUploadErrorMessage($errorCode, $file->getClientOriginalName());
+                                if ($errorMessage) {
+                                    $uploadErrors[] = $errorMessage;
+                                }
+                            }
+                        }
+                    }
+                } elseif ($fileArray instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
+                    $errorCode = $fileArray->getError();
+                    if ($errorCode !== UPLOAD_ERR_OK) {
+                        $errorMessage = $this->getUploadErrorMessage($errorCode, $fileArray->getClientOriginalName());
+                        if ($errorMessage) {
+                            $uploadErrors[] = $errorMessage;
                         }
                     }
                 }
             }
             
-            error_log('Données POST: ' . print_r($request->request->all(), true));
+            // Ajouter les erreurs d'upload au formulaire
+            if (!empty($uploadErrors)) {
+                foreach ($uploadErrors as $errorMsg) {
+                    $form->addError(new \Symfony\Component\Form\FormError($errorMsg));
+                }
+            }
         }
+
+        $form->handleRequest($request);
 
         // On vérifie qu'un compte n'existe pas avec la même adresse email
         if ($form->isSubmitted() && $user->getId() === null) {
@@ -196,9 +217,16 @@ class SpaceController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $intent = '';
+            $formData = $request->request->get($form->getName(), []);
+            if (is_array($formData) && isset($formData['intent'])) {
+                $intent = (string) $formData['intent'];
+            }
+            $isSaveIntent = $form->get('save')->isClicked() || $intent === 'save';
+            $isSubmitIntent = $form->get('submit')->isClicked() || $intent === 'submit';
             
             // Vérifier l'état de l'espace seulement pour la soumission définitive
-            if ($form->get('submit')->isClicked() && (!$space->isEnabled() || $space->isClosed())) {
+            if ($isSubmitIntent && (!$space->isEnabled() || $space->isClosed())) {
                 if ($space->isClosed()) {
                     // Espace fermé définitivement
                     $this->addFlash('error', 'Cet espace a été fermé définitivement. Votre candidature ne peut pas être soumise.');
@@ -224,15 +252,14 @@ class SpaceController extends Controller
                 }
             }
             
-            if ($form->get('submit')->isClicked()) {
-                error_log('✅ Statut défini: UNREAD_STATUS (soumission)');
+            if ($isSubmitIntent) {
                 $application->setStatus(Application::UNREAD_STATUS);
-            } elseif ($form->get('save')->isClicked()) {
-                error_log('✅ Statut défini: DRAFT_STATUS (brouillon)');
+            } elseif ($isSaveIntent) {
                 $application->setStatus(Application::DRAFT_STATUS);
-            } else {
-                error_log('❌ Aucun bouton détecté comme cliqué');
             }
+
+            // La "surface souhaitée" est désormais un champ de candidature (Application.wishedSize)
+            // et ne doit pas être écrasée depuis le profil.
 
             // S'assurer que l'utilisateur est persisté avant l'application
             if ($user->getId() === null) {
@@ -262,39 +289,37 @@ class SpaceController extends Controller
                     );
 
                 $this->get('mailer')->send($message);
-                error_log('✅ Email de confirmation envoyé avec succès');
             } catch (\Exception $e) {
-                error_log('❌ Erreur lors de l\'envoi de l\'email: ' . $e->getMessage());
-                // Ne pas faire échouer la candidature pour un problème d'email
+                $this->get('logger')->error('Échec envoi email confirmation candidature', ['exception' => $e, 'application_id' => $application->getId()]);
             }
 
 
 
             if ($connect_after_application) {
-                $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-                $this->get('security.token_storage')->setToken($token);
-                $this->get('session')->migrate();
-                $this->get('session')->set('_security_main', serialize($token));
-                $event = new InteractiveLoginEvent($request, $token);
-                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+                $checker = $this->get('security.user_checker');
+                try {
+                    $checker->checkPreAuth($user);
+                    $checker->checkPostAuth($user);
+                } catch (AuthenticationException $e) {
+                    $this->get('logger')->warning('Auto-login bloqué après candidature anonyme', ['user_id' => $user->getId(), 'reason' => $e->getMessage()]);
+                    $checker = null;
+                }
+                if ($checker !== null) {
+                    $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+                    $this->get('security.token_storage')->setToken($token);
+                    $this->get('session')->migrate();
+                    $this->get('session')->set('_security_main', serialize($token));
+                    $event = new InteractiveLoginEvent($request, $token);
+                    $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+                }
             }
 
-            try {
-                if($application->getStatus() == Application::DRAFT_STATUS){
-                    error_log('✅ Redirection vers space_show pour brouillon');
-                    return $this->redirectToRoute('space_show', [
-                        'id' => $space->getId().'#espace_sauvegarde'
-                    ]);
-                } else {
-                    error_log('✅ Redirection vers my_application_show pour soumission');
-                    return $this->redirectToRoute('my_application_show', [
-                        'id' => $application->getId()
-                    ]);
-                }
-            } catch (\Exception $e) {
-                error_log('❌ Erreur lors de la redirection: ' . $e->getMessage());
-                // Redirection de fallback vers la liste des candidatures
+            if($application->getStatus() == Application::DRAFT_STATUS){
                 return $this->redirectToRoute('my_applications_list');
+            } else {
+                return $this->redirectToRoute('my_application_show', [
+                    'id' => $application->getId()
+                ]);
             }
         }
 
@@ -303,6 +328,43 @@ class SpaceController extends Controller
             'space' => $space,
             'form' => $form->createView(),
         ];
+    }
+    
+    /**
+     * Retourne un message d'erreur lisible pour les codes d'erreur PHP d'upload
+     * 
+     * @param int $errorCode Code d'erreur PHP (UPLOAD_ERR_*)
+     * @param string $fileName Nom du fichier
+     * @return string|null Message d'erreur ou null si pas d'erreur
+     */
+    private function getUploadErrorMessage($errorCode, $fileName)
+    {
+        switch ($errorCode) {
+            case UPLOAD_ERR_INI_SIZE:
+                $maxSize = ini_get('upload_max_filesize');
+                return sprintf('Le fichier "%s" dépasse la taille maximale autorisée par le serveur (%s). Veuillez choisir un fichier plus petit.', $fileName, $maxSize);
+            
+            case UPLOAD_ERR_FORM_SIZE:
+                return sprintf('Le fichier "%s" dépasse la taille maximale autorisée (10 Mo). Veuillez choisir un fichier plus petit.', $fileName);
+            
+            case UPLOAD_ERR_PARTIAL:
+                return sprintf('Le fichier "%s" n\'a été que partiellement téléchargé. Veuillez réessayer.', $fileName);
+            
+            case UPLOAD_ERR_NO_FILE:
+                return null; // Pas de fichier, ce n'est pas une erreur si le champ n'est pas obligatoire
+            
+            case UPLOAD_ERR_NO_TMP_DIR:
+                return 'Erreur serveur : répertoire temporaire manquant. Veuillez contacter l\'administrateur.';
+            
+            case UPLOAD_ERR_CANT_WRITE:
+                return 'Erreur serveur : impossible d\'écrire le fichier sur le disque. Veuillez contacter l\'administrateur.';
+            
+            case UPLOAD_ERR_EXTENSION:
+                return sprintf('Le fichier "%s" a été bloqué par une extension PHP. Veuillez contacter l\'administrateur.', $fileName);
+            
+            default:
+                return sprintf('Erreur inconnue lors du téléchargement du fichier "%s". Veuillez réessayer.', $fileName);
+        }
     }
     
     /**
@@ -330,22 +392,39 @@ class SpaceController extends Controller
     }
 
     /**
-     * @Route("/file/{id}/delete", name="space_removefile")
+     * @Route("/file/{id}/delete", name="space_removefile", requirements={"id": "\d+"})
      *
+     * @param int     $id
      * @param Request $request
      *
      * @return RedirectResponse
      */
-    public function removeFileAction(ApplicationFile $applicationFile, Request $request)
+    public function removeFileAction($id, Request $request)
     {
+        if (!$this->isCsrfTokenValid('remove_file_' . $id, $request->get('_token'))) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $em = $this->get('doctrine.orm.entity_manager');
+        $applicationFile = $em->getRepository('AppBundle:ApplicationFile')->find($id);
+        if (!$applicationFile) {
+            throw $this->createNotFoundException('Fichier non trouvé.');
+        }
+
+        $application = $applicationFile->getApplication();
+        $currentUser = $this->getUser();
+        if (!$currentUser || $application->getProjectHolder() !== $currentUser) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce fichier.');
+        }
+
         $em->remove($applicationFile);
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
 
-        if ($request->get('service')) {
-            return $this->redirect($request->get('service'));
+        $serviceUrl = $request->get('service');
+        if ($serviceUrl && strpos($serviceUrl, '/') === 0 && strpos($serviceUrl, '//') !== 0) {
+            return $this->redirect($serviceUrl);
         }
 
         return $this->redirect(
@@ -370,11 +449,8 @@ class SpaceController extends Controller
     public function checkStatusAction(Space $space)
     {
         $response = new \Symfony\Component\HttpFoundation\JsonResponse([
-            'enabled' => $space->isEnabled(),
-            'closed' => $space->isClosed(),
-            'submitted' => $space->isSubmitted(),
             'available' => $space->isEnabled() && !$space->isClosed(),
-            'isDepublished' => !$space->isEnabled() && !$space->isClosed()
+            'closed' => $space->isClosed(),
         ]);
 
         return $response;
