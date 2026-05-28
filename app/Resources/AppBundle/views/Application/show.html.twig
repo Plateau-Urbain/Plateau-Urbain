@@ -65,6 +65,9 @@
           <div class="image-wrapper">
             <img src="{% if space.pics.0 is not null %}{{ vich_uploader_asset(space.pics.0, 'file') }}{% endif %}" alt="" />
           </div>
+          <div class="availability-overlay">
+            <span class="availability-text">Période de disponibilité : {{ space.availability }}</span>
+          </div>
         </div>
       </div>
 
@@ -82,10 +85,17 @@
 
           <div class="row">
             <ul>
-              <li>{{ space.nbSpaces }} espace(s)</li>
-              <li>De {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup></li>
-              <li>Disponibilité: {{ space.availability }}</li>
-              <li>À partir de: {{ space.price }}€/m²/mois <small class="sub">H.C. H.T.<sup>1</sup></li>
+              <li>{{ space.type }}</li>
+              <li>
+                {% if space.priceText %}
+                  {{ space.priceText }}
+                {% else %}
+                  À partir de {{ space.price * 12 }} € / m<sup>2</sup> / an
+                {% endif %}
+              </li>
+              <li>
+                <strong>{{ space.nbSpaces }}</strong> espace(s) de {{ space.minSpace }} m<sup>2</sup> à {{ space.maxSpace }} m<sup>2</sup>
+              </li>
                 <li>Bailleur: {{ application.space.owner.company }}</li>
               </ul>
              </div>
@@ -111,9 +121,13 @@
             
               {% if space.isEnabled and not space.isClosed %}
                 {% if app.user and is_granted('ROLE_ADMIN') %}
-                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');">Clôturer</a>
+                  <form method="post" action="{{ path('space_manager_close', { 'id': space.id }) }}" style="display:inline;" onsubmit="return confirm('ADMIN : Êtes-vous sûr de vouloir clôturer cet espace ?\n\nCette action fermera définitivement l\'appel à candidatures.');">
+                    <button type="submit" class="btn btn-line-19 btn-grey">Clôturer</button>
+                  </form>
                 {% else %}
-                  <a href="{{ path('space_manager_close', { 'id': space.id }) }}" class="btn btn-line-19 btn-grey" onClick="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">Clôturer</a>
+                  <form method="post" action="{{ path('space_manager_close', { 'id': space.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir clôturer cet espace ?');">
+                    <button type="submit" class="btn btn-line-19 btn-grey">Clôturer</button>
+                  </form>
                 {% endif %}
               {% endif %}
             </div>
@@ -172,8 +186,8 @@
             <tr><th>Présentation</th><td>{{ application.projectHolder.companyDescription|nl2br }}</td></tr>
             <tr><th>Nombre de personnes dans la structure</th><td>{{ application.projectHolder.companyEffective }}</td></tr>
             <tr><th>Structure(s) d'accompagnement</th><td>{{ application.projectHolder.companyStructures|nl2br }}</td></tr>
-            <tr><th>Site web</th><td><a href="{{ application.projectHolder.companySite }}" target="_blank">{{ application.projectHolder.companySite|length > 30 ? application.projectHolder.companySite|slice(0, 30) ~ '...' : application.projectHolder.companySite  }}</a></td></tr>
-            <tr><th>Blog</th><td><a href="{{ application.projectHolder.companyBlog }}" target="_blank">{{ application.projectHolder.companyBlog|length > 30 ? application.projectHolder.companyBlog|slice(0, 30) ~ '...' : application.projectHolder.companyBlog  }}</a></td></tr>
+            <tr><th>Site web</th><td>{% set _site = application.projectHolder.companySite|safe_href %}{% if _site %}<a href="{{ _site }}" target="_blank" rel="noopener noreferrer">{{ application.projectHolder.companySite|length > 30 ? application.projectHolder.companySite|slice(0, 30) ~ '...' : application.projectHolder.companySite }}</a>{% else %}{{ application.projectHolder.companySite }}{% endif %}</td></tr>
+            <tr><th>Blog</th><td>{% set _blog = application.projectHolder.companyBlog|safe_href %}{% if _blog %}<a href="{{ _blog }}" target="_blank" rel="noopener noreferrer">{{ application.projectHolder.companyBlog|length > 30 ? application.projectHolder.companyBlog|slice(0, 30) ~ '...' : application.projectHolder.companyBlog }}</a>{% else %}{{ application.projectHolder.companyBlog }}{% endif %}</td></tr>
           </tbody>
         </table>
       </div>
@@ -192,13 +206,29 @@
             <tr><th>Nom du projet</th><td>{{ application.name }}</td></tr>
             <tr><th>Type d'usage</th><td>{{ application.projectHolder.useType }}</td></tr>
             <tr><th>Type de projet</th><td>{{ application.category }}</td></tr>
-            <tr><th>Surface recherchée</th><td>{{ application.wishedSize }} m<sup>2</sup></td></tr>
-            <tr><th>Durée d'occupation</th><td>{{ application.fullLengthOccupation }}</td></tr>
-            <tr><th>Date d'entrée souhaitée</th><td>{{ application.startOccupation|date('d/m/Y') }}</td></tr>
-            <tr><th>Description</th><td>{{ application.description|nl2br }}</td></tr>
+            <tr><th>Départements souhaités</th><td>{% if application.projectHolder.preferredDepartmentsLabels|length %}{{ application.projectHolder.preferredDepartmentsLabels|join(', ') }}{% else %}—{% endif %}</td></tr>
+            <tr><th>Statut juridique (profil)</th><td>{% if application.projectHolder.companyStatus %}{{ application.projectHolder.companyStatus }}{% else %}—{% endif %}</td></tr>
+            <tr><th>Statut juridique (candidature)</th><td>{% if application.companyStatus %}{{ application.companyStatus }}{% else %}—{% endif %}</td></tr>
+            <tr><th>Surface souhaitée (profil)</th><td>{% if application.projectHolder.wishedSize %}{{ application.projectHolder.wishedSize }}{% else %}—{% endif %} m<sup>2</sup></td></tr>
+            <tr><th>Surface souhaitée (candidature)</th><td>{% if application.wishedSize %}{{ application.wishedSize }}{% else %}—{% endif %} m<sup>2</sup></td></tr>
+            {% set _lengthValue = application.lengthOccupation ?: application.projectHolder.usageDuration %}
+            {% set _lengthType = application.lengthTypeOccupation ?: application.projectHolder.lengthTypeOccupation %}
+            <tr>
+              <th>Durée d'occupation</th>
+              <td>
+                {% if _lengthValue %}
+                  {{ _lengthValue }}{% if _lengthType %} {{ _lengthType }}{% endif %}
+                {% else %}
+                  —
+                {% endif %}
+              </td>
+            </tr>
+            <tr><th>Budget mensuel total maximum</th><td>{% if application.projectHolder.monthlyBudgetMax %}{{ application.projectHolder.monthlyBudgetMax }} €{% else %}—{% endif %}</td></tr>
+            <tr><th>Date d'entrée souhaitée</th><td>{% if application.startOccupation %}{{ application.startOccupation|date('d/m/Y') }}{% else %}—{% endif %}</td></tr>
+            <tr><th>Présentation du projet</th><td>{% if application.description %}{{ application.description|nl2br }}{% else %}—{% endif %}</td></tr>
+            <tr><th>Quel sera l'usage du local ?</th><td>{% if application.localUsageDescription %}{{ application.localUsageDescription|nl2br }}{% else %}—{% endif %}</td></tr>
             <tr><th>Ouvert(e) à un projet collectif</th><td>{{ application.openToGlobalProject ? 'Oui' : 'Non' }}</td></tr>
-            <tr><th>Contribution au projet global du propriétaire</th><td>{{ application.contribution|nl2br }}</td></tr>
-            <tr><th>Souhaite être informé(e) des modalités pour devenir sociétaire</th><td>{{ application.devenirSocietaire ? 'Oui' : 'Non' }}</td></tr>
+            <tr><th>Quelles idées avez-vous pour participer au projet collectif ?</th><td>{{ application.contribution|nl2br }}</td></tr>
           </tbody>
         </table>
       </div>
@@ -218,7 +248,7 @@
             <tr><th><i class="fa-brands fa-instagram fa-lg"></i></th><td>{{ application.projectHolder.instagramUrl }}</td></tr>
             <tr><th><i class="fa-brands fa-linkedin fa-lg"></i></th><td>{{ application.projectHolder.linkedinUrl }}</td></tr>
             <tr><th><i class="fa-brands fa-bluesky fa-lg"></i></th><td>{{ application.projectHolder.googleUrl }}</td></tr>
-            <tr><th><i class="fa-brands fa-tiktok fa-lg"></i></th><td>{{ application.projectHolder.otherUrl }}</td></tr>
+            <tr><th><i class="fa fa-link fa-lg" title="Autre URL"></i></th><td>{{ application.projectHolder.otherUrl }}</td></tr>
 
           </tbody>
         </table>
@@ -246,7 +276,7 @@
             </div>
         
             <div class="file-infos">
-              <span>Kbis ou autre</span>
+              <span>justificatif d'activité</span>
               <div class="pull-right actions">
                 {% if application.projectHolder.hasDocuments('kbis') %}
                 {% set file =  application.projectHolder.getDocumentsType('kbis')[0] %}
@@ -302,7 +332,7 @@
     </a>
    
   
-  {% if application.status == constant('AppBundle\\Entity\\Application::WAIT_STATUS') %}
+  {% if application.status == constant('AppBundle\\Entity\\Application::WAIT_STATUS') or application.status == constant('AppBundle\\Entity\\Application::UNREAD_STATUS') %}
   
      
       <a href="" class="btn btn-line-19 js-modalAction" data-type="accept" data-id="{{ application.id }}">
@@ -356,6 +386,7 @@
 <div style="display: none;">
     <div id="accept_content">
         <form action="{{ path('space_manager_candidates', {'id' : space.id}) }}#accept_confirm" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('candidates_action') }}" />
             <div class="colorBox-content">
                 <h4>Accepter cette candidature</h4>
                 <br />
@@ -379,6 +410,7 @@
     </div>
     <div id="refuse_content">
         <form action="{{ path('space_manager_candidates', {'id' : space.id}) }}#refuse_confirm" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('candidates_action') }}" />
             <div class="colorBox-content">
                 <h4>Refuser cette candidature</h4>
                 <br />
@@ -413,9 +445,7 @@
         $(".js-modalAction").click(function () {
             var ids = '' + $(this).data('id');
 
-            console.log(ids);
-
-            $('input[name="applications"]').val(ids);
+            $('input[name="applications"]').attr('value', ids);
 
             $.colorbox({
                 width: "400px",
