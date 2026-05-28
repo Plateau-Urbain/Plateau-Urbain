@@ -1,15 +1,23 @@
 imports:
     - { resource: config.yml }
 
-#framework:
-#    validation:
-#        cache: apc
-
-#doctrine:
-#    orm:
-#        metadata_cache_driver: apc
-#        result_cache_driver: apc
-#        query_cache_driver: apc
+doctrine:
+    orm:
+        # filesystem : aucune dépendance, persiste entre les requêtes — OK pour prod sans APCu.
+        # Pour de meilleures performances, installer APCu (voir ci-dessous) et remplacer par "apcu".
+        #
+        # Installation APCu (Linux/production) :
+        #   sudo apt-get install php7.4-apcu   (Debian/Ubuntu)
+        #   pecl install apcu && echo "extension=apcu.so" >> /etc/php/7.4/fpm/php.ini
+        # Installation APCu (macOS Homebrew dev) :
+        #   pecl install apcu
+        # Puis remplacer les 3 lignes ci-dessous par :
+        #   metadata_cache_driver: apcu
+        #   query_cache_driver:    apcu
+        #   result_cache_driver:   apcu
+        metadata_cache_driver: filesystem
+        query_cache_driver:    filesystem
+        result_cache_driver:   filesystem
 
 monolog:
     handlers:
@@ -20,4 +28,6 @@ monolog:
         nested:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            # "warning" au lieu de "debug" : le buffer fingers_crossed ne stocke
+            # que les messages importants, évite l'explosion mémoire sous charge.
+            level: warning

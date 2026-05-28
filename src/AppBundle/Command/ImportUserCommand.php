@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use AppBundle\Entity\Application;
 
 class ImportUserCommand extends ContainerAwareCommand
 {
@@ -73,7 +74,7 @@ class ImportUserCommand extends ContainerAwareCommand
 				else switch(strtolower($item)) {
 				case 'an':
 				case 'ans':
-					$user->setLengthTypeOccupation('ans');
+					$user->setLengthTypeOccupation(Application::YEAR_TYPE);
 					break;
 				case 'mois':
 					$user->setLengthTypeOccupation('mois');
