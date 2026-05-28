@@ -11631,11 +11631,9 @@ img {
 }
 
 .row-flex {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .last-space.row-flex .col-xs-12,
