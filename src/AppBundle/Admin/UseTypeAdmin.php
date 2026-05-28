@@ -24,7 +24,12 @@ class UseTypeAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('General')
-            ->add('name')
+            ->add('name', null, array('label' => "Type de projet"))
+            ->add('isActive', null, array(
+                'label' => "Actif",
+                'required' => false,
+                'help' => "Décocher pour archiver : la valeur ne sera plus proposée dans les formulaires utilisateurs, mais reste visible pour les profils qui l'ont déjà sélectionnée.",
+            ))
 
             ->end()
 
@@ -35,7 +40,8 @@ class UseTypeAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name')
+            ->add('name', null, array('label' => "Type de projet"))
+            ->add('isActive', null, array('label' => "Actif"))
         ;
     }
 
@@ -43,7 +49,11 @@ class UseTypeAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+            ->addIdentifier('name', null, array('label' => "Type de projet"))
+            ->add('isActive', null, array(
+                'label' => "Actif",
+                'editable' => true,
+            ))
         ;
     }
 

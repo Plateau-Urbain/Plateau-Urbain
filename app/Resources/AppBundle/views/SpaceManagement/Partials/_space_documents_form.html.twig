@@ -24,7 +24,7 @@
   {% for document in documents %}
     <li class="li-icon check">
       {{document.name}}
-      <a href="{{ path('space_manager_removedocument', { 'id': document.id }) }}" class="pull-right"><i class="fa fa-trash"></i></a>
+      <a href="{{ path('space_manager_removedocument', { 'id': document.id, 'token': csrf_token('remove_document') }) }}" class="pull-right"><i class="fa fa-trash"></i></a>
     </li>
   {% endfor %}
 </ul>

@@ -36,12 +36,9 @@ class OAuthUserProvider extends BaseClass
             $user = $this->userManager->findUserByEmail($email);
 
             if (null === $user || !$user instanceof UserInterface) {
-                throw new UsernameNotFoundException("no user found with email $email");
-                $user = $this->userManager->createUser();
-                $user->setEmail($email);
-                $user->setPlainPassword(md5(uniqid()));
-                $user->setEnabled(true);
+                throw new UsernameNotFoundException("Aucun utilisateur trouvé avec l'email $email");
             }
+
             if ($socialID != '') {
                 switch ($service) {
                     case 'google':
