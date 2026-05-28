@@ -74,24 +74,11 @@
     </div>
 
     <form method="POST" action="{{ admin.generateUrl('select_export_fields', filterParameters) }}" id="export-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('export_fields') }}" />
         <div class="box-body">
-            <div class="callout callout-success">
-                <h4><i class="fa fa-check-circle"></i> Prêt pour un export rapide !</h4>
-                <p>
-                    <strong>12 champs essentiels</strong> sont déjà pré-sélectionnés (cochés ✓) pour vous.<br>
-                    Vous pouvez les modifier ou cliquer directement sur <strong>"Exporter les candidatures"</strong> en bas de page.
-                </p>
-                <p style="margin-top: 10px; margin-bottom: 0;">
-                    <strong>Astuce :</strong> Utilisez les boutons ci-dessous pour modifier rapidement votre sélection.
-                </p>
-            </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary" id="select-common-btn" style="background-color: #3c8dbc; border-color: #3c8dbc;">
-                            <i class="fa fa-star"></i> Sélection recommandée (12 champs)
-                        </button>
                         <button type="button" class="btn btn-default" id="select-all-btn">
                             <i class="fa fa-check-square"></i> Tout sélectionner
                         </button>
@@ -201,11 +188,6 @@
         margin-bottom: 15px;
     }
     
-    #select-common-btn:hover {
-        background-color: #2e6da4 !important;
-        border-color: #2e6da4 !important;
-    }
-    
     /* Forcer à cacher les icheckbox de Sonata Admin */
     .checkbox div[class^="icheckbox"],
     .checkbox-inline div[class^="icheckbox"],
@@ -243,31 +225,11 @@ $(document).ready(function() {
     const selectedCountLabel = $('#selected-count');
     const selectAllBtn = $('#select-all-btn');
     const deselectAllBtn = $('#deselect-all-btn');
-    const selectCommonBtn = $('#select-common-btn');
-    
-    // Champs recommandés pour export rapide - NOMS EXACTS des keys
-    const commonFields = [
-        'name',                      // Nom du projet
-        'status',                    // Statut
-        'created',                   // Date de création
-        'space',                     // Espace
-        'category',                  // Catégorie du projet
-        'projectHolder_fullName',    // Nom complet du porteur
-        'projectHolder_email',       // Email du porteur
-        'projectHolder_company',     // Nom de la structure
-        'projectHolder_companyPhone',// Téléphone
-        'wishedSize',                // Surface souhaitée
-        'startOccupation',           // Date d'entrée souhaitée
-        'fullLengthOccupation'       // Durée complète
-    ];
-    
-    console.log('Liste des champs recommandés:', commonFields);
     
     // Fonction pour mettre à jour le compteur
     function updateSelectedCount() {
         // Forcer jQuery à recalculer les cases cochées
         const count = $('input[name="fields[]"]:checked').length;
-        console.log('Mise à jour du compteur:', count, 'champs cochés');
         
         selectedCountLabel.text(count + ' champ' + (count > 1 ? 's' : '') + ' sélectionné' + (count > 1 ? 's' : ''));
         
@@ -283,7 +245,6 @@ $(document).ready(function() {
     // Bouton tout sélectionner
     selectAllBtn.on('click', function(e) {
         e.preventDefault();
-        console.log('Sélection de tous les champs...');
         
         // Sélectionner toutes les checkboxes
         $('input[name="fields[]"]').prop('checked', true);
@@ -293,14 +254,11 @@ $(document).ready(function() {
         // Mettre à jour le compteur ET les indicateurs visuels
         updateSelectedCount();
         updateVisualIndicators();
-        
-        console.log('✓ Tous les champs sélectionnés');
     });
     
     // Bouton tout désélectionner
     deselectAllBtn.on('click', function(e) {
         e.preventDefault();
-        console.log('Désélection de tous les champs...');
         
         // Désélectionner toutes les checkboxes
         $('input[name="fields[]"]').prop('checked', false);
@@ -308,33 +266,6 @@ $(document).ready(function() {
         $('.select-category').prop('checked', false);
         
         // Mettre à jour le compteur ET les indicateurs visuels
-        updateSelectedCount();
-        updateVisualIndicators();
-        
-        console.log('✓ Tous les champs désélectionnés');
-    });
-    
-    // Bouton sélection recommandée
-    selectCommonBtn.on('click', function(e) {
-        e.preventDefault();
-        console.log('Sélection des 12 champs recommandés...');
-        
-        // Désélectionner tout d'abord
-        $('input[name="fields[]"]').prop('checked', false);
-        $('.field-checkbox').prop('checked', false);
-        $('.select-category').prop('checked', false);
-        
-        // Sélectionner uniquement les champs recommandés
-        let selected = 0;
-        commonFields.forEach(function(fieldKey) {
-            const $checkbox = $('input[name="fields[]"][value="' + fieldKey + '"]');
-            if ($checkbox.length > 0) {
-                $checkbox.prop('checked', true);
-                selected++;
-            }
-        });
-        
-        console.log('✓ ' + selected + ' champs recommandés sélectionnés');
         updateSelectedCount();
         updateVisualIndicators();
     });
@@ -367,19 +298,9 @@ $(document).ready(function() {
         updateVisualIndicators();
     });
     
-    // Pré-sélection automatique : Simuler un clic sur le bouton "Sélection recommandée"
-    // Ce bouton fonctionne parfaitement quand on clique manuellement dessus,
-    // donc on va le déclencher automatiquement au chargement de la page
-    setTimeout(function() {
-        console.log('🤖 Déclenchement automatique du bouton "Sélection recommandée"...');
-        selectCommonBtn.trigger('click');
-        
-        // Forcer la mise à jour des indicateurs visuels après un court délai
-        setTimeout(function() {
-            updateVisualIndicators();
-            console.log('✓ Les 12 champs recommandés sont sélectionnés avec indicateurs visuels');
-        }, 100);
-    }, 500);
+    // Initialiser le compteur / style sans pré-sélection
+    updateSelectedCount();
+    updateVisualIndicators();
     
     // Validation du formulaire
     $('#export-form').on('submit', function(e) {
@@ -390,13 +311,10 @@ $(document).ready(function() {
             return false;
         }
         
-        // Debug: afficher ce qui est soumis
-        console.log('Formulaire soumis avec ' + checkedCount + ' champs');
         const selectedFields = [];
         $('.field-checkbox:checked').each(function() {
             selectedFields.push($(this).val());
         });
-        console.log('Champs sélectionnés:', selectedFields);
     });
 });
 

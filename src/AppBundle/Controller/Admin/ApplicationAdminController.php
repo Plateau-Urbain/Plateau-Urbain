@@ -30,20 +30,13 @@ class ApplicationAdminController extends CRUDController
         // IMPORTANT: Récupérer TOUS les paramètres de l'URL (filtres + pagination + tri)
         // car getFilterParameters() de Sonata ne retourne que _sort_by, _sort_order, etc.
         $filterParameters = $request->query->all();
-        
-        // Debug: logger les paramètres reçus
-        $logger = $this->get('logger');
-        $logger->info('selectExportFieldsAction - Paramètres complets', [
-            'all_params' => $filterParameters,
-            'request_uri' => $request->getRequestUri()
-        ]);
-        
+
         if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('export_fields', $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException('Token CSRF invalide.');
+            }
+
             $selectedFields = $request->request->get('fields', []);
-            
-            // Debug: logger ce qui est reçu
-            $logger = $this->get('logger');
-            $logger->info('Champs sélectionnés pour export:', ['fields' => $selectedFields, 'filters' => $filterParameters]);
             
             if (empty($selectedFields)) {
                 $this->addFlash('sonata_flash_error', 'Veuillez sélectionner au moins un champ à exporter.');
@@ -78,18 +71,9 @@ class ApplicationAdminController extends CRUDController
     {
         $fieldsParam = $request->query->get('fields', '');
         $selectedFieldKeys = array_filter(explode(',', $fieldsParam));
-        
-        // Debug log
-        $logger = $this->get('logger');
-        $logger->info('customExportAction appelée', [
-            'fields_param' => $fieldsParam,
-            'selected_keys' => $selectedFieldKeys,
-            'all_query_params' => $request->query->all()
-        ]);
-        
+
         if (empty($selectedFieldKeys)) {
             $this->addFlash('sonata_flash_error', 'Aucun champ sélectionné pour l\'export.');
-            $logger->warning('Export annulé: aucun champ sélectionné');
             return $this->redirectToList();
         }
         
@@ -104,20 +88,101 @@ class ApplicationAdminController extends CRUDController
             }
         }
         
-        $logger->info('Champs à exporter', ['fields' => $exportFields]);
-        
+        // Déterminer si des champs calculés sont demandés.
+        // Les champs computed.* ne sont pas résolus par le PropertyAccessor Sonata Exporter.
+        $hasComputedFields = false;
+        foreach ($exportFields as $property) {
+            if (strpos($property, 'computed.') === 0) {
+                $hasComputedFields = true;
+                break;
+            }
+        }
+
         // Récupérer le datagrid
         $datagrid = $this->admin->getDatagrid();
-        
+
         // Appliquer les filtres manuellement depuis les paramètres de l'URL
         $queryParams = $request->query->all();
-        $logger->info('Paramètres de requête pour filtres', ['params' => $queryParams]);
+        
+        // Fonction helper pour convertir un tableau de date (day, month, year) en DateTime
+        $convertDateArray = function($dateArray) {
+            // Si c'est une chaîne JSON, la décoder
+            if (is_string($dateArray)) {
+                $decoded = json_decode($dateArray, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $dateArray = $decoded;
+                } else {
+                    return null;
+                }
+            }
+            
+            if (!is_array($dateArray)) {
+                return null;
+            }
+            
+            // Si c'est déjà un DateTime, le retourner tel quel
+            if ($dateArray instanceof \DateTime) {
+                return $dateArray;
+            }
+            
+            // Si c'est un tableau avec day, month, year
+            if (isset($dateArray['day']) && isset($dateArray['month']) && isset($dateArray['year'])) {
+                $day = (int)$dateArray['day'];
+                $month = (int)$dateArray['month'];
+                $year = (int)$dateArray['year'];
+                
+                if ($day > 0 && $month > 0 && $year > 0) {
+                    try {
+                        return new \DateTime(sprintf('%04d-%02d-%02d', $year, $month, $day));
+                    } catch (\Exception $e) {
+                        return null;
+                    }
+                }
+            }
+            
+            return null;
+        };
         
         // Parcourir les filtres et les appliquer au datagrid
         foreach ($queryParams as $filterName => $filterData) {
             // Ignorer les paramètres système et fields
             if (in_array($filterName, ['_page', '_sort_by', '_sort_order', '_per_page', 'fields'])) {
                 continue;
+            }
+            
+            // Normaliser les paramètres qui peuvent être des chaînes JSON
+            if (is_string($filterData)) {
+                $decoded = json_decode($filterData, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $filterData = $decoded;
+                }
+            }
+            
+            // Vérifier si c'est un filtre de date range passé directement comme tableau [date1, date2]
+            // Les dates peuvent être passées comme [{"day":"11","month":"1","year":"2026"}, {"day":"19","month":"1","year":"2026"}]
+            if (is_array($filterData) && !isset($filterData['value']) && !isset($filterData['type'])) {
+                // Vérifier si c'est un tableau de deux éléments qui ressemblent à des dates
+                if (count($filterData) == 2 && isset($filterData[0]) && isset($filterData[1])) {
+                    $date1 = $convertDateArray($filterData[0]);
+                    $date2 = $convertDateArray($filterData[1]);
+                    
+                    // Si au moins une des deux dates est valide, c'est probablement un filtre de date range
+                    if ($date1 !== null || $date2 !== null) {
+                        $filter = $datagrid->getFilter($filterName);
+                        if ($filter) {
+                            $normalizedFilterData = [
+                                'type' => 'default',
+                                'value' => [
+                                    'start' => $date1,
+                                    'end' => $date2
+                                ]
+                            ];
+                            
+                            $filter->apply($datagrid->getQuery(), $normalizedFilterData);
+                            continue;
+                        }
+                    }
+                }
             }
             
             // Si c'est un filtre avec une valeur
@@ -131,7 +196,6 @@ class ApplicationAdminController extends CRUDController
                         $filter = $datagrid->getFilter($filterName);
                         if ($filter) {
                             $filter->apply($datagrid->getQuery(), $filterData);
-                            $logger->info("Filtre appliqué: $filterName", ['value' => $value]);
                         }
                     }
                 }
@@ -139,24 +203,49 @@ class ApplicationAdminController extends CRUDController
                 elseif (is_array($value)) {
                     // Pour les dates de type range (start/end)
                     $hasValidValue = false;
+                    $normalizedValue = $value;
+                    
                     if (isset($value['start']) && is_array($value['start'])) {
-                        // Date range
-                        if (!empty($value['start']['day']) || !empty($value['start']['month']) || !empty($value['start']['year'])) {
+                        // Date range avec start/end
+                        $startDate = $convertDateArray($value['start']);
+                        $endDate = isset($value['end']) && is_array($value['end']) ? $convertDateArray($value['end']) : null;
+                        
+                        if ($startDate !== null || $endDate !== null) {
                             $hasValidValue = true;
+                            // Normaliser la valeur pour le filtre
+                            $normalizedValue = [
+                                'start' => $startDate,
+                                'end' => $endDate
+                            ];
                         }
-                        if (isset($value['end']) && (!empty($value['end']['day']) || !empty($value['end']['month']) || !empty($value['end']['year']))) {
+                    } elseif (isset($value['day']) || isset($value['month']) || isset($value['year'])) {
+                        // Date simple avec day, month, year
+                        $date = $convertDateArray($value);
+                        if ($date !== null) {
                             $hasValidValue = true;
+                            $normalizedValue = $date;
                         }
                     } else {
-                        // Date simple ou autre tableau
-                        if (!empty($value['day']) || !empty($value['month']) || !empty($value['year'])) {
-                            $hasValidValue = true;
-                        }
-                        // Pour les autres tableaux, vérifier s'il y a des valeurs non vides
-                        foreach ($value as $v) {
-                            if (!empty($v)) {
+                        // Vérifier si c'est un tableau de dates (pour les filtres range qui peuvent être passés différemment)
+                        // Parfois les dates range sont passées comme [date1, date2] au lieu de {start: date1, end: date2}
+                        if (count($value) == 2 && isset($value[0]) && isset($value[1])) {
+                            $date1 = $convertDateArray($value[0]);
+                            $date2 = $convertDateArray($value[1]);
+                            
+                            if ($date1 !== null || $date2 !== null) {
                                 $hasValidValue = true;
-                                break;
+                                $normalizedValue = [
+                                    'start' => $date1,
+                                    'end' => $date2
+                                ];
+                            }
+                        } else {
+                            // Pour les autres tableaux, vérifier s'il y a des valeurs non vides
+                            foreach ($value as $v) {
+                                if (!empty($v)) {
+                                    $hasValidValue = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -164,8 +253,11 @@ class ApplicationAdminController extends CRUDController
                     if ($hasValidValue) {
                         $filter = $datagrid->getFilter($filterName);
                         if ($filter) {
-                            $filter->apply($datagrid->getQuery(), $filterData);
-                            $logger->info("Filtre date appliqué: $filterName", ['value' => $value]);
+                            // Reconstruire filterData avec la valeur normalisée
+                            $normalizedFilterData = $filterData;
+                            $normalizedFilterData['value'] = $normalizedValue;
+                            
+                            $filter->apply($datagrid->getQuery(), $normalizedFilterData);
                         }
                     }
                 }
@@ -173,15 +265,41 @@ class ApplicationAdminController extends CRUDController
         }
         
         $datagrid->buildPager();
-        
-        // Obtenir le nombre de résultats via le Pager
-        $pager = $datagrid->getPager();
-        $resultCount = $pager->getNbResults();
-        
-        $logger->info('Datagrid construit avec filtres manuels', [
-            'result_count' => $resultCount
-        ]);
-        
+
+        // Export CSV manuel si des champs calculés sont sélectionnés
+        if ($hasComputedFields) {
+            $applications = $datagrid->getResults();
+            $headers = array_keys($exportFields);
+
+            $callback = function () use ($applications, $exportFields, $headers) {
+                echo "\xEF\xBB\xBF";
+                $rows = [];
+                $rows[] = $headers;
+
+                foreach ($applications as $application) {
+                    $row = [];
+                    foreach ($exportFields as $property) {
+                        $row[] = (string) $this->resolveExportValue($application, $property);
+                    }
+                    $rows[] = $row;
+                }
+
+                foreach ($rows as $row) {
+                    $escapedRow = array_map(function ($cell) {
+                        return '"' . str_replace('"', '""', (string) $cell) . '"';
+                    }, $row);
+                    echo implode(';', $escapedRow) . "\r\n";
+                }
+            };
+
+            $filename = 'export_candidatures_' . date('Y-m-d_H-i-s') . '.csv';
+
+            return new StreamedResponse($callback, 200, [
+                'Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+            ]);
+        }
+
         // Utiliser le ModelManager de Sonata pour créer l'itérateur
         $sourceIterator = $this->admin->getModelManager()->getDataSourceIterator($datagrid, $exportFields);
         $sourceIterator->setDateTimeFormat('d/m/Y H:i');
@@ -207,156 +325,524 @@ class ApplicationAdminController extends CRUDController
      */
     private function getAllAvailableFields()
     {
+        // Aligné sur `SpaceManagementController::getAllAvailableFieldsForExport()`
         return [
             // Informations générales
+            'space' => [
+                'label' => '[Candidature] Espace',
+                'property' => 'space',
+                'category' => 'Informations générales'
+            ],
             'id' => [
-                'label' => 'ID',
+                'label' => '[Candidature] ID de la candidature',
                 'property' => 'id',
                 'category' => 'Informations générales'
             ],
             'name' => [
-                'label' => 'Nom du projet',
+                'label' => '[Candidature] Nom du projet',
                 'property' => 'name',
                 'category' => 'Informations générales'
             ],
             'status' => [
-                'label' => 'Statut',
+                'label' => '[Candidature] Statut',
                 'property' => 'statusLabel',
                 'category' => 'Informations générales'
             ],
             'selected' => [
-                'label' => 'Sélectionné',
+                'label' => '[Candidature] Sélectionné',
                 'property' => 'selected',
                 'category' => 'Informations générales'
             ],
             'created' => [
-                'label' => 'Date de création',
+                'label' => '[Candidature] Date de création',
                 'property' => 'created',
                 'category' => 'Informations générales'
             ],
             'updated' => [
-                'label' => 'Date de mise à jour',
+                'label' => '[Candidature] Date de mise à jour',
                 'property' => 'updated',
                 'category' => 'Informations générales'
             ],
-            
-            // Informations sur le projet
-            'description' => [
-                'label' => 'Description du projet',
-                'property' => 'description',
-                'category' => 'Informations sur le projet'
-            ],
-            'category' => [
-                'label' => 'Catégorie du projet',
-                'property' => 'category',
-                'category' => 'Informations sur le projet'
-            ],
-            'contribution' => [
-                'label' => 'Contribution au projet du propriétaire',
-                'property' => 'contribution',
-                'category' => 'Informations sur le projet'
-            ],
-            'openToGlobalProject' => [
-                'label' => 'Ouvert au projet collectif',
-                'property' => 'openToGlobalProject',
-                'category' => 'Informations sur le projet'
-            ],
-            'devenirSocietaire' => [
-                'label' => 'Souhaite devenir sociétaire',
-                'property' => 'devenirSocietaire',
-                'category' => 'Informations sur le projet'
-            ],
-            
-            // Informations sur l'occupation
-            'wishedSize' => [
-                'label' => 'Surface souhaitée (m²)',
-                'property' => 'wishedSize',
-                'category' => 'Occupation'
-            ],
-            'lengthOccupation' => [
-                'label' => 'Durée d\'occupation',
-                'property' => 'lengthOccupation',
-                'category' => 'Occupation'
-            ],
-            'lengthTypeOccupation' => [
-                'label' => 'Type de durée',
-                'property' => 'lengthTypeOccupation',
-                'category' => 'Occupation'
-            ],
-            'fullLengthOccupation' => [
-                'label' => 'Durée complète',
-                'property' => 'fullLengthOccupation',
-                'category' => 'Occupation'
-            ],
-            'startOccupation' => [
-                'label' => 'Date d\'entrée souhaitée',
-                'property' => 'startOccupation',
-                'category' => 'Occupation'
-            ],
-            
-            // Informations sur l'espace
-            'space' => [
-                'label' => 'Espace',
-                'property' => 'space',
-                'category' => 'Espace'
-            ],
-            
-            // Informations sur le porteur de projet
+
+            // Profil - Porteur de projet
             'projectHolder_fullName' => [
-                'label' => 'Nom complet du porteur',
+                'label' => '[Profil] Nom complet du porteur',
                 'property' => 'projectHolder.fullName',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Porteur de projet'
             ],
             'projectHolder_email' => [
-                'label' => 'Email du porteur',
+                'label' => '[Profil] Email du porteur',
                 'property' => 'projectHolder.email',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Porteur de projet'
             ],
+            'projectHolder_civility' => [
+                'label' => '[Profil] Civilité',
+                'property' => 'projectHolder.civility',
+                'category' => 'Profil - Porteur de projet'
+            ],
+            'projectHolder_birthday' => [
+                'label' => '[Profil] Date de naissance',
+                'property' => 'projectHolder.birthday',
+                'category' => 'Profil - Porteur de projet'
+            ],
+            'projectHolder_newsletter' => [
+                'label' => '[Profil] Newsletter',
+                'property' => 'projectHolder.newsletter',
+                'category' => 'Profil - Porteur de projet'
+            ],
+            'projectHolder_requiredIdDoc' => [
+                'label' => '[Profil] Doc obligatoire - Pièce d\'identité (chemin local)',
+                'property' => 'computed.profileRequiredIdDocPath',
+                'category' => 'Profil - Documents obligatoires'
+            ],
+            'projectHolder_requiredKbisDoc' => [
+                'label' => '[Profil] Doc obligatoire - Justificatif d\'activité (chemin local)',
+                'property' => 'computed.profileRequiredKbisDocPath',
+                'category' => 'Profil - Documents obligatoires'
+            ],
+
+            // Profil - Structure du porteur de projet
+            'projectHolder_civility' => [
+                'label' => '[Profil] Civilité',
+                'property' => 'projectHolder.civility',
+                'category' => 'Profil - Mes informations'
+            ],
+            'projectHolder_firstname' => [
+                'label' => '[Profil] Prénom',
+                'property' => 'projectHolder.firstname',
+                'category' => 'Profil - Mes informations'
+            ],
+            'projectHolder_lastname' => [
+                'label' => '[Profil] Nom',
+                'property' => 'projectHolder.lastname',
+                'category' => 'Profil - Mes informations'
+            ],
+            'projectHolder_birthday' => [
+                'label' => '[Profil] Date de naissance',
+                'property' => 'projectHolder.birthday',
+                'category' => 'Profil - Mes informations'
+            ],
+            'projectHolder_email' => [
+                'label' => '[Profil] Email',
+                'property' => 'projectHolder.email',
+                'category' => 'Profil - Mes informations'
+            ],
+            'projectHolder_phone' => [
+                'label' => '[Profil] Téléphone personnel',
+                'property' => 'projectHolder.phone',
+                'category' => 'Profil - Mes informations'
+            ],
+
+            // Profil - Structure du porteur de projet
             'projectHolder_company' => [
-                'label' => 'Nom de la structure',
+                'label' => '[Profil] Nom de la structure',
                 'property' => 'projectHolder.company',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_siret' => [
+                'label' => '[Profil] SIRET',
+                'property' => 'projectHolder.siret',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companyStatus' => [
+                'label' => '[Profil] Statut de la structure',
+                'property' => 'projectHolder.companyStatus',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companyCreationDate' => [
+                'label' => '[Profil] Date de création de la structure',
+                'property' => 'projectHolder.companyCreationDate',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_address' => [
+                'label' => '[Profil] Adresse',
+                'property' => 'projectHolder.address',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_zipcode' => [
+                'label' => '[Profil] Code postal',
+                'property' => 'projectHolder.zipcode',
+                'category' => 'Profil - Structure du porteur de projet'
             ],
             'projectHolder_companyPhone' => [
-                'label' => 'Téléphone',
+                'label' => '[Profil] Téléphone structure',
                 'property' => 'projectHolder.companyPhone',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companyMobile' => [
+                'label' => '[Profil] Mobile',
+                'property' => 'projectHolder.companyMobile',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companyEffective' => [
+                'label' => '[Profil] Nombre de personnes',
+                'property' => 'projectHolder.companyEffective',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companyStructures' => [
+                'label' => '[Profil] Structure d\'accompagnement',
+                'property' => 'projectHolder.companyStructures',
+                'category' => 'Profil - Structure du porteur de projet'
+            ],
+            'projectHolder_companySite' => [
+                'label' => '[Profil] Site web',
+                'property' => 'projectHolder.companySite',
+                'category' => 'Profil - Structure du porteur de projet'
             ],
             'projectHolder_companyDescription' => [
-                'label' => 'Présentation de la structure',
+                'label' => '[Profil] Présentation de la structure',
                 'property' => 'projectHolder.companyDescription',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Structure du porteur de projet'
             ],
+
+            // Profil - Réseaux sociaux
             'projectHolder_facebookUrl' => [
-                'label' => 'Facebook',
+                'label' => '[Profil] Facebook',
                 'property' => 'projectHolder.facebookUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
             ],
             'projectHolder_twitterUrl' => [
-                'label' => 'Twitter',
+                'label' => '[Profil] Twitter',
                 'property' => 'projectHolder.twitterUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
             ],
             'projectHolder_instagramUrl' => [
-                'label' => 'Instagram',
+                'label' => '[Profil] Instagram',
                 'property' => 'projectHolder.instagramUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
             ],
             'projectHolder_googleUrl' => [
-                'label' => 'Google+',
+                'label' => '[Profil] Google+',
                 'property' => 'projectHolder.googleUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
             ],
             'projectHolder_linkedinUrl' => [
-                'label' => 'LinkedIn',
+                'label' => '[Profil] LinkedIn',
                 'property' => 'projectHolder.linkedinUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
             ],
             'projectHolder_otherUrl' => [
-                'label' => 'Autre URL',
+                'label' => '[Profil] Autre URL',
                 'property' => 'projectHolder.otherUrl',
-                'category' => 'Porteur de projet'
+                'category' => 'Profil - Réseaux sociaux'
+            ],
+
+            // Profil - Mon projet
+            'projectHolder_wishedSize' => [
+                'label' => '[Profil] Surface souhaitée (m²)',
+                'property' => 'projectHolder.wishedSize',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_useType' => [
+                'label' => '[Profil] Type de projet',
+                'property' => 'projectHolder.useType',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_preferredDepartments' => [
+                'label' => '[Profil] Zone géographique',
+                'property' => 'projectHolder.preferredDepartmentsLabelsForExport',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_usageDate' => [
+                'label' => '[Profil] Date de disponibilité',
+                'property' => 'projectHolder.usageDate',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_usageDuration' => [
+                'label' => '[Profil] Durée d\'occupation',
+                'property' => 'projectHolder.usageDuration',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_monthlyBudgetMax' => [
+                'label' => '[Profil] Budget mensuel total maximum (€)',
+                'property' => 'projectHolder.monthlyBudgetMax',
+                'category' => 'Profil - Mon projet'
+            ],
+            'projectHolder_projectDescription' => [
+                'label' => '[Profil] Présentation du projet',
+                'property' => 'projectHolder.projectDescription',
+                'category' => 'Profil - Mon projet'
+            ],
+
+            // Candidature - Informations sur le projet
+            'description' => [
+                'label' => '[Candidature] Présentation du projet',
+                'property' => 'description',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+            'localUsageDescription' => [
+                'label' => '[Candidature] Quel sera l\'usage du local ?',
+                'property' => 'localUsageDescription',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+            'category' => [
+                'label' => '[Candidature] Type d\'usage',
+                'property' => 'category',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+            'companyStatus' => [
+                'label' => '[Candidature] Statut juridique',
+                'property' => 'companyStatus',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+            'contribution' => [
+                'label' => '[Candidature] Quelles idées avez-vous pour participer au projet collectif ?',
+                'property' => 'contribution',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+            'openToGlobalProject' => [
+                'label' => '[Candidature] Ouvert au projet collectif',
+                'property' => 'openToGlobalProject',
+                'category' => 'Candidature - Informations sur le projet'
+            ],
+
+            // Candidature - Occupation
+            'wishedSize' => [
+                'label' => '[Candidature] Surface souhaitée (m²)',
+                'property' => 'wishedSize',
+                'category' => 'Candidature - Occupation'
+            ],
+            'startOccupation' => [
+                'label' => '[Candidature] Date d\'entrée souhaitée',
+                'property' => 'startOccupation',
+                'category' => 'Candidature - Occupation'
+            ],
+            'application_documents_paths' => [
+                'label' => '[Candidature] Documents déposés (chemins locaux)',
+                'property' => 'computed.applicationDocumentsPaths',
+                'category' => 'Candidature - Documents déposés'
             ],
         ];
+    }
+
+    /**
+     * Résout la valeur d'un champ export, y compris les champs calculés.
+     *
+     * @param object $application
+     * @param string $property
+     *
+     * @return string
+     */
+    private function resolveExportValue($application, $property)
+    {
+        if (strpos($property, 'computed.') === 0) {
+            return $this->resolveComputedExportValue($application, $property);
+        }
+
+        $parts = explode('.', $property);
+        $value = $application;
+        foreach ($parts as $part) {
+            $getter = 'get' . ucfirst($part);
+            if (is_object($value)) {
+                if (method_exists($value, $getter)) {
+                    $value = $value->$getter();
+                } elseif (method_exists($value, $part)) {
+                    $value = $value->$part();
+                } else {
+                    $value = '';
+                    break;
+                }
+            } else {
+                $value = '';
+                break;
+            }
+        }
+
+        if ($value instanceof \DateTime) {
+            $value = $value->format('d/m/Y H:i');
+        }
+        if (is_array($value)) {
+            $value = implode('; ', array_map('strval', $value));
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * Résout les champs export calculés (computed.*).
+     *
+     * @param object $application
+     * @param string $property
+     *
+     * @return string
+     */
+    private function resolveComputedExportValue($application, $property)
+    {
+        if ($property === 'computed.applicationDocumentsPaths') {
+            $paths = $this->getApplicationDocumentDisplayPaths($application);
+            return $paths ? implode('; ', $paths) : '';
+        }
+
+        if (!is_object($application) || !method_exists($application, 'getProjectHolder')) {
+            return '';
+        }
+
+        $projectHolder = $application->getProjectHolder();
+        if (!$projectHolder) {
+            return '';
+        }
+
+        if ($property === 'computed.profileRequiredIdDocPath') {
+            if (!method_exists($projectHolder, 'getDocumentsType')) {
+                return '';
+            }
+            $docs = $projectHolder->getDocumentsType('id');
+            if (!empty($docs) && isset($docs[0]) && method_exists($docs[0], 'getFileName') && $docs[0]->getFileName()) {
+                return 'Piece_identite_' . $docs[0]->getFileName();
+            }
+            return '';
+        }
+
+        if ($property === 'computed.profileRequiredKbisDocPath') {
+            if (!method_exists($projectHolder, 'getDocumentsType')) {
+                return '';
+            }
+            $docs = $projectHolder->getDocumentsType('kbis');
+            if (!empty($docs) && isset($docs[0]) && method_exists($docs[0], 'getFileName') && $docs[0]->getFileName()) {
+                return 'KBIS_' . $docs[0]->getFileName();
+            }
+            return '';
+        }
+
+        return '';
+    }
+
+    /**
+     * Renvoie une liste de "chemins" lisibles pour les documents déposés.
+     * En Sonata (export CSV), on ne crée pas de ZIP, donc on renvoie des noms de fichiers.
+     *
+     * @param object $application
+     *
+     * @return string[]
+     */
+    private function getApplicationDocumentDisplayPaths($application)
+    {
+        if (!is_object($application) || !method_exists($application, 'getFiles')) {
+            return array();
+        }
+
+        $paths = array();
+        foreach ($application->getFiles() as $file) {
+            if (!is_object($file) || !method_exists($file, 'getFileName') || !$file->getFileName()) {
+                continue;
+            }
+            $displayName = $file->getFileName();
+            if (method_exists($file, 'getSpaceDocument') && $file->getSpaceDocument() && method_exists($file->getSpaceDocument(), 'getName')) {
+                $displayName = $file->getSpaceDocument()->getName() . '_' . $file->getFileName();
+            }
+            $paths[] = $displayName;
+        }
+
+        return $paths;
+    }
+
+    /**
+     * Page de statistiques globales sur toutes les candidatures (hors brouillons).
+     */
+    public function statisticsAction(\Symfony\Component\HttpFoundation\Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        // Récupérer les années disponibles pour le filtre
+        $yearsRaw = $em->createQuery(
+            'SELECT DISTINCT SUBSTRING(a.created, 1, 4) AS yr
+             FROM AppBundle:Application a
+             WHERE a.status != :draft
+             ORDER BY yr ASC'
+        )->setParameter('draft', \AppBundle\Entity\Application::DRAFT_STATUS)->getResult();
+        $availableYears = array_map(function($r) { return (int) $r['yr']; }, $yearsRaw);
+
+        // Année sélectionnée (toutes par défaut)
+        $selectedYear = $request->query->get('year', 'all');
+        if ($selectedYear !== 'all') {
+            $selectedYear = (int) $selectedYear;
+            if (!in_array($selectedYear, $availableYears)) {
+                $selectedYear = 'all';
+            }
+        }
+
+        // Clause de filtre DQL commune
+        $yearFilter    = $selectedYear !== 'all' ? ' AND SUBSTRING(a.created, 1, 4) = :year ' : '';
+        $baseParams    = [
+            'wait'     => \AppBundle\Entity\Application::WAIT_STATUS,
+            'accepted' => \AppBundle\Entity\Application::ACCEPT_STATUS,
+            'rejected' => \AppBundle\Entity\Application::REJECT_STATUS,
+            'draft'    => \AppBundle\Entity\Application::DRAFT_STATUS,
+        ];
+        if ($selectedYear !== 'all') {
+            $baseParams['year'] = (string) $selectedYear;
+        }
+
+        // --- Données par type d'usage (Category) ---
+        $categoryRows = $em->createQuery(
+            'SELECT c.id, c.name, c.isActive,
+                    SUM(CASE WHEN a.status = :wait     THEN 1 ELSE 0 END) AS awaiting,
+                    SUM(CASE WHEN a.status = :accepted THEN 1 ELSE 0 END) AS accepted,
+                    SUM(CASE WHEN a.status = :rejected THEN 1 ELSE 0 END) AS rejected,
+                    COUNT(a.id) AS total,
+                    SUM(CASE WHEN a.wishedSize > 0 THEN a.wishedSize ELSE 0 END) AS totalSurface,
+                    SUM(CASE WHEN a.wishedSize > 0 THEN 1 ELSE 0 END) AS countWithSurface
+             FROM AppBundle:Application a
+             JOIN a.category c
+             WHERE a.status != :draft' . $yearFilter . '
+             GROUP BY c.id
+             ORDER BY c.name ASC'
+        )->setParameters($baseParams)->getResult();
+
+        // Candidatures sans catégorie
+        $noCategoryCount = (int) $em->createQuery(
+            'SELECT COUNT(a.id) FROM AppBundle:Application a
+             WHERE a.category IS NULL AND a.status != :draft' . $yearFilter
+        )->setParameters(array_intersect_key($baseParams, ['draft' => true, 'year' => true]))->getSingleScalarResult();
+
+        // --- Données par type de projet (UseType) ---
+        $useTypeRows = $em->createQuery(
+            'SELECT u.id, u.name, u.isActive, COUNT(a.id) AS total
+             FROM AppBundle:Application a
+             JOIN a.projectHolder ph
+             JOIN ph.useType u
+             WHERE a.status != :draft' . $yearFilter . '
+             GROUP BY u.id
+             ORDER BY u.name ASC'
+        )->setParameters(array_intersect_key($baseParams, ['draft' => true, 'year' => true]))->getResult();
+
+        // --- Données par statut juridique (candidature) ---
+        $companyStatusRows = $em->createQuery(
+            'SELECT a.companyStatus, COUNT(a.id) AS total
+             FROM AppBundle:Application a
+             WHERE a.status != :draft AND a.companyStatus IS NOT NULL' . $yearFilter . '
+             GROUP BY a.companyStatus
+             ORDER BY a.companyStatus ASC'
+        )->setParameters(array_intersect_key($baseParams, ['draft' => true, 'year' => true]))->getResult();
+
+        // --- Timeline : candidatures par jour ---
+        $timelineRows = $em->createQuery(
+            'SELECT SUBSTRING(a.created, 1, 10) AS day, COUNT(a.id) AS total
+             FROM AppBundle:Application a
+             WHERE a.status != :draft' . $yearFilter . '
+             GROUP BY day
+             ORDER BY day ASC'
+        )->setParameters(array_intersect_key($baseParams, ['draft' => true, 'year' => true]))->getResult();
+
+        // --- Totaux globaux ---
+        $totals = $em->createQuery(
+            'SELECT COUNT(a.id) AS total,
+                    SUM(CASE WHEN a.status = :wait     THEN 1 ELSE 0 END) AS awaiting,
+                    SUM(CASE WHEN a.status = :accepted THEN 1 ELSE 0 END) AS accepted,
+                    SUM(CASE WHEN a.status = :rejected THEN 1 ELSE 0 END) AS rejected
+             FROM AppBundle:Application a WHERE a.status != :draft' . $yearFilter
+        )->setParameters($baseParams)->getSingleResult();
+
+        return $this->renderWithExtraParams('AppBundle:Admin/Application:statistics.html.twig', [
+            'action'           => 'list',
+            'categoryRows'     => $categoryRows,
+            'noCategoryCount'  => $noCategoryCount,
+            'useTypeRows'      => $useTypeRows,
+            'companyStatusRows'=> $companyStatusRows,
+            'timelineRows'     => $timelineRows,
+            'totals'           => $totals,
+            'availableYears'   => $availableYears,
+            'selectedYear'     => $selectedYear,
+        ]);
     }
 }
