@@ -15,9 +15,9 @@ doctrine:
         #   metadata_cache_driver: apcu
         #   query_cache_driver:    apcu
         #   result_cache_driver:   apcu
-        metadata_cache_driver: filesystem
-        query_cache_driver:    filesystem
-        result_cache_driver:   filesystem
+        metadata_cache_driver: array
+        query_cache_driver:    array
+        result_cache_driver:   array
 
 monolog:
     handlers:
