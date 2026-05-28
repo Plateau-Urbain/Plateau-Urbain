@@ -9,6 +9,13 @@ require __DIR__.'/../app/autoload.php';
 // Change 'sf2' to a unique prefix in order to prevent cache key conflicts
 // with other applications also using APC.
 
+// Mitigation CVE-2025-64500: forcer PATH_INFO à commencer par '/'
+// Symfony 3.4 (EOL) ne recevra pas de patch officiel — ce correctif prévient
+// le bypass d'access_control via un PATH_INFO sans slash initial.
+if (isset($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] !== '' && $_SERVER['PATH_INFO'][0] !== '/') {
+    $_SERVER['PATH_INFO'] = '/' . $_SERVER['PATH_INFO'];
+}
+
 $kernel = new AppKernel('prod', false);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

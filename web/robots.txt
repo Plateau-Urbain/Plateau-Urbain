@@ -1,5 +1,19 @@
-# www.robotstxt.org/
-# www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
-
 User-agent: *
-Disallow: /
+# Bloquer les zones privées et d'administration
+Disallow: /admin/
+Disallow: /profil
+Disallow: /profil/
+Disallow: /mes-candidatures
+Disallow: /mes-candidatures/
+Disallow: /espace-manager/
+Disallow: /candidatures/
+Disallow: /connexion
+Disallow: /inscription
+Disallow: /deconnexion
+Disallow: /resetting/
+Disallow: /fos/
+
+# Autoriser les pages publiques (espaces, recherche, actualités)
+Allow: /espaces/
+Allow: /recherche/
+Allow: /appels-a-candidature/

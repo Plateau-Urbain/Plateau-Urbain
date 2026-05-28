@@ -33,7 +33,7 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          true
+    debug:          "%kernel.debug%"
     use_controller: false
     bundles:       [ AppBundle, FOSUserBundle, SonataUserBundle ]
     #java: /usr/bin/java

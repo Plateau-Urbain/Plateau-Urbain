@@ -9,10 +9,23 @@
     <!-- Page Title -->
     <title>{% block title %}Trouver un local | Plateau Urbain{% endblock %}</title>
 
-    <meta name="keywords" content="plateau, urbain" />
-    <meta name="description" content="Vous cherchez un espace de travail ou un atelier abordable ? Plateau Urbain met à votre disposition des bureaux dans des tiers-lieux vivants et créatifs" />
-    <meta property="og:image"  content="https://plateforme.plateau-urbain.com/bundles/app/images/plateau-urbain.jpg">
-    <meta name="twitter:image" content="https://plateforme.plateau-urbain.com/bundles/app/images/plateau-urbain.jpg">
+    {% set _current_url = app.request.schemeAndHttpHost ~ app.request.requestUri %}
+
+    <meta name="keywords" content="{% block meta_keywords %}plateau, urbain{% endblock %}" />
+    <meta name="description" content="{% block meta_description %}Vous cherchez un espace de travail ou un atelier abordable ? Plateau Urbain met à votre disposition des bureaux dans des tiers-lieux vivants et créatifs{% endblock %}" />
+
+    <link rel="canonical" href="{% block canonical_url %}{{ _current_url }}{% endblock %}" />
+
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ _current_url }}{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block('meta_description') }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://plateforme.plateau-urbain.com/bundles/app/images/plateau-urbain.jpg{% endblock %}">
+
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ block('og_title') }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ block('og_description') }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ block('og_image') }}{% endblock %}">
     <!-- Mobile Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 

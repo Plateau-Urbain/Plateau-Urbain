@@ -186,6 +186,12 @@ services:
          tags:
              - { name: form.type, alias: project_holder_user_registration }
 
+    # En-têtes de sécurité HTTP (mitigation CVE / OWASP)
+    app.security_headers_subscriber:
+        class: AppBundle\EventSubscriber\SecurityHeadersSubscriber
+        tags:
+            - { name: kernel.event_subscriber }
+
     # Twig extensions
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
