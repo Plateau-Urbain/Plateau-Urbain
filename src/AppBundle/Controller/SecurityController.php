@@ -66,7 +66,16 @@ class SecurityController extends Controller
     public function inscriptionConfirmationAction(Request $request)
     {
         $user = $this->getUser();
-        $next = $request->query->get('next');
+        // Supporter next en query-string ET en POST (champ hidden),
+        // pour garantir le retour vers apply après mise à jour du profil.
+        $next = $request->get('next');
+        if (!is_string($next)) {
+            $next = null;
+        }
+        $returnAnchor = $request->get('return_anchor');
+        if (!is_string($returnAnchor) || $returnAnchor === '') {
+            $returnAnchor = null;
+        }
         
         return $this->redirect($this->generateUrl('security_profil_role', array(
             'role' => $user->isProprio() ? 'proprio' : 'candidat',
@@ -82,7 +91,15 @@ class SecurityController extends Controller
         $logger = $this->get('logger');
         $user = $this->getUser();
         $em   = $this->getDoctrine()->getManager();
-        $next = $request->query->get('next');
+        // Supporter next en query-string ET en POST (champ hidden).
+        $next = $request->get('next');
+        if (!is_string($next)) {
+            $next = null;
+        }
+        $returnAnchor = $request->get('return_anchor');
+        if (!is_string($returnAnchor) || $returnAnchor === '') {
+            $returnAnchor = null;
+        }
 
         $logger->debug('profilAction() user '.$user->getId().' '.$user->getUsername().' '.($this->getUser()->isProprio() ? 'PROPRIO' : ''));
         if ($this->getUser()->isProprio() && $request->get('role') == 'proprio') {
@@ -128,19 +145,30 @@ class SecurityController extends Controller
 
             $session->getFlashBag()->set('success_msg', "Profil mis à jour");
             
-            // Rediriger vers la page suivante si spécifiée
-            if ($next) {
+            // Rediriger vers la page suivante si spécifiée (URL interne uniquement)
+            if ($next && $this->isSafeRedirectUrl($next)) {
+                if ($returnAnchor) {
+                    return $this->redirect($next . '#' . $returnAnchor);
+                }
                 return $this->redirect($next);
             }
             
-            return $this->redirect($this->generateUrl('security_profil'));
+            return $this->redirect($this->generateUrl('security_profil_role', [
+                'role' => $request->get('role'),
+                'next' => $next,
+                'return_anchor' => $returnAnchor,
+            ]));
         }
 
         $old_pwd_encoded = $encoder->encodePassword($old_pwd, $user->getSalt());
 
         if($current_ppassword != $old_pwd_encoded) {
             $session->getFlashBag()->set('error_msg', "Erreur dans le mot de passe actuel");
-            return $this->redirect($this->generateUrl('security_profil'));
+            return $this->redirect($this->generateUrl('security_profil_role', [
+                'role' => $request->get('role'),
+                'next' => $next,
+                'return_anchor' => $returnAnchor,
+            ]));
         }
 
         $new_pwd_encoded = $encoder->encodePassword($new_pwd, $user->getSalt());
@@ -150,12 +178,19 @@ class SecurityController extends Controller
 
         $session->getFlashBag()->set('success_msg', "Profil mis à jour");
         
-        // Rediriger vers la page suivante si spécifiée
-        if ($next) {
+        // Rediriger vers la page suivante si spécifiée (URL interne uniquement)
+        if ($next && $this->isSafeRedirectUrl($next)) {
+            if ($returnAnchor) {
+                return $this->redirect($next . '#' . $returnAnchor);
+            }
             return $this->redirect($next);
         }
         
-        return $this->redirect($this->generateUrl('security_profil'));
+        return $this->redirect($this->generateUrl('security_profil_role', [
+            'role' => $request->get('role'),
+            'next' => $next,
+            'return_anchor' => $returnAnchor,
+        ]));
     }
 
     /**
@@ -205,6 +240,12 @@ class SecurityController extends Controller
     public function showMyApplicationAction(Application $application)
     {
       $user = $this->getUser();
+      $isAdmin = $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN');
+
+      // Vérifier que la candidature appartient bien à l'utilisateur connecté
+      if ($application->getProjectHolder() !== $user && !$isAdmin) {
+          throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à voir cette candidature.');
+      }
 
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Application');
 
@@ -219,33 +260,80 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/document/{id}/delete", name="profile_removedocument")
+     * @Route("/document/{id}/delete", name="profile_removedocument", requirements={"id": "\d+"}, methods={"POST"})
      *
+     * @param int     $id
      * @param Request $request
      *
      * @return RedirectResponse
      */
-    public function removeDocumentAction(Request $request, UserDocument $userDocument)
+    public function removeDocumentAction($id, Request $request)
     {
+        if (!$this->isCsrfTokenValid('remove_user_document_' . $id, $request->get('token'))) {
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
         $em = $this->get('doctrine.orm.entity_manager');
+        $userDocument = $em->getRepository('AppBundle:UserDocument')->find($id);
+        if (!$userDocument) {
+            throw $this->createNotFoundException('Document non trouvé.');
+        }
+
+        $currentUser = $this->getUser();
+        $owner = $userDocument->getProjectHolder() ?: $userDocument->getUser();
+        if (!$currentUser || !$owner || $owner->getId() !== $currentUser->getId()) {
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce document.');
+        }
+
         $em->remove($userDocument);
         $em->flush();
 
         $this->get('session')->getFlashBag()->set('success', 'Le document a été supprimé.');
 
-        if ($request->get('service')) {
-            return $this->redirect($request->get('service'));
+        $serviceUrl = $request->get('service');
+        if ($serviceUrl && strpos($serviceUrl, '/') === 0 && strpos($serviceUrl, '//') !== 0) {
+            return $this->redirect($serviceUrl);
         }
 
-        // Ajouter un anchor pour rediriger vers la section des documents
+        $referer = $request->headers->get('Referer');
+        if ($referer && parse_url($referer, PHP_URL_HOST) === $request->getHost()) {
+            $refererPath = parse_url($referer, PHP_URL_PATH);
+            if ($refererPath && strpos($refererPath, '/apply') !== false) {
+                return $this->redirect($referer);
+            }
+        }
+
         $url = $this->generateUrl('security_profil');
         if ($request->get('anchor')) {
             $url .= '#' . $request->get('anchor');
         } else {
-            $url .= '#four'; // Section des documents par défaut
+            $url .= '#four';
         }
 
         return $this->redirect($url);
+    }
+
+    /**
+     * Vérifie qu'une URL de redirection est sûre (interne uniquement).
+     * Empêche les attaques open redirect.
+     *
+     * @param string $url
+     * @return bool
+     */
+    private function isSafeRedirectUrl($url)
+    {
+        // parse_url extrait le host ; une URL relative interne n'en a pas.
+        // On rejette tout ce qui a un host (http://evil.com, //evil.com, /\evil.com…)
+        // ainsi que les schémas non-HTTP (javascript:, data:…).
+        $parsed = parse_url($url);
+        if ($parsed === false) {
+            return false;
+        }
+        if (!empty($parsed['host']) || !empty($parsed['scheme'])) {
+            return false;
+        }
+        // Doit commencer par / pour être un chemin absolu interne
+        return isset($parsed['path']) && strpos($parsed['path'], '/') === 0;
     }
 
     /**
