@@ -20,7 +20,7 @@ class Application
     const DAY_TYPE   = "jours";
     const WEEK_TYPE  = "semaines";
     const MONTH_TYPE = "mois";
-    const YEAR_TYPE  = "ans";
+    const YEAR_TYPE  = "an(s)";
 
     const DRAFT_STATUS  = 'draft';
     const UNREAD_STATUS  = 'unread';
@@ -72,12 +72,30 @@ class Application
     private $name;
 
     /**
+     * Statut juridique simplifié saisi au moment de la candidature
+     * (distinct de User::$companyStatus, liste restreinte pour l'équipe projet).
+     *
+     * @var string
+     *
+     * @ORM\Column(name="company_status", type="string", length=64, nullable=true)
+     * @Assert\NotBlank(groups={"submit"})
+     */
+    private $companyStatus;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Assert\NotBlank(groups={"submit"})
      */
     private $description;
+
+    /**
+     * Quel sera l'usage du local ?
+     *
+     * @ORM\Column(name="local_usage_description", type="text", nullable=true)
+     */
+    private $localUsageDescription;
 
     /**
      * @var string
@@ -90,7 +108,6 @@ class Application
      * @var \DateTime
      *
      * @ORM\Column(name="start_occupation", type="date", nullable=true)
-     * @Assert\NotBlank(groups={"submit"})
      */
     private $startOccupation;
 
@@ -98,7 +115,6 @@ class Application
      * @var integer
      *
      * @ORM\Column(name="length_occupation", type="integer", nullable=true)
-     * @Assert\NotBlank(groups={"submit"})
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.")
      * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une durée positive.", groups={"projectHolder"})
      */
@@ -108,7 +124,6 @@ class Application
      * @var string
      *
      * @ORM\Column(name="length_type_occupation", type="string", length=15, nullable=true)
-     * @Assert\NotBlank(groups={"submit"})
      */
     private $lengthTypeOccupation;
 
@@ -166,9 +181,41 @@ class Application
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\NotBlank(groups={"submit"})
      * @Assert\Type(type="integer", message="La valeur {{ value }} n'est pas un nombre entier valide.", groups={"projectHolder", "default", "submit"})
-     * @Assert\Range(min = 0, minMessage = "Vous devez obligatoirement renseigner une surface positive.", groups={"projectHolder", "default", "submit"})
+     * @Assert\Range(min = 1, minMessage = "Veuillez entrer un entier positif (ex : 12).", groups={"projectHolder", "default", "submit"})
      */
     protected $wishedSize;
+
+    /**
+     * Validation conditionnelle : la "date d'entrée souhaitée" n'est requise que
+     * si l'AAC est tagguée "indéfini".
+     *
+     * @Assert\Callback(groups={"submit"})
+     */
+    public function validateStartOccupationForIndefiniteAAC(ExecutionContextInterface $context)
+    {
+        $space = $this->getSpace();
+        if (!$space) {
+            return;
+        }
+
+        $isRolling = false;
+        if (method_exists($space, 'isRollingAAC')) {
+            $isRolling = (bool) $space->isRollingAAC();
+        } elseif (method_exists($space, 'isIndefiniteAAC')) {
+            // Compat ancien nom
+            $isRolling = (bool) $space->isIndefiniteAAC();
+        }
+
+        if (!$isRolling) {
+            return;
+        }
+
+        if ($this->startOccupation === null) {
+            $context->buildViolation('Veuillez indiquer une date d\'entrée souhaitée.')
+                ->atPath('startOccupation')
+                ->addViolation();
+        }
+    }
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -235,6 +282,25 @@ class Application
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param string|null $localUsageDescription
+     * @return Application
+     */
+    public function setLocalUsageDescription($localUsageDescription)
+    {
+        $this->localUsageDescription = $localUsageDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLocalUsageDescription()
+    {
+        return $this->localUsageDescription;
     }
 
     /**
@@ -484,6 +550,41 @@ class Application
             self::WEEK_TYPE  => self::WEEK_TYPE,
             self::DAY_TYPE   => self::DAY_TYPE
         );
+    }
+
+    /**
+     * Liste restreinte de statuts juridiques utilisée côté candidature
+     * (différente et plus courte que User::getAllProCompanyStatut()).
+     *
+     * @return array
+     */
+    public static function getApplicationCompanyStatuses()
+    {
+        return array(
+            'Association'        => 'Association',
+            'Artiste'            => 'Artiste',
+            'Entreprise'         => 'Entreprise',
+            'Structure publique' => 'Structure publique',
+        );
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCompanyStatus()
+    {
+        return $this->companyStatus;
+    }
+
+    /**
+     * @param string|null $companyStatus
+     * @return Application
+     */
+    public function setCompanyStatus($companyStatus)
+    {
+        $this->companyStatus = $companyStatus;
+
+        return $this;
     }
 
     /**

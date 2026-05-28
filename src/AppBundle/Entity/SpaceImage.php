@@ -20,6 +20,7 @@ class SpaceImage
 {
     const FILETYPE_DOCUMENT_PLAN = 'document_plan';
     const FILETYPE_DOCUMENT_AAC = 'document_aac';
+    const FILETYPE_DOCUMENT_FAQ = 'document_faq';
     const FILETYPE_IMAGE = 'image';
 
     /**
@@ -222,7 +223,7 @@ class SpaceImage
             $errorMessage = 'Seuls les formats JPEG, PNG et WebP sont acceptés pour les photos (max 600 Ko)';
         }
         // Validation pour les documents (section 4 - Documents ressources)
-        else if ($fileType === self::FILETYPE_DOCUMENT_AAC || $fileType === self::FILETYPE_DOCUMENT_PLAN) {
+        else if ($fileType === self::FILETYPE_DOCUMENT_AAC || $fileType === self::FILETYPE_DOCUMENT_PLAN || $fileType === self::FILETYPE_DOCUMENT_FAQ) {
             $allowedMimeTypes = [
                 'application/pdf',
                 'application/x-pdf',

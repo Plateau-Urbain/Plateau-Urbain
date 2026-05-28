@@ -28,6 +28,13 @@ class UseType
      */
     private $name;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean", options={"default": true})
+     */
+    private $isActive = true;
+
 
     /**
      * Get id
@@ -37,6 +44,33 @@ class UseType
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsActive()
+    {
+        return (bool) $this->isActive;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->getIsActive();
+    }
+
+    /**
+     * @param bool $isActive
+     * @return UseType
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = (bool) $isActive;
+
+        return $this;
     }
 
     /**
