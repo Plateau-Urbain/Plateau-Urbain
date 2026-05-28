@@ -50,9 +50,7 @@ class AACController extends Controller
      */
     public function showAction()
     {
-        return $this->render('AppBundle:AAC:show.html.twig', array(
-            // ...
-        ));
+        throw $this->createNotFoundException('Cette page n\'est pas encore implémentée.');
     }
 
     /**
@@ -60,9 +58,7 @@ class AACController extends Controller
      */
     public function validateAction()
     {
-        return $this->render('AppBundle:AAC:validate.html.twig', array(
-            // ...
-        ));
+        throw $this->createNotFoundException('Cette page n\'est pas encore implémentée.');
     }
 
     /**
@@ -70,9 +66,7 @@ class AACController extends Controller
      */
     public function rejectAction()
     {
-        return $this->render('AppBundle:AAC:reject.html.twig', array(
-            // ...
-        ));
+        throw $this->createNotFoundException('Cette page n\'est pas encore implémentée.');
     }
 
 }

@@ -160,17 +160,18 @@
         {% for application in applications %}
                  <div class="item col-xs-12 col-md-6 col-lg-4">
                  
-                  {% if application.space.isClosed %}
-                            <div class="space_item_unavailable">
+                   {% if application.space.isClosed %}
+                            <div class="space_item_unavailable{{ application.space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
                   {% elseif not application.space.isEnabled %}
-                            <div class="space_item_suspended">
+                            <div class="space_item_suspended{{ application.space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
                   {% else %}
-                           <div class="space_item">
+                           <div class="space_item{{ application.space.isProposedByAdmin ? ' space-card--by-admin' : ' space-card--by-proprio' }}">
                   {% endif %}
                   <a href="{{ path('space_show', {'id': application.space.id}) }}">
                     <div class="image">
-                      <div class="image-wrapper">
-                        <img src="{% if application.space.pics.0 is not null %}{{ vich_uploader_asset(application.space.pics.0, 'file') }}{% endif %}" alt="" />
+                      <img src="{% if application.space.pics.0 is not null %}{{ vich_uploader_asset(application.space.pics.0, 'file') }}{% endif %}" alt="" />
+                      <div class="availability-overlay">
+                        <span class="availability-text">Période de disponibilité : {{ application.space.availability }}</span>
                       </div>
                     </div>
                   </a>
@@ -198,11 +199,16 @@
                     
                    
                       <ul>
-                        <li>{{ application.space.parcels | length }}</strong> espaces
+                        <li>{{ application.space.type }}</li>
+                        <li>
+                          {% if application.space.priceText %}
+                            {{ application.space.priceText }}
+                          {% else %}
+                            À partir de {{ application.space.price * 12 }} € / m<sup>2</sup> / an
+                          {% endif %}
                         </li>
-                        <li>À partir de {{ application.space.price * 12 }} € / m<sup>2</sup> / an
-                        </li>
-                        <li>Disponibilité: {{ application.space.availability }}
+                        <li>
+                          <strong>{{ application.space.nbSpaces }}</strong> espace(s) de {{ application.space.minSpace }} m<sup>2</sup> à {{ application.space.maxSpace }} m<sup>2</sup>
                         </li>
                         <li> Bailleur: {{ application.space.owner.company }}
                         </li>
@@ -302,7 +308,6 @@
 
             // Submit form
             $('form[data-submit]').on('change', function () {
-                console.log("here");
                 $(this).trigger('submit');
             });
 

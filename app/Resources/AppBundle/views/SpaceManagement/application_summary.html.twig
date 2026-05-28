@@ -5,247 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Récapitulatif de candidature - {{ application.projectHolder.fullName }}</title>
     <style>
-        body {
+        :root{
+            --brand-primary:#2D74BA;
+            --brand-accent:#F2BE6A;
+            --text:#1f2937;
+            --muted:#6b7280;
+            --line:#e5e7eb;
+            --bg:#ffffff;
+            --card:#f8fafc;
+        }
+        *{box-sizing:border-box}
+        body{
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            color: #333;
+            line-height: 1.35;
+            margin: 14px;
+            color: var(--text);
+            background: var(--bg);
+            font-size: 12px;
         }
-        .header {
-            border-bottom: 2px solid #8B4513;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+        .actions-bar{
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+            align-items:center;
+            margin: 0 0 10px 0;
         }
-        .header h1 {
-            color: #8B4513;
-            margin: 0;
+        .btn{
+            appearance:none;
+            border:1px solid var(--brand-primary);
+            background: var(--brand-primary);
+            color:#fff;
+            padding:6px 10px;
+            border-radius:4px;
+            font-weight:bold;
+            cursor:pointer;
+            font-size: 12px;
         }
-        .section {
-            margin-bottom: 25px;
-            padding: 15px;
-            border-left: 4px solid #8B4513;
-            background-color: #f9f9f9;
+        .hint{color:var(--muted);font-size:11px}
+        .header{
+            display:flex;
+            justify-content:space-between;
+            gap:12px;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--brand-primary);
+            border-radius: 6px;
+            background: var(--card);
+            margin-bottom: 10px;
         }
-        .section h2 {
-            color: #8B4513;
-            margin-top: 0;
-            font-size: 1.2em;
+        .header h1{
+            margin:0;
+            font-size: 16px;
+            letter-spacing: .2px;
         }
-        .info-row {
-            display: flex;
-            margin-bottom: 8px;
+        .meta{
+            color: var(--muted);
+            font-size: 11px;
+            text-align:right;
+            white-space:nowrap;
         }
-        .info-label {
-            font-weight: bold;
-            width: 200px;
-            flex-shrink: 0;
+        .grid{
+            display:grid;
+            grid-template-columns: 1fr;
+            gap:10px;
         }
-        .info-value {
-            flex-grow: 1;
+        .section{
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            overflow: hidden;
+            background: #fff;
         }
-        .status {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
+        .section-title{
+            padding: 8px 10px;
+            background: #eef6ff;
+            border-bottom: 1px solid var(--line);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+        }
+        .section-title h2{
+            margin:0;
+            font-size: 12px;
+            color: #0f3f6b;
             text-transform: uppercase;
+            letter-spacing: .4px;
         }
-        .status.awaiting {
-            background-color: #fff3cd;
-            color: #856404;
+        .kv{
+            width:100%;
+            border-collapse: collapse;
         }
-        .status.accepted {
-            background-color: #d4edda;
-            color: #155724;
+        .kv tr{border-bottom:1px solid var(--line)}
+        .kv tr:last-child{border-bottom:none}
+        .kv th, .kv td{
+            padding:6px 10px;
+            vertical-align: top;
         }
-        .status.rejected {
-            background-color: #f8d7da;
-            color: #721c24;
+        .kv th{
+            width: 38%;
+            color: #0b2239;
+            font-weight: 700;
+            text-align:left;
+            background: #fbfdff;
         }
-        .status.unread {
-            background-color: #e2e3e5;
-            color: #383d41;
+        .kv td{color: var(--text)}
+        .empty{color: var(--muted); font-style: italic}
+
+        @media (min-width: 900px){
+            body{margin: 16px;}
+            .grid{grid-template-columns: 1fr 1fr;}
         }
-        .documents-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        .documents-list li {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .documents-list li:last-child {
-            border-bottom: none;
-        }
-        .no-documents {
-            font-style: italic;
-            color: #666;
+        @media print{
+            body{margin:0; font-size:11px;}
+            .no-print{display:none !important;}
+            .grid{grid-template-columns: 1fr 1fr;}
+            .section{break-inside: avoid; page-break-inside: avoid;}
         }
     </style>
 </head>
 <body>
+    <div class="actions-bar no-print">
+        <button type="button" class="btn" onclick="window.print()">Imprimer</button>
+        <span class="hint">Astuce : dans la fenêtre d’impression, choisissez “Enregistrer en PDF”.</span>
+    </div>
+
     <div class="header">
-        <h1>Récapitulatif de candidature</h1>
-        <p><strong>Espace :</strong> {{ application.space.name }}</p>
-        <p><strong>Date d'export :</strong> {{ "now"|date("d/m/Y à H:i") }}</p>
-    </div>
-
-    <div class="section">
-        <h2>Informations générales</h2>
-        <div class="info-row">
-            <div class="info-label">Statut :</div>
-            <div class="info-value">
-                <span class="status {{ application.status }}">{{ application.statusLabel }}</span>
+        <div>
+            <h1>Récapitulatif de candidature</h1>
+            <div style="margin-top:4px;color:var(--muted);">
+                <strong style="color:var(--text);">{{ application.name }}</strong>
+                — {{ application.projectHolder.fullName }}
             </div>
         </div>
-        <div class="info-row">
-            <div class="info-label">Date de dépôt :</div>
-            <div class="info-value">{{ application.created|date("d/m/Y à H:i") }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Nom du projet :</div>
-            <div class="info-value">{{ application.name }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Type de projet :</div>
-            <div class="info-value">{{ application.category ? application.category.name : 'Non spécifié' }}</div>
+        <div class="meta">
+            <div><strong style="color:var(--text);">Espace</strong> : {{ application.space.name }}</div>
+            <div><strong style="color:var(--text);">Export</strong> : {{ "now"|date("d/m/Y H:i") }}</div>
         </div>
     </div>
 
-    <div class="section">
-        <h2>Informations du porteur de projet</h2>
-        <div class="info-row">
-            <div class="info-label">Nom complet :</div>
-            <div class="info-value">{{ application.projectHolder.fullName }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Structure :</div>
-            <div class="info-value">{{ application.projectHolder.company }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Email :</div>
-            <div class="info-value">{{ application.projectHolder.email }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Téléphone :</div>
-            <div class="info-value">{{ application.projectHolder.companyPhone }}</div>
-        </div>
-        {% if application.projectHolder.companyDescription %}
-        <div class="info-row">
-            <div class="info-label">Présentation :</div>
-            <div class="info-value">{{ application.projectHolder.companyDescription }}</div>
-        </div>
-        {% endif %}
-        
-        {% if application.projectHolder.facebookUrl or application.projectHolder.twitterUrl or application.projectHolder.instagramUrl or application.projectHolder.googleUrl or application.projectHolder.linkedinUrl or application.projectHolder.otherUrl %}
-        <div class="info-row">
-            <div class="info-label">Réseaux sociaux :</div>
-            <div class="info-value">
-                {% if application.projectHolder.facebookUrl %}<a href="{{ application.projectHolder.facebookUrl }}">Facebook</a>{% endif %}
-                {% if application.projectHolder.twitterUrl %}<a href="{{ application.projectHolder.twitterUrl }}">Twitter</a>{% endif %}
-                {% if application.projectHolder.instagramUrl %}<a href="{{ application.projectHolder.instagramUrl }}">Instagram</a>{% endif %}
-                {% if application.projectHolder.googleUrl %}<a href="{{ application.projectHolder.googleUrl }}">Google+</a>{% endif %}
-                {% if application.projectHolder.linkedinUrl %}<a href="{{ application.projectHolder.linkedinUrl }}">LinkedIn</a>{% endif %}
-                {% if application.projectHolder.otherUrl %}<a href="{{ application.projectHolder.otherUrl }}">Autre</a>{% endif %}
+    <div class="grid">
+        {% for category, rows in recapByCategory|default({}) %}
+            <div class="section">
+                <div class="section-title">
+                    <h2>{{ category }}</h2>
+                </div>
+                <table class="kv">
+                    <tbody>
+                        {% for row in rows %}
+                            <tr>
+                                <th>{{ row.label }}</th>
+                                <td>
+                                    {% if row.value is same as('') %}
+                                        <span class="empty">—</span>
+                                    {% else %}
+                                        {{ row.value|nl2br }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
-        {% endif %}
-    </div>
-
-    <div class="section">
-        <h2>Détails du projet</h2>
-        {% if application.description %}
-        <div class="info-row">
-            <div class="info-label">Description :</div>
-            <div class="info-value">{{ application.description|nl2br }}</div>
-        </div>
-        {% endif %}
-        <div class="info-row">
-            <div class="info-label">Surface recherchée :</div>
-            <div class="info-value">{{ application.wishedSize }} m²</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Durée d'occupation :</div>
-            <div class="info-value">{{ application.fullLengthOccupation }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Date d'entrée souhaitée :</div>
-            <div class="info-value">{{ application.startOccupation ? application.startOccupation|date("d/m/Y") : 'Non spécifiée' }}</div>
-        </div>
-        {% if application.contribution %}
-        <div class="info-row">
-            <div class="info-label">Contribution au projet :</div>
-            <div class="info-value">{{ application.contribution|nl2br }}</div>
-        </div>
-        {% endif %}
-        <div class="info-row">
-            <div class="info-label">Ouvert à un projet global :</div>
-            <div class="info-value">{{ application.openToGlobalProject ? 'Oui' : 'Non' }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Devenir sociétaire :</div>
-            <div class="info-value">{{ application.devenirSocietaire ? 'Oui' : 'Non' }}</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Documents de la candidature</h2>
-        {% if application.files|length > 0 %}
-            <ul class="documents-list">
-                {% for file in application.files %}
-                    <li>
-                        <strong>{{ file.fileName }}</strong>
-                        {% if file.spaceDocument %}
-                            <em>({{ file.spaceDocument.name }})</em>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="no-documents">Aucun document joint à cette candidature.</p>
-        {% endif %}
-    </div>
-
-    <div class="section">
-        <h2>Documents du profil utilisateur</h2>
-        {% if application.projectHolder.documents|length > 0 %}
-            <ul class="documents-list">
-                {% for doc in application.projectHolder.documents %}
-                    <li>
-                        <strong>{{ doc.fileName }}</strong>
-                        {% if doc.type %}
-                            <em>({{ doc.type == 'id' ? 'Pièce d\'identité' : (doc.type == 'kbis' ? 'KBIS' : 'Autre document') }})</em>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="no-documents">Aucun document de profil disponible.</p>
-        {% endif %}
-    </div>
-
-    <div class="section">
-        <h2>Informations de l'espace</h2>
-        <div class="info-row">
-            <div class="info-label">Nom de l'espace :</div>
-            <div class="info-value">{{ application.space.name }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Adresse :</div>
-            <div class="info-value">{{ application.space.address }}, {{ application.space.zipCode }} {{ application.space.city }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Type :</div>
-            <div class="info-value">{{ application.space.type }}</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Surface disponible :</div>
-            <div class="info-value">{{ application.space.size }} m²</div>
-        </div>
-        <div class="info-row">
-            <div class="info-label">Prix :</div>
-            <div class="info-value">{{ application.space.price }} €/m²/mois</div>
-        </div>
+        {% endfor %}
     </div>
 </body>
 </html>
