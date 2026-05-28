@@ -29,7 +29,7 @@
                     <div class="col-sm-4">
                       {{ form_label(form.category, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
-                    <div class="col-sm-8" {{ form.category.vars.errors|length ? 'has-error' : '' }}>
+                    <div class="col-sm-8{% if not form.category.vars.valid %} has-error{% endif %}">
                       {{ form_widget(form.category) }}
                       {{ form_errors(form.category) }}
                     </div>
@@ -46,12 +46,12 @@
                       {{ form_label(form.lengthOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
 
-                    <div class="col-sm-3 {{ form.lengthOccupation.vars.errors|length ? 'has-error' : '' }}">
+                    <div class="col-sm-3{% if not form.lengthOccupation.vars.valid %} has-error{% endif %}">
                       {{ form_widget(form.lengthOccupation) }}
                       {{ form_errors(form.lengthOccupation) }}
                     </div>
 
-                    <div class="col-sm-4 {{ form.lengthTypeOccupation.vars.errors|length ? 'has-error' : '' }}">
+                    <div class="col-sm-4{% if not form.lengthTypeOccupation.vars.valid %} has-error{% endif %}">
                       {{ form_widget(form.lengthTypeOccupation) }}
                       {{ form_errors(form.lengthTypeOccupation) }}
                     </div>
@@ -62,7 +62,7 @@
                     <div class="col-sm-6">
                       {{ form_label(form.startOccupation, null, {'label_attr' : {'class' : 'inline-label'}}) }}
                     </div>
-                    <div class="col-sm-6 {{ form.startOccupation.vars.errors|length ? 'has-error' : '' }}">
+                    <div class="col-sm-6{% if not form.startOccupation.vars.valid %} has-error{% endif %}">
                       {{ form_widget(form.startOccupation) }}
                       {{ form_errors(form.startOccupation) }}
                     </div>
@@ -99,7 +99,7 @@
                       </label>
                       {% if form.vars.data.getFilesType(document.id) %}
                         <a target="_blank" href="{{ asset(vich_uploader_asset(form.vars.data.getFilesType(document.id)[0], 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
-                        <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                        <a href="{{ path('space_removefile', { 'id': form.vars.data.getFilesType(document.id)[0].id, '_token': csrf_token('remove_file_' ~ form.vars.data.getFilesType(document.id)[0].id) }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                       {% endif %}
                     </div>
                   </div>
@@ -178,7 +178,7 @@
                           <div class="pull-right actions">
                               <a target="_blank" href="{{ asset(vich_uploader_asset(file, 'file')) }}" class="btn btn-show"><i class="fa fa-search"></i></a>
                               {% if file.id is not empty %}
-                                <a href="{{ path('space_removefile', { 'id': file.id }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
+                                <a href="{{ path('space_removefile', { 'id': file.id, '_token': csrf_token('remove_file_' ~ file.id) }) }}" class="btn btn-delete"><i class="fa fa-trash"></i></a>
                               {% endif %}
                           </div>
                         </div>

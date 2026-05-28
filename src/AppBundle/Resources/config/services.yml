@@ -28,7 +28,7 @@ services:
         arguments:
             - ~
             - AppBundle\Entity\Space
-            -
+            - AppBundle\Controller\Admin\SpaceAdminController
 
     app.admin.spaces.attributes:
         class: AppBundle\Admin\AttributeAdmin
@@ -132,7 +132,7 @@ services:
     app.admin.spaces.category:
         class: AppBundle\Admin\CategoryAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Catégorie de projet , show_in_dashboard: true  }
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'usage , show_in_dashboard: true  }
         arguments:
             - ~
             - AppBundle\Entity\Category
@@ -141,7 +141,7 @@ services:
     app.admin.spaces.useType:
         class: AppBundle\Admin\UseTypeAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type d'usage , show_in_dashboard: true  }
+            - { name: sonata.admin, manager_type: orm, group: Paramètres, label: Type de projet , show_in_dashboard: true  }
         arguments:
             - ~
             - AppBundle\Entity\UseType
@@ -189,6 +189,11 @@ services:
     # Twig extensions
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    app.twig.safe_url_extension:
+        class: AppBundle\Twig\SafeUrlExtension
         tags:
             - { name: twig.extension }
 
