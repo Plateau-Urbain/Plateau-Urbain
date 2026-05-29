@@ -13,18 +13,14 @@
 </p>
 </div>
     </div>
-    <div class=" col-xs-12 col-md-6 sans-marge">
-        <img src="/bundles/app/images/" id="image" />
+    <div class="col-xs-12 col-md-6 sans-marge">
+        <img src="" id="image" />
     </div>
-</div>  
-  <script type="text/javascript">
-        function randomImg(){
-        var tabImg = new Array();
-        tabImg[0]  = "village-reille.jpg";
-        tabImg[1]  = "asnieres.jpg";
-        tabImg[2]  = "opale.jpg";
-        tabImg[3]  = "opale-1.jpg";
-        document.getElementById('image').src += tabImg[Math.round(Math.random()*3)];
-        }
-        </script>
+</div>
+<script type="text/javascript">
+    (function randomImg(){
+        var tabImg = ["village-reille.jpg", "asnieres.jpg", "opale.jpg", "opale-1.jpg"];
+        document.getElementById('image').src = '/bundles/app/images/' + tabImg[Math.floor(Math.random() * tabImg.length)];
+    })();
+</script>
 {% endblock %}
